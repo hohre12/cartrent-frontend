@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from 'styled-components';
-import theme from './styles/variables.scss'
+import theme from './styles/variables';
 
 const queryClient = new QueryClient();
 

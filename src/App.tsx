@@ -1,6 +1,14 @@
-import { ReactNode, useCallback, useEffect, useMemo } from 'react';
+import { ReactNode } from 'react';
 import './App.css'
-import { useRecoilState } from 'recoil';
+import {
+    Navigate,
+    Routes as ReactRouterRoutes,
+    Route,
+    Outlet,
+  } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { tokenState } from './state/auth';
+import { createGlobalStyle } from 'styled-components';
 
 interface PrivateRouteProps {
 children: ReactNode;
@@ -18,14 +26,66 @@ return isToken ? (
 );
 };
 
+const PrivateLayout = () => {
+    return (
+      <PrivateRoute>
+        <Outlet />
+      </PrivateRoute>
+    );
+  };
+
 function App() {
     // const [token, setToken] = useRecoilState(tokenState);
 
   return (
     <div className="App">
-      
+      {/* {token && <SideBar />} */}
+      <GlobalStyle />
+      <ReactRouterRoutes>
+      <Route
+          path="/login"
+          element={<div>login</div>}
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <div>DashBoard</div>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/list"
+          element={<PrivateLayout />}
+        >
+          <Route
+            index
+            element={<div>List</div>}
+          />
+        </Route>
+        <Route
+          path="*"
+          element={
+            <PrivateRoute>
+              <Navigate
+                replace
+                to="/dashboard"
+              />
+            </PrivateRoute>
+          }
+        />
+      </ReactRouterRoutes>
     </div>
   )
 }
 
 export default App
+
+const GlobalStyle = createGlobalStyle`
+* { 
+ box-sizing: border-box;
+}
+:root {
+  /* --System-Token-color-bg-bg-neutral-tertiary: black; */
+}
+`;
