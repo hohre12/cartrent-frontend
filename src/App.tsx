@@ -9,6 +9,7 @@ import {
 import { useRecoilValue } from 'recoil';
 import { tokenState } from './state/auth';
 import { createGlobalStyle } from 'styled-components';
+import Login from './pages/Auth/Login';
 
 interface PrivateRouteProps {
 children: ReactNode;
@@ -44,7 +45,7 @@ function App() {
       <ReactRouterRoutes>
       <Route
           path="/login"
-          element={<div>login</div>}
+          element={<Login></Login>}
         />
         <Route
           path="/dashboard"
