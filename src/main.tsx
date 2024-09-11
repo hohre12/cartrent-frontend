@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client';
-import App from './App.tsx'
-import './index.css'
+import App from './App.tsx';
+import './index.css';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -14,14 +14,14 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-    <QueryClientProvider client={queryClient}>
-      <RecoilRoot>
-        <ThemeProvider theme={theme}>
-          {/* auto complete is not avaliable for theme */}
-          <Router>
-            <App />
-          </Router>
-        </ThemeProvider>
-      </RecoilRoot>
-    </QueryClientProvider>,
-  );
+  <QueryClientProvider client={queryClient}>
+    <RecoilRoot>
+      <ThemeProvider theme={theme}>
+        {/* auto complete is not avaliable for theme */}
+        <Router>
+          <App />
+        </Router>
+      </ThemeProvider>
+    </RecoilRoot>
+  </QueryClientProvider>,
+);

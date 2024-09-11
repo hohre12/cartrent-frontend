@@ -1,42 +1,42 @@
 import { ReactNode } from 'react';
-import './App.css'
+import './App.css';
 import {
-    Navigate,
-    Routes as ReactRouterRoutes,
-    Route,
-    Outlet,
-  } from 'react-router-dom';
+  Navigate,
+  Routes as ReactRouterRoutes,
+  Route,
+  Outlet,
+} from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { tokenState } from './state/auth';
 import { createGlobalStyle } from 'styled-components';
 import Login from './pages/Auth/Login';
 
 interface PrivateRouteProps {
-children: ReactNode;
+  children: ReactNode;
 }
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
-const isToken = useRecoilValue(tokenState);
-return isToken ? (
+  const isToken = useRecoilValue(tokenState);
+  return isToken ? (
     <div className="wrapper">{children}</div>
-) : (
+  ) : (
     <Navigate
-    replace
-    to="/login"
+      replace
+      to="/login"
     />
-);
+  );
 };
 
 const PrivateLayout = () => {
-    return (
+  return (
     <PrivateRoute>
-        <Outlet />
-      </PrivateRoute>
-    );
-  };
+      <Outlet />
+    </PrivateRoute>
+  );
+};
 
 function App() {
-    // const [token, setToken] = useRecoilState(tokenState);
+  // const [token, setToken] = useRecoilState(tokenState);
 
   return (
     <div className="App">
@@ -77,10 +77,10 @@ function App() {
         />
       </ReactRouterRoutes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
 
 const GlobalStyle = createGlobalStyle`
 * { 

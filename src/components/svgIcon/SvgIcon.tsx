@@ -19,11 +19,7 @@ export const SvgIcon = ({
   return (
     <>
       {Svg && (
-        <DefaultWraperStyle
-          className={[
-            `${wrapperClass}`
-          ].join(' ')}
-        >
+        <DefaultWraperStyle className={[`${wrapperClass}`].join(' ')}>
           <Svg {...rest} />
         </DefaultWraperStyle>
       )}
@@ -38,6 +34,6 @@ export const SvgIcon = ({
 };
 
 export const DefaultWraperStyle = styled.div`
-    display: flex;
-    align-items: center;
-`
+  display: flex;
+  align-items: center;
+`;

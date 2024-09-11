@@ -14,37 +14,81 @@ If you are developing a production application, we recommend updating the config
 - Configure the top-level `parserOptions` property like this:
 
 ```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
+export default {
+  // other rules...
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
+    tsconfigRootDir: __dirname,
   },
-})
+};
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+---
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## A. type 명명 Guide
+
+> ### list > detail > post | put | delete
+
+- **1.** list의 경우
+
+  ```
+    - [domain]ListRequest
+    - [domain]ListResponse
+    - [domain]List
+  ```
+
+- **2.** detail의 경우
+
+  ```
+    - [domain]Request
+    - [domain]Response
+    - [domain]
+  ```
+
+- **3.** post의 경우
+
+  ```
+    - detail의 [domain]을 extends 가능한 경우 extends & [domain] || PostRequest
+    - [domain]PostResponse
+    - extends detail의 [domain] || [domain]Post
+  ```
+
+- **4.** put의 경우
+
+  ```
+    - detail의 [domain]을 extends 가능한 경우 extends & [domain] || PutRequest
+    - [domain]PutResponse
+    - extends detail의 [domain] || [domain]Put
+  ```
+
+- **5.** delete의 경우
+
+  ```
+    - [domain]DeleteRequest
+    - [domain]DeleteResponse
+    - extends detail의 [domain] || [domain]Delete
+  ```
+
+- **6.** front handle type인 경우
+
+  ```
+    - /* front handle type */ 주석 추가
+  ```
+
+---
+
+## B. service 작성 Guide
+
+---
+
+## C. about styles
+
+> ### extentions
+
+vscode-styled-components([link](https://marketplace.visualstudio.com/items?itemName=styled-components.vscode-styled-components))
