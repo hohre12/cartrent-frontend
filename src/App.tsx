@@ -29,7 +29,7 @@ return isToken ? (
 
 const PrivateLayout = () => {
     return (
-      <PrivateRoute>
+    <PrivateRoute>
         <Outlet />
       </PrivateRoute>
     );
@@ -43,7 +43,7 @@ function App() {
       {/* {token && <SideBar />} */}
       <GlobalStyle />
       <ReactRouterRoutes>
-      <Route
+        <Route
           path="/login"
           element={<Login></Login>}
         />

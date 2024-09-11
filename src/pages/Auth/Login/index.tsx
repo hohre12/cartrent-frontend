@@ -7,7 +7,7 @@ const Login = () => {
             <InputWrapper>
                 {/* <SvgIcon /> */}
                 <h1>카트렌트카 로그인</h1>
-                
+            
             </InputWrapper>
             <ImageWrapper></ImageWrapper>
         </LoginWrapper>
