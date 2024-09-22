@@ -1,0 +1,193 @@
+.button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    background-color: $bg-button-gray-enable;
+    border-color: $border-button-neutral;
+    transition: 0.2s all;
+  
+    &.isLeading {
+      &.small {
+        padding: 5px 10px 5px 8px;
+      }
+      &.medium {
+        padding: 8px 10px 8px 8px;
+      }
+      &.large {
+        padding: 8px 20px 8px 18px;
+      }
+    }
+    &.isTrailing {
+      &.small {
+        padding: 5px 4px 5px 10px;
+      }
+      &.medium {
+        padding: 8px 4px 8px 16px;
+      }
+      &.large {
+        padding: 8px 14px 8px 22px;
+      }
+    }
+    &.isLeading.isTrailing {
+      &.small {
+        padding: 5px 4px 5px 8px;
+      }
+      &.medium {
+        padding: 8px 4px 8px 8px;
+      }
+      &.large {
+        padding: 8px 14px 8px 18px;
+      }
+    }
+    &:hover,
+    &:active {
+      background-color: $bg-button-gray-hover;
+      border-color: $border-inputfield-focusing;
+      background-color: $bg-button-gray-hover;
+      border-color: $border-inputfield-focusing;
+    }
+  
+    &:disabled {
+      background-color: $bg-button-gray-disabled !important;
+      border-color: $border-button-neutral !important;
+      color: $bg-onbutton-gray-disabled !important;
+  
+      img {
+        opacity: 0.5;
+      }
+  
+      cursor: initial;
+    }
+  }
+  
+  /* size */
+  .small {
+    height: $button-height-s-h30;
+    padding: 5px 10px;
+    border-radius: $radius-s;
+  }
+  .medium {
+    height: $button-height-m-h36;
+    padding: 8px 15px;
+    border-radius: $radius-m;
+  }
+  .large {
+    height: $button-height-xl-h48;
+    padding: 8px 30px;
+    border-radius: $radius-l;
+  }
+  
+  /* configuration */
+  .fill {
+    border: 0;
+  }
+  .stroke {
+    border: 1px solid;
+    background-color: transparent !important;
+  }
+  // variant - default
+  .gray {
+    background-color: $bg-button-gray-enable;
+    color: $text-onbutton-gray-primary;
+    &:hover,
+    &:active {
+      background-color: $bg-button-gray-hover;
+    }
+  }
+  .black {
+    background-color: $bg-button-black-enable;
+    color: $white;
+    &:hover,
+    &:active {
+      background-color: $bg-button-black-hover;
+    }
+  }
+  .white {
+    background-color: $bg-button-white-enable;
+    color: $text-neutral-primary;
+    &:hover,
+    &:active {
+      background-color: $bg-button-white-hover;
+    }
+  }
+  
+  // variant - primary
+  .primaryBrandcolor {
+    background-color: $bg-button-brandcolor-primary-enable;
+    color: $text-onbutton-danger-primary;
+    &:hover,
+    &:active {
+      background-color: $bg-button-brandcolor-primary-hover;
+    }
+  }
+  .primaryInfo {
+    background-color: $bg-button-info-primary-enable;
+    color: $text-onbutton-info-primary;
+    &:hover,
+    &:active {
+      background-color: $bg-button-info-primary-hover;
+    }
+  }
+  .primaryDanger {
+    background-color: $bg-button-danger-primary-enable;
+    color: $text-onbutton-danger-primary;
+    &:hover,
+    &:active {
+      background-color: $bg-button-danger-primary-hover;
+    }
+  }
+  .primarySuccess {
+    background-color: $bg-button-success-primary-enable;
+    color: $text-onbutton-success-primary;
+    &:hover,
+    &:active {
+      background-color: $bg-button-success-primary-hover;
+    }
+  }
+  
+  // variant - secondary
+  .secondaryBrandcolor {
+    background-color: $bg-button-brandcolor-secondary-enable;
+    color: $text-onbutton-bradncolor-secondary;
+    &:hover,
+    &:active {
+      background-color: $bg-button-brandcolor-secondary-hover;
+    }
+  }
+  .secondaryInfo {
+    background-color: $bg-button-info-secondary-enable;
+    color: $text-onbutton-info-secondary;
+    &:hover,
+    &:active {
+      background-color: $bg-button-info-secondary-hover;
+    }
+  }
+  .secondaryDanger {
+    background-color: $bg-button-danger-secondary-enable;
+    color: $text-onbutton-danger-secondary;
+    &:hover,
+    &:active {
+      background-color: $bg-button-danger-secondary-hover;
+    }
+  }
+  .secondarySuccess {
+    background-color: $bg-button-success-secondary-enable;
+    color: $text-onbutton-success-secondary;
+    &:hover,
+    &:active {
+      background-color: $bg-button-success-secondary-hover;
+    }
+  }
+  
+  .transparent {
+    background-color: transparent;
+    border: none;
+    &:hover,
+    &:active {
+      background-color: transparent;
+      opacity: 0.7;
+    }
+  }
+  

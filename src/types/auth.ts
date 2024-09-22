@@ -6,3 +6,8 @@ export type TUser = {
   updatedAt: string;
   deletedAt: string;
 };
+
+export type TAuthIdLoginRequest = {
+    id: string;
+    password: string;
+  };
