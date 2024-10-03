@@ -6,10 +6,11 @@ import {
   Route,
   Outlet,
 } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { tokenState } from './state/auth';
 import { createGlobalStyle } from 'styled-components';
 import Login from './pages/Auth/Login';
+import SideMenuBar, { SideBarMenu } from './components/sideMenuBar/SideMenuBar';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -36,11 +37,11 @@ const PrivateLayout = () => {
 };
 
 function App() {
-  // const [token, setToken] = useRecoilState(tokenState);
+  const [token, setToken] = useRecoilState(tokenState);
 
   return (
     <div className="App">
-      {/* {token && <SideBar />} */}
+      {token && <SideMenuBar />}
       <GlobalStyle />
       <ReactRouterRoutes>
         <Route

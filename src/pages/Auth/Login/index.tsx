@@ -1,8 +1,6 @@
 import { useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
-import {
-  tokenState,
-} from '@/state/auth';
+import { tokenState } from '@/state/auth';
 import { useEffect, useState, KeyboardEvent, useCallback } from 'react';
 import Input from '@/components/input/Input';
 import Button from '@/components/button/Button';
@@ -19,16 +17,12 @@ import { titleXxl24Bold } from '@/styles/typography';
 
 const Login = () => {
   const navigate = useNavigate();
-  const [id, setId, isIdValid] = useValidationState<string>(
-    '',
-    validEmpty,
-  );
+  const [id, setId, isIdValid] = useValidationState<string>('', validEmpty);
   const [password, setPassword, isPasswordValid] = useValidationState<string>(
     '',
     validPassword,
   );
   const [isSubmit, setSubmit] = useState<boolean>(false);
-  // const [remember, setRemember] = useState<TCheckBoxValue>(true)
   const [idErrorMsg, setIdErrorMsg] = useState<string>();
   const [passwordErrorMsg, setPasswordErrorMsg] = useState<string>();
   const [passwordInputType, setPasswordInputType] = useState<
@@ -44,10 +38,6 @@ const Login = () => {
       setId(getId);
     }
   }, [setId, setToken]);
-
-  // const handleRemember = (value : TCheckBoxValue) => {
-  //     setRemember(value)
-  // }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -66,72 +56,25 @@ const Login = () => {
       return false;
     }
     try {
-      // if(remember) {
-      //     LocalStorage.setItem('authId', authId)
-      // } else {
-      //     LocalStorage.removeItem('authId')
-      // }
-      const { data } = await authIdLogin({ id, password });
-      if (data.data) {
-        LocalStorage.setItem(TOKEN_KEY, data.data.token);
-        setToken(data.data.token);
-        // const response = await getInstituteList();
-        // if (response.data?.data.length > 0) {
-        //   LocalStorage.setItem(
-        //     'institute',
-        //     JSON.stringify(response.data.data[0]),
-        //   );
-        // }
-        navigate('/dashboard');
-      } else {
-        // status : 200
-        // 각종 에러
-        if (data.error?.code) {
-        //   if (data.error?.code === ERROR_CODE.EA002) {
-        //     const confirm: TConfirm = {
-        //       isOpen: true,
-        //       title: '로그인 실패 알림',
-        //       content:
-        //         '로그인을 5회 이상 실패하여 접속이 제한되었습니다.\n이메일 인증 후 이용해주세요.',
-        //       confirmText: '이메일 인증하기',
-        //       confirmVariant: 'primaryInfo',
-        //       onClose: () => {
-        //         navigate('/resetPassword', { state: { type: 'overFail' } });
-        //         hideConfirm();
-        //       },
-        //       onConfirm: () => {
-        //         navigate('/resetPassword', { state: { type: 'overFail' } });
-        //         hideConfirm();
-        //       },
-        //     };
-        //     showConfirm(confirm);
-        //   } else if (data.error?.code === ERROR_CODE.EA003) {
-        //     setChangePasswordInfo({
-        //       authId,
-        //       password,
-        //     });
-        //     setChangePasswordType('first');
-        //     navigate('/changePassword');
-        //   } else if (data.error?.code === ERROR_CODE.EA004) {
-        //     setChangePasswordInfo({
-        //       authId,
-        //       password,
-        //     });
-        //     setChangePasswordType('longTime');
-        //     navigate('/changePassword');
-        //   }
-        } else {
-          setPasswordErrorMsg(data.error?.message);
-        }
-      }
+      setToken('test');
+      navigate('/dashboard');
+      //   const { data } = await authIdLogin({ id, password });
+      //   if (data.data) {
+      //     LocalStorage.setItem(TOKEN_KEY, data.data.token);
+      //     setToken(data.data.token);
+      //     navigate('/dashboard');
+      //   } else {
+      //     // status : 200
+      //     // 각종 에러
+      //     if (data.error?.code) {
+      //     } else {
+      //       setPasswordErrorMsg(data.error?.message);
+      //     }
+      //   }
     } catch (e) {
       console.warn(e);
     }
   };
-
-  const onResetPasswordClick = useCallback(() => {
-    navigate('/resetPassword');
-  }, [navigate]);
 
   const handlePasswordInputType = useCallback(() => {
     if (passwordInputType === 'password') {
@@ -216,7 +159,6 @@ const Login = () => {
 
 export default Login;
 
-
 export const Wrapper = styled.div`
   background: url('./assets/login-background.png');
   background-size: cover;
@@ -225,7 +167,7 @@ export const Wrapper = styled.div`
 `;
 
 export const LoginWrapper = styled.div`
-height: 700px;
+  height: 700px;
   width: 600px;
   display: flex;
   position: absolute;
@@ -237,23 +179,23 @@ height: 700px;
 `;
 
 export const LoginInputWrapper = styled.div`
-width: 100%;
-    display: flex;
-    gap: 20px;
-    flex-direction: column;
-    padding: 210px 95px;
-    position: relative;
-    h1 {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  padding: 210px 95px;
+  position: relative;
+  h1 {
     ${titleXxl24Bold}
-      color: $text-neutral-primary;
-      text-align: left;
-    }
-`
+    color: $text-neutral-primary;
+    text-align: left;
+  }
+`;
 export const ImageWrapper = styled.div`
- width: 50%;
-    padding: 10px;
-    img {
-      border-radius: 10px;
-      width: 100%;
-    }
+  width: 50%;
+  padding: 10px;
+  img {
+    border-radius: 10px;
+    width: 100%;
+  }
 `;
