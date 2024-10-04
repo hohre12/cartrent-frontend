@@ -65,6 +65,9 @@ export const FilterWrapper = styled.div`
   background: #fff;
   width: 300px;
   padding: 5px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
   // 드래그 방지
   -webkit-user-select: none;
   -moz-user-select: none;

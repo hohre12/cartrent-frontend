@@ -41,6 +41,7 @@ export const ListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  border-radius: 5px;
 `;
 
 export const SearchBoxWrapper = styled.div`

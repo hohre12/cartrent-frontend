@@ -1,14 +1,27 @@
 import { CUSTOMER_LIST_WATCH_OPTIONS } from '@/constants/customer';
 import { dummyCustomerList } from '@/dummy/customer';
-import { selectedCustomerHideWatchOptionsState } from '@/state/customer';
+import {
+  selectedCustomerHideWatchOptionsState,
+  selectedCustomerIdxState,
+} from '@/state/customer';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import { isColumnsViewHide } from '@/utils/common';
-import { useRecoilValue } from 'recoil';
+import { useCallback } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const CustomerListTable = () => {
   const selectedCustomerHideWatchOptions = useRecoilValue(
     selectedCustomerHideWatchOptionsState,
+  );
+  const [selectedCustomerIdx, setSelectedCustomerIdx] = useRecoilState(
+    selectedCustomerIdxState,
+  );
+  const handleCustomerClick = useCallback(
+    (idx: number) => {
+      setSelectedCustomerIdx(idx);
+    },
+    [setSelectedCustomerIdx],
   );
   return (
     <CustomerListTableWrapper>
@@ -28,7 +41,8 @@ const CustomerListTable = () => {
         {dummyCustomerList.map((it, idx) => (
           <tr
             key={idx}
-            onClick={() => console.log(it.userIdx)}
+            className={selectedCustomerIdx === it.userIdx ? 'active' : ''}
+            onClick={() => handleCustomerClick(it.userIdx)}
           >
             <td>{idx}</td>
             <td>{it.status}</td>
@@ -52,7 +66,7 @@ export const CustomerListTableWrapper = styled.table`
     position: sticky;
     top: -1px;
     z-index: 10;
-    background: #f5f5f5;
+    background: #ddd;
     th {
       height: 40px;
       ${titleS14Semibold}
@@ -63,8 +77,11 @@ export const CustomerListTableWrapper = styled.table`
   tbody {
     tr {
       cursor: pointer;
-      &:hover {
+      &.active {
         background: #ccf0ff;
+      }
+      &:hover {
+        background: #f5f5f5;
       }
       td {
         height: 40px;
