@@ -7,15 +7,18 @@ import { recoilPersist } from 'recoil-persist';
 import { TUser } from '@/types/auth';
 
 const { persistAtom } = recoilPersist({
-    key: 'user',
-    storage: localStorage,
-  });
-  
-  export const userState = atom<TUser>({
-    key: 'userState',
-    default: undefined,
-    effects_UNSTABLE: [persistAtom],
-  });
+  key: 'user',
+  storage: localStorage,
+});
+
+export const userState = atom<TUser>({
+  key: 'userState',
+  default: {
+    id: 0,
+    name: '테스트 유저',
+  },
+  effects_UNSTABLE: [persistAtom],
+});
 
 const tokenEffect: (key: string) => AtomEffect<string | null> =
   (key: string) =>

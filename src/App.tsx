@@ -10,7 +10,12 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { tokenState } from './state/auth';
 import { createGlobalStyle } from 'styled-components';
 import Login from './pages/Auth/Login';
-import SideMenuBar, { SideBarMenu } from './components/sideMenuBar/SideMenuBar';
+import SideNavigationBar, {
+  SideBarMenu,
+} from './components/sideNavigationBar/SideNavigationBar';
+import CustomerList from './pages/Customer/List';
+import Customer from './pages/Customer';
+import GlobalNavigationBar from './components/globalNavigationBar/GlobalNavigationBar';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -41,7 +46,8 @@ function App() {
 
   return (
     <div className="App">
-      {token && <SideMenuBar />}
+      {token && <GlobalNavigationBar />}
+      {token && <SideNavigationBar />}
       <GlobalStyle />
       <ReactRouterRoutes>
         <Route
@@ -57,12 +63,21 @@ function App() {
           }
         />
         <Route
-          path="/list"
+          path="/customer"
           element={<PrivateLayout />}
         >
           <Route
             index
-            element={<div>List</div>}
+            element={<Customer></Customer>}
+          />
+        </Route>
+        <Route
+          path="/counsel"
+          element={<PrivateLayout />}
+        >
+          <Route
+            index
+            element={<div>Counsel List</div>}
           />
         </Route>
         <Route

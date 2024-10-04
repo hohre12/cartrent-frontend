@@ -1,3 +1,12 @@
 .App {
   text-align: center;
 }
+
+.wrapper {
+  width: calc(100% - 150px);
+  height: calc(100% - 60px);
+  overflow-y: auto;
+  position: fixed;
+  left: 150px;
+  top: 60px;
+}

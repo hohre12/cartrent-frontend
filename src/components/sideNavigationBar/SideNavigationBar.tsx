@@ -9,7 +9,7 @@ import { SvgIcon } from '../common/SvgIcon';
 import LocalStorage from '@/utils/localStorage';
 import styled from 'styled-components';
 
-const SideMenuBar = () => {
+const SideNavigationBar = () => {
   const navigate = useNavigate();
   const resetToken = useResetRecoilState(tokenState);
   const user = useRecoilValue(userState);
@@ -28,20 +28,17 @@ const SideMenuBar = () => {
 
   return (
     <>
-      <SideBarWrapper>
-        <InstituteWrapper>
-          <div className="logo">Cart</div>
-          <div className="instituteName">카트렌트카</div>
-        </InstituteWrapper>
+      <SideNavigationBarWrapper>
         <SideBarMenu>
           {SIDE_MENU.map((it, idx) => (
-            <li key={idx}>
-              <div
-                className="title"
-                onClick={() => navigate(it.path)}
-              >
+            <li
+              key={idx}
+              onClick={() => navigate(it.path)}
+            >
+              <div className="title">
                 <SvgIcon
                   iconName={it.icon}
+                  style={{ fill: '#fff' }}
                   alt={it.icon}
                 />
                 <p>{it.title}</p>
@@ -67,34 +64,44 @@ const SideMenuBar = () => {
             alt="noti"
           /> */}
         </UserInfoWrapper>
-      </SideBarWrapper>
+      </SideNavigationBarWrapper>
     </>
   );
 };
 
-export default SideMenuBar;
+export default SideNavigationBar;
 
-export const SideBarWrapper = styled.div`
-  width: 250px;
+export const SideNavigationBarWrapper = styled.div`
+  width: 150px;
   height: 100vh;
-  background: #333;
+  position: fixed;
+  top: 60px;
+  background: #212533;
   color: #fff;
 `;
 
-export const InstituteWrapper = styled.div`
-  background: #fec741;
-  height: 60px;
-  .logo {
-  }
-  .instituteName {
-  }
-`;
 export const SideBarMenu = styled.div`
   padding: 15px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 30px;
   height: calc(100% - 120px);
+  .title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    & > div {
+      width: 30px;
+      height: 30px;
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
 `;
 export const UserInfoWrapper = styled.div`
   height: 60px;
