@@ -11,6 +11,7 @@ import styled from 'styled-components';
 
 const SideNavigationBar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const resetToken = useResetRecoilState(tokenState);
   const user = useRecoilValue(userState);
 
@@ -35,12 +36,16 @@ const SideNavigationBar = () => {
               key={idx}
               onClick={() => navigate(it.path)}
             >
-              <div className="title">
-                <SvgIcon
-                  iconName={it.icon}
-                  style={{ fill: '#fff' }}
-                  alt={it.icon}
-                />
+              <div
+                className={`title ${location.pathname.includes(it.path) ? 'active' : ''}`}
+              >
+                <div>
+                  <SvgIcon
+                    iconName={it.icon}
+                    style={{ fill: '#fff' }}
+                    alt={it.icon}
+                  />
+                </div>
                 <p>{it.title}</p>
               </div>
             </li>
@@ -93,12 +98,23 @@ export const SideBarMenu = styled.div`
     justify-content: center;
     gap: 10px;
     cursor: pointer;
+    &.active {
+      p {
+        font-weight: 700;
+      }
+      & > div {
+        background: #1aa18f;
+      }
+    }
     & > div {
-      width: 30px;
-      height: 30px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
       svg {
-        width: 100%;
-        height: 100%;
+        width: 30px;
+        height: 30px;
       }
     }
   }
