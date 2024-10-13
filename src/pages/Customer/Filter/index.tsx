@@ -63,7 +63,7 @@ export default CustomerFilter;
 
 export const FilterWrapper = styled.div`
   background: #fff;
-  width: 300px;
+  width: 250px;
   padding: 5px;
   border-radius: 5px;
   display: flex;
