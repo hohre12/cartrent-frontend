@@ -28,6 +28,8 @@ const CustomerListTable = () => {
       <thead>
         <tr>
           <th></th>
+          <th></th>
+          <th></th>
           {Object.entries(CUSTOMER_LIST_WATCH_OPTIONS).map(([key, value]) => {
             return (
               !isColumnsViewHide(selectedCustomerHideWatchOptions, key) && (
@@ -45,6 +47,8 @@ const CustomerListTable = () => {
             onClick={() => handleCustomerClick(it.userIdx)}
           >
             <td>{idx}</td>
+            <td>수정</td>
+            <td>삭제</td>
             <td>{it.status}</td>
             <td>{it.name}</td>
             <td>{it.groupName}</td>

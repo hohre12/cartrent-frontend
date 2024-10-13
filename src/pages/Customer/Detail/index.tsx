@@ -196,7 +196,7 @@ const CustomerDetail = () => {
 export default CustomerDetail;
 
 export const DetailWrapper = styled.div`
-  width: 500px;
+  width: 600px;
   display: flex;
   flex-direction: column;
   gap: 10px;

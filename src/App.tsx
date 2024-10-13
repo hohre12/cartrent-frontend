@@ -16,6 +16,7 @@ import SideNavigationBar, {
 import CustomerList from './pages/Customer/List';
 import Customer from './pages/Customer';
 import GlobalNavigationBar from './components/globalNavigationBar/GlobalNavigationBar';
+import { textS14Medium, textXs12Medium } from './styles/typography';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -101,6 +102,7 @@ export default App;
 const GlobalStyle = createGlobalStyle`
 * { 
  box-sizing: border-box;
+ ${textXs12Medium}
 }
 :root {
   /* --System-Token-color-bg-bg-neutral-tertiary: black; */

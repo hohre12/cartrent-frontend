@@ -23,7 +23,7 @@ export default GlobalNavigationBar;
 export const GlobalNavigationBarWrapper = styled.div`
   width: 100vw;
   height: 60px;
-  padding: 3cqb;
+  padding: 0 30px;
   background: #1aa18f;
   color: #fff;
   display: flex;
