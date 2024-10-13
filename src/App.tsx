@@ -17,6 +17,7 @@ import CustomerList from './pages/Customer/List';
 import Customer from './pages/Customer';
 import GlobalNavigationBar from './components/globalNavigationBar/GlobalNavigationBar';
 import { textS14Medium, textXs12Medium } from './styles/typography';
+import Counsel from './pages/Counsel';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -78,7 +79,7 @@ function App() {
         >
           <Route
             index
-            element={<div>Counsel List</div>}
+            element={<Counsel></Counsel>}
           />
         </Route>
         <Route
