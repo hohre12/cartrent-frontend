@@ -3,3 +3,9 @@ export const isColumnsViewHide = (keys: string[], val: string) => {
   if (!keys) return false;
   return keys.includes(val);
 };
+
+export const isEmpty = (object: any[] | any): boolean => {
+  if (!object) return true;
+  if (typeof object === 'number') return false;
+  return Array.isArray(object) ? !object.length : !Object.keys(object).length;
+};

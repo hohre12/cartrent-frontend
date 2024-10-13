@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
 
 export type TVariant =
   | 'gray'
@@ -27,6 +27,37 @@ export type TConfirm = {
   confirmVariant?: TVariant;
   children?: ReactNode;
 };
+
+export type TModal = {
+  isOpen: boolean;
+  isFixedModal?: boolean;
+  title?: string;
+  content?: string;
+  onCancel?: () => void;
+  onConfirm?: (value?: any) => void;
+  disabled?: boolean;
+  children?: ReactNode;
+  customFooter?: ReactNode;
+  wrapperClass?: string;
+  withHFDivider?: boolean;
+  size?: 'small' | 'medium' | 'large' | number;
+  footerOption?: TFooterBtnOption;
+};
+
+type TFooterBtnOption = {
+  footerBtnPosition?: 'center' | 'right' | 'left';
+  size?: 'small' | 'medium' | 'large';
+  cancelText?: string;
+  confirmText?: string;
+  confirmVariant?: TVariant;
+};
+
+export interface TModalContent extends HTMLAttributes<HTMLElement> {
+  title?: string;
+  titleLineBtn?: ReactNode;
+  children?: ReactNode;
+  isBorderBottom?: boolean;
+}
 
 export type TDefaultResponse<T> = {
   data: T;
