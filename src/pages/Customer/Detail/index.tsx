@@ -282,6 +282,7 @@ export const HistoryWrapper = styled.div`
     display: flex;
     gap: 10px;
     align-items: center;
+    cursor: pointer;
     .DateTimeWrapper {
       text-align: right;
       width: 100px;

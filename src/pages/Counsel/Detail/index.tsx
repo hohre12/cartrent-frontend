@@ -9,8 +9,12 @@ import {
   textS14Medium,
   textS14Regular,
 } from '@/styles/typography';
+import { adjustmentForm } from '@/utils/form/adjustmentForm';
+import { useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const CounselDetail = () => {
   const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
@@ -24,6 +28,23 @@ const CounselDetail = () => {
   const data = dummyCustomerList.find(
     (it) => it.userIdx === selectedCustomerIdx,
   );
+
+  const adjustmentRef = useRef<HTMLDivElement>(null);
+  const htmlString: string = adjustmentForm();
+
+  const downloadPdf = () => {
+    const content = adjustmentRef.current;
+    if (content) {
+      html2canvas(content, { scale: 1.5 }).then((canvas) => {
+        let imgWidth = 210;
+        let imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const imgData = canvas.toDataURL('img/png');
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        pdf.save(`${'사람이름'} ${'날짜'}_급여명세서`);
+      });
+    }
+  };
 
   return (
     <DetailWrapper>
@@ -122,7 +143,7 @@ const CounselDetail = () => {
         </div>
       </BoxWrapper>
       <HistoryWrapper>
-        <div>
+        <div onClick={downloadPdf}>
           <SvgIcon iconName="icon-edit" />
           <div className="DateTimeWrapper">
             <span>2024-09-27</span>
@@ -189,6 +210,10 @@ const CounselDetail = () => {
           </div>
         </div>
       </HistoryWrapper>
+      <div
+        ref={adjustmentRef}
+        dangerouslySetInnerHTML={{ __html: htmlString }}
+      ></div>
     </DetailWrapper>
   );
 };
@@ -282,6 +307,7 @@ export const HistoryWrapper = styled.div`
     display: flex;
     gap: 10px;
     align-items: center;
+    cursor: pointer;
     .DateTimeWrapper {
       text-align: right;
       width: 100px;
