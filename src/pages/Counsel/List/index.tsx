@@ -8,7 +8,7 @@ const CounselList = () => {
   return (
     <ListWrapper>
       <SearchBoxWrapper>
-        <Input placeholder="고객명, 고객번호로 검색해주세요."></Input>
+        <Input placeholder="고객명, 상담자로 검색해주세요."></Input>
         <SvgIcon iconName="icon-search" />
       </SearchBoxWrapper>
       <TableWrapper>
@@ -20,7 +20,7 @@ const CounselList = () => {
                 width: '20px',
               }}
             />
-            <p>고객목록</p>
+            <p>상담목록</p>
           </div>
           {/* <div>
             <SvgIcon iconName="icon-setting" />

@@ -9,12 +9,28 @@ export type TCounselListResponse = {
   count: number;
 };
 export type TCounselList = {
-  userIdx: number;
-  status: string;
+  created_at: string;
   name: string;
-  groupIdx: number;
-  groupName: string;
   phone: string;
+  counselType: string;
+  result: string;
+  counselCustomer: string;
+  counselName: string;
+  counselContent: string;
+  address: string;
+  id: number;
+  customerGroup: string;
+  product: string;
+  anotherPhone: string;
+  carType: string;
+  type: string;
+  date: string;
+  percent: string;
+  customerType: string;
+  option: string;
+  isIng: string;
+  etc: string;
+  company: string;
 };
 /* list */
 
@@ -24,11 +40,27 @@ export type TCounselRequest = {
 };
 
 export type TCounselResponse = {
-  userIdx: number;
-  status: string;
+  created_at: string;
   name: string;
-  groupIdx: number;
-  groupName: string;
   phone: string;
+  counselType: string;
+  result: string;
+  counselCustomer: string;
+  counselName: string;
+  counselContent: string;
+  address: string;
+  id: number;
+  customerGroup: string;
+  product: string;
+  anotherPhone: string;
+  carType: string;
+  type: string;
+  date: string;
+  percent: string;
+  customerType: string;
+  option: string;
+  isIng: string;
+  etc: string;
+  company: string;
 };
 /* detail */

@@ -24,11 +24,16 @@ export type TCustomerRequest = {
 };
 
 export type TCustomerResponse = {
-  userIdx: number;
-  status: string;
+  address: string;
+  birth: string;
+  created_at: string;
+  deleted_at: string;
+  email: string;
+  id: number;
+  job: string;
   name: string;
-  groupIdx: number;
-  groupName: string;
   phone: string;
+  status: string;
+  updated_at: string;
 };
 /* detail */

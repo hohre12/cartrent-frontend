@@ -1,38 +1,38 @@
-import { CUSTOMER_LIST_WATCH_OPTIONS } from '@/constants/customer';
-import { dummyCustomerList } from '@/dummy/customer';
+import { COUNSEL_LIST_WATCH_OPTIONS } from '@/constants/counsel';
+import { dummyCounselList } from '@/dummy/counsel';
 import {
-  selectedCustomerHideWatchOptionsState,
-  selectedCustomerIdxState,
-} from '@/state/customer';
+  selectedCounselHideWatchOptionsState,
+  selectedCounselIdxState,
+} from '@/state/counsel';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import { isColumnsViewHide } from '@/utils/common';
 import { useCallback } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-const CustomerListTable = () => {
-  const selectedCustomerHideWatchOptions = useRecoilValue(
-    selectedCustomerHideWatchOptionsState,
+const CounselListTable = () => {
+  const selectedCounselHideWatchOptions = useRecoilValue(
+    selectedCounselHideWatchOptionsState,
   );
-  const [selectedCustomerIdx, setSelectedCustomerIdx] = useRecoilState(
-    selectedCustomerIdxState,
+  const [selectedCounselIdx, setSelectedCounselIdx] = useRecoilState(
+    selectedCounselIdxState,
   );
-  const handleCustomerClick = useCallback(
+  const handleCounselClick = useCallback(
     (idx: number) => {
-      setSelectedCustomerIdx(idx);
+      setSelectedCounselIdx(idx);
     },
-    [setSelectedCustomerIdx],
+    [setSelectedCounselIdx],
   );
   return (
-    <CustomerListTableWrapper>
+    <CounselListTableWrapper>
       <thead>
         <tr>
           <th></th>
           <th></th>
           <th></th>
-          {Object.entries(CUSTOMER_LIST_WATCH_OPTIONS).map(([key, value]) => {
+          {Object.entries(COUNSEL_LIST_WATCH_OPTIONS).map(([key, value]) => {
             return (
-              !isColumnsViewHide(selectedCustomerHideWatchOptions, key) && (
+              !isColumnsViewHide(selectedCounselHideWatchOptions, key) && (
                 <th key={key}>{value}</th>
               )
             );
@@ -40,29 +40,46 @@ const CustomerListTable = () => {
         </tr>
       </thead>
       <tbody>
-        {dummyCustomerList.map((it, idx) => (
+        {dummyCounselList.map((it, idx) => (
           <tr
             key={idx}
-            className={selectedCustomerIdx === it.userIdx ? 'active' : ''}
-            onClick={() => handleCustomerClick(it.userIdx)}
+            className={selectedCounselIdx === it.id ? 'active' : ''}
+            onClick={() => handleCounselClick(it.id)}
           >
             <td>{idx}</td>
             <td>수정</td>
             <td>삭제</td>
-            <td>{it.status}</td>
+            <td>{it.created_at}</td>
             <td>{it.name}</td>
-            <td>{it.groupName}</td>
             <td>{it.phone}</td>
+            <td>{it.counselType}</td>
+            <td>{it.result}</td>
+            <td>{it.counselCustomer}</td>
+            <td>{it.counselName}</td>
+            <td>{it.counselContent}</td>
+            <td>{it.address}</td>
+            <td>{it.customerGroup}</td>
+            <td>{it.product}</td>
+            <td>{it.anotherPhone}</td>
+            <td>{it.carType}</td>
+            <td>{it.type}</td>
+            <td>{it.date}</td>
+            <td>{it.percent}</td>
+            <td>{it.customerType}</td>
+            <td>{it.option}</td>
+            <td>{it.isIng}</td>
+            <td>{it.etc}</td>
+            <td>{it.company}</td>
           </tr>
         ))}
       </tbody>
-    </CustomerListTableWrapper>
+    </CounselListTableWrapper>
   );
 };
 
-export default CustomerListTable;
+export default CounselListTable;
 
-export const CustomerListTableWrapper = styled.table`
+export const CounselListTableWrapper = styled.table`
   height: calc(100% - 40px);
   display: block;
   text-align: center;

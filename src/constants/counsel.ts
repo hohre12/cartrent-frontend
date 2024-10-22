@@ -1,5 +1,5 @@
 export const COUNSEL_LIST_WATCH_OPTIONS = {
-  createdAt: '상담일시',
+  created_at: '상담일시',
   name: '고객명',
   phone: '연락처',
   counselType: '상담유형',
@@ -10,7 +10,7 @@ export const COUNSEL_LIST_WATCH_OPTIONS = {
   address: '주소',
   customerGroup: '고객그룹',
   product: '상품',
-  plusPhone: '추가연락처',
+  anotherPhone: '추가연락처',
   carType: '차종',
   type: '구분',
   date: '약정기간',
