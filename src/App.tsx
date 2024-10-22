@@ -18,6 +18,7 @@ import Customer from './pages/Customer';
 import GlobalNavigationBar from './components/globalNavigationBar/GlobalNavigationBar';
 import { textS14Medium, textXs12Medium } from './styles/typography';
 import Counsel from './pages/Counsel';
+import Marketing from './pages/Marketing';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -80,6 +81,15 @@ function App() {
           <Route
             index
             element={<Counsel></Counsel>}
+          />
+        </Route>
+        <Route
+          path="/marketing"
+          element={<PrivateLayout />}
+        >
+          <Route
+            index
+            element={<Marketing></Marketing>}
           />
         </Route>
         <Route

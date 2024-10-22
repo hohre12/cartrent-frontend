@@ -1,8 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { SIDE_MENU } from '@/constants/menu';
 import { useLocation } from 'react-router-dom';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import TempProfile from './assets/profile.png';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { tokenState, userState } from '@/state/auth';
 import { authSignout } from '@/services/auth';
 import { SvgIcon } from '../common/SvgIcon';
