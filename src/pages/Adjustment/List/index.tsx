@@ -1,7 +1,27 @@
 import styled from 'styled-components';
 import AdjustmentListTable from './components/table';
+import { useRef } from 'react';
+import { adjustmentForm } from '@/utils/form/adjustmentForm';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { dummyAdjustment } from '@/dummy/adjustment';
 
 const AdjustmentList = () => {
+  const adjustmentRef = useRef<HTMLDivElement>(null);
+  const htmlString: string = adjustmentForm(dummyAdjustment);
+  const downloadPdf = async () => {
+    const content = adjustmentRef.current;
+    if (content) {
+      html2canvas(content, { scale: 3 }).then((canvas) => {
+        let imgWidth = 210;
+        let imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const imgData = canvas.toDataURL('img/png');
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        pdf.save(`${'사람이름'} ${'날짜'}_급여명세서`);
+      });
+    }
+  };
   return (
     <ListWrapper>
       <Header>
@@ -10,9 +30,13 @@ const AdjustmentList = () => {
           <span>~</span>
           <input type="date" />
         </DateFilter>
-        <PrintButton>정산내역 PDF 출력</PrintButton>
+        <PrintButton onClick={downloadPdf}>정산내역 PDF 출력</PrintButton>
       </Header>
       <AdjustmentListTable></AdjustmentListTable>
+      <div
+        ref={adjustmentRef}
+        dangerouslySetInnerHTML={{ __html: htmlString }}
+      ></div>
     </ListWrapper>
   );
 };

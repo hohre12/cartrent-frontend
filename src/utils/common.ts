@@ -9,3 +9,8 @@ export const isEmpty = (object: any[] | any): boolean => {
   if (typeof object === 'number') return false;
   return Array.isArray(object) ? !object.length : !Object.keys(object).length;
 };
+
+export const numberFormat = (num: number | undefined): string => {
+  if (num === undefined) return '-';
+  return num.toLocaleString('ko-KR');
+};

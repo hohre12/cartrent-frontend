@@ -1,20 +1,9 @@
-import Checkbox from '@/components/checkbox/Checkbox';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import Input from '@/components/input/Input';
 import { dummyCustomerList } from '@/dummy/customer';
-import { useGetCustomer } from '@/services/customer';
 import { selectedCustomerIdxState } from '@/state/customer';
-import {
-  textM16Regular,
-  textS14Medium,
-  textS14Regular,
-} from '@/styles/typography';
-import { adjustmentForm } from '@/utils/form/adjustmentForm';
-import { useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import TextArea from '@/components/textArea/TextArea';
 
 const CounselDetail = () => {
@@ -29,23 +18,6 @@ const CounselDetail = () => {
   const data = dummyCustomerList.find(
     (it) => it.userIdx === selectedCustomerIdx,
   );
-
-  const adjustmentRef = useRef<HTMLDivElement>(null);
-  const htmlString: string = adjustmentForm();
-
-  const downloadPdf = () => {
-    const content = adjustmentRef.current;
-    if (content) {
-      html2canvas(content, { scale: 1.5 }).then((canvas) => {
-        let imgWidth = 210;
-        let imgHeight = (canvas.height * imgWidth) / canvas.width;
-        const imgData = canvas.toDataURL('img/png');
-        const pdf = new jsPDF();
-        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-        pdf.save(`${'사람이름'} ${'날짜'}_급여명세서`);
-      });
-    }
-  };
 
   return (
     <DetailWrapper>
@@ -82,10 +54,6 @@ const CounselDetail = () => {
           </div>
         </div>
       </InfoWrapper>
-      <div
-        ref={adjustmentRef}
-        dangerouslySetInnerHTML={{ __html: htmlString }}
-      ></div>
     </DetailWrapper>
   );
 };
