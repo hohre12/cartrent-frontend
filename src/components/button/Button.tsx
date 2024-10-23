@@ -1,5 +1,5 @@
 import { HTMLAttributes, MouseEvent } from 'react';
-import styles from './button.module.scss';
+import styles from './Button.module.scss';
 import { TVariant } from '@/types/common';
 import { SvgIcon } from '../common/SvgIcon';
 
