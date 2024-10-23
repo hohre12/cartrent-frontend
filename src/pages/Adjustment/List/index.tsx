@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 import AdjustmentListTable from './components/table';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { adjustmentForm } from '@/utils/form/adjustmentForm';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { dummyAdjustment } from '@/dummy/adjustment';
+import { Modal } from '@/components/modal/Modal';
 
 const AdjustmentList = () => {
+  const [isAdjustmentModal, setIsAdjustmentModal] = useState<boolean>(false);
   const adjustmentRef = useRef<HTMLDivElement>(null);
   const htmlString: string = adjustmentForm(dummyAdjustment);
   const downloadPdf = async () => {
@@ -30,13 +32,28 @@ const AdjustmentList = () => {
           <span>~</span>
           <input type="date" />
         </DateFilter>
-        <PrintButton onClick={downloadPdf}>정산내역 PDF 출력</PrintButton>
+        <PrintButton onClick={() => setIsAdjustmentModal(true)}>
+          정산내역 확인
+        </PrintButton>
       </Header>
       <AdjustmentListTable></AdjustmentListTable>
-      <div
-        ref={adjustmentRef}
-        dangerouslySetInnerHTML={{ __html: htmlString }}
-      ></div>
+      {isAdjustmentModal && (
+        <Modal
+          isOpen={isAdjustmentModal}
+          size={'large'}
+          footerOption={{
+            cancelText: '닫기',
+            confirmText: 'PDF 출력',
+          }}
+          onCancel={() => setIsAdjustmentModal(false)}
+          onConfirm={downloadPdf}
+        >
+          <div
+            ref={adjustmentRef}
+            dangerouslySetInnerHTML={{ __html: htmlString }}
+          ></div>
+        </Modal>
+      )}
     </ListWrapper>
   );
 };
@@ -67,13 +84,13 @@ export const DateFilter = styled.div`
 `;
 
 export const PrintButton = styled.button`
-  background-color: #3498db;
+  background-color: #1aa18f;
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   &:hover {
-    background-color: #2980b9;
+    background-color: #5ac79b;
   }
 `;

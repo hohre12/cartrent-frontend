@@ -1,15 +1,25 @@
 import { SvgIcon } from '@/components/common/SvgIcon';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const MarketingSideTab = () => {
+  const [activeMenu, setActiveMenu] = useState<'marketing' | 'sendText'>(
+    'marketing',
+  );
   return (
     <MarketingSideTabWrapper>
       <SideTabMenu>
-        <li className="active">
+        <li
+          className={activeMenu === 'marketing' ? 'active' : ''}
+          onClick={() => setActiveMenu('marketing')}
+        >
           <SvgIcon iconName="icon-arrow_up_s" />
           고객마케팅
         </li>
-        <li>
+        <li
+          className={activeMenu === 'sendText' ? 'active' : ''}
+          onClick={() => setActiveMenu('sendText')}
+        >
           <SvgIcon iconName="icon-arrow_up_s" />
           자동문자전송
         </li>

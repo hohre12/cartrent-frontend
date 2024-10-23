@@ -6,25 +6,25 @@ const AdjustmentSideTab = () => {
   return (
     <AdjustmentSideTabWrapper>
       <MenuItem
-        active={selectedPeriod === 'daily'}
+        active={selectedPeriod === 'daily' ? 'active' : ''}
         onClick={() => setSelectedPeriod('daily')}
       >
         메뉴
       </MenuItem>
       <MenuItem
-        active={selectedPeriod === 'weekly'}
+        active={selectedPeriod === 'weekly' ? 'active' : ''}
         onClick={() => setSelectedPeriod('weekly')}
       >
         구성
       </MenuItem>
       <MenuItem
-        active={selectedPeriod === 'monthly'}
+        active={selectedPeriod === 'monthly' ? 'active' : ''}
         onClick={() => setSelectedPeriod('monthly')}
       >
         하면
       </MenuItem>
       <MenuItem
-        active={selectedPeriod === 'yearly'}
+        active={selectedPeriod === 'yearly' ? 'active' : ''}
         onClick={() => setSelectedPeriod('yearly')}
       >
         됩니다.
@@ -41,8 +41,8 @@ const AdjustmentSideTabWrapper = styled.div`
   padding: 20px;
 `;
 
-export const MenuItem = styled.div<{ active: boolean }>`
-  color: ${(props) => (props.active ? '#3498db' : '#ecf0f1')};
+export const MenuItem = styled.div<{ active: string }>`
+  color: ${(props) => (props.active === 'active' ? '#3498db' : '#ecf0f1')};
   padding: 15px;
   margin-bottom: 10px;
   cursor: pointer;
