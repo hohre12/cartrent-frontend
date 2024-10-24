@@ -7,6 +7,7 @@ import { authSignout } from '@/services/auth';
 import { SvgIcon } from '../common/SvgIcon';
 import LocalStorage from '@/utils/localStorage';
 import styled from 'styled-components';
+import { TOKEN_KEY } from '@/constants/common';
 
 const SideNavigationBar = () => {
   const navigate = useNavigate();
@@ -16,11 +17,16 @@ const SideNavigationBar = () => {
 
   const handleLogout = async () => {
     try {
-      const { data } = await authSignout();
-      if (data.data) {
-        resetToken();
-        LocalStorage.removeItem('institute');
-      }
+      resetToken();
+      LocalStorage.removeItem(TOKEN_KEY);
+      LocalStorage.removeItem('institute');
+      // TODO: api 연동후 주석 해제
+      //   const { data } = await authSignout();
+      //   if (data.data) {
+      //     resetToken();
+      //     LocalStorage.removeItem(TOKEN_KEY);
+      //     LocalStorage.removeItem('institute');
+      //   }
     } catch (e) {
       console.warn('로그아웃 에러', e);
     }
@@ -120,4 +126,7 @@ export const SideBarMenu = styled.div`
 `;
 export const UserInfoWrapper = styled.div`
   height: 60px;
+  .userInfo {
+    cursor: pointer;
+  }
 `;
