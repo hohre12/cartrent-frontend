@@ -12,7 +12,7 @@ export const SIDE_MENU = [
     path: '/counsel',
   },
   {
-    title: '조회',
+    title: '조회 - 미작업',
     engTitle: 'inquiry',
     icon: 'icon-customer',
     path: '/inquiry',
