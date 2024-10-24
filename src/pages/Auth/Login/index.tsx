@@ -14,6 +14,7 @@ import { TOKEN_KEY } from '@/constants/common';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import styled from 'styled-components';
 import { titleXxl24Bold } from '@/styles/typography';
+import styles from './index.module.scss';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ const Login = () => {
   }, [passwordInputType]);
 
   return (
-    <Wrapper>
+    <Wrapper className={styles.wrapper}>
       <LoginWrapper>
         <LoginInputWrapper>
           {/* <img
@@ -160,8 +161,8 @@ const Login = () => {
 export default Login;
 
 export const Wrapper = styled.div`
-  background: url('./assets/login-background.png');
-  background-size: cover;
+  /* background: url('./assets/login-background.png');
+  background-size: cover; */
   width: 100vw;
   height: 100vh;
 `;
