@@ -15,7 +15,7 @@ export const userState = atom<TUser>({
   key: 'userState',
   default: {
     id: 0,
-    name: '테스트 유저',
+    name: '테스트 유저(누르시면 로그아웃 됩니다)',
   },
   effects_UNSTABLE: [persistAtom],
 });
