@@ -10,16 +10,13 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { tokenState } from './state/auth';
 import { createGlobalStyle } from 'styled-components';
 import Login from './pages/Auth/Login';
-import SideNavigationBar, {
-  SideBarMenu,
-} from './components/sideNavigationBar/SideNavigationBar';
-import CustomerList from './pages/Customer/List';
+import SideNavigationBar from './components/sideNavigationBar/SideNavigationBar';
 import Customer from './pages/Customer';
 import GlobalNavigationBar from './components/globalNavigationBar/GlobalNavigationBar';
-import { textS14Medium, textXs12Medium } from './styles/typography';
+import { textXs12Medium } from './styles/typography';
 import Counsel from './pages/Counsel';
-import Marketing from './pages/Marketing';
 import Adjustment from './pages/Adjustment';
+import Inquiry from './pages/Inquiry';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -85,12 +82,12 @@ function App() {
           />
         </Route>
         <Route
-          path="/marketing"
+          path="/inquiry"
           element={<PrivateLayout />}
         >
           <Route
             index
-            element={<Marketing></Marketing>}
+            element={<Inquiry></Inquiry>}
           />
         </Route>
         <Route

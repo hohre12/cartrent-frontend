@@ -12,17 +12,17 @@ export const SIDE_MENU = [
     path: '/counsel',
   },
   {
-    title: '조회 - 미작업',
+    title: '조회',
     engTitle: 'inquiry',
     icon: 'icon-customer',
     path: '/inquiry',
   },
-  {
-    title: '마케팅',
-    engTitle: 'marketing',
-    icon: 'icon-customer',
-    path: '/marketing',
-  },
+  //   {
+  //     title: '마케팅',
+  //     engTitle: 'marketing',
+  //     icon: 'icon-customer',
+  //     path: '/marketing',
+  //   },
   {
     title: '정산',
     engTitle: 'adjustment',
