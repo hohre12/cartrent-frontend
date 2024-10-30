@@ -100,11 +100,15 @@ const CustomerDetail = () => {
         </div>
       </InfoWrapper>
       <BoxWrapper>
-        <div className="Box">
+        {/* <div className="Box">
           <p>고객요청</p>
           <span>고객1</span>
-        </div>
+        </div> */}
         <div className="Box">
+          <p>상담</p>
+          <span>2건</span>
+        </div>
+        {/* <div className="Box">
           <p>예약</p>
           <span>9건</span>
         </div>
@@ -119,7 +123,7 @@ const CustomerDetail = () => {
         <div className="Box">
           <p>정액/쿠폰</p>
           <span>10회</span>
-        </div>
+        </div> */}
       </BoxWrapper>
       <HistoryWrapper>
         <div>
@@ -251,7 +255,7 @@ export const BoxWrapper = styled.div`
   .Box {
     ${textS14Medium}
     font-weight: 600;
-    width: 20%;
+    width: 100%;
     height: 70px;
     padding: 5px;
     background: #212533;
