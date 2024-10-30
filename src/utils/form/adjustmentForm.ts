@@ -29,15 +29,7 @@ export const adjustmentForm = (adjustment: TAdjustment): string => {
                 매출합계
             </span>
             <p style="font-size: 24px; width: 20%;">
-            ${numberFormat(adjustment.salary)}
-            </p>
-        </div>
-        <div style="margin: 5px 0; display: flex; justify-content: flex-end; gap: 30px;">
-            <span style="color: #999; font-size: 24px;">
-                매출합계
-            </span>
-            <p style="font-size: 24px; width: 20%;">
-            ${numberFormat(adjustment.salary)}
+            ${numberFormat(adjustment.total_sales)}
             </p>
         </div>
         <div style="margin: 5px 0; display: flex; justify-content: flex-end; gap: 30px;">

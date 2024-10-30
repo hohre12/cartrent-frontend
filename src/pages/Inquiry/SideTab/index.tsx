@@ -3,15 +3,15 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 const InquirySideTab = () => {
-  const [activeMenu, setActiveMenu] = useState<'Inquiry' | 'sendText'>(
-    'Inquiry',
+  const [activeMenu, setActiveMenu] = useState<'inquiry' | 'sendText'>(
+    'inquiry',
   );
   return (
     <InquirySideTabWrapper>
       <SideTabMenu>
         <li
-          className={activeMenu === 'Inquiry' ? 'active' : ''}
-          onClick={() => setActiveMenu('Inquiry')}
+          className={activeMenu === 'inquiry' ? 'active' : ''}
+          onClick={() => setActiveMenu('inquiry')}
         >
           <SvgIcon iconName="icon-arrow_up_s" />
           로그인내역

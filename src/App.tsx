@@ -17,6 +17,7 @@ import { textXs12Medium } from './styles/typography';
 import Counsel from './pages/Counsel';
 import Adjustment from './pages/Adjustment';
 import Inquiry from './pages/Inquiry';
+import Dashboard from './pages/Dashboard';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -59,7 +60,7 @@ function App() {
           path="/dashboard"
           element={
             <PrivateRoute>
-              <div>DashBoard</div>
+              <Dashboard></Dashboard>
             </PrivateRoute>
           }
         />
