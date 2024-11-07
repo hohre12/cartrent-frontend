@@ -82,10 +82,10 @@ const SideNavigationBar = () => {
 export default SideNavigationBar;
 
 export const SideNavigationBarWrapper = styled.div`
-  width: 150px;
+  width: 250px;
   height: 100vh;
-  position: fixed;
-  top: 60px;
+  /* background: #f7f6f3;
+  color: #111; */
   background: #212533;
   color: #fff;
 `;
@@ -95,7 +95,7 @@ export const SideBarMenu = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
-  height: calc(100% - 120px);
+  height: calc(100% - 60px);
   .title {
     display: flex;
     flex-direction: column;

@@ -66,7 +66,7 @@ const GlobalNavigationBar = () => {
 export default GlobalNavigationBar;
 
 export const GlobalNavigationBarWrapper = styled.div`
-  width: 100vw;
+  width: calc(100% - 250px);
   height: 60px;
   padding: 0 30px;
   background: #1aa18f;
@@ -74,6 +74,8 @@ export const GlobalNavigationBarWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
+  left: 250px;
 `;
 
 export const InstituteWrapper = styled.div`
