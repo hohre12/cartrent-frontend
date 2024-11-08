@@ -11,13 +11,14 @@ import { tokenState } from './state/auth';
 import { createGlobalStyle } from 'styled-components';
 import Login from './pages/Auth/Login';
 import SideNavigationBar from './components/sideNavigationBar/SideNavigationBar';
-import Customer from './pages/Customer';
 import GlobalNavigationBar from './components/globalNavigationBar/GlobalNavigationBar';
 import { textXs12Medium } from './styles/typography';
 import Counsel from './pages/Counsel';
 import Adjustment from './pages/Adjustment';
 import Inquiry from './pages/Inquiry';
 import Dashboard from './pages/Dashboard';
+import CustomerList from './pages/Customer/List';
+import CustomerDetail from './pages/Customer/Detail';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -65,12 +66,16 @@ function App() {
           }
         />
         <Route
-          path="/customer"
+          path="/customer/list"
           element={<PrivateLayout />}
         >
           <Route
             index
-            element={<Customer></Customer>}
+            element={<CustomerList></CustomerList>}
+          />
+          <Route
+            path=":id"
+            element={<CustomerDetail></CustomerDetail>}
           />
         </Route>
         <Route

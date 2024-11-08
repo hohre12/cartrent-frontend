@@ -3,7 +3,7 @@ export const SIDE_MENU = [
     title: '고객',
     engTitle: 'customer',
     icon: 'icon-customer',
-    path: '/customer',
+    path: '/customer/list',
   },
   {
     title: '상담',
