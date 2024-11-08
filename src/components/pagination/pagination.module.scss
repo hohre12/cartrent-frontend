@@ -1,0 +1,87 @@
+.paginationWrapper {
+  position: sticky;
+  width: 100%;
+  border-top: 1px solid #eee;
+  padding: 9px 0px;
+  text-align: center;
+  bottom: 0;
+  background: #fff;
+  height: 50px;
+  & > ul {
+    display: inline-flex;
+    border: 1px solid #eee;
+    background: #fff;
+    li {
+      @extend .title-s14-medium;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid #eee;
+      color: #000;
+      background: #fff;
+      line-height: 19px;
+      &:last-child {
+        border-right: 0;
+      }
+      &.active {
+        @extend .title-s14-semibold;
+        background: #333;
+        color: #fff;
+        line-height: 19px;
+      }
+      &.disabled {
+        svg {
+          opacity: 0.4;
+        }
+        &:hover {
+          background: unset;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+  .controlWrapper {
+    position: absolute;
+    top: 10%;
+    right: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    & > p {
+      @extend .title-xs12-medium;
+    }
+    & > button {
+      @extend .title-s14-semibold;
+      position: relative;
+      & > ul {
+        position: absolute;
+        bottom: 40px;
+        right: 0px;
+        border-radius: 5px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 6px 5px;
+        z-index: 20;
+        min-width: 100%;
+        max-height: 340px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        li {
+          padding: 10px;
+          display: flex;
+          width: 100%;
+          align-items: center;
+          cursor: pointer;
+          &:hover {
+            background: #f5f5f5;
+          }
+        }
+      }
+    }
+  }
+}

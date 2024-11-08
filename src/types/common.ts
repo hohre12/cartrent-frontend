@@ -68,3 +68,10 @@ export type TListResponse<T> = {
   list: T[];
   count: number;
 };
+
+export type TPagination = {
+  totalCount: number;
+  length: number;
+  propsCurrentPage?: number;
+  getPage?: (offset: number, length: number) => void;
+};

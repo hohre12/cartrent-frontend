@@ -1,3 +1,4 @@
+import Button from '@/components/button/Button';
 import { CUSTOMER_LIST_WATCH_OPTIONS } from '@/constants/customer';
 import { dummyCustomerList } from '@/dummy/customer';
 import {
@@ -5,12 +6,15 @@ import {
   selectedCustomerIdxState,
 } from '@/state/customer';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
+import palette from '@/styles/variables';
 import { isColumnsViewHide } from '@/utils/common';
 import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const CustomerListTable = () => {
+  const navigate = useNavigate();
   const selectedCustomerHideWatchOptions = useRecoilValue(
     selectedCustomerHideWatchOptionsState,
   );
@@ -26,10 +30,9 @@ const CustomerListTable = () => {
   return (
     <CustomerListTableWrapper>
       <thead>
-        <tr>
-          <th></th>
-          <th></th>
-          <th></th>
+        <TableHeader>
+          <th style={{ width: '80px' }}></th>
+          <th style={{ width: '80px' }}></th>
           {Object.entries(CUSTOMER_LIST_WATCH_OPTIONS).map(([key, value]) => {
             return (
               !isColumnsViewHide(selectedCustomerHideWatchOptions, key) && (
@@ -37,23 +40,26 @@ const CustomerListTable = () => {
               )
             );
           })}
-        </tr>
+        </TableHeader>
       </thead>
       <tbody>
         {dummyCustomerList.map((it, idx) => (
-          <tr
+          <TableItem
             key={idx}
             className={selectedCustomerIdx === it.userIdx ? 'active' : ''}
-            onClick={() => handleCustomerClick(it.userIdx)}
+            onClick={() => navigate(`${it.userIdx}`)}
           >
-            <td>{idx}</td>
-            <td>수정</td>
-            <td>삭제</td>
+            <td>
+              <Button variant="black">수정</Button>
+            </td>
+            <td>
+              <Button variant="black">삭제</Button>
+            </td>
             <td>{it.status}</td>
-            <td>{it.name}</td>
+            <td className="name">{it.name}</td>
             <td>{it.groupName}</td>
             <td>{it.phone}</td>
-          </tr>
+          </TableItem>
         ))}
       </tbody>
     </CustomerListTableWrapper>
@@ -63,41 +69,47 @@ const CustomerListTable = () => {
 export default CustomerListTable;
 
 export const CustomerListTableWrapper = styled.table`
-  height: calc(100% - 40px);
+  position: relative;
+  height: 100%;
+  text-align: left;
   display: block;
-  text-align: center;
-  thead {
-    position: sticky;
-    top: -1px;
-    z-index: 10;
-    background: #ddd;
-    th {
-      height: 40px;
-      ${titleS14Semibold}
-      width: 100vw;
-      border: 1px solid #eee;
-    }
+  overflow: overlay;
+  white-space: nowrap;
+  border-spacing: 0;
+  border-collapse: separate;
+`;
+
+export const TableHeader = styled.tr`
+  height: 40px;
+  position: sticky;
+  top: 0;
+  background-color: ${palette['$white']};
+  z-index: 10;
+  th {
+    ${titleS14Semibold}
+    color: ${palette['$gray-700']};
+    text-align: left;
+    padding: 0px 15px;
+    border-bottom: 1px solid ${palette['$gray-200']};
+    width: 100vw;
   }
-  tbody {
-    tr {
-      cursor: pointer;
-      &.active {
-        background: #ccf0ff;
-      }
-      &:hover {
-        background: #f5f5f5;
-      }
-      td {
-        height: 40px;
-        overflow: hidden;
-        padding: 0px 15px;
-        max-width: 150px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        word-break: break-all;
-        border: 1px solid #eee;
-        ${textS14Regular}
-      }
+`;
+
+export const TableItem = styled.tr`
+  cursor: pointer;
+  &:hover {
+    background: #f5f5f5;
+  }
+  td {
+    ${textS14Regular}
+    border-bottom: 1px solid ${'gray-200'};
+    height: 60px;
+    text-align: left;
+    padding: 0px 15px;
+    max-width: 220px;
+    border-bottom: 1px solid #eee;
+    &.name {
+      font-weight: 600;
     }
   }
 `;

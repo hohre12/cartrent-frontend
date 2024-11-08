@@ -2,8 +2,10 @@ import styled from 'styled-components';
 import CustomerListTable from './components/table';
 import Input from '@/components/input/Input';
 import { SvgIcon } from '@/components/common/SvgIcon';
-import { textS14Regular } from '@/styles/typography';
+import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import Button from '@/components/button/Button';
+import { dummyCustomerList } from '@/dummy/customer';
+import Pagination from '@/components/pagination/Pagination';
 
 const CustomerList = () => {
   return (
@@ -16,7 +18,7 @@ const CustomerList = () => {
               style={{ width: '250px' }}
               placeholder="고객명, 고객번호로 검색해주세요."
             ></Input>
-            <Button>
+            <Button style={{ padding: '5px', paddingBottom: '7px' }}>
               <SvgIcon iconName="icon-search" />
             </Button>
             <Button style={{ marginLeft: '20px' }}>필터</Button>
@@ -27,10 +29,15 @@ const CustomerList = () => {
           </FunctionWrapper>
         </ControlWrapper>
       </Header>
-      <CustomerListTable></CustomerListTable>
-      {/* <TableWrapper>
+      <ListContent>
         <CustomerListTable></CustomerListTable>
-      </TableWrapper> */}
+      </ListContent>
+      {dummyCustomerList.length > 0 && (
+        <Pagination
+          totalCount={dummyCustomerList.length}
+          length={dummyCustomerList.length}
+        ></Pagination>
+      )}
     </ListWrapper>
   );
 };
@@ -42,6 +49,7 @@ const ListWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  height: 100%;
 `;
 
 const Header = styled.div`
@@ -70,4 +78,27 @@ const FunctionWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
+`;
+
+export const ListContent = styled.div`
+  width: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+  position: relative;
+  .noList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    h2 {
+      ${titleXxl24Bold}
+    }
+    p {
+      ${textS14Regular}
+    }
+  }
 `;
