@@ -21,11 +21,20 @@ const CustomerList = () => {
             <Button style={{ padding: '5px', paddingBottom: '7px' }}>
               <SvgIcon iconName="icon-search" />
             </Button>
-            <Button style={{ marginLeft: '20px' }}>필터</Button>
+            <Button style={{ marginLeft: '20px' }}>
+              <SvgIcon iconName="icon-filter" />
+              <p>필터</p>
+            </Button>
           </SearchBoxWrapper>
           <FunctionWrapper>
-            <Button>보기옵션</Button>
-            <Button>고객등록</Button>
+            <Button>
+              <SvgIcon iconName="icon-eye-show" />
+              <p>보기옵션</p>
+            </Button>
+            <Button>
+              <SvgIcon iconName="icon-plus" />
+              <p>고객등록</p>
+            </Button>
           </FunctionWrapper>
         </ControlWrapper>
       </Header>
@@ -68,6 +77,12 @@ const ControlWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  button {
+    p {
+      line-height: 15px;
+      font-weight: 700;
+    }
+  }
 `;
 
 const SearchBoxWrapper = styled.div`
