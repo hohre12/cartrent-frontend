@@ -19,18 +19,21 @@ const Barchart = () => {
          * chart에 사용될 데이터
          */
         data={[
-          { bottle: '365ml', cola: 1200, cidar: 1000, fanta: 1100 },
-          { bottle: '500ml', cola: 2200, cidar: 2000, fanta: 2100 },
-          { bottle: '1000ml', cola: 3200, cidar: 3000, fanta: 3100 },
+          { name: '노홍철', sales: 1200 },
+          { name: '박명수', sales: 2200 },
+          { name: '유재석', sales: 3200 },
+          { name: '정준하', sales: 3200 },
+          { name: '길성준', sales: 3200 },
+          { name: '정형돈', sales: 3200 },
         ]}
         /**
          * chart에 보여질 데이터 key (측정되는 값)
          */
-        keys={['cola', 'cidar', 'fanta']}
+        keys={['sales']}
         /**
          * keys들을 그룹화하는 index key (분류하는 값)
          */
-        indexBy="bottle"
+        indexBy="name"
         /**
          * chart margin
          */
@@ -38,12 +41,11 @@ const Barchart = () => {
         /**
          * chart padding (bar간 간격)
          */
-        padding={0.3}
+        padding={0.7}
         /**
          * chart 색상
          */
-        colors={['olive', 'brown', 'orange']} // 커스터하여 사용할 때
-        // colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
+        colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
         /**
          * color 적용 방식
          */
@@ -96,7 +98,7 @@ const Barchart = () => {
           tickSize: 5, // 값 설명하기 위해 튀어나오는 점 크기
           tickPadding: 5, // tick padding
           tickRotation: 0, // tick 기울기
-          legend: 'bottle', // bottom 글씨
+          legend: '영업사원별 이번달 매출 현황', // bottom 글씨
           legendPosition: 'middle', // 글씨 위치
           legendOffset: 40, // 글씨와 chart간 간격
         }}
@@ -107,7 +109,7 @@ const Barchart = () => {
           tickSize: 5, // 값 설명하기 위해 튀어나오는 점 크기
           tickPadding: 5, // tick padding
           tickRotation: 0, // tick 기울기
-          legend: 'price', // left 글씨
+          //   legend: 'price', // left 글씨
           legendPosition: 'middle', // 글씨 위치
           legendOffset: -60, // 글씨와 chart간 간격
         }}
