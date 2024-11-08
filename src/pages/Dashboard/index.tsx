@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import styled from 'styled-components';
+import Barchart from '@/components/barchart/Barchart';
 
 const Dashboard = () => {
   //   const [activeGraphTab, setActiveGraphTab] = useState<
@@ -15,7 +15,9 @@ const Dashboard = () => {
           <div className="header">
             <h3>이번달 매출현황</h3>
           </div>
-          <div className="content"></div>
+          <div className="content">
+            <Barchart></Barchart>
+          </div>
         </Box>
         <Box className="green">
           <div className="header">
