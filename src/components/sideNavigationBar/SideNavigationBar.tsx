@@ -13,6 +13,7 @@ const SideNavigationBar = () => {
     <>
       <SideNavigationBarWrapper>
         <InstituteWrapper onClick={() => navigate('/dashboard')}>
+          <div className="logo">카</div>
           <div className="instituteName">카트렌트카</div>
         </InstituteWrapper>
         <SideBarMenu>
@@ -24,13 +25,11 @@ const SideNavigationBar = () => {
               <div
                 className={`title ${location.pathname.includes(it.path) ? 'active' : ''}`}
               >
-                <div>
-                  <SvgIcon
-                    iconName={it.icon}
-                    style={{ fill: '#000' }}
-                    alt={it.icon}
-                  />
-                </div>
+                <SvgIcon
+                  iconName={it.icon}
+                  style={{ fill: '#000' }}
+                  alt={it.icon}
+                />
                 <p>{it.title}</p>
               </div>
             </li>
@@ -55,16 +54,28 @@ export const SideNavigationBarWrapper = styled.div`
 export const InstituteWrapper = styled.div`
   width: 100%;
   display: flex;
+  gap: 10px;
   align-items: center;
   height: 60px;
   padding: 1rem;
   border-bottom: 1px solid #e1e0dd;
   cursor: pointer;
   .logo {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background-color: #666666;
+    color: #fff;
     ${titleL18Bold}
   }
   .instituteName {
-    margin: auto;
+    /* margin: auto; */
+    height: 36px;
+    display: flex;
+    align-items: center;
     ${titleM16Semibold}
   }
 `;
@@ -81,23 +92,12 @@ export const SideBarMenu = styled.div`
       align-items: center;
       gap: 10px;
       cursor: pointer;
+      p {
+        line-height: 24px;
+      }
       &.active {
         p {
           font-weight: 700;
-        }
-        & > div {
-          background: #1aa18f;
-        }
-      }
-      & > div {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        svg {
-          width: 16px;
-          height: 16px;
         }
       }
     }

@@ -1,5 +1,5 @@
 import { titleL18Bold, titleM16Semibold } from '@/styles/typography';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Modal } from '../modal/Modal';
 import { useState } from 'react';
@@ -9,9 +9,12 @@ import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { tokenState, userState } from '@/state/auth';
 import LocalStorage from '@/utils/localStorage';
 import { TOKEN_KEY } from '@/constants/common';
+import { SIDE_MENU } from '@/constants/menu';
+import { SvgIcon } from '../common/SvgIcon';
 
 const GlobalNavigationBar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isCounselModal, setIsCounselModal] = useState<boolean>(false);
   const resetToken = useResetRecoilState(tokenState);
   const user = useRecoilValue(userState);
@@ -32,9 +35,16 @@ const GlobalNavigationBar = () => {
       console.warn('로그아웃 에러', e);
     }
   };
+  const pageName =
+    SIDE_MENU.find((it) => it.path === location.pathname)?.title ?? '대시보드';
+
   return (
     <>
       <GlobalNavigationBarWrapper>
+        <RouteWrapper>
+          <p>카트렌트카 /</p>
+          <b>{pageName}</b>
+        </RouteWrapper>
         <GlobalFunctionWrapper>
           <span>고객등록</span>
           <span onClick={() => setIsCounselModal(!isCounselModal)}>
@@ -44,9 +54,8 @@ const GlobalNavigationBar = () => {
             className="userInfo"
             onClick={handleLogout}
           >
-            <div className="userInfoText">
-              <h3>{user?.name ?? '-'}</h3>
-            </div>
+            <SvgIcon iconName="icon-memberDefault" />
+            <h3>{user?.name ? `${user.name}님` : '-'}</h3>
           </div>
         </GlobalFunctionWrapper>
       </GlobalNavigationBarWrapper>
@@ -99,11 +108,20 @@ export const GlobalNavigationBarWrapper = styled.div`
   background: #fff;
   color: #000;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   position: fixed;
   left: 250px;
   border-bottom: 1px solid #e1e0dd;
+`;
+
+const RouteWrapper = styled.div`
+  display: flex;
+  gap: 5px;
+  p,
+  b {
+    font-size: 14px;
+  }
 `;
 
 export const GlobalFunctionWrapper = styled.div`
@@ -111,11 +129,26 @@ export const GlobalFunctionWrapper = styled.div`
   gap: 15px;
   & > span {
     padding: 10px;
+    font-size: 14px;
+    font-weight: 700;
     cursor: pointer;
+    height: 24px;
+    display: flex;
+    align-items: center;
   }
   .userInfo {
     padding: 10px;
+    font-size: 14px;
+    font-weight: 700;
     cursor: pointer;
+    display: flex;
+    gap: 5px;
+    height: 24px;
+    align-items: center;
+    svg {
+      width: 24px;
+      height: 24px;
+    }
   }
 `;
 

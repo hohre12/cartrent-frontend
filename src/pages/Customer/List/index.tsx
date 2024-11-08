@@ -14,13 +14,24 @@ const CustomerList = () => {
         <h2>고객목록</h2>
         <ControlWrapper>
           <SearchBoxWrapper>
-            <Input
-              style={{ width: '250px' }}
-              placeholder="고객명, 고객번호로 검색해주세요."
-            ></Input>
-            <Button style={{ padding: '5px', paddingBottom: '7px' }}>
-              <SvgIcon iconName="icon-search" />
-            </Button>
+            <div className="search">
+              <Input
+                className="input"
+                style={{ width: '250px' }}
+                placeholder="고객명, 고객번호로 검색해주세요."
+              ></Input>
+              <Button
+                style={{
+                  padding: '5px',
+                  paddingBottom: '7px',
+                  borderRadius: '0px',
+                  height: '34px',
+                }}
+              >
+                <SvgIcon iconName="icon-search" />
+              </Button>
+            </div>
+
             <Button style={{ marginLeft: '20px' }}>
               <SvgIcon iconName="icon-filter" />
               <p>필터</p>
@@ -87,6 +98,17 @@ const ControlWrapper = styled.div`
 
 const SearchBoxWrapper = styled.div`
   display: flex;
+  .search {
+    display: flex;
+    border: 1px solid #eee;
+    height: 36px;
+    .input {
+      .inputBox {
+        border: none;
+        border-radius: 0;
+      }
+    }
+  }
 `;
 
 const FunctionWrapper = styled.div`

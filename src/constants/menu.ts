@@ -2,19 +2,19 @@ export const SIDE_MENU = [
   {
     title: '고객',
     engTitle: 'customer',
-    icon: 'icon-customer',
+    icon: 'icon-member',
     path: '/customer/list',
   },
   {
     title: '상담',
     engTitle: 'counsel',
-    icon: 'icon-customer',
+    icon: 'icon-draft',
     path: '/counsel',
   },
   {
     title: '조회',
     engTitle: 'inquiry',
-    icon: 'icon-customer',
+    icon: 'icon-reservationState',
     path: '/inquiry',
   },
   //   {
@@ -26,7 +26,7 @@ export const SIDE_MENU = [
   {
     title: '정산',
     engTitle: 'adjustment',
-    icon: 'icon-customer',
+    icon: 'icon-expense',
     path: '/adjustment',
   },
 ];
