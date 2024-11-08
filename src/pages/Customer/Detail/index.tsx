@@ -1,6 +1,8 @@
+import Button from '@/components/button/Button';
 import Checkbox from '@/components/checkbox/Checkbox';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import Input from '@/components/input/Input';
+import TextArea from '@/components/textArea/TextArea';
 import { dummyCustomerList } from '@/dummy/customer';
 import { useGetCustomer } from '@/services/customer';
 import { selectedCustomerIdxState } from '@/state/customer';
@@ -27,15 +29,16 @@ const CustomerDetail = () => {
 
   return (
     <DetailWrapper>
-      <InfoWrapper>
-        <div className="ControlWrapper">
-          <div>
-            <SvgIcon iconName="icon-setting" />
-          </div>
-          <div>
-            <SvgIcon iconName="icon-trash" />
-          </div>
+      <DetailHeaderWrapper>
+        <div className="left">
+          <h2>고객명</h2>
         </div>
+        <div className="right">
+          <Button>삭제</Button>
+          <Button>편집</Button>
+        </div>
+      </DetailHeaderWrapper>
+      <InfoWrapper>
         <div className="ProfileWrapper">
           <SvgIcon
             iconName="icon-member"
@@ -98,32 +101,19 @@ const CustomerDetail = () => {
             <Input disabled></Input>
           </div>
         </div>
+        <div className="memo">
+          <span>계약내용</span>
+          <TextArea
+            value=""
+            height="100%"
+          ></TextArea>
+        </div>
       </InfoWrapper>
       <BoxWrapper>
-        {/* <div className="Box">
-          <p>고객요청</p>
-          <span>고객1</span>
-        </div> */}
         <div className="Box">
           <p>상담</p>
           <span>2건</span>
         </div>
-        {/* <div className="Box">
-          <p>예약</p>
-          <span>9건</span>
-        </div>
-        <div className="Box">
-          <p>상담</p>
-          <span>2건</span>
-        </div>
-        <div className="Box">
-          <p>판매</p>
-          <span>160,000원</span>
-        </div>
-        <div className="Box">
-          <p>정액/쿠폰</p>
-          <span>10회</span>
-        </div> */}
       </BoxWrapper>
       <HistoryWrapper>
         <div>
@@ -200,10 +190,32 @@ const CustomerDetail = () => {
 export default CustomerDetail;
 
 export const DetailWrapper = styled.div`
-  width: 600px;
+  /* width: 600px; */
   display: flex;
   flex-direction: column;
   gap: 10px;
+`;
+
+const DetailHeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 30px;
+  border-bottom: 1px solid #eeeeee;
+  .left {
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+    }
+  }
+  .right {
+    font-weight: 700;
+    display: flex;
+    gap: 10px;
+    button {
+      width: 100px;
+    }
+  }
 `;
 
 export const InfoWrapper = styled.div`
@@ -213,13 +225,24 @@ export const InfoWrapper = styled.div`
   display: flex;
   gap: 20px;
   height: 400px;
-  .ControlWrapper {
+  /* .ControlWrapper {
     display: flex;
     flex-direction: column;
     gap: 5px;
     & > div {
       border: 1px solid #eee;
       border-radius: 5px;
+    }
+  } */
+  .memo {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-right: auto;
+    width: 400px;
+    & > span {
+      font-size: 14px;
     }
   }
   .ProfileWrapper {
@@ -231,7 +254,7 @@ export const InfoWrapper = styled.div`
     }
   }
   .Info {
-    margin-left: auto;
+    margin-right: auto;
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
