@@ -5,22 +5,49 @@ import { Modal } from '../modal/Modal';
 import { useState } from 'react';
 import Input from '../input/Input';
 import TextArea from '../textArea/TextArea';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { tokenState, userState } from '@/state/auth';
+import LocalStorage from '@/utils/localStorage';
+import { TOKEN_KEY } from '@/constants/common';
 
 const GlobalNavigationBar = () => {
   const navigate = useNavigate();
   const [isCounselModal, setIsCounselModal] = useState<boolean>(false);
+  const resetToken = useResetRecoilState(tokenState);
+  const user = useRecoilValue(userState);
+
+  const handleLogout = async () => {
+    try {
+      resetToken();
+      LocalStorage.removeItem(TOKEN_KEY);
+      LocalStorage.removeItem('institute');
+      // TODO: api 연동후 주석 해제
+      //   const { data } = await authSignout();
+      //   if (data.data) {
+      //     resetToken();
+      //     LocalStorage.removeItem(TOKEN_KEY);
+      //     LocalStorage.removeItem('institute');
+      //   }
+    } catch (e) {
+      console.warn('로그아웃 에러', e);
+    }
+  };
   return (
     <>
       <GlobalNavigationBarWrapper>
-        <InstituteWrapper onClick={() => navigate('/dashboard')}>
-          <div className="logo">카트렌트카</div>
-          <div className="instituteName">SMART 고객관리</div>
-        </InstituteWrapper>
         <GlobalFunctionWrapper>
           <span>고객등록</span>
           <span onClick={() => setIsCounselModal(!isCounselModal)}>
             상담등록
           </span>
+          <div
+            className="userInfo"
+            onClick={handleLogout}
+          >
+            <div className="userInfoText">
+              <h3>{user?.name ?? '-'}</h3>
+            </div>
+          </div>
         </GlobalFunctionWrapper>
       </GlobalNavigationBarWrapper>
       {isCounselModal && (
@@ -69,33 +96,24 @@ export const GlobalNavigationBarWrapper = styled.div`
   width: calc(100% - 250px);
   height: 60px;
   padding: 0 30px;
-  background: #1aa18f;
-  color: #fff;
+  background: #fff;
+  color: #000;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   position: fixed;
   left: 250px;
-`;
-
-export const InstituteWrapper = styled.div`
-  width: 300px;
-  display: flex;
-  gap: 10px;
-  cursor: pointer;
-  align-items: center;
-  .logo {
-    ${titleL18Bold}
-  }
-  .instituteName {
-    ${titleM16Semibold}
-  }
+  border-bottom: 1px solid #e1e0dd;
 `;
 
 export const GlobalFunctionWrapper = styled.div`
   display: flex;
   gap: 15px;
   & > span {
+    padding: 10px;
+    cursor: pointer;
+  }
+  .userInfo {
     padding: 10px;
     cursor: pointer;
   }

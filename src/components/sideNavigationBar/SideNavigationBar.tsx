@@ -1,40 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import { SIDE_MENU } from '@/constants/menu';
 import { useLocation } from 'react-router-dom';
-import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { tokenState, userState } from '@/state/auth';
-import { authSignout } from '@/services/auth';
 import { SvgIcon } from '../common/SvgIcon';
-import LocalStorage from '@/utils/localStorage';
 import styled from 'styled-components';
-import { TOKEN_KEY } from '@/constants/common';
+import { titleL18Bold, titleM16Semibold } from '@/styles/typography';
 
 const SideNavigationBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const resetToken = useResetRecoilState(tokenState);
-  const user = useRecoilValue(userState);
-
-  const handleLogout = async () => {
-    try {
-      resetToken();
-      LocalStorage.removeItem(TOKEN_KEY);
-      LocalStorage.removeItem('institute');
-      // TODO: api 연동후 주석 해제
-      //   const { data } = await authSignout();
-      //   if (data.data) {
-      //     resetToken();
-      //     LocalStorage.removeItem(TOKEN_KEY);
-      //     LocalStorage.removeItem('institute');
-      //   }
-    } catch (e) {
-      console.warn('로그아웃 에러', e);
-    }
-  };
 
   return (
     <>
       <SideNavigationBarWrapper>
+        <InstituteWrapper onClick={() => navigate('/dashboard')}>
+          <div className="instituteName">카트렌트카</div>
+        </InstituteWrapper>
         <SideBarMenu>
           {SIDE_MENU.map((it, idx) => (
             <li
@@ -47,7 +27,7 @@ const SideNavigationBar = () => {
                 <div>
                   <SvgIcon
                     iconName={it.icon}
-                    style={{ fill: '#fff' }}
+                    style={{ fill: '#000' }}
                     alt={it.icon}
                   />
                 </div>
@@ -56,24 +36,6 @@ const SideNavigationBar = () => {
             </li>
           ))}
         </SideBarMenu>
-        <UserInfoWrapper>
-          <div
-            className="userInfo"
-            onClick={handleLogout}
-          >
-            {/* <img
-              src={TempProfile}
-              alt="profile"
-            /> */}
-            <div className="userInfoText">
-              <h3>{user?.name ?? '-'}</h3>
-            </div>
-          </div>
-          {/* <SvgIcon
-            iconName="icon-noti"
-            alt="noti"
-          /> */}
-        </UserInfoWrapper>
       </SideNavigationBarWrapper>
     </>
   );
@@ -84,42 +46,59 @@ export default SideNavigationBar;
 export const SideNavigationBarWrapper = styled.div`
   width: 250px;
   height: 100vh;
-  /* background: #f7f6f3;
-  color: #111; */
-  background: #212533;
-  color: #fff;
+  background: #f7f6f3;
+  color: #000;
+  /* background: #212533;
+  color: #fff; */
+`;
+
+export const InstituteWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 1rem;
+  border-bottom: 1px solid #e1e0dd;
+  cursor: pointer;
+  .logo {
+    ${titleL18Bold}
+  }
+  .instituteName {
+    margin: auto;
+    ${titleM16Semibold}
+  }
 `;
 
 export const SideBarMenu = styled.div`
-  padding: 15px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
   height: calc(100% - 60px);
-  .title {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    cursor: pointer;
-    &.active {
-      p {
-        font-weight: 700;
+  li {
+    border-bottom: 1px solid #e1e0dd;
+    padding: 15px;
+    .title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      &.active {
+        p {
+          font-weight: 700;
+        }
+        & > div {
+          background: #1aa18f;
+        }
       }
       & > div {
-        background: #1aa18f;
-      }
-    }
-    & > div {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      svg {
-        width: 30px;
-        height: 30px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        svg {
+          width: 16px;
+          height: 16px;
+        }
       }
     }
   }
