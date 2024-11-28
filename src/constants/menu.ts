@@ -12,11 +12,23 @@ export const SIDE_MENU = [
     path: '/counsel',
   },
   {
-    title: '조회',
-    engTitle: 'inquiry',
-    icon: 'icon-reservationState',
-    path: '/inquiry',
+    title: '계약',
+    engTitle: 'counsel',
+    icon: 'icon-draft',
+    path: '/counsel',
   },
+  {
+    title: '급여명세서',
+    engTitle: 'counsel',
+    icon: 'icon-draft',
+    path: '/counsel',
+  },
+  //   {
+  //     title: '조회',
+  //     engTitle: 'inquiry',
+  //     icon: 'icon-reservationState',
+  //     path: '/inquiry',
+  //   },
   //   {
   //     title: '마케팅',
   //     engTitle: 'marketing',
@@ -28,5 +40,17 @@ export const SIDE_MENU = [
     engTitle: 'adjustment',
     icon: 'icon-expense',
     path: '/adjustment',
+  },
+  {
+    title: '출고',
+    engTitle: 'counsel',
+    icon: 'icon-draft',
+    path: '/counsel',
+  },
+  {
+    title: '권한',
+    engTitle: 'counsel',
+    icon: 'icon-draft',
+    path: '/counsel',
   },
 ];
