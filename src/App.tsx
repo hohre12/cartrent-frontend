@@ -66,7 +66,7 @@ function App() {
           }
         />
         <Route
-          path="/customer/list"
+          path="/customer"
           element={<PrivateLayout />}
         >
           <Route
@@ -88,12 +88,21 @@ function App() {
           />
         </Route>
         <Route
-          path="/inquiry"
+          path="/contract"
           element={<PrivateLayout />}
         >
           <Route
             index
             element={<Inquiry></Inquiry>}
+          />
+        </Route>
+        <Route
+          path="/specification"
+          element={<PrivateLayout />}
+        >
+          <Route
+            index
+            element={<CustomerList></CustomerList>}
           />
         </Route>
         <Route
@@ -103,6 +112,24 @@ function App() {
           <Route
             index
             element={<Adjustment></Adjustment>}
+          />
+        </Route>
+        <Route
+          path="/delivery"
+          element={<PrivateLayout />}
+        >
+          <Route
+            index
+            element={<CustomerList></CustomerList>}
+          />
+        </Route>
+        <Route
+          path="/auth"
+          element={<PrivateLayout />}
+        >
+          <Route
+            index
+            element={<CustomerList></CustomerList>}
           />
         </Route>
         <Route

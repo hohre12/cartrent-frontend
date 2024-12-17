@@ -3,7 +3,7 @@ export const SIDE_MENU = [
     title: '고객',
     engTitle: 'customer',
     icon: 'icon-member',
-    path: '/customer/list',
+    path: '/customer',
   },
   {
     title: '상담',
@@ -13,28 +13,16 @@ export const SIDE_MENU = [
   },
   {
     title: '계약',
-    engTitle: 'counsel',
+    engTitle: 'contract',
     icon: 'icon-draft',
-    path: '/counsel',
+    path: '/contract',
   },
   {
     title: '급여명세서',
-    engTitle: 'counsel',
+    engTitle: 'specification',
     icon: 'icon-draft',
-    path: '/counsel',
+    path: '/specification',
   },
-  //   {
-  //     title: '조회',
-  //     engTitle: 'inquiry',
-  //     icon: 'icon-reservationState',
-  //     path: '/inquiry',
-  //   },
-  //   {
-  //     title: '마케팅',
-  //     engTitle: 'marketing',
-  //     icon: 'icon-customer',
-  //     path: '/marketing',
-  //   },
   {
     title: '정산',
     engTitle: 'adjustment',
@@ -43,14 +31,14 @@ export const SIDE_MENU = [
   },
   {
     title: '출고',
-    engTitle: 'counsel',
+    engTitle: 'delivery',
     icon: 'icon-draft',
-    path: '/counsel',
+    path: '/delivery',
   },
   {
     title: '권한',
-    engTitle: 'counsel',
+    engTitle: 'auth',
     icon: 'icon-draft',
-    path: '/counsel',
+    path: '/auth',
   },
 ];
