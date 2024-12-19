@@ -15,9 +15,12 @@ import { SvgIcon } from '@/components/common/SvgIcon';
 import styled from 'styled-components';
 import { titleXxl24Bold } from '@/styles/typography';
 import styles from './index.module.scss';
+import { useMutation } from '@apollo/client';
+import { SIGNIN_MUTATION } from '@/apollo/queries/auth';
 
 const Login = () => {
   const navigate = useNavigate();
+  const [signIn] = useMutation(SIGNIN_MUTATION);
   const [id, setId, isIdValid] = useValidationState<string>('', validEmpty);
   const [password, setPassword, isPasswordValid] = useValidationState<string>(
     '',
@@ -57,23 +60,16 @@ const Login = () => {
       return false;
     }
     try {
-      setToken('test');
-      navigate('/dashboard');
-      //   const { data } = await authIdLogin({ id, password });
-      //   if (data.data) {
-      //     LocalStorage.setItem(TOKEN_KEY, data.data.token);
-      //     setToken(data.data.token);
-      //     navigate('/dashboard');
-      //   } else {
-      //     // status : 200
-      //     // 각종 에러
-      //     if (data.error?.code) {
-      //     } else {
-      //       setPasswordErrorMsg(data.error?.message);
-      //     }
-      //   }
-    } catch (e) {
-      console.warn(e);
+      const response = await signIn({
+        variables: { signInDto: { email: id, password } },
+      });
+      if (response.data.signIn) {
+        setToken('test');
+        navigate('/dashboard');
+        // LocalStorage.setItem(TOKEN_KEY, 'test');
+      }
+    } catch (e: any) {
+      setPasswordErrorMsg(e.message);
     }
   };
 
