@@ -57,8 +57,14 @@ const CustomerListTable = () => {
             </td>
             <td>{it.status}</td>
             <td className="name">{it.name}</td>
-            <td>{it.groupName}</td>
+            <td>{it.customerGroup.name}</td>
             <td>{it.phone}</td>
+            <td>{it.email}</td>
+            <td>{it.address}</td>
+            <td>{it.birth}</td>
+            <td>{it.job}</td>
+            <td>{it.createdAt}</td>
+            <td>{it.updatedAt}</td>
           </TableItem>
         ))}
       </tbody>

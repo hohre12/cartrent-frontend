@@ -1,3 +1,11 @@
+export type TCustomerGroup = {
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+};
+
 /* list */
 export type TCustomerListRequest = {
   keyword?: string;
@@ -12,9 +20,14 @@ export type TCustomerList = {
   userIdx: number;
   status: string;
   name: string;
-  groupIdx: number;
-  groupName: string;
+  customerGroup: TCustomerGroup;
   phone: string;
+  email: string;
+  address: string;
+  birth: string;
+  job: string;
+  createdAt: string;
+  updatedAt: string;
 };
 /* list */
 
