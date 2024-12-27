@@ -6,59 +6,78 @@ import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import Button from '@/components/button/Button';
 import { dummyCustomerList } from '@/dummy/customer';
 import Pagination from '@/components/pagination/Pagination';
+import { useState } from 'react';
+import WatchOptionModal from './components/watchOptionModal';
 
 const CustomerList = () => {
+  const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
+    useState<boolean>(false);
   return (
-    <ListWrapper>
-      <Header>
-        <h2>고객목록</h2>
-        <ControlWrapper>
-          <SearchBoxWrapper>
-            <div className="search">
-              <Input
-                className="input"
-                style={{ width: '250px' }}
-                placeholder="고객명, 고객번호로 검색해주세요."
-              ></Input>
-              <Button
-                style={{
-                  padding: '5px',
-                  paddingBottom: '7px',
-                  borderRadius: '0px',
-                  height: '34px',
-                }}
-              >
-                <SvgIcon iconName="icon-search" />
-              </Button>
-            </div>
+    <>
+      <ListWrapper>
+        <Header>
+          <h2>고객목록</h2>
+          <ControlWrapper>
+            <SearchBoxWrapper>
+              <div className="search">
+                <Input
+                  className="input"
+                  style={{ width: '250px' }}
+                  placeholder="고객명, 고객번호로 검색해주세요."
+                ></Input>
+                <Button
+                  style={{
+                    padding: '5px',
+                    paddingBottom: '7px',
+                    borderRadius: '0px',
+                    height: '34px',
+                  }}
+                >
+                  <SvgIcon iconName="icon-search" />
+                </Button>
+              </div>
 
-            <Button style={{ marginLeft: '20px' }}>
-              <SvgIcon iconName="icon-filter" />
-              <p>필터</p>
-            </Button>
-          </SearchBoxWrapper>
-          <FunctionWrapper>
-            <Button>
-              <SvgIcon iconName="icon-eye-show" />
-              <p>보기옵션</p>
-            </Button>
-            <Button>
-              <SvgIcon iconName="icon-plus" />
-              <p>고객등록</p>
-            </Button>
-          </FunctionWrapper>
-        </ControlWrapper>
-      </Header>
-      <ListContent>
-        <CustomerListTable></CustomerListTable>
-      </ListContent>
-      {dummyCustomerList.length > 0 && (
-        <Pagination
-          totalCount={dummyCustomerList.length}
-          length={dummyCustomerList.length}
-        ></Pagination>
+              <Button style={{ marginLeft: '20px' }}>
+                <SvgIcon iconName="icon-filter" />
+                <p>필터</p>
+              </Button>
+            </SearchBoxWrapper>
+            <FunctionWrapper>
+              <Button
+                onClick={() =>
+                  setIsOpenWatchOptionModal(!isOpenWatchOptionModal)
+                }
+              >
+                <SvgIcon iconName="icon-eye-show" />
+                <p>보기옵션</p>
+              </Button>
+              <Button>
+                <SvgIcon iconName="icon-plus" />
+                <p>고객등록</p>
+              </Button>
+            </FunctionWrapper>
+          </ControlWrapper>
+        </Header>
+        <ListContent>
+          <CustomerListTable></CustomerListTable>
+        </ListContent>
+        {dummyCustomerList.length > 0 && (
+          <Pagination
+            totalCount={dummyCustomerList.length}
+            length={dummyCustomerList.length}
+          ></Pagination>
+        )}
+      </ListWrapper>
+      {isOpenWatchOptionModal && (
+        <WatchOptionModal
+          isOpen={isOpenWatchOptionModal}
+          onCancel={() => setIsOpenWatchOptionModal(false)}
+          onConfirm={() => {
+            setIsOpenWatchOptionModal(false);
+          }}
+        />
       )}
-    </ListWrapper>
+    </>
   );
 };
 

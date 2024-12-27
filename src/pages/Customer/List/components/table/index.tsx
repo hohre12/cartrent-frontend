@@ -55,16 +55,40 @@ const CustomerListTable = () => {
             <td>
               <Button variant="black">삭제</Button>
             </td>
-            <td>{it.status}</td>
-            <td className="name">{it.name}</td>
-            <td>{it.customerGroup.name}</td>
-            <td>{it.phone}</td>
-            <td>{it.email}</td>
-            <td>{it.address}</td>
-            <td>{it.birth}</td>
-            <td>{it.job}</td>
-            <td>{it.createdAt}</td>
-            <td>{it.updatedAt}</td>
+            {!isColumnsViewHide(selectedCustomerHideWatchOptions, 'status') && (
+              <td>{it.status ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(selectedCustomerHideWatchOptions, 'name') && (
+              <td className="name">{it.name ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'customerGroup',
+            ) && <td>{it.customerGroup?.name ?? '-'}</td>}
+            {!isColumnsViewHide(selectedCustomerHideWatchOptions, 'phone') && (
+              <td>{it.phone ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(selectedCustomerHideWatchOptions, 'email') && (
+              <td>{it.email ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'address',
+            ) && <td>{it.address ?? '-'}</td>}
+            {!isColumnsViewHide(selectedCustomerHideWatchOptions, 'birth') && (
+              <td>{it.birth ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(selectedCustomerHideWatchOptions, 'job') && (
+              <td>{it.job ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'createdAt',
+            ) && <td>{it.createdAt ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'updatedAt',
+            ) && <td>{it.updatedAt ?? '-'}</td>}
           </TableItem>
         ))}
       </tbody>
