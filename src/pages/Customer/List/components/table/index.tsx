@@ -1,36 +1,70 @@
 import Button from '@/components/button/Button';
+import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
 import { CUSTOMER_LIST_WATCH_OPTIONS } from '@/constants/customer';
 import { dummyCustomerList } from '@/dummy/customer';
 import {
   selectedCustomerHideWatchOptionsState,
-  selectedCustomerIdxState,
+  selectedCustomerState,
 } from '@/state/customer';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
+import { TCustomerList } from '@/types/customer';
 import { isColumnsViewHide } from '@/utils/common';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-const CustomerListTable = () => {
+type TCustomerListTableProps = {
+  data: TCustomerList[];
+};
+
+const CustomerListTable = ({ data }: TCustomerListTableProps) => {
   const navigate = useNavigate();
+  const [selectedCustomer, setSelectedCustomer] = useRecoilState(
+    selectedCustomerState,
+  );
   const selectedCustomerHideWatchOptions = useRecoilValue(
     selectedCustomerHideWatchOptionsState,
   );
-  const [selectedCustomerIdx, setSelectedCustomerIdx] = useRecoilState(
-    selectedCustomerIdxState,
-  );
-  const handleCustomerClick = useCallback(
-    (idx: number) => {
-      setSelectedCustomerIdx(idx);
+
+  const isAllChecked = useMemo(() => {
+    return (
+      data.every((it) => selectedCustomer.includes(it)) && data.length !== 0
+    );
+  }, [selectedCustomer, data]);
+
+  const handleAllChecked = useCallback(() => {
+    if (selectedCustomer.length > 0) {
+      setSelectedCustomer([]);
+    } else {
+      setSelectedCustomer(data);
+    }
+  }, [selectedCustomer, data]);
+
+  const handleChecked = useCallback(
+    (val: TCheckBoxValue, customer: TCustomerList) => {
+      if (val) {
+        setSelectedCustomer([...selectedCustomer, customer]);
+      } else {
+        const newList = selectedCustomer.filter(
+          (it) => it.userIdx !== customer.userIdx,
+        );
+        setSelectedCustomer(newList);
+      }
     },
-    [setSelectedCustomerIdx],
+    [selectedCustomer],
   );
   return (
     <CustomerListTableWrapper>
       <thead>
         <TableHeader>
+          <th style={{ width: '60px' }}>
+            <Checkbox
+              value={isAllChecked}
+              onCheckedChange={handleAllChecked}
+            />
+          </th>
           <th style={{ width: '80px' }}></th>
           <th style={{ width: '80px' }}></th>
           {Object.entries(CUSTOMER_LIST_WATCH_OPTIONS).map(([key, value]) => {
@@ -43,12 +77,21 @@ const CustomerListTable = () => {
         </TableHeader>
       </thead>
       <tbody>
-        {dummyCustomerList.map((it, idx) => (
+        {data.map((it, idx) => (
           <TableItem
             key={idx}
-            className={selectedCustomerIdx === it.userIdx ? 'active' : ''}
             onClick={() => navigate(`${it.userIdx}`)}
           >
+            <td>
+              <div onClick={(e) => e.stopPropagation()}>
+                <Checkbox
+                  value={selectedCustomer.some(
+                    (cl) => cl.userIdx === it.userIdx,
+                  )}
+                  onCheckedChange={(val) => handleChecked(val, it)}
+                />
+              </div>
+            </td>
             <td>
               <Button variant="black">수정</Button>
             </td>

@@ -1,23 +1,16 @@
 import { SvgIcon } from '@/components/common/SvgIcon';
 import Input from '@/components/input/Input';
 import { dummyCustomerList } from '@/dummy/customer';
-import { selectedCustomerIdxState } from '@/state/customer';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import TextArea from '@/components/textArea/TextArea';
 
 const CounselDetail = () => {
-  const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
-
   //   const { data, isLoading, error } = useGetCustomer({
   //     userIdx: selectedCustomerIdx,
   //   });
   //   if (isLoading) return <div className="loading">Loading...</div>;
   //   if (error) return <div className="error">{String(error)}</div>;
-
-  const data = dummyCustomerList.find(
-    (it) => it.userIdx === selectedCustomerIdx,
-  );
 
   return (
     <DetailWrapper>

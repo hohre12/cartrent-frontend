@@ -59,7 +59,7 @@ const CustomerList = () => {
           </ControlWrapper>
         </Header>
         <ListContent>
-          <CustomerListTable></CustomerListTable>
+          <CustomerListTable data={dummyCustomerList}></CustomerListTable>
         </ListContent>
         {dummyCustomerList.length > 0 && (
           <Pagination

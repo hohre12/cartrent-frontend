@@ -10,8 +10,3 @@ export const selectedCustomerHideWatchOptionsState = atom<string[]>({
   key: 'selectedCustomerHideWatchOptionsState',
   default: [],
 });
-
-export const selectedCustomerIdxState = atom<number>({
-  key: 'selectedCustomerIdxState',
-  default: undefined,
-});

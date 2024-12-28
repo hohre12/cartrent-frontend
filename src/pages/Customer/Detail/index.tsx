@@ -5,7 +5,6 @@ import Input from '@/components/input/Input';
 import TextArea from '@/components/textArea/TextArea';
 import { dummyCustomerList } from '@/dummy/customer';
 import { useGetCustomer } from '@/services/customer';
-import { selectedCustomerIdxState } from '@/state/customer';
 import {
   textM16Regular,
   textS14Medium,
@@ -15,18 +14,6 @@ import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const CustomerDetail = () => {
-  const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
-
-  //   const { data, isLoading, error } = useGetCustomer({
-  //     userIdx: selectedCustomerIdx,
-  //   });
-  //   if (isLoading) return <div className="loading">Loading...</div>;
-  //   if (error) return <div className="error">{String(error)}</div>;
-
-  const data = dummyCustomerList.find(
-    (it) => it.userIdx === selectedCustomerIdx,
-  );
-
   return (
     <DetailWrapper>
       <DetailHeaderWrapper>
