@@ -8,6 +8,7 @@ import { ThemeProvider } from 'styled-components';
 import theme from './styles/variables';
 import { ApolloProvider } from '@apollo/client';
 import client from './apollo/client.ts';
+import { CookiesProvider } from 'react-cookie';
 
 // const queryClient = new QueryClient();
 
@@ -16,14 +17,16 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <RecoilRoot>
-    <ApolloProvider client={client}>
-      <ThemeProvider theme={theme}>
-        {/* auto complete is not avaliable for theme */}
-        <Router>
-          <App />
-        </Router>
-      </ThemeProvider>
-    </ApolloProvider>
-  </RecoilRoot>,
+  <CookiesProvider>
+    <RecoilRoot>
+      <ApolloProvider client={client}>
+        <ThemeProvider theme={theme}>
+          {/* auto complete is not avaliable for theme */}
+          <Router>
+            <App />
+          </Router>
+        </ThemeProvider>
+      </ApolloProvider>
+    </RecoilRoot>
+  </CookiesProvider>,
 );

@@ -17,6 +17,7 @@ import { titleXxl24Bold } from '@/styles/typography';
 import styles from './index.module.scss';
 import { useMutation } from '@apollo/client';
 import { SIGNIN_MUTATION } from '@/apollo/queries/auth';
+import { useCookies } from 'react-cookie';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const Login = () => {
     'password' | 'text'
   >('password');
 
+  const [cookies] = useCookies(['access_token']);
   const setToken = useSetRecoilState(tokenState);
 
   useEffect(() => {
@@ -66,6 +68,11 @@ const Login = () => {
       if (response.data.signIn) {
         setToken('test');
         navigate('/dashboard');
+        // const accessToken = cookies.access_token;
+        // const refreshToken = cookies.refresh_token;
+        // console.log(accessToken);
+        // console.log(refreshToken);
+
         // LocalStorage.setItem(TOKEN_KEY, 'test');
       }
     } catch (e: any) {
@@ -80,6 +87,10 @@ const Login = () => {
       setPasswordInputType('password');
     }
   }, [passwordInputType]);
+
+  useEffect(() => {
+    console.log(cookies.access_token);
+  }, []);
 
   return (
     <Wrapper className={styles.wrapper}>
