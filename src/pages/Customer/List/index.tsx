@@ -6,12 +6,49 @@ import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import Button from '@/components/button/Button';
 import { dummyCustomerList } from '@/dummy/customer';
 import Pagination from '@/components/pagination/Pagination';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import WatchOptionModal from './components/watchOptionModal';
+import SearchBox from '@/components/searchBox/SearchBox';
+import FilterGroup from './components/filter/group';
+import useClickOutside from '@/hooks/useClickOutside';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { customerFiltersState } from '@/state/customer';
+import { TFilterList } from '@/types/common';
+import { Circle, FilterContent } from '@/styles/common';
 
 const CustomerList = () => {
+  const [text, setText] = useState<string>('');
+  const [searchText, setSearchText] = useState<string>('');
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
+
+  // filters
+  const [filters, setFilters] = useRecoilState(customerFiltersState);
+  const resetFilters = useResetRecoilState(customerFiltersState);
+
+  // filter - group
+  const [isFilterGroupOpen, setIsFilterGroupOpen] = useState<boolean>(false);
+  const filterGroupRef = useClickOutside(() => setIsFilterGroupOpen(false));
+
+  const handleSearchTextDelete = useCallback(() => {
+    setSearchText('');
+  }, [setSearchText]);
+
+  const handleSearch = useCallback(
+    (value: string) => {
+      setSearchText(value);
+    },
+    [setSearchText],
+  );
+
+  const handleSetFilterGroup = useCallback(
+    (selectedFilters: TFilterList<number>[]) => {
+      setFilters({ ...filters, group: selectedFilters });
+      setIsFilterGroupOpen(false);
+    },
+    [filters, setFilters, setIsFilterGroupOpen],
+  );
+
   return (
     <>
       <ListWrapper>
@@ -19,28 +56,38 @@ const CustomerList = () => {
           <h2>고객목록</h2>
           <ControlWrapper>
             <SearchBoxWrapper>
-              <div className="search">
-                <Input
-                  className="input"
-                  style={{ width: '250px' }}
-                  placeholder="고객명, 고객번호로 검색해주세요."
-                ></Input>
+              <SearchBox
+                value={text}
+                placeholder="검색"
+                recentKey="customerRecent"
+                onTextChange={(text) => setText(text)}
+                onRemoveClick={handleSearchTextDelete}
+                onKeyDown={handleSearch}
+                onRecentClick={handleSearch}
+                keyword="고객명"
+              ></SearchBox>
+              <FilterContent ref={filterGroupRef}>
                 <Button
+                  variant="white"
+                  configuration="stroke"
                   style={{
-                    padding: '5px',
-                    paddingBottom: '7px',
-                    borderRadius: '0px',
-                    height: '34px',
+                    borderColor: filters.group.length > 0 ? '#333' : '#ddd',
                   }}
+                  onClick={() => setIsFilterGroupOpen(!isFilterGroupOpen)}
                 >
-                  <SvgIcon iconName="icon-search" />
+                  그룹
+                  {filters.group.length > 0 && (
+                    <Circle>{filters.group.length}</Circle>
+                  )}
+                  <SvgIcon
+                    iconName="icon-arrowButton"
+                    style={{ fill: '#333' }}
+                  />
                 </Button>
-              </div>
-
-              <Button style={{ marginLeft: '20px' }}>
-                <SvgIcon iconName="icon-filter" />
-                <p>필터</p>
-              </Button>
+                {isFilterGroupOpen && (
+                  <FilterGroup handleApply={handleSetFilterGroup}></FilterGroup>
+                )}
+              </FilterContent>
             </SearchBoxWrapper>
             <FunctionWrapper>
               <Button
@@ -117,17 +164,7 @@ const ControlWrapper = styled.div`
 
 const SearchBoxWrapper = styled.div`
   display: flex;
-  .search {
-    display: flex;
-    border: 1px solid #eee;
-    height: 36px;
-    .input {
-      .inputBox {
-        border: none;
-        border-radius: 0;
-      }
-    }
-  }
+  gap: 20px;
 `;
 
 const FunctionWrapper = styled.div`

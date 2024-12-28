@@ -75,3 +75,8 @@ export type TPagination = {
   propsCurrentPage?: number;
   getPage?: (offset: number, length: number) => void;
 };
+
+export type TFilterList<T> = {
+  name: string;
+  value: T;
+};

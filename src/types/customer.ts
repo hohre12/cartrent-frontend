@@ -1,3 +1,5 @@
+import { TFilterList } from './common';
+
 export type TCustomerGroup = {
   id: number;
   name: string;
@@ -50,3 +52,15 @@ export type TCustomerResponse = {
   updated_at: string;
 };
 /* detail */
+
+/* front handle type */
+export type TCustomerFiltersStateType = {
+  group: TFilterList<number>[];
+  createdAt:
+    | {
+        createdAtFrom: string;
+        createdAtTo: string;
+      }
+    | undefined;
+};
+/* front handle type */

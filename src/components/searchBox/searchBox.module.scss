@@ -1,0 +1,90 @@
+.searchBoxWrapper {
+  @extend .text-s14-regular;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 8px;
+  transition: 0.2s all;
+  color: #333;
+  border: 1px solid #dddddd;
+  background: #f9f9f9;
+  min-width: 200px;
+  & > input {
+    border: 0;
+    outline: 0;
+    background: #f9f9f9;
+    color: #111;
+    width: 100%;
+  }
+  .remove {
+    position: absolute;
+    right: 5px;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+  }
+  .recentWrapper {
+    z-index: 200;
+    width: 340px;
+    position: absolute;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 1px 2px 16px 0px rgba(0, 0, 0, 0.1);
+    top: 40px;
+    left: 0;
+    text-align: left;
+    overflow: hidden;
+    box-sizing: border-box;
+    .keywordWrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin: 18px;
+      padding: 8px;
+      border-radius: 10px;
+      background-color: $bg-neutral-secondary;
+      color: $text-neutral-primary;
+      text-align: center;
+      .keywordTitle {
+        @extend .text-xxs10-medium;
+      }
+      .keywordText {
+        letter-spacing: -0.48px;
+      }
+    }
+    .recentHeader {
+      padding: 0 18px 12px;
+      display: flex;
+      justify-content: space-between;
+      &.scrolled {
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+      }
+      p {
+        @extend .title-xs12-medium;
+        color: $text-neutral-secondary;
+      }
+      span {
+        @extend .title-xs12-medium;
+        color: #0d6dff;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+    ul {
+      padding: 0 10px;
+      max-height: 205px;
+      overflow: scroll;
+      li {
+        cursor: pointer;
+        padding: 8px;
+        display: flex;
+        justify-content: space-between;
+        border-radius: 8px;
+        &:hover {
+          background: #f5f5f5;
+        }
+      }
+    }
+  }
+}
