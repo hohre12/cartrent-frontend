@@ -15,12 +15,14 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { customerFiltersState } from '@/state/customer';
 import { TFilterList } from '@/types/common';
 import { Circle, FilterContent } from '@/styles/common';
+import RegistModal from './components/registModal';
 
 const CustomerList = () => {
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
+  const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
 
   // filters
   const [filters, setFilters] = useRecoilState(customerFiltersState);
@@ -98,7 +100,7 @@ const CustomerList = () => {
                 <SvgIcon iconName="icon-eye-show" />
                 <p>보기옵션</p>
               </Button>
-              <Button>
+              <Button onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}>
                 <SvgIcon iconName="icon-plus" />
                 <p>고객등록</p>
               </Button>
@@ -123,6 +125,13 @@ const CustomerList = () => {
             setIsOpenWatchOptionModal(false);
           }}
         />
+      )}
+      {isOpenRegistModal && (
+        <RegistModal
+          isOpen={isOpenRegistModal}
+          onCancel={() => setIsOpenRegistModal(false)}
+          onConfirm={() => setIsOpenRegistModal(false)}
+        ></RegistModal>
       )}
     </>
   );

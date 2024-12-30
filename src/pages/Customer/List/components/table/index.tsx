@@ -65,8 +65,6 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
               onCheckedChange={handleAllChecked}
             />
           </th>
-          <th style={{ width: '80px' }}></th>
-          <th style={{ width: '80px' }}></th>
           {Object.entries(CUSTOMER_LIST_WATCH_OPTIONS).map(([key, value]) => {
             return (
               !isColumnsViewHide(selectedCustomerHideWatchOptions, key) && (
@@ -74,6 +72,7 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
               )
             );
           })}
+          <th>고객삭제</th>
         </TableHeader>
       </thead>
       <tbody>
@@ -91,12 +90,6 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
                   onCheckedChange={(val) => handleChecked(val, it)}
                 />
               </div>
-            </td>
-            <td>
-              <Button variant="black">수정</Button>
-            </td>
-            <td>
-              <Button variant="black">삭제</Button>
             </td>
             {!isColumnsViewHide(selectedCustomerHideWatchOptions, 'status') && (
               <td>{it.status ?? '-'}</td>
@@ -132,6 +125,9 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
               selectedCustomerHideWatchOptions,
               'updatedAt',
             ) && <td>{it.updatedAt ?? '-'}</td>}
+            <td>
+              <Button variant="black">삭제</Button>
+            </td>
           </TableItem>
         ))}
       </tbody>

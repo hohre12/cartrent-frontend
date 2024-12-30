@@ -1,0 +1,54 @@
+.overlayStyle {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.confirmWrapper {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(255, 255, 255);
+  z-index: 1001;
+  width: 460px;
+  min-height: 110px;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 1px 2px 16px 0px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  .confirmHeader {
+    display: flex;
+    justify-content: space-between;
+    h1 {
+      @extend .title-l18-bold;
+    }
+    svg {
+      cursor: pointer;
+    }
+  }
+  .confirmContent {
+    p {
+      @extend .text-s14-regular;
+    }
+  }
+  .confirmFooter {
+    button {
+      @extend .title-s14-semibold;
+    }
+
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    margin-left: auto;
+  }
+}

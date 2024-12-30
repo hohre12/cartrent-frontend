@@ -14,6 +14,18 @@ export type TVariant =
   | 'secondarySuccess'
   | 'transparent';
 
+export type TToast = {
+  id: number;
+  isImage: boolean;
+  imgUrl?: string;
+  title?: string;
+  content: string;
+  type: 'warning' | 'success' | 'error';
+  children?: ReactNode;
+};
+
+export type TToastList = TToast[];
+
 export type TConfirm = {
   isOpen: boolean;
   title?: string;

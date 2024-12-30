@@ -19,6 +19,8 @@ import Inquiry from './pages/Inquiry';
 import Dashboard from './pages/Dashboard';
 import CustomerList from './pages/Customer/List';
 import CustomerDetail from './pages/Customer/Detail';
+import Toast from './components/toast/Toast';
+import Confirm from './components/confirm/Confirm';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -144,6 +146,8 @@ function App() {
           }
         />
       </ReactRouterRoutes>
+      <Confirm></Confirm>
+      <Toast></Toast>
     </div>
   );
 }
