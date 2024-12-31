@@ -17,6 +17,8 @@ import { TFilterList } from '@/types/common';
 import { Circle, FilterContent } from '@/styles/common';
 import RegistModal from './components/registModal';
 import FloatingMenu from './components/floatingMenu';
+import { useQuery } from '@apollo/client';
+import { GET_CUSTOMERS_QUERY } from '@/apollo/queries/customer';
 
 const CustomerList = () => {
   const [text, setText] = useState<string>('');
@@ -25,6 +27,10 @@ const CustomerList = () => {
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
+  const { data, loading, error } = useQuery(GET_CUSTOMERS_QUERY, {
+    variables: { getCustomersDto: { search: searchText } },
+  });
+  console.log('customer data: ', data);
 
   // filters
   const [filters, setFilters] = useRecoilState(customerFiltersState);
@@ -126,14 +132,13 @@ const CustomerList = () => {
               <p>등록된 고객이 없습니다.</p>
             </div>
           )}
-          <CustomerListTable data={dummyCustomerList}></CustomerListTable>
         </ListContent>
-        {dummyCustomerList.length > 0 && (
+        {/* {dummyCustomerList.length > 0 && (
           <Pagination
             totalCount={dummyCustomerList.length}
             length={dummyCustomerList.length}
           ></Pagination>
-        )}
+        )} */}
       </ListWrapper>
       {isOpenWatchOptionModal && (
         <WatchOptionModal

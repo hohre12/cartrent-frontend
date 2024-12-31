@@ -66,8 +66,10 @@ const Login = () => {
         variables: { signInDto: { email: id, password } },
       });
       if (response.data.signIn) {
-        setToken('test');
+        const { accessToken, refreshToken } = response.data.signIn;
+        setToken(accessToken);
         navigate('/dashboard');
+        // setToken('test');
         // const accessToken = cookies.access_token;
         // const refreshToken = cookies.refresh_token;
         // console.log(accessToken);
@@ -88,9 +90,9 @@ const Login = () => {
     }
   }, [passwordInputType]);
 
-  useEffect(() => {
-    console.log(cookies.access_token);
-  }, []);
+  // useEffect(() => {
+  //   console.log(cookies.access_token);
+  // }, []);
 
   return (
     <Wrapper className={styles.wrapper}>

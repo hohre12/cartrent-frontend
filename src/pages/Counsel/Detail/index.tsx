@@ -27,10 +27,13 @@ const CounselDetail = () => {
           </div>
         </div>
         <div>
-          <p>상담내용</p>
-          <div>상담내용 테스트 입니다.</div>
+          <div>
+            <p>상담내용</p>
+            <div>상담내용 테스트 입니다.</div>
+          </div>
         </div>
       </InfoWrapper>
+      {/* <h6>상담 기록</h6>
       <HistoryWrapper>
         <div>
           <SvgIcon iconName="icon-edit" />
@@ -39,7 +42,7 @@ const CounselDetail = () => {
             <p>14:00 (화)</p>
           </div>
           <div className="HistoryText">
-            상담사 : 직원A<br></br>
+            상담자 : 직원A<br></br>
             상담내용 : 테스트입니다.
           </div>
         </div>
@@ -50,7 +53,7 @@ const CounselDetail = () => {
             <p>11:00 (월)</p>
           </div>
           <div className="HistoryText">
-            상담사 : 직원B<br></br>
+            상담자 : 직원B<br></br>
             상담내용 : 첫번째 테스트입니다.
           </div>
         </div>
@@ -61,7 +64,7 @@ const CounselDetail = () => {
             <p>14:00 (화)</p>
           </div>
           <div className="HistoryText">
-            상담사 : 직원A<br></br>
+            상담자 : 직원A<br></br>
             상담내용 : 테스트입니다.
           </div>
         </div>
@@ -72,7 +75,7 @@ const CounselDetail = () => {
             <p>11:00 (월)</p>
           </div>
           <div className="HistoryText">
-            상담사 : 직원B<br></br>
+            상담자 : 직원B<br></br>
             상담내용 : 첫번째 테스트입니다.
           </div>
         </div>
@@ -83,7 +86,7 @@ const CounselDetail = () => {
             <p>14:00 (화)</p>
           </div>
           <div className="HistoryText">
-            상담사 : 직원A<br></br>
+            상담자 : 직원A<br></br>
             상담내용 : 테스트입니다.
           </div>
         </div>
@@ -94,11 +97,11 @@ const CounselDetail = () => {
             <p>11:00 (월)</p>
           </div>
           <div className="HistoryText">
-            상담사 : 직원B<br></br>
+            상담자 : 직원B<br></br>
             상담내용 : 첫번째 테스트입니다.
           </div>
         </div>
-      </HistoryWrapper>
+      </HistoryWrapper> */}
     </DetailWrapper>
   );
 };
@@ -110,6 +113,9 @@ export const DetailWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  & > h6 {
+    font-size: 20px;
+  }
 `;
 
 const DetailHeaderWrapper = styled.div`
@@ -138,8 +144,24 @@ export const InfoWrapper = styled.div`
   display: flex;
   padding: 20px;
   text-align: left;
+  gap: 10px;
   & > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     width: 50%;
+    & > div {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 10px;
+      p {
+        font-size: 16px;
+        border-bottom: 1px solid #ddd;
+      }
+    }
   }
 `;
 

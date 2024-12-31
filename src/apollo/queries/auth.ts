@@ -7,9 +7,8 @@ import { gql } from '@apollo/client';
 export const SIGNIN_MUTATION = gql`
   mutation SignIn($signInDto: SignInDto!) {
     signIn(signInDto: $signInDto) {
-      id
-      name
-      email
+      accessToken
+      refreshToken
     }
   }
 `;

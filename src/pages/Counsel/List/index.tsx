@@ -18,10 +18,13 @@ import { Circle, FilterContent } from '@/styles/common';
 import RegistModal from './components/registModal';
 import CounselListTable from './components/table';
 import { dummyCounselList } from '@/dummy/counsel';
+import { selectedCounselState } from '@/state/counsel';
+import FloatingMenu from './components/floatingMenu';
 
 const CounselList = () => {
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
+  const selectedCounsel = useRecoilValue(selectedCounselState);
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
@@ -110,14 +113,29 @@ const CounselList = () => {
           </ControlWrapper>
         </Header>
         <ListContent>
-          <CounselListTable data={dummyCounselList}></CounselListTable>
+          {dummyCustomerList.length > 0 ? (
+            <>
+              <CounselListTable data={dummyCounselList}></CounselListTable>
+              {selectedCounsel.length > 0 && <FloatingMenu></FloatingMenu>}
+            </>
+          ) : searchText ? (
+            <div className="noList">
+              <h2>검색결과 없음</h2>
+              <p>상담내용, 상담자로 검색해주세요.</p>
+            </div>
+          ) : (
+            <div className="noList">
+              <h2>상담 없음</h2>
+              <p>등록된 상담이 없습니다.</p>
+            </div>
+          )}
         </ListContent>
-        {dummyCustomerList.length > 0 && (
+        {/* {dummyCustomerList.length > 0 && (
           <Pagination
             totalCount={dummyCounselList.length}
             length={dummyCounselList.length}
           ></Pagination>
-        )}
+        )} */}
       </ListWrapper>
       {isOpenWatchOptionModal && (
         <WatchOptionModal

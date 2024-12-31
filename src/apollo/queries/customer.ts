@@ -19,7 +19,6 @@ export const GET_CUSTOMERS_QUERY = gql`
       phone
       status
       updated_at
-      user_id
     }
   }
 `;
