@@ -12,14 +12,16 @@ import SearchBox from '@/components/searchBox/SearchBox';
 import FilterGroup from './components/filter/group';
 import useClickOutside from '@/hooks/useClickOutside';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import { customerFiltersState } from '@/state/customer';
+import { customerFiltersState, selectedCustomerState } from '@/state/customer';
 import { TFilterList } from '@/types/common';
 import { Circle, FilterContent } from '@/styles/common';
 import RegistModal from './components/registModal';
+import FloatingMenu from './components/floatingMenu';
 
 const CustomerList = () => {
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
+  const selectedCustomer = useRecoilValue(selectedCustomerState);
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
@@ -108,6 +110,22 @@ const CustomerList = () => {
           </ControlWrapper>
         </Header>
         <ListContent>
+          {dummyCustomerList.length > 0 ? (
+            <>
+              <CustomerListTable data={dummyCustomerList}></CustomerListTable>
+              {selectedCustomer.length > 0 && <FloatingMenu></FloatingMenu>}
+            </>
+          ) : searchText ? (
+            <div className="noList">
+              <h2>검색결과 없음</h2>
+              <p>고객명으로 검색해주세요.</p>
+            </div>
+          ) : (
+            <div className="noList">
+              <h2>고객 없음</h2>
+              <p>등록된 고객이 없습니다.</p>
+            </div>
+          )}
           <CustomerListTable data={dummyCustomerList}></CustomerListTable>
         </ListContent>
         {dummyCustomerList.length > 0 && (
