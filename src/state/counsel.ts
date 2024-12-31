@@ -1,4 +1,4 @@
-import { TCounselList } from '@/types/counsel';
+import { TCounselFiltersStateType, TCounselList } from '@/types/counsel';
 import { atom } from 'recoil';
 
 export const selectedCounselState = atom<TCounselList[]>({
@@ -11,7 +11,10 @@ export const selectedCounselHideWatchOptionsState = atom<string[]>({
   default: [],
 });
 
-export const selectedCounselIdxState = atom<number>({
-  key: 'selectedCounselIdxState',
-  default: undefined,
+export const counselFiltersState = atom<TCounselFiltersStateType>({
+  key: 'counselFiltersState',
+  default: {
+    type: [],
+    createdAt: undefined,
+  },
 });

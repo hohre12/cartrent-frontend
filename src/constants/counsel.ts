@@ -1,25 +1,10 @@
 export const COUNSEL_LIST_WATCH_OPTIONS = {
-  created_at: '상담일시',
-  name: '고객명',
-  phone: '연락처',
-  counselType: '상담유형',
-  result: '상담결과',
-  counselCustomer: '상담자',
-  counselName: '상담제목',
-  counselContent: '상담내용',
-  address: '주소',
-  customerGroup: '고객그룹',
-  product: '상품',
-  anotherPhone: '추가연락처',
-  carType: '차종',
-  type: '구분',
-  date: '약정기간',
-  percent: '담보율',
-  customerType: '고객유형',
-  option: '옵션',
-  isIng: '진행여부',
-  etc: '비고',
-  company: '회사명/명의자',
+  customer: '고객명',
+  context: '상담 내용',
+  created_at: '상담 일시',
+  type: '상담 유형',
+  status: '상담 상태',
+  updated_at: '마지막 업데이트 일시',
 };
 
-export const COUNSEL_LIST_WATCH_REQUIRED_OPTIONS = ['createdAt', 'name'];
+export const COUNSEL_LIST_WATCH_REQUIRED_OPTIONS = ['customer', 'context'];

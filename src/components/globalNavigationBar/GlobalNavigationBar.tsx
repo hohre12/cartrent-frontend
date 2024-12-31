@@ -46,7 +46,7 @@ const GlobalNavigationBar = () => {
           <b>{pageName}</b>
         </RouteWrapper>
         <GlobalFunctionWrapper>
-          <span>고객등록</span>
+          {/* <span>고객등록</span> */}
           <span onClick={() => setIsCounselModal(!isCounselModal)}>
             상담등록
           </span>

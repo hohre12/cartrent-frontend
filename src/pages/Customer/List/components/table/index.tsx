@@ -47,9 +47,7 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
       if (val) {
         setSelectedCustomer([...selectedCustomer, customer]);
       } else {
-        const newList = selectedCustomer.filter(
-          (it) => it.userIdx !== customer.userIdx,
-        );
+        const newList = selectedCustomer.filter((it) => it.id !== customer.id);
         setSelectedCustomer(newList);
       }
     },
@@ -79,14 +77,12 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
         {data.map((it, idx) => (
           <TableItem
             key={idx}
-            onClick={() => navigate(`${it.userIdx}`)}
+            onClick={() => navigate(`${it.id}`)}
           >
             <td>
               <div onClick={(e) => e.stopPropagation()}>
                 <Checkbox
-                  value={selectedCustomer.some(
-                    (cl) => cl.userIdx === it.userIdx,
-                  )}
+                  value={selectedCustomer.some((cl) => cl.id === it.id)}
                   onCheckedChange={(val) => handleChecked(val, it)}
                 />
               </div>
@@ -119,12 +115,12 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
             )}
             {!isColumnsViewHide(
               selectedCustomerHideWatchOptions,
-              'createdAt',
-            ) && <td>{it.createdAt ?? '-'}</td>}
+              'created_at',
+            ) && <td>{it.created_at ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCustomerHideWatchOptions,
-              'updatedAt',
-            ) && <td>{it.updatedAt ?? '-'}</td>}
+              'updated_at',
+            ) && <td>{it.updated_at ?? '-'}</td>}
             <td>
               <Button variant="black">삭제</Button>
             </td>

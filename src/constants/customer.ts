@@ -7,8 +7,8 @@ export const CUSTOMER_LIST_WATCH_OPTIONS = {
   address: '주소',
   birth: '생년월일',
   job: '직업',
-  createdAt: '고객 생성일시',
-  updatedAt: '고객 마지막 수정일시',
+  created_at: '고객 생성일시',
+  updated_at: '고객 마지막 수정일시',
 };
 
 export const CUSTOMER_LIST_WATCH_REQUIRED_OPTIONS = ['status', 'name'];

@@ -13,7 +13,6 @@ import Login from './pages/Auth/Login';
 import SideNavigationBar from './components/sideNavigationBar/SideNavigationBar';
 import GlobalNavigationBar from './components/globalNavigationBar/GlobalNavigationBar';
 import { textXs12Medium } from './styles/typography';
-import Counsel from './pages/Counsel';
 import Adjustment from './pages/Adjustment';
 import Inquiry from './pages/Inquiry';
 import Dashboard from './pages/Dashboard';
@@ -21,6 +20,8 @@ import CustomerList from './pages/Customer/List';
 import CustomerDetail from './pages/Customer/Detail';
 import Toast from './components/toast/Toast';
 import Confirm from './components/confirm/Confirm';
+import CounselDetail from './pages/Counsel/Detail';
+import CounselList from './pages/Counsel/List';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -86,7 +87,11 @@ function App() {
         >
           <Route
             index
-            element={<Counsel></Counsel>}
+            element={<CounselList></CounselList>}
+          />
+          <Route
+            path=":id"
+            element={<CounselDetail></CounselDetail>}
           />
         </Route>
         <Route

@@ -1,4 +1,5 @@
 import { TFilterList } from './common';
+import { TCounselList } from './counsel';
 
 export type TCustomerGroup = {
   id: number;
@@ -10,7 +11,7 @@ export type TCustomerGroup = {
 
 /* list */
 export type TCustomerListRequest = {
-  keyword?: string;
+  search?: string;
   offset: number;
   length: number;
 };
@@ -19,37 +20,49 @@ export type TCustomerListResponse = {
   count: number;
 };
 export type TCustomerList = {
-  userIdx: number;
-  status: string;
-  name: string;
+  address?: string;
+  birth?: string;
+  // contractList: TContractList[];
+  counselList?: TCounselList[];
+  created_at: string;
   customerGroup: TCustomerGroup;
+  customer_group_id?: TCustomerGroup['id'];
+  deleted_at?: string;
+  email?: string;
+  id: number;
+  job?: string;
+  name: string;
   phone: string;
-  email: string;
-  address: string;
-  birth: string;
-  job: string;
-  createdAt: string;
-  updatedAt: string;
+  status: string;
+  updated_at: string;
+  // userList: TUserList;
+  // user_id: TUserList['id'];
 };
 /* list */
 
 /* detail */
 export type TCustomerRequest = {
-  userIdx: number;
+  customerId: number;
 };
 
 export type TCustomerResponse = {
-  address: string;
-  birth: string;
-  created_at: string;
-  deleted_at: string;
-  email: string;
+  address?: string;
+  birth?: string;
+  // contractList: TContractList[];
+  counselList?: TCounselList[];
+  created_at?: string;
+  customerGroup?: TCustomerGroup;
+  customer_group_id?: TCustomerGroup['id'];
+  deleted_at?: string;
+  email?: string;
   id: number;
-  job: string;
+  job?: string;
   name: string;
-  phone: string;
-  status: string;
-  updated_at: string;
+  phone?: string;
+  status?: string;
+  updated_at?: string;
+  // userList: TUserList;
+  // user_id: TUserList['id'];
 };
 /* detail */
 

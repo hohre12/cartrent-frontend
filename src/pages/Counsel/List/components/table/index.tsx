@@ -1,35 +1,67 @@
+import Button from '@/components/button/Button';
+import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
 import { COUNSEL_LIST_WATCH_OPTIONS } from '@/constants/counsel';
-import { dummyCounselList } from '@/dummy/counsel';
+import { CUSTOMER_LIST_WATCH_OPTIONS } from '@/constants/customer';
 import {
   selectedCounselHideWatchOptionsState,
-  selectedCounselIdxState,
+  selectedCounselState,
 } from '@/state/counsel';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
+import palette from '@/styles/variables';
+import { TCounselList } from '@/types/counsel';
 import { isColumnsViewHide } from '@/utils/common';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-const CounselListTable = () => {
+type TTableProps = {
+  data: TCounselList[];
+};
+
+const CounselListTable = ({ data }: TTableProps) => {
+  const navigate = useNavigate();
+  const [selectedCounsel, setSelectedCounsel] =
+    useRecoilState(selectedCounselState);
   const selectedCounselHideWatchOptions = useRecoilValue(
     selectedCounselHideWatchOptionsState,
   );
-  const [selectedCounselIdx, setSelectedCounselIdx] = useRecoilState(
-    selectedCounselIdxState,
-  );
-  const handleCounselClick = useCallback(
-    (idx: number) => {
-      setSelectedCounselIdx(idx);
+
+  const isAllChecked = useMemo(() => {
+    return (
+      data.every((it) => selectedCounsel.includes(it)) && data.length !== 0
+    );
+  }, [selectedCounsel, data]);
+
+  const handleAllChecked = useCallback(() => {
+    if (selectedCounsel.length > 0) {
+      setSelectedCounsel([]);
+    } else {
+      setSelectedCounsel(data);
+    }
+  }, [selectedCounsel, data]);
+
+  const handleChecked = useCallback(
+    (val: TCheckBoxValue, counsel: TCounselList) => {
+      if (val) {
+        setSelectedCounsel([...selectedCounsel, counsel]);
+      } else {
+        const newList = selectedCounsel.filter((it) => it.id !== counsel.id);
+        setSelectedCounsel(newList);
+      }
     },
-    [setSelectedCounselIdx],
+    [selectedCounsel],
   );
   return (
-    <CounselListTableWrapper>
+    <TableWrapper>
       <thead>
-        <tr>
-          <th></th>
-          <th></th>
-          <th></th>
+        <TableHeader>
+          <th style={{ width: '60px' }}>
+            <Checkbox
+              value={isAllChecked}
+              onCheckedChange={handleAllChecked}
+            />
+          </th>
           {Object.entries(COUNSEL_LIST_WATCH_OPTIONS).map(([key, value]) => {
             return (
               !isColumnsViewHide(selectedCounselHideWatchOptions, key) && (
@@ -37,84 +69,98 @@ const CounselListTable = () => {
               )
             );
           })}
-        </tr>
+          <th>상담삭제</th>
+        </TableHeader>
       </thead>
       <tbody>
-        {dummyCounselList.map((it, idx) => (
-          <tr
+        {data.map((it, idx) => (
+          <TableItem
             key={idx}
-            className={selectedCounselIdx === it.id ? 'active' : ''}
-            onClick={() => handleCounselClick(it.id)}
+            onClick={() => navigate(`${it.id}`)}
           >
-            <td>{idx}</td>
-            <td>수정</td>
-            <td>삭제</td>
-            <td>{it.created_at}</td>
-            <td>{it.name}</td>
-            <td>{it.phone}</td>
-            <td>{it.counselType}</td>
-            <td>{it.result}</td>
-            <td>{it.counselCustomer}</td>
-            <td>{it.counselName}</td>
-            <td>{it.counselContent}</td>
-            <td>{it.address}</td>
-            <td>{it.customerGroup}</td>
-            <td>{it.product}</td>
-            <td>{it.anotherPhone}</td>
-            <td>{it.carType}</td>
-            <td>{it.type}</td>
-            <td>{it.date}</td>
-            <td>{it.percent}</td>
-            <td>{it.customerType}</td>
-            <td>{it.option}</td>
-            <td>{it.isIng}</td>
-            <td>{it.etc}</td>
-            <td>{it.company}</td>
-          </tr>
+            <td>
+              <div onClick={(e) => e.stopPropagation()}>
+                <Checkbox
+                  value={selectedCounsel.some((cl) => cl.id === it.id)}
+                  onCheckedChange={(val) => handleChecked(val, it)}
+                />
+              </div>
+            </td>
+            {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
+              'customer',
+            ) && <td>{it.customer?.name ?? '-'}</td>}
+            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'context') && (
+              <td className="name">{it.context ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
+              'created_at',
+            ) && <td>{it.created_at ?? '-'}</td>}
+            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'type') && (
+              <td>{it.type ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'status') && (
+              <td>{it.status ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
+              'updated_at',
+            ) && <td>{it.updated_at ?? '-'}</td>}
+            <td>
+              <Button variant="black">삭제</Button>
+            </td>
+          </TableItem>
         ))}
       </tbody>
-    </CounselListTableWrapper>
+    </TableWrapper>
   );
 };
 
 export default CounselListTable;
 
-export const CounselListTableWrapper = styled.table`
-  height: calc(100% - 40px);
+export const TableWrapper = styled.table`
+  position: relative;
+  height: 100%;
+  text-align: left;
   display: block;
-  text-align: center;
-  thead {
-    position: sticky;
-    top: -1px;
-    z-index: 10;
-    background: #ddd;
-    th {
-      height: 40px;
-      ${titleS14Semibold}
-      width: 100vw;
-      border: 1px solid #eee;
-    }
+  overflow: overlay;
+  white-space: nowrap;
+  border-spacing: 0;
+  border-collapse: separate;
+`;
+
+export const TableHeader = styled.tr`
+  height: 40px;
+  position: sticky;
+  top: 0;
+  background-color: ${palette['$white']};
+  z-index: 10;
+  th {
+    ${titleS14Semibold}
+    color: ${palette['$gray-700']};
+    text-align: left;
+    padding: 0px 15px;
+    border-bottom: 1px solid ${palette['$gray-200']};
+    width: 100vw;
   }
-  tbody {
-    tr {
-      cursor: pointer;
-      &.active {
-        background: #ccf0ff;
-      }
-      &:hover {
-        background: #f5f5f5;
-      }
-      td {
-        height: 40px;
-        overflow: hidden;
-        padding: 0px 15px;
-        max-width: 150px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        word-break: break-all;
-        border: 1px solid #eee;
-        ${textS14Regular}
-      }
+`;
+
+export const TableItem = styled.tr`
+  cursor: pointer;
+  &:hover {
+    background: #f5f5f5;
+  }
+  td {
+    ${textS14Regular}
+    border-bottom: 1px solid ${'gray-200'};
+    height: 60px;
+    text-align: left;
+    padding: 0px 15px;
+    max-width: 220px;
+    border-bottom: 1px solid #eee;
+    &.name {
+      font-weight: 600;
     }
   }
 `;
