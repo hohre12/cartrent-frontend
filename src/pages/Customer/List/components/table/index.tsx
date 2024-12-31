@@ -2,6 +2,8 @@ import Button from '@/components/button/Button';
 import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
 import { CUSTOMER_LIST_WATCH_OPTIONS } from '@/constants/customer';
 import { dummyCustomerList } from '@/dummy/customer';
+import { useConfirm } from '@/hooks/useConfirm';
+import { useToast } from '@/hooks/useToast';
 import {
   selectedCustomerHideWatchOptionsState,
   selectedCustomerState,
@@ -21,6 +23,8 @@ type TCustomerListTableProps = {
 
 const CustomerListTable = ({ data }: TCustomerListTableProps) => {
   const navigate = useNavigate();
+  const { showConfirm, hideConfirm } = useConfirm();
+  const { addToast } = useToast();
   const [selectedCustomer, setSelectedCustomer] = useRecoilState(
     selectedCustomerState,
   );
@@ -53,6 +57,20 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
     },
     [selectedCustomer],
   );
+  const handleCustomerDelete = () => {
+    try {
+      hideConfirm();
+      addToast({
+        id: Date.now(),
+        isImage: true,
+        content: `삭제되었습니다`,
+        type: 'success',
+      });
+      setSelectedCustomer([]);
+    } catch (e) {
+      console.warn(e);
+    }
+  };
   return (
     <CustomerListTableWrapper>
       <thead>
@@ -122,7 +140,26 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
               'updated_at',
             ) && <td>{it.updated_at ?? '-'}</td>}
             <td>
-              <Button variant="black">삭제</Button>
+              <div onClick={(e) => e.stopPropagation()}>
+                <Button
+                  variant="black"
+                  onClick={() =>
+                    showConfirm({
+                      isOpen: true,
+                      title: '고객 삭제',
+                      content: `${it.name} 고객을 삭제하시겠습니까?`,
+                      cancelText: '취소',
+                      confirmText: '삭제',
+                      confirmVariant: 'primaryInfo',
+                      onClose: () => hideConfirm(),
+                      onCancel: () => hideConfirm(),
+                      onConfirm: handleCustomerDelete,
+                    })
+                  }
+                >
+                  삭제
+                </Button>
+              </div>
             </td>
           </TableItem>
         ))}
