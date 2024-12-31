@@ -11,12 +11,9 @@ const { persistAtom } = recoilPersist({
   storage: localStorage,
 });
 
-export const userState = atom<TUser>({
+export const userState = atom<TUser | null>({
   key: 'userState',
-  default: {
-    id: 0,
-    name: '테스트 유저',
-  },
+  default: null,
   effects_UNSTABLE: [persistAtom],
 });
 

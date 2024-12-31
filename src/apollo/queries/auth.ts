@@ -9,6 +9,10 @@ export const SIGNIN_MUTATION = gql`
     signIn(signInDto: $signInDto) {
       accessToken
       refreshToken
+      user {
+        name
+        id
+      }
     }
   }
 `;

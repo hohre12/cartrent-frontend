@@ -1,24 +1,19 @@
 import { useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
-import { tokenState } from '@/state/auth';
+import { tokenState, userState } from '@/state/auth';
 import { useEffect, useState, KeyboardEvent, useCallback } from 'react';
 import Input from '@/components/input/Input';
 import Button from '@/components/button/Button';
 import useValidationState from '@/hooks/useValidationState';
 import { validEmpty, validPassword } from '@/utils/validation';
-import ImgLogin from './assets/img-login.png';
-import HkLogo from './assets/logo.png';
-import { authIdLogin } from '@/services/auth';
 import LocalStorage from '@/utils/localStorage';
-import { TOKEN_KEY } from '@/constants/common';
+import { REFRESH_TOKEN_KEY } from '@/constants/common';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import styled from 'styled-components';
 import { titleXxl24Bold } from '@/styles/typography';
 import styles from './index.module.scss';
 import { useMutation } from '@apollo/client';
 import { SIGNIN_MUTATION } from '@/apollo/queries/auth';
-import { useCookies } from 'react-cookie';
-
 const Login = () => {
   const navigate = useNavigate();
   const [signIn] = useMutation(SIGNIN_MUTATION);
@@ -34,15 +29,15 @@ const Login = () => {
     'password' | 'text'
   >('password');
 
-  const [cookies] = useCookies(['access_token']);
   const setToken = useSetRecoilState(tokenState);
+  const setUser = useSetRecoilState(userState);
 
   useEffect(() => {
     setToken(null);
-    const getId = LocalStorage.getItem('id');
-    if (getId) {
-      setId(getId);
-    }
+    // const getId = LocalStorage.getItem('id');
+    // if (getId) {
+    //   setId(getId);
+    // }
   }, [setId, setToken]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -66,16 +61,11 @@ const Login = () => {
         variables: { signInDto: { email: id, password } },
       });
       if (response.data.signIn) {
-        const { accessToken, refreshToken } = response.data.signIn;
+        const { accessToken, refreshToken, user } = response.data.signIn;
         setToken(accessToken);
+        LocalStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+        setUser(user);
         navigate('/dashboard');
-        // setToken('test');
-        // const accessToken = cookies.access_token;
-        // const refreshToken = cookies.refresh_token;
-        // console.log(accessToken);
-        // console.log(refreshToken);
-
-        // LocalStorage.setItem(TOKEN_KEY, 'test');
       }
     } catch (e: any) {
       setPasswordErrorMsg(e.message);
