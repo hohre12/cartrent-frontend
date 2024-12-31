@@ -7,18 +7,31 @@ import { gql } from '@apollo/client';
 export const GET_CUSTOMERS_QUERY = gql`
   query GetCustomers($getCustomersDto: GetCustomersDto!) {
     getCustomers(getCustomersDto: $getCustomersDto) {
-      address
-      birth
-      created_at
-      customer_group_id
-      deleted_at
-      email
       id
-      job
       name
       phone
+      email
+      birth
+      address
+      job
       status
+      user_id
+      customer_group_id
+      created_at
       updated_at
+      deleted_at
+      counselList {
+        id
+      }
+      contractList {
+        id
+      }
+      customerGroup {
+        id
+      }
+      userList {
+        id
+      }
     }
   }
 `;
@@ -30,19 +43,31 @@ export const GET_CUSTOMERS_QUERY = gql`
 export const GET_CUSTOMER_QUERY = gql`
   query GetCustomer($customerId: Float!) {
     getCustomer(customerId: $customerId) {
-      address
-      birth
-      created_at
-      customer_group_id
-      deleted_at
-      email
       id
-      job
       name
       phone
+      email
+      birth
+      address
+      job
       status
-      updated_at
       user_id
+      customer_group_id
+      created_at
+      updated_at
+      deleted_at
+      counselList {
+        id
+      }
+      contractList {
+        id
+      }
+      customerGroup {
+        id
+      }
+      userList {
+        id
+      }
     }
   }
 `;
@@ -54,11 +79,11 @@ export const GET_CUSTOMER_QUERY = gql`
 export const GET_CUSTOMER_GROUP_QUERY = gql`
   query GetCustomerGroups {
     getCustomerGroups {
-      created_at
-      deleted_at
       id
       name
+      created_at
       updated_at
+      deleted_at
     }
   }
 `;

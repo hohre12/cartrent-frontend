@@ -22,6 +22,8 @@ import Toast from './components/toast/Toast';
 import Confirm from './components/confirm/Confirm';
 import CounselDetail from './pages/Counsel/Detail';
 import CounselList from './pages/Counsel/List';
+import ContractList from './pages/Contract/List';
+import ContractDetail from './pages/Contract/Detail';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -100,7 +102,11 @@ function App() {
         >
           <Route
             index
-            element={<Inquiry></Inquiry>}
+            element={<ContractList></ContractList>}
+          />
+          <Route
+            path=":id"
+            element={<ContractDetail></ContractDetail>}
           />
         </Route>
         <Route
