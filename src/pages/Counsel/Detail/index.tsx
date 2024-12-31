@@ -1,16 +1,6 @@
 import Button from '@/components/button/Button';
-import Checkbox from '@/components/checkbox/Checkbox';
 import { SvgIcon } from '@/components/common/SvgIcon';
-import Input from '@/components/input/Input';
-import TextArea from '@/components/textArea/TextArea';
-import { dummyCustomerList } from '@/dummy/customer';
-import { useGetCustomer } from '@/services/customer';
-import {
-  textM16Regular,
-  textS14Medium,
-  textS14Regular,
-} from '@/styles/typography';
-import { useRecoilValue } from 'recoil';
+import { textS14Medium, textS14Regular } from '@/styles/typography';
 import styled from 'styled-components';
 
 const CounselDetail = () => {
@@ -18,7 +8,7 @@ const CounselDetail = () => {
     <DetailWrapper>
       <DetailHeaderWrapper>
         <div className="left">
-          <h2>고객명</h2>
+          <h2>상담제목</h2>
         </div>
         <div className="right">
           <Button>삭제</Button>
@@ -26,82 +16,21 @@ const CounselDetail = () => {
         </div>
       </DetailHeaderWrapper>
       <InfoWrapper>
-        <div className="ProfileWrapper">
-          <SvgIcon
-            iconName="icon-member"
-            style={{ background: '#eee' }}
-          />
-        </div>
-        <div className="Info">
+        <div>
           <div>
-            <span>고객명</span>
-            <Input disabled></Input>
-          </div>
-          <div style={{ marginLeft: 'auto' }}>
-            <span>고객그룹</span>
-            <Input disabled></Input>
+            <p>상담자</p>
+            <div>상담자 테스트</div>
           </div>
           <div>
-            <span>담당자</span>
-            <Input disabled></Input>
-          </div>
-          <div style={{ marginLeft: 'auto' }}>
-            <span>고객번호</span>
-            <Input disabled></Input>
-          </div>
-          <div>
-            <span>고객등급</span>
-            <Input disabled></Input>
-          </div>
-          <div style={{ marginLeft: 'auto' }}>
-            <span>고객연락처</span>
-            <Input disabled></Input>
-          </div>
-          <div style={{ width: '100%' }}>
-            <span>주소</span>
-            <Input disabled></Input>
-            <Input disabled></Input>
-          </div>
-          <div style={{ width: '100%' }}>
-            <span>메모</span>
-            <Input disabled></Input>
-          </div>
-          <div>
-            <span>등록일</span>
-            <Input disabled></Input>
-          </div>
-          <div style={{ marginLeft: 'auto' }}>
-            <span>문자수신</span>
-            <Checkbox></Checkbox>
-            <p>거부</p>
-          </div>
-          <div>
-            <span>생년월일</span>
-            <Input disabled></Input>
-          </div>
-          <div style={{ marginLeft: 'auto' }}>
-            <span>초기포인트</span>
-            <Input disabled></Input>
-          </div>
-          <div style={{ width: '100%' }}>
-            <span>파일첨부</span>
-            <Input disabled></Input>
+            <p>상담일시</p>
+            <div>상담일시 테스트</div>
           </div>
         </div>
-        <div className="memo">
-          <span>계약내용</span>
-          <TextArea
-            value=""
-            height="100%"
-          ></TextArea>
+        <div>
+          <p>상담내용</p>
+          <div>상담내용 테스트 입니다.</div>
         </div>
       </InfoWrapper>
-      <BoxWrapper>
-        <div className="Box">
-          <p>상담</p>
-          <span>2건</span>
-        </div>
-      </BoxWrapper>
       <HistoryWrapper>
         <div>
           <SvgIcon iconName="icon-edit" />
@@ -206,83 +135,14 @@ const DetailHeaderWrapper = styled.div`
 `;
 
 export const InfoWrapper = styled.div`
-  background: #fff;
-  border-radius: 5px;
-  padding: 15px;
   display: flex;
-  gap: 20px;
-  height: 400px;
-  /* .ControlWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    & > div {
-      border: 1px solid #eee;
-      border-radius: 5px;
-    }
-  } */
-  .memo {
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-right: auto;
-    width: 400px;
-    & > span {
-      font-size: 14px;
-    }
-  }
-  .ProfileWrapper {
-    width: 150px;
-    height: 150px;
-    svg {
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .Info {
-    margin-right: auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    width: 700px;
-    & > div {
-      ${textS14Regular}
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      width: 45%;
-      height: 40px;
-      span {
-        text-align: right;
-      }
-    }
+  padding: 20px;
+  text-align: left;
+  & > div {
+    width: 50%;
   }
 `;
-export const BoxWrapper = styled.div`
-  display: flex;
-  gap: 5px;
-  .Box {
-    ${textS14Medium}
-    font-weight: 600;
-    width: 100%;
-    height: 70px;
-    padding: 5px;
-    background: #212533;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    p {
-      color: #fff;
-      text-align: left;
-    }
-    span {
-      color: #1aa18f;
-      text-align: right;
-    }
-  }
-`;
+
 export const HistoryWrapper = styled.div`
   background: #fff;
   border-radius: 5px;
