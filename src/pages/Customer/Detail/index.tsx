@@ -10,10 +10,12 @@ import {
   textS14Medium,
   textS14Regular,
 } from '@/styles/typography';
+import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const CustomerDetail = () => {
+  const [isEdit, setIsEdit] = useState<boolean>(false);
   return (
     <DetailWrapper>
       <DetailHeaderWrapper>
@@ -22,7 +24,7 @@ const CustomerDetail = () => {
         </div>
         <div className="right">
           <Button>삭제</Button>
-          <Button>편집</Button>
+          <Button onClick={() => setIsEdit(!isEdit)}>편집</Button>
         </div>
       </DetailHeaderWrapper>
       <InfoWrapper>
@@ -35,57 +37,57 @@ const CustomerDetail = () => {
         <div className="Info">
           <div>
             <span>고객명</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>고객그룹</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div>
             <span>담당자</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>고객번호</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div>
             <span>고객등급</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>고객연락처</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ width: '100%' }}>
             <span>주소</span>
-            <Input disabled></Input>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ width: '100%' }}>
             <span>메모</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div>
             <span>등록일</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>문자수신</span>
-            <Checkbox></Checkbox>
+            <Checkbox disabled={!isEdit}></Checkbox>
             <p>거부</p>
           </div>
           <div>
             <span>생년월일</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>초기포인트</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ width: '100%' }}>
             <span>파일첨부</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
         </div>
         <div className="memo">
@@ -93,6 +95,7 @@ const CustomerDetail = () => {
           <TextArea
             value=""
             height="100%"
+            disabled={!isEdit}
           ></TextArea>
         </div>
       </InfoWrapper>
