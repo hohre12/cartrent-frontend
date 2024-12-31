@@ -1,5 +1,6 @@
 import Input from '@/components/input/Input';
 import { Modal } from '@/components/modal/Modal';
+import TextArea from '@/components/textArea/TextArea';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import { TModal } from '@/types/common';
@@ -8,20 +9,14 @@ import styled from 'styled-components';
 
 const RegistModal = (props: TModal) => {
   const { ...modalProps } = props;
-  const [name, setName] = useState<string>();
-  const [phone, setPhone] = useState<string>();
-  const [email, setEmail] = useState<string>();
-  const [address, setAddress] = useState<string>();
-  const [birth, setBirth] = useState<string>();
-  const [job, setJob] = useState<string>();
-  const [group, setGroup] = useState<string>();
+  const [title, setTitle] = useState<string>();
   const [submit, setSubmit] = useState<boolean>(false);
   const { addToast } = useToast();
   //   const { showConfirm, hideConfirm } = useConfirm();
 
-  const handleCustomerRegist = async () => {
+  const handleCounselRegist = async () => {
     setSubmit(true);
-    if (!name) return;
+    if (!title) return;
     try {
       //   const { data } = await postMemberTemp({
       //     userName: userName,
@@ -34,7 +29,7 @@ const RegistModal = (props: TModal) => {
       addToast({
         id: Date.now(),
         isImage: true,
-        content: `고객이 등록되었습니다.`,
+        content: `상담이 등록되었습니다.`,
         type: 'success',
       });
       modalProps.onConfirm?.();
@@ -44,81 +39,76 @@ const RegistModal = (props: TModal) => {
   };
   return (
     <>
-      <SModal
+      <Modal
         {...modalProps}
-        title="고객등록"
-        size="small"
-        onConfirm={handleCustomerRegist}
+        title="상담정보등록"
+        size={'small'}
+        footerOption={{
+          cancelText: '취소',
+          confirmText: '등록',
+        }}
+        onConfirm={handleCounselRegist}
       >
-        <RegistCustomerWrapper>
-          {/* 이름, 전화번호, 이메일, 주소, 생년월일, 직업, 그룹 */}
-          <div>
-            <p>고객명</p>
-            <Input
-              placeholder="고객명을 입력해 주세요."
-              value={name}
-              onTextChange={(text) => setName(text)}
-            />
+        <CounselModalContentWrapper>
+          <div className="InputWrapper">
+            <div>
+              <span>상담제목</span>
+              <Input
+                placeholder="상담제목을 입력해 주세요."
+                value={title}
+                onTextChange={(text) => setTitle(text)}
+              ></Input>
+            </div>
+            <div>
+              <span>고객명(셀렉트박스)</span>
+              <Input></Input>
+            </div>
+            <div>
+              <span>상담일시(캘린더)</span>
+              <Input></Input>
+            </div>
+            <div>
+              <span>상담자(셀렉트박스)</span>
+              <Input disabled></Input>
+            </div>
           </div>
-          <div>
-            <p>전화번호</p>
-            <Input
-              placeholder="전화번호를 입력해 주세요."
-              value={phone}
-              onTextChange={(text) => setPhone(text)}
-            />
+          <div className="TextAreaWrapper">
+            <span>상담내용</span>
+            <TextArea
+              value={''}
+              style={{ width: '500px' }}
+            ></TextArea>
           </div>
-          <div>
-            <p>이메일</p>
-            <Input
-              placeholder="이메일을 입력해 주세요."
-              value={email}
-              onTextChange={(text) => setEmail(text)}
-            />
-          </div>
-          <div>
-            <p>주소</p>
-            <Input
-              placeholder="주소를 입력해 주세요."
-              value={address}
-              onTextChange={(text) => setAddress(text)}
-            />
-          </div>
-          <div>
-            <p>생년월일</p>
-            <Input
-              placeholder="생년월일을 입력해 주세요."
-              value={birth}
-              onTextChange={(text) => setBirth(text)}
-            />
-          </div>
-          <div>
-            <p>직업</p>
-            <Input
-              placeholder="직업을 입력해 주세요."
-              value={job}
-              onTextChange={(text) => setJob(text)}
-            />
-          </div>
-          <div>
-            <p>그룹</p>
-            <Input
-              placeholder="그룹을 입력해 주세요.(셀렉박스 예정)"
-              value={group}
-              onTextChange={(text) => setGroup(text)}
-            />
-          </div>
-        </RegistCustomerWrapper>
-      </SModal>
+        </CounselModalContentWrapper>
+      </Modal>
     </>
   );
 };
 
 export default RegistModal;
 
-export const SModal = styled(Modal)``;
-const RegistCustomerWrapper = styled.div`
+const CounselModalContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
+  .InputWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    & > div {
+      display: flex;
+      width: 49%;
+      gap: 5px;
+      & > span {
+        width: 50px;
+      }
+    }
+  }
+  .TextAreaWrapper {
+    display: flex;
+    gap: 5px;
+    & > span {
+      width: 50px;
+    }
+  }
 `;

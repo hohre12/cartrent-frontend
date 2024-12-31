@@ -15,7 +15,7 @@ import { SvgIcon } from '../common/SvgIcon';
 const GlobalNavigationBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isCounselModal, setIsCounselModal] = useState<boolean>(false);
+  // const [isCounselModal, setIsCounselModal] = useState<boolean>(false);
   const resetToken = useResetRecoilState(tokenState);
   const user = useRecoilValue(userState);
 
@@ -47,9 +47,9 @@ const GlobalNavigationBar = () => {
         </RouteWrapper>
         <GlobalFunctionWrapper>
           {/* <span>고객등록</span> */}
-          <span onClick={() => setIsCounselModal(!isCounselModal)}>
+          {/* <span onClick={() => setIsCounselModal(!isCounselModal)}>
             상담등록
-          </span>
+          </span> */}
           <div
             className="userInfo"
             onClick={handleLogout}
@@ -59,7 +59,7 @@ const GlobalNavigationBar = () => {
           </div>
         </GlobalFunctionWrapper>
       </GlobalNavigationBarWrapper>
-      {isCounselModal && (
+      {/* {isCounselModal && (
         <Modal
           isOpen={isCounselModal}
           title="상담정보등록"
@@ -94,7 +94,7 @@ const GlobalNavigationBar = () => {
             </div>
           </CounselModalContentWrapper>
         </Modal>
-      )}
+      )} */}
     </>
   );
 };
