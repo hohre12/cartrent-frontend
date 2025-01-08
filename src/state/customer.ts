@@ -1,6 +1,11 @@
 import { TCustomerFiltersStateType, TCustomerList } from '@/types/customer';
 import { atom } from 'recoil';
 
+export const selectedCustomerIdxState = atom<number>({
+  key: 'selectedCustomerIdxState',
+  default: undefined,
+});
+
 export const selectedCustomerState = atom<TCustomerList[]>({
   key: 'selectedCustomerState',
   default: [],

@@ -1,33 +1,33 @@
+import Button from '@/components/button/Button';
 import Checkbox from '@/components/checkbox/Checkbox';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import Input from '@/components/input/Input';
+import TextArea from '@/components/textArea/TextArea';
 import { dummyCustomerList } from '@/dummy/customer';
 import { useGetCustomer } from '@/services/customer';
-import { selectedCustomerIdxState } from '@/state/customer';
 import {
   textM16Regular,
   textS14Medium,
   textS14Regular,
 } from '@/styles/typography';
+import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const CustomerDetail = () => {
-  const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
-
-  const data = dummyCustomerList.find((it) => it.id === selectedCustomerIdx);
-
+  const [isEdit, setIsEdit] = useState<boolean>(false);
   return (
     <DetailWrapper>
-      <InfoWrapper>
-        <div className="ControlWrapper">
-          <div>
-            <SvgIcon iconName="icon-setting" />
-          </div>
-          <div>
-            <SvgIcon iconName="icon-trash" />
-          </div>
+      <DetailHeaderWrapper>
+        <div className="left">
+          <h2>고객명</h2>
         </div>
+        <div className="right">
+          <Button>삭제</Button>
+          <Button onClick={() => setIsEdit(!isEdit)}>편집</Button>
+        </div>
+      </DetailHeaderWrapper>
+      <InfoWrapper>
         <div className="ProfileWrapper">
           <SvgIcon
             iconName="icon-member"
@@ -37,80 +37,72 @@ const CustomerDetail = () => {
         <div className="Info">
           <div>
             <span>고객명</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>고객그룹</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div>
             <span>담당자</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>고객번호</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div>
             <span>고객등급</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>고객연락처</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ width: '100%' }}>
             <span>주소</span>
-            <Input disabled></Input>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ width: '100%' }}>
             <span>메모</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div>
             <span>등록일</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>문자수신</span>
-            <Checkbox></Checkbox>
+            <Checkbox disabled={!isEdit}></Checkbox>
             <p>거부</p>
           </div>
           <div>
             <span>생년월일</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>초기포인트</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
           <div style={{ width: '100%' }}>
             <span>파일첨부</span>
-            <Input disabled></Input>
+            <Input disabled={!isEdit}></Input>
           </div>
+        </div>
+        <div className="memo">
+          <span>계약내용</span>
+          <TextArea
+            value=""
+            height="100%"
+            disabled={!isEdit}
+          ></TextArea>
         </div>
       </InfoWrapper>
       <BoxWrapper>
         <div className="Box">
-          <p>고객요청</p>
-          <span>고객1</span>
-        </div>
-        <div className="Box">
-          <p>예약</p>
-          <span>9건</span>
-        </div>
-        <div className="Box">
           <p>상담</p>
           <span>2건</span>
-        </div>
-        <div className="Box">
-          <p>판매</p>
-          <span>160,000원</span>
-        </div>
-        <div className="Box">
-          <p>정액/쿠폰</p>
-          <span>10회</span>
         </div>
       </BoxWrapper>
       <HistoryWrapper>
@@ -188,10 +180,32 @@ const CustomerDetail = () => {
 export default CustomerDetail;
 
 export const DetailWrapper = styled.div`
-  width: calc(100% - 770px);
+  /* width: 600px; */
   display: flex;
   flex-direction: column;
   gap: 10px;
+`;
+
+const DetailHeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 30px;
+  border-bottom: 1px solid #eeeeee;
+  .left {
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+    }
+  }
+  .right {
+    font-weight: 700;
+    display: flex;
+    gap: 10px;
+    button {
+      width: 100px;
+    }
+  }
 `;
 
 export const InfoWrapper = styled.div`
@@ -201,13 +215,24 @@ export const InfoWrapper = styled.div`
   display: flex;
   gap: 20px;
   height: 400px;
-  .ControlWrapper {
+  /* .ControlWrapper {
     display: flex;
     flex-direction: column;
     gap: 5px;
     & > div {
       border: 1px solid #eee;
       border-radius: 5px;
+    }
+  } */
+  .memo {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-right: auto;
+    width: 400px;
+    & > span {
+      font-size: 14px;
     }
   }
   .ProfileWrapper {
@@ -219,7 +244,7 @@ export const InfoWrapper = styled.div`
     }
   }
   .Info {
-    margin-left: auto;
+    margin-right: auto;
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
@@ -243,7 +268,7 @@ export const BoxWrapper = styled.div`
   .Box {
     ${textS14Medium}
     font-weight: 600;
-    width: 20%;
+    width: 100%;
     height: 70px;
     padding: 5px;
     background: #212533;
@@ -274,6 +299,7 @@ export const HistoryWrapper = styled.div`
     display: flex;
     gap: 10px;
     align-items: center;
+    cursor: pointer;
     .DateTimeWrapper {
       text-align: right;
       width: 100px;

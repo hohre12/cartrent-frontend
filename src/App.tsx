@@ -16,14 +16,15 @@ import { textXs12Medium } from './styles/typography';
 import Adjustment from './pages/Adjustment';
 import Inquiry from './pages/Inquiry';
 import Dashboard from './pages/Dashboard';
-import CustomerList from './pages/Customer/List';
-import CustomerDetail from './pages/Customer/Detail';
+import CustomerList from './pages/Customer3/List';
+import CustomerDetail from './pages/Customer3/Detail';
 import Toast from './components/toast/Toast';
 import Confirm from './components/confirm/Confirm';
 import CounselDetail from './pages/Counsel/Detail';
 import CounselList from './pages/Counsel/List';
 import ContractList from './pages/Contract/List';
 import ContractDetail from './pages/Contract/Detail';
+import Customer from './pages/Customer';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -76,11 +77,7 @@ function App() {
         >
           <Route
             index
-            element={<CustomerList></CustomerList>}
-          />
-          <Route
-            path=":id"
-            element={<CustomerDetail></CustomerDetail>}
+            element={<Customer></Customer>}
           />
         </Route>
         <Route
