@@ -2,6 +2,37 @@ import { TUser } from './auth';
 import { TFilterList } from './common';
 import { TCustomerResponse } from './customer';
 
+/* Query DTO */
+export type GetContractsDto = {
+  search?: string;
+};
+/* Query DTO */
+
+/* Mutation DTO */
+export type UpdateContractDto = {
+  contractId: number;
+  context: string;
+  carModelId?: number;
+  carOptionIds: number[];
+  color?: string;
+  cityId?: number;
+  userId?: number;
+  contractAt?: string;
+  shippingAt?: string;
+  extraPrice?: number;
+  bank?: string;
+  contractType?: string;
+  isVATSupport?: boolean;
+  interChangeFee?: number;
+  feeRate?: string;
+  fee?: number;
+};
+export type UpdateContractStatusDto = {
+  contractId: number;
+  status: string;
+};
+/* Mutation DTO */
+
 /* list */
 export type TContractListRequest = {
   search?: string;

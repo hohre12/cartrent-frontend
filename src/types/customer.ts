@@ -1,6 +1,50 @@
 import { TFilterList } from './common';
 import { TCounselList } from './counsel';
 
+/* Query DTO */
+export type GetCustomersDto = {
+  search?: string;
+};
+/* Query DTO */
+
+/* Mutation DTO */
+export type CreateCustomerDto = {
+  name: string;
+  phone: string;
+  email?: string;
+  birth?: string;
+  address?: string;
+  job?: string;
+  customerGroupId: number;
+};
+
+export type UpdateCustomerDto = {
+  name?: string;
+  phone?: string;
+  email?: string;
+  birth?: string;
+  status?: string;
+  address?: string;
+  job?: string;
+  customerGroupId?: number;
+  customerId: number;
+};
+
+export type UpdateCustomerOfUserDto = {
+  customerId: number;
+  userId: number;
+};
+
+export type CreateCustomerGroupDto = {
+  name: string;
+};
+
+export type UpdateCustomerGroupDto = {
+  customerGroupId: number;
+  name: string;
+};
+/* Mutation DTO */
+
 export type TCustomerGroup = {
   id: number;
   name: string;

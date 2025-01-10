@@ -1,6 +1,22 @@
 import { TFilterList } from './common';
 import { TCustomerGroup, TCustomerResponse } from './customer';
 
+/* Query DTO */
+export type GetCounselsDto = {
+  search?: string;
+};
+/* Query DTO */
+
+/* Mutation DTO */
+export type CreateCounselDto = {
+  context: string;
+  status: string;
+  type: string;
+  image_url?: string;
+  customer_id: number;
+};
+/* Mutation DTO */
+
 /* list */
 export type TCounselListRequest = {
   search?: string;
