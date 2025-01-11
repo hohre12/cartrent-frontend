@@ -1,14 +1,25 @@
 import { CUSTOMER_LIST_WATCH_OPTIONS } from '@/constants/customer';
-import { dummyCustomerList } from '@/dummy/customer';
-import { selectedCustomerHideWatchOptionsState } from '@/state/customer';
+// import { dummyCustomerList } from '@/dummy/customer';
+import {
+  selectedCustomerHideWatchOptionsState,
+  selectedCustomerIdxState,
+} from '@/state/customer';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
+import { TCustomer } from '@/types/customer';
 import { isColumnsViewHide } from '@/utils/common';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-const CustomerListTable = () => {
+type TCustomerListTableProps = {
+  data: TCustomer[];
+};
+
+const CustomerListTable = ({ data }: TCustomerListTableProps) => {
   const selectedCustomerHideWatchOptions = useRecoilValue(
     selectedCustomerHideWatchOptionsState,
+  );
+  const [selectedCustomer, setSelectedCustomer] = useRecoilState(
+    selectedCustomerIdxState,
   );
   return (
     <CustomerListTableWrapper>
@@ -25,15 +36,20 @@ const CustomerListTable = () => {
         </tr>
       </thead>
       <tbody>
-        {dummyCustomerList.map((it, idx) => (
+        {data.map((it, idx) => (
           <tr
             key={idx}
-            onClick={() => console.log(it.id)}
+            onClick={() => setSelectedCustomer(it.id)}
           >
             <td>{idx}</td>
             <td>{it.status}</td>
-            <td>{it.name}</td>
-            <td>{it.customerGroup.name}</td>
+            <td>{it.created_at ?? '-'}</td>
+            <td>{it.name ?? '-'}</td>
+            <td>{it.phone ?? '-'}</td>
+            <td>{it.memo ?? '-'}</td>
+            <td>{'차종'}</td>
+            {/* <td>{it.contractList.}</td> */}
+            <td>{it.customerGroup?.name}</td>
             <td>{it.phone}</td>
           </tr>
         ))}

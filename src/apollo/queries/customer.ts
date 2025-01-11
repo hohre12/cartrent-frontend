@@ -8,30 +8,27 @@ import { gql } from '@apollo/client';
 export const GET_CUSTOMERS_QUERY = gql`
   query GetCustomers($getCustomersDto: GetCustomersDto!) {
     getCustomers(getCustomersDto: $getCustomersDto) {
+      status
       id
+      created_at
       name
       phone
-      email
-      birth
-      address
-      job
-      status
-      user_id
-      customer_group_id
-      created_at
-      updated_at
-      deleted_at
-      counselList {
-        id
-      }
       contractList {
-        id
+        carModel {
+          id
+          name
+        }
+        contractType
+        status
       }
-      customerGroup {
-        id
+      counselList {
+        created_at
       }
-      userList {
+      updated_at
+      memo
+      customerGrade {
         id
+        name
       }
     }
   }

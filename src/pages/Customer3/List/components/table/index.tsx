@@ -1,7 +1,7 @@
 import Button from '@/components/button/Button';
 import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
 import { CUSTOMER_LIST_WATCH_OPTIONS } from '@/constants/customer';
-import { dummyCustomerList } from '@/dummy/customer';
+// import { dummyCustomerList } from '@/dummy/customer';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import {
@@ -10,7 +10,7 @@ import {
 } from '@/state/customer';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { TCustomerList } from '@/types/customer';
+import { TCustomer } from '@/types/customer';
 import { isColumnsViewHide } from '@/utils/common';
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +18,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 type TCustomerListTableProps = {
-  data: TCustomerList[];
+  data: TCustomer[];
 };
 
 const CustomerListTable = ({ data }: TCustomerListTableProps) => {
@@ -47,7 +47,7 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
   }, [selectedCustomer, data]);
 
   const handleChecked = useCallback(
-    (val: TCheckBoxValue, customer: TCustomerList) => {
+    (val: TCheckBoxValue, customer: TCustomer) => {
       if (val) {
         setSelectedCustomer([...selectedCustomer, customer]);
       } else {

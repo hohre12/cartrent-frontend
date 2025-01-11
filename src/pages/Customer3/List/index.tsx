@@ -19,7 +19,7 @@ import RegistModal from './components/registModal';
 import FloatingMenu from './components/floatingMenu';
 import { useQuery } from '@apollo/client';
 import { GET_CUSTOMERS_QUERY } from '@/apollo/queries/customer';
-import { GetCustomersDto, TCustomerList } from '@/types/customer';
+import { GetCustomersDto, TCustomer } from '@/types/customer';
 
 const CustomerList = () => {
   const [text, setText] = useState<string>('');
@@ -29,7 +29,7 @@ const CustomerList = () => {
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
   const { data, loading, error } = useQuery<
-    { getCustomers: TCustomerList },
+    { getCustomers: TCustomer[] },
     { getCustomersDto: GetCustomersDto }
   >(GET_CUSTOMERS_QUERY, {
     variables: { getCustomersDto: { search: 'searchText' } },

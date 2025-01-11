@@ -26,15 +26,16 @@ export type UpdateCityDto = {
 /* Mutation DTO */
 
 export type TUser = {
+  created_at: string;
+  deleted_at: string;
+  email?: string;
   id: number;
   name: string;
-  positionId?: number;
-  createdAt?: string;
-  updatedAt?: string;
-  deletedAt?: string;
+  password: string;
+  updated_at?: string;
 };
 
-export type TAuthIdLoginRequest = {
-  id: string;
-  password: string;
+export type TCity = {
+  id: number;
+  name: string;
 };

@@ -42,3 +42,21 @@ export type UpdateCarOptionDto = {
   price: number;
 };
 /* Mutation DTO */
+
+export type TCar = {
+  id: number;
+  name: string;
+};
+export type TCarModel = {
+  car: TCar;
+  car_id?: number;
+  id: number;
+  name: string;
+  price: number;
+};
+export type TCarOption = {
+  car_model_id?: number;
+  id: number;
+  name: string;
+  price: number;
+};
