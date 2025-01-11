@@ -3,7 +3,7 @@ import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import SearchBox from '@/components/searchBox/SearchBox';
 // import { useGetFilterList } from '@/services/common';
-import { customerFiltersState } from '@/state/customer';
+import { contractFiltersState } from '@/state/contract';
 import { TFilterList } from '@/types/common';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -13,13 +13,13 @@ type TFilterProps = {
   handleApply: (selectedList: TFilterList<number>[]) => void;
 };
 
-const FilterGroup = ({ handleApply }: TFilterProps) => {
+const FilterStatus = ({ handleApply }: TFilterProps) => {
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const [selectedFilters, setSelectedFilters] = useState<TFilterList<number>[]>(
     [],
   );
-  const filters = useRecoilValue(customerFiltersState);
+  const filters = useRecoilValue(contractFiltersState);
   // const { data } = useGetFilterList<number>('ship/in', 'category', {
   //   offset: 0,
   //   keyword: searchText ? searchText : null,
@@ -69,8 +69,8 @@ const FilterGroup = ({ handleApply }: TFilterProps) => {
   );
 
   useEffect(() => {
-    if (filters.group.length > 0) {
-      setSelectedFilters(filters.group);
+    if (filters.status.length > 0) {
+      setSelectedFilters(filters.status);
     }
   }, [filters, setSelectedFilters]);
 
@@ -83,7 +83,7 @@ const FilterGroup = ({ handleApply }: TFilterProps) => {
       <SearchBox
         className="searchBox"
         value={text}
-        placeholder="그룹 검색"
+        placeholder="상태 검색"
         onTextChange={(text) => setText(text)}
         onRemoveClick={handleSearchTextDelete}
         onKeyDown={handleSearch}
@@ -129,7 +129,7 @@ const FilterGroup = ({ handleApply }: TFilterProps) => {
   );
 };
 
-export default FilterGroup;
+export default FilterStatus;
 
 export const Filter = styled.div`
   top: 40px;

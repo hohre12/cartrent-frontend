@@ -6,8 +6,8 @@ import { gql } from '@apollo/client';
  * - 계약 목록 호출
  */
 export const GET_CONTRACTS_QUERY = gql`
-  query GetContracts($getContractDto: GetContractsDto!) {
-    getContracts(getContractDto: $getContractDto) {
+  query GetContracts($getContractsDto: GetContractsDto!) {
+    getContracts(getContractsDto: $getContractsDto) {
       id
       context
       status
