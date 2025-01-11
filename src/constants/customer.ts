@@ -7,10 +7,10 @@ export const CUSTOMER_LIST_WATCH_OPTIONS = {
   car: '차종',
   contractStatus: '진행여부',
   counselDate: '최근상담일시',
-  product: '상품',
+  contractType: '상품',
   type: '구분',
   grade: '고객등급',
-  updated_at: '고객 마지막 수정일시',
+  //   updated_at: '고객 마지막 수정일시',
 };
 
 export const CUSTOMER_LIST_WATCH_REQUIRED_OPTIONS = ['status', 'name'];

@@ -2,15 +2,13 @@ import { GET_CUSTOMER_QUERY } from '@/apollo/queries/customer';
 import Checkbox from '@/components/checkbox/Checkbox';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import Input from '@/components/input/Input';
-import { dummyCustomerList } from '@/dummy/customer';
-import { useGetCustomer } from '@/services/customer';
 import { selectedCustomerIdxState } from '@/state/customer';
 import {
   textM16Regular,
   textS14Medium,
   textS14Regular,
 } from '@/styles/typography';
-import { TCustomerResponse } from '@/types/customer';
+import { TCustomer } from '@/types/customer';
 import { useQuery } from '@apollo/client';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -18,7 +16,7 @@ import styled from 'styled-components';
 const CustomerDetail = () => {
   const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
   const { data, loading, error } = useQuery<
-    { getCustomer: TCustomerResponse },
+    { getCustomer: TCustomer },
     { customerId: number }
   >(GET_CUSTOMER_QUERY, {
     variables: { customerId: selectedCustomerIdx },
@@ -63,7 +61,7 @@ const CustomerDetail = () => {
             <span>담당자</span>
             <Input
               disabled
-              value={detail.userList[0].name}
+              value={detail.userList.name}
             ></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
@@ -77,7 +75,7 @@ const CustomerDetail = () => {
             <span>고객등급</span>
             <Input
               disabled
-              value={detail.grade}
+              value={detail.customerGrade?.name}
             ></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
@@ -158,14 +156,14 @@ const CustomerDetail = () => {
       </BoxWrapper> */}
       <HistoryWrapper>
         {detail.counselList?.map((it, idx) => (
-          <div>
+          <div key={idx}>
             <SvgIcon iconName="icon-edit" />
             <div className="DateTimeWrapper">
               <span>{it.created_at}</span>
               <p>{it.created_at}</p>
             </div>
             <div className="HistoryText">
-              상담사 : {it.user.name}
+              상담사 : {it.user?.name}
               <br></br>
               상담내용 : {it.context}
             </div>

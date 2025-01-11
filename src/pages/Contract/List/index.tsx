@@ -4,7 +4,7 @@ import Input from '@/components/input/Input';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import Button from '@/components/button/Button';
-import { dummyCustomerList } from '@/dummy/customer';
+// import { dummyCustomerList } from '@/dummy/customer';
 import Pagination from '@/components/pagination/Pagination';
 import { useCallback, useState } from 'react';
 import WatchOptionModal from './components/watchOptionModal';
@@ -116,9 +116,9 @@ const ContractList = () => {
           </ControlWrapper>
         </Header>
         <ListContent>
-          {dummyCustomerList.length > 0 ? (
+          {data.length > 0 ? (
             <>
-              <CustomerListTable data={dummyCustomerList}></CustomerListTable>
+              <CustomerListTable data={data}></CustomerListTable>
               {selectedCustomer.length > 0 && <FloatingMenu></FloatingMenu>}
             </>
           ) : searchText ? (
