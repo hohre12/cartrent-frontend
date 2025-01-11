@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+/* Query */
 /**
  * 상담 목록 쿼리
  * - 상담 목록 호출
@@ -59,3 +60,13 @@ export const GET_COUNSEL_QUERY = gql`
     }
   }
 `;
+/* Query */
+/* Mutation */
+export const CREATE_COUNSEL_MUTATION = gql`
+  mutation CreateCounsel($createCounselDto: CreateCounselDto!) {
+    createCounsel(createCounselDto: $createCounselDto) {
+      id
+    }
+  }
+`;
+/* Mutation */
