@@ -1,7 +1,7 @@
-import { TCounselFiltersStateType, TCounselList } from '@/types/counsel';
+import { TCounselFiltersStateType, TCounsel } from '@/types/counsel';
 import { atom } from 'recoil';
 
-export const selectedCounselState = atom<TCounselList[]>({
+export const selectedCounselState = atom<TCounsel[]>({
   key: 'selectedCounselState',
   default: [],
 });

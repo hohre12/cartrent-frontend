@@ -4,7 +4,7 @@ import Input from '@/components/input/Input';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import Button from '@/components/button/Button';
-import { dummyCustomerList } from '@/dummy/customer';
+// import { dummyCustomerList } from '@/dummy/customer';
 import Pagination from '@/components/pagination/Pagination';
 import { useCallback, useState } from 'react';
 import WatchOptionModal from './components/watchOptionModal';
@@ -17,7 +17,7 @@ import { TFilterList } from '@/types/common';
 import { Circle, FilterContent } from '@/styles/common';
 import RegistModal from './components/registModal';
 import CounselListTable from './components/table';
-import { dummyCounselList } from '@/dummy/counsel';
+// import { dummyCounselList } from '@/dummy/counsel';
 import { selectedCounselState } from '@/state/counsel';
 import FloatingMenu from './components/floatingMenu';
 
@@ -113,9 +113,9 @@ const CounselList = () => {
           </ControlWrapper>
         </Header>
         <ListContent>
-          {dummyCustomerList.length > 0 ? (
+          {[].length > 0 ? (
             <>
-              <CounselListTable data={dummyCounselList}></CounselListTable>
+              {/* <CounselListTable data={dummyCounselList}></CounselListTable> */}
               {selectedCounsel.length > 0 && <FloatingMenu></FloatingMenu>}
             </>
           ) : searchText ? (

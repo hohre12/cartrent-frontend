@@ -8,7 +8,7 @@ import {
 } from '@/state/counsel';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { TCounselList } from '@/types/counsel';
+import { TCounsel } from '@/types/counsel';
 import { isColumnsViewHide } from '@/utils/common';
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 type TTableProps = {
-  data: TCounselList[];
+  data: TCounsel[];
 };
 
 const CounselListTable = ({ data }: TTableProps) => {
@@ -42,7 +42,7 @@ const CounselListTable = ({ data }: TTableProps) => {
   }, [selectedCounsel, data]);
 
   const handleChecked = useCallback(
-    (val: TCheckBoxValue, counsel: TCounselList) => {
+    (val: TCheckBoxValue, counsel: TCounsel) => {
       if (val) {
         setSelectedCounsel([...selectedCounsel, counsel]);
       } else {
