@@ -88,15 +88,16 @@ const CounselListTable = ({ data }: TTableProps) => {
             </td>
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
-              'customer',
-            ) && <td>{it.customer?.name ?? '-'}</td>}
-            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'context') && (
-              <td className="name">{it.context ?? '-'}</td>
-            )}
-            {!isColumnsViewHide(
-              selectedCounselHideWatchOptions,
               'created_at',
             ) && <td>{it.created_at ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
+              'customerName',
+            ) && <td>{it.customer?.name ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
+              'customerPhone',
+            ) && <td>{it.customer?.phone ?? '-'}</td>}
             {!isColumnsViewHide(selectedCounselHideWatchOptions, 'type') && (
               <td>{it.type ?? '-'}</td>
             )}
@@ -105,8 +106,22 @@ const CounselListTable = ({ data }: TTableProps) => {
             )}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
+              'userName',
+            ) && <td>{it.user?.name ?? '-'}</td>}
+            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'title') && (
+              <td className="name">{it.context ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'context') && (
+              <td className="name">{it.context ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
+              'customerGroup',
+            ) && <td>{it.customerGroup?.name ?? '-'}</td>}
+            {/* {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
               'updated_at',
-            ) && <td>{it.updated_at ?? '-'}</td>}
+            ) && <td>{it.updated_at ?? '-'}</td>} */}
             <td>
               <Button variant="black">삭제</Button>
             </td>
