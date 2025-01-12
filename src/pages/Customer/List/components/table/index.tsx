@@ -93,6 +93,7 @@ export const CustomerListTableWrapper = styled.table`
       ${titleS14Semibold}
       width: 100vw;
       border: 1px solid #eee;
+      white-space: nowrap;
     }
   }
   tbody {

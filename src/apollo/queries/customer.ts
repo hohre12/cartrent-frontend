@@ -56,6 +56,14 @@ export const GET_CUSTOMER_QUERY = gql`
       deleted_at
       counselList {
         id
+        customer {
+          name
+        }
+        context
+        created_at
+        user {
+          name
+        }
       }
       contractList {
         id

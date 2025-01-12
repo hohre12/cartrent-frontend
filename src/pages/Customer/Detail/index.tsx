@@ -163,6 +163,8 @@ const CustomerDetail = () => {
               <p>{it.created_at}</p>
             </div>
             <div className="HistoryText">
+              고객명 : {it.customer?.name}
+              <br></br>
               상담사 : {it.user?.name}
               <br></br>
               상담내용 : {it.context}
@@ -177,10 +179,11 @@ const CustomerDetail = () => {
 export default CustomerDetail;
 
 export const DetailWrapper = styled.div`
-  width: calc(100% - 770px);
+  //   width: calc(100% - 770px);
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 800px;
 `;
 
 export const InfoWrapper = styled.div`
