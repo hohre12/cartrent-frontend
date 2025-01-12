@@ -20,7 +20,7 @@ const FloatingMenu = () => {
       addToast({
         id: Date.now(),
         isImage: true,
-        content: `${selectedContract.length}명의 고객이 삭제되었습니다.`,
+        content: `${selectedContract.length}개의 계약이 삭제되었습니다.`,
         type: 'success',
       });
       hideConfirm();
@@ -33,8 +33,8 @@ const FloatingMenu = () => {
   const handleContractDeleteConfirm = useCallback(() => {
     showConfirm({
       isOpen: true,
-      title: '고객 삭제',
-      content: `${selectedContract.length}명의 고객을 삭제하시겠습니까?`,
+      title: '계약 삭제',
+      content: `${selectedContract.length}개의 계약을 삭제하시겠습니까?`,
       cancelText: '취소',
       confirmText: '완료',
       confirmVariant: 'primaryInfo',
@@ -59,7 +59,7 @@ const FloatingMenu = () => {
             iconName="icon-trash"
             alt="trash"
           />
-          <p>고객삭제</p>
+          <p>계약삭제</p>
         </Button>
       </div>
     </FloatingWrapper>
