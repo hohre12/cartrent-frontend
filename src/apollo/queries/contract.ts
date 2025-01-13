@@ -1,12 +1,13 @@
 import { gql } from '@apollo/client';
 
+/* Query */
 /**
  * 계약 목록 쿼리
  * - 계약 목록 호출
  */
 export const GET_CONTRACTS_QUERY = gql`
-  query GetContracts($getContractDto: GetContractsDto!) {
-    getContracts(getContractDto: $getContractDto) {
+  query GetContracts($getContractsDto: GetContractsDto!) {
+    getContracts(getContractsDto: $getContractsDto) {
       id
       context
       status
@@ -93,3 +94,22 @@ export const GET_CONTRACT_QUERY = gql`
     }
   }
 `;
+/* Query */
+/* Mutation */
+export const UPDATE_CONTRACT_MUTATION = gql`
+  mutation UpdateContract($updateContractDto: UpdateContractDto!) {
+    updateContract(updateContractDto: $updateContractDto) {
+      id
+    }
+  }
+`;
+export const UPDATE_CONTRACT_STATUS_MUTATION = gql`
+  mutation UpdateContractStatus(
+    $updateContractStatus: UpdateContractStatusDto!
+  ) {
+    updateContractStatus(updateContractStatus: $updateContractStatus) {
+      id
+    }
+  }
+`;
+/* Mutation */

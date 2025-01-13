@@ -3,8 +3,8 @@ import Checkbox from '@/components/checkbox/Checkbox';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import Input from '@/components/input/Input';
 import TextArea from '@/components/textArea/TextArea';
-import { dummyCustomerList } from '@/dummy/customer';
-import { useGetCustomer } from '@/services/customer';
+// import { dummyCustomerList } from '@/dummy/customer';
+// import { useGetCustomer } from '@/services/customer';
 import {
   textM16Regular,
   textS14Medium,

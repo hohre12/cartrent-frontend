@@ -1,44 +1,47 @@
 import styled from 'styled-components';
-import CustomerListTable from './components/table';
 import Input from '@/components/input/Input';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import Button from '@/components/button/Button';
-import { dummyCustomerList } from '@/dummy/customer';
+// import { dummyContractList } from '@/dummy/contract';
 import Pagination from '@/components/pagination/Pagination';
 import { useCallback, useState } from 'react';
 import WatchOptionModal from './components/watchOptionModal';
 import SearchBox from '@/components/searchBox/SearchBox';
-import FilterGroup from './components/filter/group';
 import useClickOutside from '@/hooks/useClickOutside';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import { customerFiltersState, selectedCustomerState } from '@/state/customer';
+import { contractFiltersState, selectedContractState } from '@/state/contract';
 import { TFilterList } from '@/types/common';
 import { Circle, FilterContent } from '@/styles/common';
 import RegistModal from './components/registModal';
 import FloatingMenu from './components/floatingMenu';
 import { useQuery } from '@apollo/client';
-import { GET_CUSTOMERS_QUERY } from '@/apollo/queries/customer';
+import { GET_CONTRACTS_QUERY } from '@/apollo/queries/contract';
+import { GetContractsDto, TContract } from '@/types/contract';
+import ContractListTable from './components/table';
+import FilterStatus from './components/filter/status';
 
 const ContractList = () => {
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
-  const selectedCustomer = useRecoilValue(selectedCustomerState);
+  const selectedContract = useRecoilValue(selectedContractState);
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
-  const { data, loading, error } = useQuery(GET_CUSTOMERS_QUERY, {
-    variables: { getCustomersDto: { search: searchText } },
+  const { data, loading, error } = useQuery<
+    { getContracts: TContract[] },
+    { getContractsDto: GetContractsDto }
+  >(GET_CONTRACTS_QUERY, {
+    variables: { getContractsDto: { search: searchText } },
   });
-  console.log('customer data: ', data);
 
   // filters
-  const [filters, setFilters] = useRecoilState(customerFiltersState);
-  const resetFilters = useResetRecoilState(customerFiltersState);
+  const [filters, setFilters] = useRecoilState(contractFiltersState);
+  const resetFilters = useResetRecoilState(contractFiltersState);
 
-  // filter - group
-  const [isFilterGroupOpen, setIsFilterGroupOpen] = useState<boolean>(false);
-  const filterGroupRef = useClickOutside(() => setIsFilterGroupOpen(false));
+  // filter - status
+  const [isFilterStatusOpen, setIsFilterStatusOpen] = useState<boolean>(false);
+  const filterStatusRef = useClickOutside(() => setIsFilterStatusOpen(false));
 
   const handleSearchTextDelete = useCallback(() => {
     setSearchText('');
@@ -51,12 +54,12 @@ const ContractList = () => {
     [setSearchText],
   );
 
-  const handleSetFilterGroup = useCallback(
+  const handleSetFilterStatus = useCallback(
     (selectedFilters: TFilterList<number>[]) => {
-      setFilters({ ...filters, group: selectedFilters });
-      setIsFilterGroupOpen(false);
+      setFilters({ ...filters, status: selectedFilters });
+      setIsFilterStatusOpen(false);
     },
-    [filters, setFilters, setIsFilterGroupOpen],
+    [filters, setFilters, setIsFilterStatusOpen],
   );
 
   return (
@@ -69,33 +72,35 @@ const ContractList = () => {
               <SearchBox
                 value={text}
                 placeholder="검색"
-                recentKey="customerRecent"
+                recentKey="contractRecent"
                 onTextChange={(text) => setText(text)}
                 onRemoveClick={handleSearchTextDelete}
                 onKeyDown={handleSearch}
                 onRecentClick={handleSearch}
                 keyword="계약명"
               ></SearchBox>
-              <FilterContent ref={filterGroupRef}>
+              <FilterContent ref={filterStatusRef}>
                 <Button
                   variant="white"
                   configuration="stroke"
                   style={{
-                    borderColor: filters.group.length > 0 ? '#333' : '#ddd',
+                    borderColor: filters.status.length > 0 ? '#333' : '#ddd',
                   }}
-                  onClick={() => setIsFilterGroupOpen(!isFilterGroupOpen)}
+                  onClick={() => setIsFilterStatusOpen(!isFilterStatusOpen)}
                 >
                   계약일자
-                  {filters.group.length > 0 && (
-                    <Circle>{filters.group.length}</Circle>
+                  {filters.status.length > 0 && (
+                    <Circle>{filters.status.length}</Circle>
                   )}
                   <SvgIcon
                     iconName="icon-arrowButton"
                     style={{ fill: '#333' }}
                   />
                 </Button>
-                {isFilterGroupOpen && (
-                  <FilterGroup handleApply={handleSetFilterGroup}></FilterGroup>
+                {isFilterStatusOpen && (
+                  <FilterStatus
+                    handleApply={handleSetFilterStatus}
+                  ></FilterStatus>
                 )}
               </FilterContent>
             </SearchBoxWrapper>
@@ -116,27 +121,27 @@ const ContractList = () => {
           </ControlWrapper>
         </Header>
         <ListContent>
-          {dummyCustomerList.length > 0 ? (
+          {data && data.getContracts?.length > 0 ? (
             <>
-              <CustomerListTable data={dummyCustomerList}></CustomerListTable>
-              {selectedCustomer.length > 0 && <FloatingMenu></FloatingMenu>}
+              <ContractListTable data={data.getContracts}></ContractListTable>
+              {selectedContract.length > 0 && <FloatingMenu></FloatingMenu>}
             </>
           ) : searchText ? (
             <div className="noList">
               <h2>검색결과 없음</h2>
-              <p>고객명으로 검색해주세요.</p>
+              <p>계약명으로 검색해주세요.</p>
             </div>
           ) : (
             <div className="noList">
-              <h2>고객 없음</h2>
-              <p>등록된 고객이 없습니다.</p>
+              <h2>계약 없음</h2>
+              <p>등록된 계약이 없습니다.</p>
             </div>
           )}
         </ListContent>
-        {/* {dummyCustomerList.length > 0 && (
+        {/* {dummyContractList.length > 0 && (
           <Pagination
-            totalCount={dummyCustomerList.length}
-            length={dummyCustomerList.length}
+            totalCount={dummyContractList.length}
+            length={dummyContractList.length}
           ></Pagination>
         )} */}
       </ListWrapper>

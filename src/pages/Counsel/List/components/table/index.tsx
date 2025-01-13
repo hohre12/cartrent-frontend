@@ -8,7 +8,7 @@ import {
 } from '@/state/counsel';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { TCounselList } from '@/types/counsel';
+import { TCounsel } from '@/types/counsel';
 import { isColumnsViewHide } from '@/utils/common';
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 type TTableProps = {
-  data: TCounselList[];
+  data: TCounsel[];
 };
 
 const CounselListTable = ({ data }: TTableProps) => {
@@ -42,7 +42,7 @@ const CounselListTable = ({ data }: TTableProps) => {
   }, [selectedCounsel, data]);
 
   const handleChecked = useCallback(
-    (val: TCheckBoxValue, counsel: TCounselList) => {
+    (val: TCheckBoxValue, counsel: TCounsel) => {
       if (val) {
         setSelectedCounsel([...selectedCounsel, counsel]);
       } else {
@@ -88,15 +88,16 @@ const CounselListTable = ({ data }: TTableProps) => {
             </td>
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
-              'customer',
-            ) && <td>{it.customer?.name ?? '-'}</td>}
-            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'context') && (
-              <td className="name">{it.context ?? '-'}</td>
-            )}
-            {!isColumnsViewHide(
-              selectedCounselHideWatchOptions,
               'created_at',
             ) && <td>{it.created_at ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
+              'customerName',
+            ) && <td>{it.customer?.name ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
+              'customerPhone',
+            ) && <td>{it.customer?.phone ?? '-'}</td>}
             {!isColumnsViewHide(selectedCounselHideWatchOptions, 'type') && (
               <td>{it.type ?? '-'}</td>
             )}
@@ -105,8 +106,22 @@ const CounselListTable = ({ data }: TTableProps) => {
             )}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
+              'userName',
+            ) && <td>{it.user?.name ?? '-'}</td>}
+            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'title') && (
+              <td className="name">{it.context ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'context') && (
+              <td className="name">{it.context ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
+              'customerGroup',
+            ) && <td>{it.customerGroup?.name ?? '-'}</td>}
+            {/* {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
               'updated_at',
-            ) && <td>{it.updated_at ?? '-'}</td>}
+            ) && <td>{it.updated_at ?? '-'}</td>} */}
             <td>
               <Button variant="black">삭제</Button>
             </td>

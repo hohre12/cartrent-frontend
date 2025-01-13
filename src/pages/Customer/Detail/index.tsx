@@ -1,21 +1,29 @@
+import { GET_CUSTOMER_QUERY } from '@/apollo/queries/customer';
 import Checkbox from '@/components/checkbox/Checkbox';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import Input from '@/components/input/Input';
-import { dummyCustomerList } from '@/dummy/customer';
-import { useGetCustomer } from '@/services/customer';
 import { selectedCustomerIdxState } from '@/state/customer';
 import {
   textM16Regular,
   textS14Medium,
   textS14Regular,
 } from '@/styles/typography';
+import { TCustomer } from '@/types/customer';
+import { useQuery } from '@apollo/client';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const CustomerDetail = () => {
   const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
+  const { data, loading, error } = useQuery<
+    { getCustomer: TCustomer },
+    { customerId: number }
+  >(GET_CUSTOMER_QUERY, {
+    variables: { customerId: selectedCustomerIdx },
+  });
 
-  const data = dummyCustomerList.find((it) => it.id === selectedCustomerIdx);
+  const detail = data?.getCustomer;
+  if (!detail) return <></>;
 
   return (
     <DetailWrapper>
@@ -37,40 +45,70 @@ const CustomerDetail = () => {
         <div className="Info">
           <div>
             <span>고객명</span>
-            <Input disabled></Input>
+            <Input
+              disabled
+              value={detail.name}
+            ></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>고객그룹</span>
-            <Input disabled></Input>
+            <Input
+              disabled
+              value={detail.customerGroup?.name}
+            ></Input>
           </div>
           <div>
             <span>담당자</span>
-            <Input disabled></Input>
+            <Input
+              disabled
+              value={detail.userList.name}
+            ></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>고객번호</span>
-            <Input disabled></Input>
+            <Input
+              disabled
+              value={detail.id}
+            ></Input>
           </div>
           <div>
             <span>고객등급</span>
-            <Input disabled></Input>
+            <Input
+              disabled
+              value={detail.customerGrade?.name}
+            ></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>고객연락처</span>
-            <Input disabled></Input>
+            <Input
+              disabled
+              value={detail.phone}
+            ></Input>
           </div>
           <div style={{ width: '100%' }}>
             <span>주소</span>
-            <Input disabled></Input>
-            <Input disabled></Input>
+            <Input
+              disabled
+              value={detail.address}
+            ></Input>
+            <Input
+              disabled
+              value={detail.address}
+            ></Input>
           </div>
           <div style={{ width: '100%' }}>
             <span>메모</span>
-            <Input disabled></Input>
+            <Input
+              disabled
+              value={detail.memo}
+            ></Input>
           </div>
           <div>
             <span>등록일</span>
-            <Input disabled></Input>
+            <Input
+              disabled
+              value={detail.created_at}
+            ></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>문자수신</span>
@@ -79,7 +117,10 @@ const CustomerDetail = () => {
           </div>
           <div>
             <span>생년월일</span>
-            <Input disabled></Input>
+            <Input
+              disabled
+              value={detail.birth}
+            ></Input>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <span>초기포인트</span>
@@ -91,7 +132,7 @@ const CustomerDetail = () => {
           </div>
         </div>
       </InfoWrapper>
-      <BoxWrapper>
+      {/* <BoxWrapper>
         <div className="Box">
           <p>고객요청</p>
           <span>고객1</span>
@@ -112,74 +153,24 @@ const CustomerDetail = () => {
           <p>정액/쿠폰</p>
           <span>10회</span>
         </div>
-      </BoxWrapper>
+      </BoxWrapper> */}
       <HistoryWrapper>
-        <div>
-          <SvgIcon iconName="icon-edit" />
-          <div className="DateTimeWrapper">
-            <span>2024-09-27</span>
-            <p>14:00 (화)</p>
+        {detail.counselList?.map((it, idx) => (
+          <div key={idx}>
+            <SvgIcon iconName="icon-edit" />
+            <div className="DateTimeWrapper">
+              <span>{it.created_at}</span>
+              <p>{it.created_at}</p>
+            </div>
+            <div className="HistoryText">
+              고객명 : {it.customer?.name}
+              <br></br>
+              상담사 : {it.user?.name}
+              <br></br>
+              상담내용 : {it.context}
+            </div>
           </div>
-          <div className="HistoryText">
-            상담사 : 직원A<br></br>
-            상담내용 : 테스트입니다.
-          </div>
-        </div>
-        <div>
-          <SvgIcon iconName="icon-edit" />
-          <div className="DateTimeWrapper">
-            <span>2024-09-26</span>
-            <p>11:00 (월)</p>
-          </div>
-          <div className="HistoryText">
-            상담사 : 직원B<br></br>
-            상담내용 : 첫번째 테스트입니다.
-          </div>
-        </div>
-        <div>
-          <SvgIcon iconName="icon-edit" />
-          <div className="DateTimeWrapper">
-            <span>2024-09-27</span>
-            <p>14:00 (화)</p>
-          </div>
-          <div className="HistoryText">
-            상담사 : 직원A<br></br>
-            상담내용 : 테스트입니다.
-          </div>
-        </div>
-        <div>
-          <SvgIcon iconName="icon-edit" />
-          <div className="DateTimeWrapper">
-            <span>2024-09-26</span>
-            <p>11:00 (월)</p>
-          </div>
-          <div className="HistoryText">
-            상담사 : 직원B<br></br>
-            상담내용 : 첫번째 테스트입니다.
-          </div>
-        </div>
-        <div>
-          <SvgIcon iconName="icon-edit" />
-          <div className="DateTimeWrapper">
-            <span>2024-09-27</span>
-            <p>14:00 (화)</p>
-          </div>
-          <div className="HistoryText">
-            상담사 : 직원A<br></br>
-            상담내용 : 테스트입니다.
-          </div>
-        </div>
-        <div>
-          <SvgIcon iconName="icon-edit" />
-          <div className="DateTimeWrapper">
-            <span>2024-09-26</span>
-            <p>11:00 (월)</p>
-          </div>
-          <div className="HistoryText">
-            상담사 : 직원B<br></br>
-            상담내용 : 첫번째 테스트입니다.
-          </div>
-        </div>
+        ))}
       </HistoryWrapper>
     </DetailWrapper>
   );
@@ -188,10 +179,11 @@ const CustomerDetail = () => {
 export default CustomerDetail;
 
 export const DetailWrapper = styled.div`
-  width: calc(100% - 770px);
+  //   width: calc(100% - 770px);
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 800px;
 `;
 
 export const InfoWrapper = styled.div`

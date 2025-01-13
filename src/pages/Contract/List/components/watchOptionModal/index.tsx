@@ -2,10 +2,10 @@ import Button from '@/components/button/Button';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { Modal } from '@/components/modal/Modal';
 import {
-  CUSTOMER_LIST_WATCH_OPTIONS,
-  CUSTOMER_LIST_WATCH_REQUIRED_OPTIONS,
-} from '@/constants/customer';
-import { selectedCustomerHideWatchOptionsState } from '@/state/customer';
+  CONTRACT_LIST_WATCH_OPTIONS,
+  CONTRACT_LIST_WATCH_REQUIRED_OPTIONS,
+} from '@/constants/contract';
+import { selectedContractHideWatchOptionsState } from '@/state/contract';
 import { textS14Medium, textS14Regular } from '@/styles/typography';
 import { TModal } from '@/types/common';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -18,17 +18,17 @@ const WatchOptionModal = (props: TModal) => {
     string[]
   >([]);
   const [selectedHideWatchOptions, setSelectedHideWatchOptions] =
-    useRecoilState(selectedCustomerHideWatchOptionsState);
+    useRecoilState(selectedContractHideWatchOptionsState);
 
   const hideWatchOptionKeys = useMemo(() => {
     return Object.keys(
-      CUSTOMER_LIST_WATCH_OPTIONS,
-    ) as (keyof typeof CUSTOMER_LIST_WATCH_OPTIONS)[];
+      CONTRACT_LIST_WATCH_OPTIONS,
+    ) as (keyof typeof CONTRACT_LIST_WATCH_OPTIONS)[];
   }, []);
 
   const handleSetWatchOptions = useCallback(
     (key: string) => {
-      if (!CUSTOMER_LIST_WATCH_REQUIRED_OPTIONS.includes(key)) {
+      if (!CONTRACT_LIST_WATCH_REQUIRED_OPTIONS.includes(key)) {
         if (selectedHideOptionsList.includes(key)) {
           const newList = selectedHideOptionsList.filter((it) => it !== key);
           setSelectedHideOptionsList(newList);
@@ -44,14 +44,14 @@ const WatchOptionModal = (props: TModal) => {
     if (
       selectedHideOptionsList.length ===
       hideWatchOptionKeys.filter(
-        (it) => !CUSTOMER_LIST_WATCH_REQUIRED_OPTIONS.includes(it),
+        (it) => !CONTRACT_LIST_WATCH_REQUIRED_OPTIONS.includes(it),
       ).length
     ) {
       setSelectedHideOptionsList([]);
     } else {
       setSelectedHideOptionsList([
         ...hideWatchOptionKeys.filter(
-          (it) => !CUSTOMER_LIST_WATCH_REQUIRED_OPTIONS.includes(it),
+          (it) => !CONTRACT_LIST_WATCH_REQUIRED_OPTIONS.includes(it),
         ),
       ]);
     }
@@ -103,12 +103,12 @@ const WatchOptionModal = (props: TModal) => {
               key={idx}
               size="large"
               className={[
-                `${selectedHideOptionsList.includes(it) ? '' : 'active'} ${CUSTOMER_LIST_WATCH_REQUIRED_OPTIONS.includes(it) ? 'required' : ''}`,
+                `${selectedHideOptionsList.includes(it) ? '' : 'active'} ${CONTRACT_LIST_WATCH_REQUIRED_OPTIONS.includes(it) ? 'required' : ''}`,
               ].join(' ')}
               onClick={() => handleSetWatchOptions(it)}
             >
-              <div>{CUSTOMER_LIST_WATCH_OPTIONS[it]}</div>
-              {CUSTOMER_LIST_WATCH_REQUIRED_OPTIONS.includes(it) ? (
+              <div>{CONTRACT_LIST_WATCH_OPTIONS[it]}</div>
+              {CONTRACT_LIST_WATCH_REQUIRED_OPTIONS.includes(it) ? (
                 <SvgIcon iconName="icon-lock" />
               ) : !selectedHideOptionsList.includes(it) ? (
                 <SvgIcon iconName="icon-check" />

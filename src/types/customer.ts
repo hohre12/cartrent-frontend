@@ -1,69 +1,150 @@
+import { TUser } from './auth';
 import { TFilterList } from './common';
-import { TCounselList } from './counsel';
+import { TContract } from './contract';
+import { TCounsel } from './counsel';
 
-export type TCustomerGroup = {
-  id: number;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string;
-};
-
-/* list */
-export type TCustomerListRequest = {
+/* Query DTO */
+export type GetCustomersDto = {
   search?: string;
-  offset: number;
-  length: number;
 };
-export type TCustomerListResponse = {
-  list: TCustomerList[];
-  count: number;
-};
-export type TCustomerList = {
-  address?: string;
-  birth?: string;
-  // contractList: TContractList[];
-  counselList?: TCounselList[];
-  created_at: string;
-  customerGroup: TCustomerGroup;
-  customer_group_id?: TCustomerGroup['id'];
-  deleted_at?: string;
-  email?: string;
-  id: number;
-  job?: string;
+/* Query DTO */
+
+/* Mutation DTO */
+export type CreateCustomerDto = {
   name: string;
   phone: string;
-  status: string;
-  updated_at: string;
-  // userList: TUserList;
-  // user_id: TUserList['id'];
+  email?: string;
+  birth?: string;
+  address?: string;
+  job?: string;
+  customerGroupId: number;
 };
-/* list */
 
-/* detail */
-export type TCustomerRequest = {
+export type UpdateCustomerDto = {
+  name?: string;
+  phone?: string;
+  email?: string;
+  birth?: string;
+  status?: string;
+  address?: string;
+  job?: string;
+  customerGroupId?: number;
   customerId: number;
 };
 
-export type TCustomerResponse = {
+export type UpdateCustomerOfUserDto = {
+  customerId: number;
+  userId: number;
+};
+
+export type CreateCustomerGroupDto = {
+  name: string;
+};
+
+export type UpdateCustomerGroupDto = {
+  customerGroupId: number;
+  name: string;
+};
+/* Mutation DTO */
+
+export type TCustomer = {
   address?: string;
   birth?: string;
-  // contractList: TContractList[];
-  counselList?: TCounselList[];
+  contractList: TContract[];
+  counselList: TCounsel[];
   created_at?: string;
+  customerGrade?: TCustomerGrade;
   customerGroup?: TCustomerGroup;
-  customer_group_id?: TCustomerGroup['id'];
+  customer_grade_id?: number;
+  customer_group_id?: number;
   deleted_at?: string;
   email?: string;
   id: number;
   job?: string;
+  memo?: string;
   name: string;
-  phone?: string;
-  status?: string;
+  phone: string;
+  status: string;
   updated_at?: string;
-  // userList: TUserList;
-  // user_id: TUserList['id'];
+  userList: TUser;
+  user_id: number;
 };
+
+export type TCustomerGrade = {
+  created_at?: string;
+  deleted_at?: string;
+  id: number;
+  name: string;
+  updated_at?: string;
+};
+
+export type TCustomerGroup = {
+  created_at?: string;
+  deleted_at?: string;
+  id: number;
+  name: string;
+  updated_at?: string;
+};
+
+/* list */
+// export type TCustomerListRequest = {
+//   search?: string;
+//   offset: number;
+//   length: number;
+// };
+// export type TCustomerListResponse = {
+//   list: TCustomerList[];
+//   count: number;
+// };
+// export type TCustomerList = {
+//   address?: string;
+//   birth?: string;
+//   contractList: TContractList[];
+//   counselList?: TCounselList[];
+//   created_at: string;
+//   customerGroup: TCustomerGroup;
+//   customer_group_id?: TCustomerGroup['id'];
+//   deleted_at?: string;
+//   email?: string;
+//   id: number;
+//   job?: string;
+//   name: string;
+//   phone: string;
+//   status: string;
+//   updated_at: string;
+//   userList: TUser[];
+//   user_id: TUser['id'];
+//   grade?: string;
+//   memo?: string;
+// };
+/* list */
+
+/* detail */
+// export type TCustomerRequest = {
+//   customerId: number;
+// };
+
+// export type TCustomerResponse = {
+//   address?: string;
+//   birth?: string;
+//   contractList: TContractList[];
+//   counselList?: TCounselList[];
+//   created_at?: string;
+//   customerGroup?: TCustomerGroup;
+//   customer_group_id?: TCustomerGroup['id'];
+//   deleted_at?: string;
+//   email?: string;
+//   id: number;
+//   job?: string;
+//   name: string;
+//   phone?: string;
+//   status?: string;
+//   updated_at?: string;
+//   userList: TUser[];
+//   user_id: TUser['id'];
+//   grade?: string;
+//   memo?: string;
+// };
 /* detail */
 
 /* front handle type */

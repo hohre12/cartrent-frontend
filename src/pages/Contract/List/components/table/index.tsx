@@ -1,63 +1,63 @@
 import Button from '@/components/button/Button';
 import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
-import { CUSTOMER_LIST_WATCH_OPTIONS } from '@/constants/customer';
-import { dummyCustomerList } from '@/dummy/customer';
+import { CONTRACT_LIST_WATCH_OPTIONS } from '@/constants/contract';
+// import { dummyContractList } from '@/dummy/contract';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import {
-  selectedCustomerHideWatchOptionsState,
-  selectedCustomerState,
-} from '@/state/customer';
+  selectedContractHideWatchOptionsState,
+  selectedContractState,
+} from '@/state/contract';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { TCustomerList } from '@/types/customer';
+import { TContract } from '@/types/contract';
 import { isColumnsViewHide } from '@/utils/common';
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-type TCustomerListTableProps = {
-  data: TCustomerList[];
+type TTableProps = {
+  data: TContract[];
 };
 
-const CustomerListTable = ({ data }: TCustomerListTableProps) => {
+const ContractListTable = ({ data }: TTableProps) => {
   const navigate = useNavigate();
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
-  const [selectedCustomer, setSelectedCustomer] = useRecoilState(
-    selectedCustomerState,
+  const [selectedContract, setSelectedContract] = useRecoilState(
+    selectedContractState,
   );
-  const selectedCustomerHideWatchOptions = useRecoilValue(
-    selectedCustomerHideWatchOptionsState,
+  const selectedContractHideWatchOptions = useRecoilValue(
+    selectedContractHideWatchOptionsState,
   );
 
   const isAllChecked = useMemo(() => {
     return (
-      data.every((it) => selectedCustomer.includes(it)) && data.length !== 0
+      data.every((it) => selectedContract.includes(it)) && data.length !== 0
     );
-  }, [selectedCustomer, data]);
+  }, [selectedContract, data]);
 
   const handleAllChecked = useCallback(() => {
-    if (selectedCustomer.length > 0) {
-      setSelectedCustomer([]);
+    if (selectedContract.length > 0) {
+      setSelectedContract([]);
     } else {
-      setSelectedCustomer(data);
+      setSelectedContract(data);
     }
-  }, [selectedCustomer, data]);
+  }, [selectedContract, data]);
 
   const handleChecked = useCallback(
-    (val: TCheckBoxValue, customer: TCustomerList) => {
+    (val: TCheckBoxValue, contract: TContract) => {
       if (val) {
-        setSelectedCustomer([...selectedCustomer, customer]);
+        setSelectedContract([...selectedContract, contract]);
       } else {
-        const newList = selectedCustomer.filter((it) => it.id !== customer.id);
-        setSelectedCustomer(newList);
+        const newList = selectedContract.filter((it) => it.id !== contract.id);
+        setSelectedContract(newList);
       }
     },
-    [selectedCustomer],
+    [selectedContract],
   );
-  const handleCustomerDelete = () => {
+  const handleContractDelete = () => {
     try {
       hideConfirm();
       addToast({
@@ -66,13 +66,13 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
         content: `삭제되었습니다`,
         type: 'success',
       });
-      setSelectedCustomer([]);
+      setSelectedContract([]);
     } catch (e) {
       console.warn(e);
     }
   };
   return (
-    <CustomerListTableWrapper>
+    <ContractListTableWrapper>
       <thead>
         <TableHeader>
           <th style={{ width: '60px' }}>
@@ -81,14 +81,14 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
               onCheckedChange={handleAllChecked}
             />
           </th>
-          {Object.entries(CUSTOMER_LIST_WATCH_OPTIONS).map(([key, value]) => {
+          {Object.entries(CONTRACT_LIST_WATCH_OPTIONS).map(([key, value]) => {
             return (
-              !isColumnsViewHide(selectedCustomerHideWatchOptions, key) && (
+              !isColumnsViewHide(selectedContractHideWatchOptions, key) && (
                 <th key={key}>{value}</th>
               )
             );
           })}
-          <th>고객삭제</th>
+          <th>계약삭제</th>
         </TableHeader>
       </thead>
       <tbody>
@@ -100,45 +100,30 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
             <td>
               <div onClick={(e) => e.stopPropagation()}>
                 <Checkbox
-                  value={selectedCustomer.some((cl) => cl.id === it.id)}
+                  value={selectedContract.some((cl) => cl.id === it.id)}
                   onCheckedChange={(val) => handleChecked(val, it)}
                 />
               </div>
             </td>
-            {!isColumnsViewHide(selectedCustomerHideWatchOptions, 'status') && (
+            {!isColumnsViewHide(selectedContractHideWatchOptions, 'status') && (
               <td>{it.status ?? '-'}</td>
             )}
-            {!isColumnsViewHide(selectedCustomerHideWatchOptions, 'name') && (
-              <td className="name">{it.name ?? '-'}</td>
-            )}
             {!isColumnsViewHide(
-              selectedCustomerHideWatchOptions,
-              'customerGroup',
-            ) && <td>{it.customerGroup?.name ?? '-'}</td>}
-            {!isColumnsViewHide(selectedCustomerHideWatchOptions, 'phone') && (
-              <td>{it.phone ?? '-'}</td>
-            )}
-            {!isColumnsViewHide(selectedCustomerHideWatchOptions, 'email') && (
-              <td>{it.email ?? '-'}</td>
-            )}
-            {!isColumnsViewHide(
-              selectedCustomerHideWatchOptions,
-              'address',
-            ) && <td>{it.address ?? '-'}</td>}
-            {!isColumnsViewHide(selectedCustomerHideWatchOptions, 'birth') && (
-              <td>{it.birth ?? '-'}</td>
-            )}
-            {!isColumnsViewHide(selectedCustomerHideWatchOptions, 'job') && (
-              <td>{it.job ?? '-'}</td>
-            )}
-            {!isColumnsViewHide(
-              selectedCustomerHideWatchOptions,
+              selectedContractHideWatchOptions,
               'created_at',
             ) && <td>{it.created_at ?? '-'}</td>}
-            {!isColumnsViewHide(
-              selectedCustomerHideWatchOptions,
-              'updated_at',
-            ) && <td>{it.updated_at ?? '-'}</td>}
+            {!isColumnsViewHide(selectedContractHideWatchOptions, 'status') && (
+              <td>{it.carModel?.name ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(selectedContractHideWatchOptions, 'status') && (
+              <td>{it.context ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(selectedContractHideWatchOptions, 'status') && (
+              <td>{it.contractType ?? '-'}</td>
+            )}
+            {!isColumnsViewHide(selectedContractHideWatchOptions, 'status') && (
+              <td>{it.customer?.name ?? '-'}</td>
+            )}
             <td>
               <div onClick={(e) => e.stopPropagation()}>
                 <Button
@@ -146,14 +131,14 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
                   onClick={() =>
                     showConfirm({
                       isOpen: true,
-                      title: '고객 삭제',
-                      content: `${it.name} 고객을 삭제하시겠습니까?`,
+                      title: '계약 삭제',
+                      content: `계약을 삭제하시겠습니까?`,
                       cancelText: '취소',
                       confirmText: '삭제',
                       confirmVariant: 'primaryInfo',
                       onClose: () => hideConfirm(),
                       onCancel: () => hideConfirm(),
-                      onConfirm: handleCustomerDelete,
+                      onConfirm: handleContractDelete,
                     })
                   }
                 >
@@ -164,13 +149,13 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
           </TableItem>
         ))}
       </tbody>
-    </CustomerListTableWrapper>
+    </ContractListTableWrapper>
   );
 };
 
-export default CustomerListTable;
+export default ContractListTable;
 
-export const CustomerListTableWrapper = styled.table`
+export const ContractListTableWrapper = styled.table`
   position: relative;
   height: 100%;
   text-align: left;

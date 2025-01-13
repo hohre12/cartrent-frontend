@@ -11,7 +11,7 @@ const CustomerFilter = () => {
       const newValue = isOpenFilters.filter((it) => it !== key);
       setIsOpenFilters(newValue);
     } else {
-      setIsOpenFilters([...isOpenFilters, 'group']);
+      setIsOpenFilters([...isOpenFilters, key]);
     }
   };
   return (
@@ -55,6 +55,84 @@ const CustomerFilter = () => {
           </div>
         )}
       </Filter>
+      <Filter>
+        <div
+          className="Menu"
+          onClick={() => handleOpenFilters('grade')}
+        >
+          <div>
+            <SvgIcon
+              iconName="icon-arrow_up_s"
+              style={{
+                width: '20px',
+                transform: isOpenFilters.some((it) => it === 'grade')
+                  ? 'rotate(90deg)'
+                  : '',
+              }}
+            />
+            <p>고객등급</p>
+          </div>
+          <div>
+            <SvgIcon iconName="icon-search" />
+            <SvgIcon iconName="icon-plus" />
+          </div>
+        </div>
+        {isOpenFilters.some((it) => it === 'grade') && (
+          <div className="SubMenu">
+            <div>
+              <Checkbox></Checkbox>
+              <p>A그룹</p>
+            </div>
+            <div>
+              <Checkbox></Checkbox>
+              <p>B그룹</p>
+            </div>
+            <div>
+              <Checkbox></Checkbox>
+              <p>C그룹</p>
+            </div>
+          </div>
+        )}
+      </Filter>
+      <Filter>
+        <div
+          className="Menu"
+          onClick={() => handleOpenFilters('manager')}
+        >
+          <div>
+            <SvgIcon
+              iconName="icon-arrow_up_s"
+              style={{
+                width: '20px',
+                transform: isOpenFilters.some((it) => it === 'manager')
+                  ? 'rotate(90deg)'
+                  : '',
+              }}
+            />
+            <p>담당자</p>
+          </div>
+          <div>
+            <SvgIcon iconName="icon-search" />
+            <SvgIcon iconName="icon-plus" />
+          </div>
+        </div>
+        {isOpenFilters.some((it) => it === 'manager') && (
+          <div className="SubMenu">
+            <div>
+              <Checkbox></Checkbox>
+              <p>A그룹</p>
+            </div>
+            <div>
+              <Checkbox></Checkbox>
+              <p>B그룹</p>
+            </div>
+            <div>
+              <Checkbox></Checkbox>
+              <p>C그룹</p>
+            </div>
+          </div>
+        )}
+      </Filter>
     </FilterWrapper>
   );
 };
@@ -63,7 +141,7 @@ export default CustomerFilter;
 
 export const FilterWrapper = styled.div`
   background: #fff;
-  width: 300px;
+  min-width: 300px;
   padding: 5px;
   // 드래그 방지
   -webkit-user-select: none;

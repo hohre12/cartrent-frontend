@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+/* Query */
 /**
  * 상담 목록 쿼리
  * - 상담 목록 호출
@@ -7,24 +8,16 @@ import { gql } from '@apollo/client';
 export const GET_COUNSELS_QUERY = gql`
   query GetCounsels($getCounselsDto: GetCounselsDto!) {
     getCounsels(getCounselsDto: $getCounselsDto) {
-      id
       context
-      status
-      type
-      image_url
-      user_id
-      customer_id
       created_at
-      updated_at
-      deleted_at
       customer {
-        id
+        name
+        phone
       }
-      customerGroup {
-        id
-      }
+      type
+      status
       user {
-        id
+        name
       }
     }
   }
@@ -59,3 +52,13 @@ export const GET_COUNSEL_QUERY = gql`
     }
   }
 `;
+/* Query */
+/* Mutation */
+export const CREATE_COUNSEL_MUTATION = gql`
+  mutation CreateCounsel($createCounselDto: CreateCounselDto!) {
+    createCounsel(createCounselDto: $createCounselDto) {
+      id
+    }
+  }
+`;
+/* Mutation */

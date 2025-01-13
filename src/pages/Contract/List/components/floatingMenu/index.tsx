@@ -2,64 +2,64 @@ import Button from '@/components/button/Button';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
-import { selectedCustomerState } from '@/state/customer';
+import { selectedContractState } from '@/state/contract';
 import { TConfirm, TToast } from '@/types/common';
 import { useCallback, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 const FloatingMenu = () => {
-  const [selectedCustomer, setSelectedCustomer] = useRecoilState(
-    selectedCustomerState,
+  const [selectedContract, setSelectedContract] = useRecoilState(
+    selectedContractState,
   );
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
 
-  const handleCustomerDelete = () => {
+  const handleContractDelete = () => {
     try {
       addToast({
         id: Date.now(),
         isImage: true,
-        content: `${selectedCustomer.length}명의 고객이 삭제되었습니다.`,
+        content: `${selectedContract.length}개의 계약이 삭제되었습니다.`,
         type: 'success',
       });
       hideConfirm();
-      setSelectedCustomer([]);
+      setSelectedContract([]);
     } catch (e) {
       console.warn(e);
     }
   };
 
-  const handleCustomerDeleteConfirm = useCallback(() => {
+  const handleContractDeleteConfirm = useCallback(() => {
     showConfirm({
       isOpen: true,
-      title: '고객 삭제',
-      content: `${selectedCustomer.length}명의 고객을 삭제하시겠습니까?`,
+      title: '계약 삭제',
+      content: `${selectedContract.length}개의 계약을 삭제하시겠습니까?`,
       cancelText: '취소',
       confirmText: '완료',
       confirmVariant: 'primaryInfo',
       onClose: () => hideConfirm(),
       onCancel: () => hideConfirm(),
-      onConfirm: handleCustomerDelete,
+      onConfirm: handleContractDelete,
     });
-  }, [showConfirm, hideConfirm, selectedCustomer, handleCustomerDelete]);
+  }, [showConfirm, hideConfirm, selectedContract, handleContractDelete]);
 
   return (
     <FloatingWrapper>
       <h4>
-        <span>{selectedCustomer.length}명</span>
+        <span>{selectedContract.length}명</span>
         선택
       </h4>
       <div>
         <Button
           variant="transparent"
-          onClick={handleCustomerDeleteConfirm}
+          onClick={handleContractDeleteConfirm}
         >
           <SvgIcon
             iconName="icon-trash"
             alt="trash"
           />
-          <p>고객삭제</p>
+          <p>계약삭제</p>
         </Button>
       </div>
     </FloatingWrapper>

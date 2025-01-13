@@ -2,13 +2,16 @@ import styled from 'styled-components';
 import CustomerList from './List';
 import CustomerDetail from './Detail';
 import CustomerFilter from './Filter';
+import { useRecoilValue } from 'recoil';
+import { selectedCustomerIdxState } from '@/state/customer';
 
 const Customer = () => {
+  const selectedCustomer = useRecoilValue(selectedCustomerIdxState);
   return (
     <CustomerWrapper>
       <CustomerFilter></CustomerFilter>
       <CustomerList></CustomerList>
-      <CustomerDetail></CustomerDetail>
+      {selectedCustomer && <CustomerDetail></CustomerDetail>}
     </CustomerWrapper>
   );
 };

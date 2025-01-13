@@ -4,9 +4,9 @@ import Input from '@/components/input/Input';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import Button from '@/components/button/Button';
-import { dummyCustomerList } from '@/dummy/customer';
+// import { dummyCustomerList } from '@/dummy/customer';
 import Pagination from '@/components/pagination/Pagination';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import WatchOptionModal from './components/watchOptionModal';
 import SearchBox from '@/components/searchBox/SearchBox';
 import FilterGroup from './components/filter/group';
@@ -19,6 +19,7 @@ import RegistModal from './components/registModal';
 import FloatingMenu from './components/floatingMenu';
 import { useQuery } from '@apollo/client';
 import { GET_CUSTOMERS_QUERY } from '@/apollo/queries/customer';
+import { GetCustomersDto, TCustomer } from '@/types/customer';
 
 const CustomerList = () => {
   const [text, setText] = useState<string>('');
@@ -27,10 +28,12 @@ const CustomerList = () => {
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
-  const { data, loading, error } = useQuery(GET_CUSTOMERS_QUERY, {
-    variables: { getCustomersDto: { search: searchText } },
+  const { data, loading, error } = useQuery<
+    { getCustomers: TCustomer[] },
+    { getCustomersDto: GetCustomersDto }
+  >(GET_CUSTOMERS_QUERY, {
+    variables: { getCustomersDto: { search: 'searchText' } },
   });
-  console.log('customer data: ', data);
 
   // filters
   const [filters, setFilters] = useRecoilState(customerFiltersState);
@@ -58,6 +61,17 @@ const CustomerList = () => {
     },
     [filters, setFilters, setIsFilterGroupOpen],
   );
+
+  useEffect(() => {
+    if (loading) {
+      console.log('Loading...');
+    } else if (error) {
+      console.error('Error: ', error.message);
+    } else if (data) {
+      const { getCustomers } = data;
+      console.log('Data: ', getCustomers);
+    }
+  }, [data, error, loading]);
 
   return (
     <>
@@ -116,9 +130,9 @@ const CustomerList = () => {
           </ControlWrapper>
         </Header>
         <ListContent>
-          {dummyCustomerList.length > 0 ? (
+          {data && data.getCustomers.length > 0 ? (
             <>
-              <CustomerListTable data={dummyCustomerList}></CustomerListTable>
+              <CustomerListTable data={data.getCustomers}></CustomerListTable>
               {selectedCustomer.length > 0 && <FloatingMenu></FloatingMenu>}
             </>
           ) : searchText ? (
