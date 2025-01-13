@@ -6,12 +6,17 @@ import { textS14Regular } from '@/styles/typography';
 import { useQuery } from '@apollo/client';
 import { GetCustomersDto, TCustomer } from '@/types/customer';
 import { GET_CUSTOMERS_QUERY } from '@/apollo/queries/customer';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import SearchBox from '@/components/searchBox/SearchBox';
+import { useRecoilState } from 'recoil';
+import { selectedCustomerIdxState } from '@/state/customer';
 
 const CustomerList = () => {
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
+  const [selectedCustomer, setSelectedCustomer] = useRecoilState(
+    selectedCustomerIdxState,
+  );
 
   const { data, loading, error } = useQuery<
     { getCustomers: TCustomer[] },
@@ -30,6 +35,11 @@ const CustomerList = () => {
     },
     [setSearchText],
   );
+  useEffect(() => {
+    if (data?.getCustomers && data?.getCustomers?.length > 0) {
+      setSelectedCustomer(data.getCustomers[0].id);
+    }
+  }, [data]);
   return (
     <ListWrapper>
       <SearchBoxWrapper>
