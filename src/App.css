@@ -4,10 +4,10 @@
 }
 
 .wrapper {
-  width: calc(100% - 250px);
+  width: calc(100% - 150px);
   height: calc(100% - 60px);
   overflow-y: auto;
   position: fixed;
-  left: 250px;
+  left: 150px;
   top: 60px;
 }

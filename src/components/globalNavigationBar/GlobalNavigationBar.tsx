@@ -102,7 +102,7 @@ const GlobalNavigationBar = () => {
 export default GlobalNavigationBar;
 
 export const GlobalNavigationBarWrapper = styled.div`
-  width: calc(100% - 250px);
+  width: calc(100% - 150px);
   height: 60px;
   padding: 0 30px;
   background: #fff;
@@ -111,7 +111,7 @@ export const GlobalNavigationBarWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   position: fixed;
-  left: 250px;
+  left: 150px;
   border-bottom: 1px solid #e1e0dd;
 `;
 

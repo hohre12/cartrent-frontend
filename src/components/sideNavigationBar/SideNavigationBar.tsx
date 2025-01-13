@@ -43,7 +43,7 @@ const SideNavigationBar = () => {
 export default SideNavigationBar;
 
 export const SideNavigationBarWrapper = styled.div`
-  width: 250px;
+  width: 150px;
   height: 100vh;
   background: #f7f6f3;
   color: #000;
