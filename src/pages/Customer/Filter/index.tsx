@@ -141,7 +141,7 @@ export default CustomerFilter;
 
 export const FilterWrapper = styled.div`
   background: #fff;
-  min-width: 300px;
+  min-width: 200px;
   padding: 5px;
   // 드래그 방지
   -webkit-user-select: none;

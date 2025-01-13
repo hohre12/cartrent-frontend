@@ -183,7 +183,7 @@ export const DetailWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 800px;
+  width: 600px;
 `;
 
 export const InfoWrapper = styled.div`
