@@ -1,4 +1,4 @@
-import { TUser } from './auth';
+import { TUser } from './user';
 import { TFilterList } from './common';
 import { TCustomer, TCustomerGroup } from './customer';
 
