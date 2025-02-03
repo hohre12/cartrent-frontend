@@ -7,7 +7,6 @@ import {
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import { Customer } from '@/types/graphql';
 import { isColumnsViewHide } from '@/utils/common';
-import { useMemo } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
@@ -22,6 +21,9 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
   const [selectedCustomer, setSelectedCustomer] = useRecoilState(
     selectedCustomerIdxState,
   );
+
+  console.log('씨발 뭔데', data);
+
   return (
     <CustomerListTableWrapper>
       <thead>
@@ -50,26 +52,20 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
             <td>{it.memo ?? '-'}</td>
             <td>
               {it.contractList.length > 0
-                ? it.contractList[it.contractList.length - 1].carModel.name
+                ? it.contractList[it.contractList.length - 1].carName
                 : '-'}
             </td>
-            <td>
-              {it.contractList.length > 0
-                ? it.contractList[it.contractList.length - 1].status
-                : '-'}
-            </td>
+            <td>{it.note ?? '-'}</td>
             <td>
               {it.counselList.length > 0
-                ? it.counselList[it.counselList.length - 1].created_at
+                ? it.counselList[it.counselList.length - 1].updated_at
                 : '-'}
             </td>
-            <td>
-              {it.contractList.length > 0
-                ? it.contractList[it.contractList.length - 1].contractType
-                : '-'}
-            </td>
-            <td>{it.customerGroup?.name ?? '-'}</td>
             <td>{it.customerGrade?.name ?? '-'}</td>
+            <td>{it.userList?.name ?? '-'}</td>
+            <td>{it.product ?? '-'}</td>
+            <td>{it.division ?? '-'}</td>
+            <td>{it.type ?? '-'}</td>
           </tr>
         ))}
       </tbody>

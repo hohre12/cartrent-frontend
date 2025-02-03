@@ -16,7 +16,7 @@ interface IInputProps extends HTMLAttributes<HTMLDivElement> {
   isError?: boolean;
   isSuccess?: boolean;
   disabled?: boolean;
-  value?: string | number;
+  value?: string | number | null;
   readOnly?: boolean;
   type?: TInputType;
   prefixNode?: ReactNode;

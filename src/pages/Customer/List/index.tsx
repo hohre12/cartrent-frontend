@@ -10,6 +10,9 @@ import SearchBox from '@/components/searchBox/SearchBox';
 import { useRecoilState } from 'recoil';
 import { selectedCustomerIdxState } from '@/state/customer';
 import { Customer, GetCustomersDto } from '@/types/graphql';
+import Button from '@/components/button/Button';
+import RegistModal from '../components/registModal';
+import WatchOptionModal from '../components/watchOptionModal';
 
 const CustomerList = () => {
   const [text, setText] = useState<string>('');
@@ -17,6 +20,9 @@ const CustomerList = () => {
   const [selectedCustomer, setSelectedCustomer] = useRecoilState(
     selectedCustomerIdxState,
   );
+  const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
+    useState<boolean>(false);
+  const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
 
   const { data, loading, error } = useQuery<
     { getCustomers: Customer[] },
@@ -36,44 +42,78 @@ const CustomerList = () => {
     [setSearchText],
   );
   useEffect(() => {
+    console.log('씨발 안바뀌나');
     if (data?.getCustomers && data?.getCustomers?.length > 0) {
       setSelectedCustomer(data.getCustomers[0].id);
     }
   }, [data]);
+
+  if (error) return <></>;
+
   return (
-    <ListWrapper>
-      <SearchBoxWrapper>
-        <SearchBox
-          value={text}
-          placeholder="검색"
-          recentKey="customerRecent"
-          onTextChange={(text) => setText(text)}
-          onRemoveClick={handleSearchTextDelete}
-          onKeyDown={handleSearch}
-          onRecentClick={handleSearch}
-          keyword="고객명"
-        ></SearchBox>
-      </SearchBoxWrapper>
-      <TableWrapper>
-        <div className="TableControlWrapper">
-          <div>
-            <SvgIcon
-              iconName="icon-arrow_up_s"
-              style={{
-                width: '20px',
-              }}
-            />
-            <p>고객목록</p>
-          </div>
-          {/* <div>
+    <>
+      <ListWrapper>
+        <SearchBoxWrapper>
+          <SearchBox
+            value={text}
+            placeholder="검색"
+            recentKey="customerRecent"
+            onTextChange={(text) => setText(text)}
+            onRemoveClick={handleSearchTextDelete}
+            onKeyDown={handleSearch}
+            onRecentClick={handleSearch}
+            keyword="고객명"
+          ></SearchBox>
+          <FunctionWrapper>
+            <Button
+              onClick={() => setIsOpenWatchOptionModal(!isOpenWatchOptionModal)}
+            >
+              <SvgIcon iconName="icon-eye-show" />
+              <p>보기옵션</p>
+            </Button>
+            <Button onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}>
+              <SvgIcon iconName="icon-plus" />
+              <p>고객등록</p>
+            </Button>
+          </FunctionWrapper>
+        </SearchBoxWrapper>
+        <TableWrapper>
+          <div className="TableControlWrapper">
+            <div>
+              <SvgIcon
+                iconName="icon-arrow_up_s"
+                style={{
+                  width: '20px',
+                }}
+              />
+              <p>고객목록</p>
+            </div>
+            {/* <div>
             <SvgIcon iconName="icon-setting" />
           </div> */}
-        </div>
-        {data && (
-          <CustomerListTable data={data.getCustomers}></CustomerListTable>
-        )}
-      </TableWrapper>
-    </ListWrapper>
+          </div>
+          {data && (
+            <CustomerListTable data={data.getCustomers}></CustomerListTable>
+          )}
+        </TableWrapper>
+      </ListWrapper>
+      {isOpenWatchOptionModal && (
+        <WatchOptionModal
+          isOpen={isOpenWatchOptionModal}
+          onCancel={() => setIsOpenWatchOptionModal(false)}
+          onConfirm={() => {
+            setIsOpenWatchOptionModal(false);
+          }}
+        />
+      )}
+      {isOpenRegistModal && (
+        <RegistModal
+          isOpen={isOpenRegistModal}
+          onCancel={() => setIsOpenRegistModal(false)}
+          onConfirm={() => setIsOpenRegistModal(false)}
+        ></RegistModal>
+      )}
+    </>
   );
 };
 
@@ -112,4 +152,11 @@ export const TableWrapper = styled.div`
       }
     }
   }
+`;
+
+const FunctionWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
 `;
