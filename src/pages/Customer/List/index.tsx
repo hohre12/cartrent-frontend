@@ -13,6 +13,7 @@ import { Customer, GetCustomersDto } from '@/types/graphql';
 import Button from '@/components/button/Button';
 import RegistModal from '../components/registModal';
 import WatchOptionModal from '../components/watchOptionModal';
+import { useGetCustomers } from '@/services/customer';
 
 const CustomerList = () => {
   const [text, setText] = useState<string>('');
@@ -24,12 +25,7 @@ const CustomerList = () => {
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
 
-  const { data, loading, error } = useQuery<
-    { getCustomers: Customer[] },
-    { getCustomersDto: GetCustomersDto }
-  >(GET_CUSTOMERS_QUERY, {
-    variables: { getCustomersDto: { search: searchText } },
-  });
+  const { data, loading, error } = useGetCustomers({ search: searchText });
 
   const handleSearchTextDelete = useCallback(() => {
     setSearchText('');
@@ -42,7 +38,6 @@ const CustomerList = () => {
     [setSearchText],
   );
   useEffect(() => {
-    console.log('씨발 안바뀌나');
     if (data?.getCustomers && data?.getCustomers?.length > 0) {
       setSelectedCustomer(data.getCustomers[0].id);
     }
@@ -62,7 +57,7 @@ const CustomerList = () => {
             onRemoveClick={handleSearchTextDelete}
             onKeyDown={handleSearch}
             onRecentClick={handleSearch}
-            keyword="고객명"
+            keyword="고객명, 연락처, 상태, 메모, 차종, 구분, 상품, 고객등급, 고객유형, 비고"
           ></SearchBox>
           <FunctionWrapper>
             <Button

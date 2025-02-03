@@ -22,8 +22,6 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
     selectedCustomerIdxState,
   );
 
-  console.log('씨발 뭔데', data);
-
   return (
     <CustomerListTableWrapper>
       <thead>
