@@ -45,18 +45,18 @@ export type UpdateCarOptionDto = {
 
 export type TCar = {
   id: number;
-  name: string;
+  name: string; // 차 종 이름
 };
 export type TCarModel = {
   car: TCar;
   car_id?: number;
   id: number;
-  name: string;
-  price: number;
+  name: string; // 차 모델 이름
+  price: number; // 차량 가격
 };
 export type TCarOption = {
   car_model_id?: number;
   id: number;
-  name: string;
-  price: number;
+  name: string; // 차 옵션
+  price: number; // 차량 옵션 가격
 };

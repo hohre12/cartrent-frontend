@@ -37,5 +37,5 @@ export type TUser = {
 
 export type TCity = {
   id: number;
-  name: string;
+  name: string; // 도시 이름
 };

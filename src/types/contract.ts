@@ -36,106 +36,33 @@ export type UpdateContractStatusDto = {
 
 /* list */
 export type TContract = {
-  bank?: string;
-  carModel: TCarModel;
+  bank?: string; // 은행
+  carModel: TCarModel; //
   carOptions: TCarOption[];
   car_model_id?: number;
   city: TCity;
   city_id?: number;
-  color?: string;
-  context?: string;
-  contractType?: string;
-  contract_at?: string;
+  color?: string; // 색상
+  context?: string; // 계약 내용
+  contractType?: string; // 계약 타입
+  contract_at?: string; // 계약 일
   created_at?: string;
   customer: TCustomer;
   customer_id?: number;
   deleted_at?: string;
-  extraPrice?: number;
-  fee?: number;
-  feeRate?: string;
+  extraPrice?: number; // 이외 추가 금액
+  fee?: number; // 수수료
+  feeRate?: string; // 수수료 비율
   id: number;
-  interChangeFee?: number;
-  isVATSupport?: boolean;
-  shipping_date?: string;
-  status: string;
-  totalPrice?: number;
+  interChangeFee?: number; // 정산 수수료
+  isVATSupport?: boolean; // 부가세 지원 여부
+  shipping_date?: string; // 출고 일
+  status: string; // 계약 상태
+  totalPrice?: number; // 총 계약 금액
   updated_at?: string;
   user: TUser;
   user_id?: number;
 };
-// export type TContractListRequest = {
-//   search?: string;
-//   offset?: number;
-//   length?: number;
-// };
-// export type TContractListResponse = {
-//   list: TContractList[];
-//   count: number;
-// };
-// export type TContractList = {
-//   id: number;
-//   context: string;
-//   status: string;
-//   totalPrice: number;
-//   color: string;
-//   extraPrice: number;
-//   bank: string;
-//   contractType: string;
-//   isVATSupport: boolean;
-//   interChangeFee: number;
-//   feeRate: string;
-//   fee: number;
-//   car_model_id: number;
-//   city_id: number;
-//   user_id?: number;
-//   customer_id?: number;
-//   contract_at: string;
-//   shipping_date: string;
-//   created_at: string;
-//   update_at: string;
-//   deleted_at: string;
-//   user: TUser; // 임시
-//   customer: TCustomerResponse;
-//   carModel: string; // 임시
-//   city: string; // 임시
-//   carOptions: string[]; // 임시
-// };
-/* list */
-
-/* detail */
-// export type TContractRequest = {
-//   ContractId: number;
-// };
-
-// export type TContractResponse = {
-//   id: number;
-//   context: string;
-//   status: string;
-//   totalPrice: number;
-//   color: string;
-//   extraPrice: number;
-//   bank: string;
-//   contractType: string;
-//   isVATSupport: boolean;
-//   interChangeFee: number;
-//   feeRate: string;
-//   fee: number;
-//   car_model_id: number;
-//   city_id: number;
-//   user_id?: number;
-//   customer_id?: number;
-//   contract_at: string;
-//   shipping_date: string;
-//   created_at: string;
-//   update_at: string;
-//   deleted_at: string;
-//   user: TUser;
-//   customer: TCustomerResponse;
-//   carModal: string; // 임시
-//   city: string; // 임시
-//   carOptions: string[]; // 임시
-// };
-/* detail */
 
 /* front handle type */
 export type TContractFiltersStateType = {
