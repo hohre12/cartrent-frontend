@@ -10,7 +10,7 @@ import {
 } from '@/state/contract';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { TContract } from '@/types/contract';
+import { Contract } from '@/types/graphql';
 import { isColumnsViewHide } from '@/utils/common';
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +18,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 type TTableProps = {
-  data: TContract[];
+  data: Contract[];
 };
 
 const ContractListTable = ({ data }: TTableProps) => {
@@ -47,7 +47,7 @@ const ContractListTable = ({ data }: TTableProps) => {
   }, [selectedContract, data]);
 
   const handleChecked = useCallback(
-    (val: TCheckBoxValue, contract: TContract) => {
+    (val: TCheckBoxValue, contract: Contract) => {
       if (val) {
         setSelectedContract([...selectedContract, contract]);
       } else {

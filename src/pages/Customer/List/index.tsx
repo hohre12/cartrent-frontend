@@ -4,12 +4,12 @@ import Input from '@/components/input/Input';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular } from '@/styles/typography';
 import { useQuery } from '@apollo/client';
-import { GetCustomersDto, TCustomer } from '@/types/customer';
 import { GET_CUSTOMERS_QUERY } from '@/apollo/queries/customer';
 import { useCallback, useEffect, useState } from 'react';
 import SearchBox from '@/components/searchBox/SearchBox';
 import { useRecoilState } from 'recoil';
 import { selectedCustomerIdxState } from '@/state/customer';
+import { Customer, GetCustomersDto } from '@/types/graphql';
 
 const CustomerList = () => {
   const [text, setText] = useState<string>('');
@@ -19,7 +19,7 @@ const CustomerList = () => {
   );
 
   const { data, loading, error } = useQuery<
-    { getCustomers: TCustomer[] },
+    { getCustomers: Customer[] },
     { getCustomersDto: GetCustomersDto }
   >(GET_CUSTOMERS_QUERY, {
     variables: { getCustomersDto: { search: searchText } },

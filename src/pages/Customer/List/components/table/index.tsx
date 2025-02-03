@@ -5,14 +5,14 @@ import {
   selectedCustomerIdxState,
 } from '@/state/customer';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
-import { TCustomer } from '@/types/customer';
+import { Customer } from '@/types/graphql';
 import { isColumnsViewHide } from '@/utils/common';
 import { useMemo } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 type TCustomerListTableProps = {
-  data: TCustomer[];
+  data: Customer[];
 };
 
 const CustomerListTable = ({ data }: TCustomerListTableProps) => {

@@ -19,8 +19,7 @@ import RegistModal from './components/registModal';
 import FloatingMenu from './components/floatingMenu';
 import { useQuery } from '@apollo/client';
 import { GET_CUSTOMERS_QUERY } from '@/apollo/queries/customer';
-import { GetCustomersDto, TCustomer } from '@/types/customer';
-import { Customer } from '@/types/graphql';
+import { Customer, GetCustomersDto } from '@/types/graphql';
 
 const CustomerList = () => {
   const [text, setText] = useState<string>('');

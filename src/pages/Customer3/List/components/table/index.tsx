@@ -10,7 +10,6 @@ import {
 } from '@/state/customer';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { TCustomer } from '@/types/customer';
 import { Customer } from '@/types/graphql';
 import { isColumnsViewHide } from '@/utils/common';
 import { useCallback, useMemo } from 'react';
@@ -48,7 +47,7 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
   }, [selectedCustomer, data]);
 
   const handleChecked = useCallback(
-    (val: TCheckBoxValue, customer: TCustomer) => {
+    (val: TCheckBoxValue, customer: Customer) => {
       if (val) {
         setSelectedCustomer([...selectedCustomer, customer]);
       } else {

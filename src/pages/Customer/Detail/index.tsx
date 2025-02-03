@@ -8,7 +8,7 @@ import {
   textS14Medium,
   textS14Regular,
 } from '@/styles/typography';
-import { TCustomer } from '@/types/customer';
+import { Customer } from '@/types/graphql';
 import { useQuery } from '@apollo/client';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -16,7 +16,7 @@ import styled from 'styled-components';
 const CustomerDetail = () => {
   const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
   const { data, loading, error } = useQuery<
-    { getCustomer: TCustomer },
+    { getCustomer: Customer },
     { customerId: number }
   >(GET_CUSTOMER_QUERY, {
     variables: { customerId: selectedCustomerIdx },
