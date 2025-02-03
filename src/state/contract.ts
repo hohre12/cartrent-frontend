@@ -1,8 +1,8 @@
-import { TContract } from '@/types/contract';
 import { TContractFiltersStateType } from '@/types/contract';
+import { Contract } from '@/types/graphql';
 import { atom } from 'recoil';
 
-export const selectedContractState = atom<TContract[]>({
+export const selectedContractState = atom<Contract[]>({
   key: 'selectedContractState',
   default: [],
 });

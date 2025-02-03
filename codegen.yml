@@ -1,0 +1,18 @@
+overwrite: true
+schema: 'https://server.cartrentcar.store/graphql'
+documents: 'src/apollo/**/*.ts'
+generates:
+  src/types/graphql.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      scalars:
+        String: string
+        Boolean: boolean
+        Int: number
+        Float: number
+        DateTime: string
+      skipTypename: true
+      withHooks: true

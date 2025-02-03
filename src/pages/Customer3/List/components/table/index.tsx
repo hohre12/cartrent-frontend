@@ -11,6 +11,7 @@ import {
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
 import { TCustomer } from '@/types/customer';
+import { Customer } from '@/types/graphql';
 import { isColumnsViewHide } from '@/utils/common';
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +19,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 type TCustomerListTableProps = {
-  data: TCustomer[];
+  data: Customer[];
 };
 
 const CustomerListTable = ({ data }: TCustomerListTableProps) => {

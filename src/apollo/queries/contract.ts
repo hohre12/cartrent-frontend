@@ -12,37 +12,73 @@ export const GET_CONTRACTS_QUERY = gql`
       context
       status
       totalPrice
-      color
+      innerColor
+      outerColor
       extraPrice
       bank
+      carName
+      carPrice
+      carOption
+      product
+      financialCompany
+      surtax
+      promotion
+      monthlyPayment
+      shippingMethod
+      branch
+      branchFee
+      collateralType
+      collateralRate
+      contractPeriod
+      agreedMileage
+      insuranceAge
+      object
+      service1
+      service2
+      service3
+      serviceBody1
+      serviceBody2
+      serviceBody3
+      incomeEarner
+      cashAssistance
+      supportDetails
+      totalExpenditure
+      totalFee
+      netIncome
       contractType
       isVATSupport
+      isOrdering
       interChangeFee
       feeRate
       fee
-      car_model_id
       city_id
       user_id
       customer_id
       contract_at
-      shipping_date
+      shippingDate
       created_at
       updated_at
       deleted_at
       user {
         id
+        email
+        name
+        password
+        created_at
+        updated_at
+        deleted_at
       }
       customer {
         id
-      }
-      carModel {
-        id
+        name
       }
       city {
         id
+        name
       }
-      carOptions {
+      supportAmounts {
         id
+        amount
       }
     }
   }
@@ -53,63 +89,76 @@ export const GET_CONTRACTS_QUERY = gql`
  * - 계약 상세 호출
  */
 export const GET_CONTRACT_QUERY = gql`
-  query GetContracts($contractId: Float!) {
+  query GetContract($contractId: Float!) {
     getContract(contractId: $contractId) {
       id
       context
       status
       totalPrice
-      color
+      innerColor
+      outerColor
       extraPrice
       bank
+      carName
+      carPrice
+      carOption
+      product
+      financialCompany
+      surtax
+      promotion
+      monthlyPayment
+      shippingMethod
+      branch
+      branchFee
+      collateralType
+      collateralRate
+      contractPeriod
+      agreedMileage
+      insuranceAge
+      object
+      service1
+      service2
+      service3
+      serviceBody1
+      serviceBody2
+      serviceBody3
+      incomeEarner
+      cashAssistance
+      supportDetails
+      totalExpenditure
+      totalFee
+      netIncome
       contractType
       isVATSupport
+      isOrdering
       interChangeFee
       feeRate
       fee
-      car_model_id
       city_id
       user_id
       customer_id
       contract_at
-      shipping_date
+      shippingDate
       created_at
       updated_at
       deleted_at
       user {
         id
+        name
       }
       customer {
         id
-      }
-      carModel {
-        id
+        name
       }
       city {
         id
+        name
       }
-      carOptions {
+      supportAmounts {
         id
+        amount
       }
     }
   }
 `;
 /* Query */
-/* Mutation */
-export const UPDATE_CONTRACT_MUTATION = gql`
-  mutation UpdateContract($updateContractDto: UpdateContractDto!) {
-    updateContract(updateContractDto: $updateContractDto) {
-      id
-    }
-  }
-`;
-export const UPDATE_CONTRACT_STATUS_MUTATION = gql`
-  mutation UpdateContractStatus(
-    $updateContractStatus: UpdateContractStatusDto!
-  ) {
-    updateContractStatus(updateContractStatus: $updateContractStatus) {
-      id
-    }
-  }
-`;
-/* Mutation */
