@@ -6,8 +6,22 @@ import { gql } from '@apollo/client';
  * - 고객 목록 호출
  */
 export const GET_CUSTOMERS_QUERY = gql`
-  query GetCustomers($getCustomersDto: GetCustomersDto!) {
-    getCustomers(getCustomersDto: $getCustomersDto) {
+  query GetCustomers(
+    $searchType: CustomerSearchType
+    $search: String
+    $customerGroupId: Int
+    $customerGradeId: Int
+    $userId: Int
+    $customerStatusId: Int
+  ) {
+    getCustomers(
+      searchType: $searchType
+      search: $search
+      customerGroupId: $customerGroupId
+      customerGradeId: $customerGradeId
+      userId: $userId
+      customerStatusId: $customerStatusId
+    ) {
       id
       name
       phone

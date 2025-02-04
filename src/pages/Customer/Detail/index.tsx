@@ -1,26 +1,19 @@
-import { GET_CUSTOMER_QUERY } from '@/apollo/queries/customer';
 import Checkbox from '@/components/checkbox/Checkbox';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import Input from '@/components/input/Input';
+import { useGetCustomer } from '@/services/customer';
 import { selectedCustomerIdxState } from '@/state/customer';
 import {
   textM16Regular,
   textS14Medium,
   textS14Regular,
 } from '@/styles/typography';
-import { Customer } from '@/types/graphql';
-import { useQuery } from '@apollo/client';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const CustomerDetail = () => {
   const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
-  const { data, loading, error } = useQuery<
-    { getCustomer: Customer },
-    { customerId: number }
-  >(GET_CUSTOMER_QUERY, {
-    variables: { customerId: selectedCustomerIdx },
-  });
+  const { data, loading, error } = useGetCustomer(selectedCustomerIdx);
 
   const detail = data?.getCustomer;
   if (!detail) return <></>;
@@ -44,63 +37,107 @@ const CustomerDetail = () => {
         </div>
         <div className="Info">
           <div>
-            <span>고객명</span>
-            <Input
-              disabled
-              value={detail.name}
-            ></Input>
-          </div>
-          <div style={{ marginLeft: 'auto' }}>
-            <span>고객그룹</span>
-            <Input
-              disabled
-              value={detail.customerGroup?.name}
-            ></Input>
-          </div>
-          <div>
             <span>담당자</span>
             <Input
               disabled
               value={detail.userList.name}
             ></Input>
           </div>
-          <div style={{ marginLeft: 'auto' }}>
-            <span>고객번호</span>
+          <div>
+            <span>상태</span>
             <Input
               disabled
-              value={detail.id}
+              value={detail.status}
             ></Input>
           </div>
           <div>
-            <span>고객등급</span>
+            <span>고객명</span>
             <Input
               disabled
-              value={detail.customerGrade?.name}
+              value={detail.name}
             ></Input>
           </div>
-          <div style={{ marginLeft: 'auto' }}>
-            <span>고객연락처</span>
+          <div>
+            <span>연락처</span>
             <Input
               disabled
               value={detail.phone}
             ></Input>
           </div>
-          <div style={{ width: '100%' }}>
-            <span>주소</span>
+          <div>
+            <span>회사명/명의자</span>
             <Input
               disabled
-              value={detail.address}
-            ></Input>
-            <Input
-              disabled
-              value={detail.address}
+              value={detail.company_name_nominee}
             ></Input>
           </div>
-          <div style={{ width: '100%' }}>
-            <span>메모</span>
+          <div>
+            <span>추가연락처</span>
             <Input
               disabled
-              value={detail.memo}
+              value={detail.sub_phone}
+            ></Input>
+          </div>
+          <div>
+            <span>구분</span>
+            <Input
+              disabled
+              value={detail.division}
+            ></Input>
+          </div>
+          <div>
+            <span>상품</span>
+            <Input
+              disabled
+              value={detail.product}
+            ></Input>
+          </div>
+          <div>
+            <span>차종</span>
+            <Input
+              disabled
+              value={detail.contractList.map((it) => it.carName).join(' / ')}
+            ></Input>
+          </div>
+          <div>
+            <span>옵션</span>
+            <Input
+              disabled
+              value={detail.contractList.map((it) => it.carOption).join(' / ')}
+            ></Input>
+          </div>
+          <div>
+            <span>약정기간</span>
+            <Input
+              disabled
+              value={detail.contractList
+                .map((it) => it.contractPeriod)
+                .join(' / ')}
+            ></Input>
+          </div>
+          <div>
+            <span>약정거리</span>
+            <Input
+              disabled
+              value={detail.contractList
+                .map((it) => it.agreedMileage)
+                .join(' / ')}
+            ></Input>
+          </div>
+          <div>
+            <span>담보율</span>
+            <Input
+              disabled
+              value={detail.contractList
+                .map((it) => it.collateralRate)
+                .join(' / ')}
+            ></Input>
+          </div>
+          <div>
+            <span>고객유형</span>
+            <Input
+              disabled
+              value={detail.type}
             ></Input>
           </div>
           <div>
@@ -110,25 +147,26 @@ const CustomerDetail = () => {
               value={detail.created_at}
             ></Input>
           </div>
-          <div style={{ marginLeft: 'auto' }}>
-            <span>문자수신</span>
-            <Checkbox></Checkbox>
-            <p>거부</p>
-          </div>
           <div>
-            <span>생년월일</span>
+            <span>메모</span>
             <Input
               disabled
-              value={detail.birth}
+              value={detail.memo}
             ></Input>
           </div>
-          <div style={{ marginLeft: 'auto' }}>
-            <span>초기포인트</span>
-            <Input disabled></Input>
+          <div>
+            <span>고객등급</span>
+            <Input
+              disabled
+              value={detail.customerGrade?.name}
+            ></Input>
           </div>
-          <div style={{ width: '100%' }}>
-            <span>파일첨부</span>
-            <Input disabled></Input>
+          <div>
+            <span>비고</span>
+            <Input
+              disabled
+              value={detail.note}
+            ></Input>
           </div>
         </div>
       </InfoWrapper>
@@ -192,7 +230,7 @@ export const InfoWrapper = styled.div`
   padding: 15px;
   display: flex;
   gap: 20px;
-  height: 400px;
+  /* height: 500px; */
   .ControlWrapper {
     display: flex;
     flex-direction: column;
@@ -225,6 +263,9 @@ export const InfoWrapper = styled.div`
       height: 40px;
       span {
         text-align: right;
+      }
+      &:nth-child(even) {
+        margin-left: auto;
       }
     }
   }

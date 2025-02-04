@@ -6,7 +6,7 @@ import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import { TModal } from '@/types/common';
 import { CreateCustomerDto } from '@/types/graphql';
-import { useApolloClient, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useState } from 'react';
 import styled from 'styled-components';
 
