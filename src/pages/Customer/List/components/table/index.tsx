@@ -7,6 +7,7 @@ import {
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import { Customer } from '@/types/graphql';
 import { isColumnsViewHide } from '@/utils/common';
+import { formatDate } from '@/utils/dateUtils';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
@@ -44,7 +45,7 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
           >
             <td>{idx}</td>
             <td>{it.status}</td>
-            <td>{it.created_at ?? '-'}</td>
+            <td>{formatDate(it.created_at) ?? '-'}</td>
             <td>{it.name ?? '-'}</td>
             <td>{it.phone ?? '-'}</td>
             <td>{it.memo ?? '-'}</td>

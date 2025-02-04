@@ -92,3 +92,12 @@ export type TFilterList<T> = {
   name: string;
   value: T;
 };
+
+export type TUIOptions = {
+  size?: 'small' | 'medium' | 'large';
+  message?: string;
+  isError?: boolean;
+  isSuccess?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+};

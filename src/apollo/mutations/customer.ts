@@ -2,32 +2,8 @@ import { gql } from '@apollo/client';
 
 /* Mutation */
 export const CREATE_CUSTOMER_MUTATION = gql`
-  mutation CreateCustomer(
-    $name: String!
-    $phone: String!
-    $product: String
-    $memo: String
-    $note: String
-    $type: String
-    $division: String
-    $companyNameNominee: String
-    $customerGroupId: Int
-    $customerGradeId: Int
-    $customerStatusId: Int
-  ) {
-    createCustomer(
-      name: $name
-      phone: $phone
-      product: $product
-      memo: $memo
-      note: $note
-      type: $type
-      division: $division
-      companyNameNominee: $companyNameNominee
-      customerGroupId: $customerGroupId
-      customerGradeId: $customerGradeId
-      customerStatusId: $customerStatusId
-    ) {
+  mutation CreateCustomer($createCustomerDto: CreateCustomerDto!) {
+    createCustomer(createCustomerDto: $createCustomerDto) {
       id
     }
   }

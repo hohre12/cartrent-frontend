@@ -12,6 +12,7 @@ import {
   textS14Medium,
   textS14Regular,
 } from '@/styles/typography';
+import { formatDate } from '@/utils/dateUtils';
 import { useCallback, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -261,15 +262,13 @@ const CustomerDetail = () => {
           <div key={idx}>
             <SvgIcon iconName="icon-edit" />
             <div className="DateTimeWrapper">
-              <span>{it.created_at}</span>
-              <p>{it.created_at}</p>
+              <span>상담일시</span>
+              <p>{formatDate(it.updated_at)}</p>
             </div>
             <div className="HistoryText">
-              고객명 : {it.customer?.name}
-              <br></br>
-              상담사 : {it.user?.name}
-              <br></br>
-              상담내용 : {it.context}
+              <p>고객명 : {it.customer?.name}</p>
+              <p>상담사 : {it.user?.name}</p>
+              <p>상담내용 : {it.context}</p>
             </div>
           </div>
         ))}
@@ -386,7 +385,6 @@ export const HistoryWrapper = styled.div`
     gap: 10px;
     align-items: center;
     .DateTimeWrapper {
-      text-align: right;
       width: 100px;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -402,9 +400,14 @@ export const HistoryWrapper = styled.div`
     .HistoryText {
       ${textS14Medium}
       background: #eee;
-      width: 100%;
+      width: 410px;
       padding: 10px;
       text-align: left;
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
   }
 `;

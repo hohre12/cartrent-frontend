@@ -2,9 +2,15 @@ import { CREATE_CUSTOMER_MUTATION } from '@/apollo/mutations/customer';
 import { GET_CUSTOMERS_QUERY } from '@/apollo/queries/customer';
 import Input from '@/components/input/Input';
 import { Modal } from '@/components/modal/Modal';
+import Select from '@/components/select/Select';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
-import { useCreateCustomer } from '@/services/customer';
+import {
+  useCreateCustomer,
+  useGetCustomerGrades,
+  useGetCustomerGroups,
+  useGetCustomerStatuses,
+} from '@/services/customer';
 import { TModal } from '@/types/common';
 import { CreateCustomerDto } from '@/types/graphql';
 import { useMutation } from '@apollo/client';
@@ -28,6 +34,10 @@ const RegistModal = (props: TModal) => {
   const [phone, setPhone] = useState<CreateCustomerDto['phone']>();
   const [product, setProduct] = useState<CreateCustomerDto['product']>();
   const [type, setType] = useState<CreateCustomerDto['type']>();
+
+  const { data: statuses } = useGetCustomerStatuses();
+  const { data: grades } = useGetCustomerGrades();
+  const { data: groups } = useGetCustomerGroups();
 
   const [submit, setSubmit] = useState<boolean>(false);
   const { addToast } = useToast();
@@ -140,27 +150,42 @@ const RegistModal = (props: TModal) => {
           </div>
           <div>
             <p>상태</p>
-            <Input
-              placeholder="직업을 입력해 주세요."
-              value={customerStatusId ?? ''}
-              //   onTextChange={(text) => setCustomerStatusId(text)}
-            />
+            <SelectWrapper>
+              <Select
+                value={{ name: 'test' }}
+                onChange={(value) => console.log('선택', value)}
+                list={statuses?.customerStatus ?? []}
+                trackBy="status"
+                valueBy="status"
+                placeholder="상태를 선택해주세요"
+              />
+            </SelectWrapper>
           </div>
           <div>
             <p>등급</p>
-            <Input
-              placeholder="직업을 입력해 주세요."
-              value={customerGradeId ?? ''}
-              //   onTextChange={(text) => setCustomerGradeId(text)}
-            />
+            <SelectWrapper>
+              <Select
+                value={{ name: 'test' }}
+                onChange={(value) => console.log('선택', value)}
+                list={grades?.customerGrades ?? []}
+                trackBy="name"
+                valueBy="name"
+                placeholder="등급을 선택해주세요"
+              />
+            </SelectWrapper>
           </div>
           <div>
             <p>그룹</p>
-            <Input
-              placeholder="직업을 입력해 주세요."
-              value={customerGroupId ?? ''}
-              //   onTextChange={(text) => setCustomerGroupId(text)}
-            />
+            <SelectWrapper>
+              <Select
+                value={{ name: 'test' }}
+                onChange={(value) => console.log('선택', value)}
+                list={groups?.customerGroups ?? []}
+                trackBy="name"
+                valueBy="name"
+                placeholder="그룹을 선택해주세요"
+              />
+            </SelectWrapper>
           </div>
           <div>
             <p>비고</p>
@@ -183,4 +208,10 @@ const RegistCustomerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+`;
+
+const SelectWrapper = styled.div`
+  .selectBox {
+    height: 40px;
+  }
 `;
