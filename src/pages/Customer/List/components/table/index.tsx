@@ -88,6 +88,7 @@ export const CustomerListTableWrapper = styled.table`
       width: 100vw;
       border: 1px solid #eee;
       white-space: nowrap;
+      padding: 0px 15px;
     }
   }
   tbody {

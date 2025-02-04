@@ -4,6 +4,7 @@ import Input from '@/components/input/Input';
 import { Modal } from '@/components/modal/Modal';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
+import { useCreateCustomer } from '@/services/customer';
 import { TModal } from '@/types/common';
 import { CreateCustomerDto } from '@/types/graphql';
 import { useMutation } from '@apollo/client';
@@ -31,33 +32,32 @@ const RegistModal = (props: TModal) => {
   const [submit, setSubmit] = useState<boolean>(false);
   const { addToast } = useToast();
   //   const { showConfirm, hideConfirm } = useConfirm();
-  const [createCustomer] = useMutation(CREATE_CUSTOMER_MUTATION, {
-    refetchQueries: [GET_CUSTOMERS_QUERY, 'GetCustomers'],
-  });
+  //   const [createCustomer] = useMutation(CREATE_CUSTOMER_MUTATION, {
+  //     refetchQueries: [GET_CUSTOMERS_QUERY, 'GetCustomers'],
+  //   });
+
+  const { createCustomer } = useCreateCustomer();
 
   const handleCustomerRegist = async () => {
     setSubmit(true);
     if (!name) return;
+    if (!phone) return;
     try {
       const response = await createCustomer({
-        variables: {
-          createCustomerDto: {
-            companyNameNominee,
-            customerGradeId,
-            customerGroupId,
-            customerStatusId,
-            division,
-            memo,
-            name,
-            note,
-            phone,
-            product,
-            type,
-          },
-        },
+        companyNameNominee,
+        customerGradeId,
+        customerGroupId,
+        customerStatusId,
+        division,
+        memo,
+        name,
+        note,
+        phone,
+        product,
+        type,
       });
       console.log(response);
-      if (response.data.createCustomer.id) {
+      if (response && response.data.createCustomer.id) {
         addToast({
           id: Date.now(),
           isImage: true,
@@ -71,6 +71,7 @@ const RegistModal = (props: TModal) => {
       console.warn(e);
     }
   };
+
   return (
     <>
       <SModal
@@ -100,40 +101,40 @@ const RegistModal = (props: TModal) => {
           <div>
             <p>메모</p>
             <Input
-              placeholder="이메일을 입력해 주세요."
-              value={memo}
+              placeholder="메모를 입력해 주세요."
+              value={memo ?? ''}
               onTextChange={(text) => setMemo(text)}
             />
           </div>
           <div>
             <p>고객유형</p>
             <Input
-              placeholder="주소를 입력해 주세요."
-              value={type}
+              placeholder="고객유형을 입력해 주세요."
+              value={type ?? ''}
               onTextChange={(text) => setType(text)}
             />
           </div>
           <div>
             <p>상품</p>
             <Input
-              placeholder="생년월일을 입력해 주세요."
-              value={product}
+              placeholder="상품을 입력해 주세요."
+              value={product ?? ''}
               onTextChange={(text) => setProduct(text)}
             />
           </div>
           <div>
             <p>구분</p>
             <Input
-              placeholder="직업을 입력해 주세요."
-              value={division}
+              placeholder="구분을 입력해 주세요."
+              value={division ?? ''}
               onTextChange={(text) => setDivision(text)}
             />
           </div>
           <div>
             <p>회사명/명의자</p>
             <Input
-              placeholder="그룹을 입력해 주세요.(셀렉박스 예정)"
-              value={companyNameNominee}
+              placeholder="회사명/명의자를 입력해 주세요."
+              value={companyNameNominee ?? ''}
               onTextChange={(text) => setCompanyNameNominee(text)}
             />
           </div>
@@ -141,7 +142,7 @@ const RegistModal = (props: TModal) => {
             <p>상태</p>
             <Input
               placeholder="직업을 입력해 주세요."
-              value={customerStatusId}
+              value={customerStatusId ?? ''}
               //   onTextChange={(text) => setCustomerStatusId(text)}
             />
           </div>
@@ -149,7 +150,7 @@ const RegistModal = (props: TModal) => {
             <p>등급</p>
             <Input
               placeholder="직업을 입력해 주세요."
-              value={customerGradeId}
+              value={customerGradeId ?? ''}
               //   onTextChange={(text) => setCustomerGradeId(text)}
             />
           </div>
@@ -157,15 +158,15 @@ const RegistModal = (props: TModal) => {
             <p>그룹</p>
             <Input
               placeholder="직업을 입력해 주세요."
-              value={customerGroupId}
+              value={customerGroupId ?? ''}
               //   onTextChange={(text) => setCustomerGroupId(text)}
             />
           </div>
           <div>
             <p>비고</p>
             <Input
-              placeholder="직업을 입력해 주세요."
-              value={note}
+              placeholder="비고를 입력해 주세요."
+              value={note ?? ''}
               onTextChange={(text) => setNote(text)}
             />
           </div>
