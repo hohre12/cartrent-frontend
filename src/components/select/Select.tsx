@@ -80,6 +80,7 @@ const Select = (props: TSelectProps<any>) => {
           valueBy
         ];
       }
+
       setSelected({ [trackBy]: value[trackBy], [valueBy]: defaultValue });
     } else {
       setSelected({ [trackBy]: value, [valueBy]: value });
@@ -151,7 +152,7 @@ const Select = (props: TSelectProps<any>) => {
       ) : (
         <React.Fragment>
           <div
-            onClick={() => !props.onClick && setIsShow(!isShow)}
+            onClick={() => !props.onClick && !disabled && setIsShow(!isShow)}
             className={[
               'selectBox',
               `${size}`,
@@ -281,7 +282,7 @@ const Root = styled.div`
 
   .displayWrap {
     flex: 1;
-
+    align-items: center;
     display: flex;
     justify-content: space-between;
     position: relative;

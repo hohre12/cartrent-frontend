@@ -1,22 +1,29 @@
 import Input from '@/components/input/Input';
 import { Modal } from '@/components/modal/Modal';
+import Select from '@/components/select/Select';
 import TextArea from '@/components/textArea/TextArea';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
+import { useGetCustomers } from '@/services/customer';
+import { userState } from '@/state/auth';
+import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
+import { Customer } from '@/types/graphql';
 import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const RegistModal = (props: TModal) => {
   const { ...modalProps } = props;
-  const [title, setTitle] = useState<string>();
+  const user = useRecoilValue(userState);
+  const [customer, setCustomer] = useState<Customer>();
   const [submit, setSubmit] = useState<boolean>(false);
   const { addToast } = useToast();
-  //   const { showConfirm, hideConfirm } = useConfirm();
+  const { data: customers } = useGetCustomers({});
 
   const handleCounselRegist = async () => {
     setSubmit(true);
-    if (!title) return;
+    // if (!title) return;
     try {
       //   const { data } = await postMemberTemp({
       //     userName: userName,
@@ -52,24 +59,42 @@ const RegistModal = (props: TModal) => {
         <CounselModalContentWrapper>
           <div className="InputWrapper">
             <div>
-              <span>상담제목</span>
+              <span>고객명</span>
+              <Select
+                size="medium"
+                value={{
+                  ...customer,
+                }}
+                onChange={(value) => setCustomer(value)}
+                list={customers?.getCustomers ?? []}
+                trackBy="id"
+                valueBy="name"
+                placeholder="고객을 선택해주세요"
+              />
+            </div>
+            <div>
+              <span>상담일시</span>
+              <Input></Input>
+            </div>
+            <div>
+              <span>상담자</span>
               <Input
-                placeholder="상담제목을 입력해 주세요."
-                value={title}
-                onTextChange={(text) => setTitle(text)}
-              ></Input>
+                value={user?.name}
+                size="medium"
+                disabled
+              />
             </div>
             <div>
-              <span>고객명(셀렉트박스)</span>
-              <Input></Input>
-            </div>
-            <div>
-              <span>상담일시(캘린더)</span>
-              <Input></Input>
-            </div>
-            <div>
-              <span>상담자(셀렉트박스)</span>
-              <Input disabled></Input>
+              <span>계약</span>
+              <Select
+                size="medium"
+                value={customers?.getCustomers[0]}
+                onChange={(value) => console.log('선택', value)}
+                list={customers?.getCustomers ?? []}
+                trackBy="id"
+                valueBy="name"
+                placeholder="계약을 선택해주세요"
+              />
             </div>
           </div>
           <div className="TextAreaWrapper">
@@ -100,7 +125,14 @@ const CounselModalContentWrapper = styled.div`
       width: 49%;
       gap: 5px;
       & > span {
-        width: 50px;
+        min-width: 40px;
+      }
+      .inputBox {
+        height: 48px;
+        width: 100%;
+        & > input {
+          ${textXs12Medium}
+        }
       }
     }
   }
@@ -108,7 +140,7 @@ const CounselModalContentWrapper = styled.div`
     display: flex;
     gap: 5px;
     & > span {
-      width: 50px;
+      min-width: 40px;
     }
   }
 `;

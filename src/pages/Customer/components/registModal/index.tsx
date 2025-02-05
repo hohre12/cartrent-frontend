@@ -41,10 +41,6 @@ const RegistModal = (props: TModal) => {
 
   const [submit, setSubmit] = useState<boolean>(false);
   const { addToast } = useToast();
-  //   const { showConfirm, hideConfirm } = useConfirm();
-  //   const [createCustomer] = useMutation(CREATE_CUSTOMER_MUTATION, {
-  //     refetchQueries: [GET_CUSTOMERS_QUERY, 'GetCustomers'],
-  //   });
 
   const { createCustomer } = useCreateCustomer();
 
@@ -150,42 +146,39 @@ const RegistModal = (props: TModal) => {
           </div>
           <div>
             <p>상태</p>
-            <SelectWrapper>
-              <Select
-                value={{ name: 'test' }}
-                onChange={(value) => console.log('선택', value)}
-                list={statuses?.customerStatus ?? []}
-                trackBy="status"
-                valueBy="status"
-                placeholder="상태를 선택해주세요"
-              />
-            </SelectWrapper>
+            <Select
+              size="medium"
+              value={{ name: 'test' }}
+              onChange={(value) => console.log('선택', value)}
+              list={statuses?.customerStatus ?? []}
+              trackBy="status"
+              valueBy="status"
+              placeholder="상태를 선택해주세요"
+            />
           </div>
           <div>
             <p>등급</p>
-            <SelectWrapper>
-              <Select
-                value={{ name: 'test' }}
-                onChange={(value) => console.log('선택', value)}
-                list={grades?.customerGrades ?? []}
-                trackBy="name"
-                valueBy="name"
-                placeholder="등급을 선택해주세요"
-              />
-            </SelectWrapper>
+            <Select
+              size="medium"
+              value={{ name: 'test' }}
+              onChange={(value) => console.log('선택', value)}
+              list={grades?.customerGrades ?? []}
+              trackBy="name"
+              valueBy="name"
+              placeholder="등급을 선택해주세요"
+            />
           </div>
           <div>
             <p>그룹</p>
-            <SelectWrapper>
-              <Select
-                value={{ name: 'test' }}
-                onChange={(value) => console.log('선택', value)}
-                list={groups?.customerGroups ?? []}
-                trackBy="name"
-                valueBy="name"
-                placeholder="그룹을 선택해주세요"
-              />
-            </SelectWrapper>
+            <Select
+              size="medium"
+              value={{ name: 'test' }}
+              onChange={(value) => console.log('선택', value)}
+              list={groups?.customerGroups ?? []}
+              trackBy="name"
+              valueBy="name"
+              placeholder="그룹을 선택해주세요"
+            />
           </div>
           <div>
             <p>비고</p>
