@@ -4,7 +4,14 @@ import { SvgIcon } from '../common/SvgIcon';
 import styled from 'styled-components';
 import palette from '@/styles/variables';
 
-type TInputType = 'text' | 'number' | 'email' | 'password' | 'tel' | 'datetime';
+type TInputType =
+  | 'text'
+  | 'number'
+  | 'email'
+  | 'password'
+  | 'tel'
+  | 'date'
+  | 'datetime-local';
 
 interface IInputProps extends HTMLAttributes<HTMLDivElement> {
   size?: 'medium' | 'large';
@@ -77,7 +84,7 @@ const Input = forwardRef<HTMLInputElement, IInputProps>(
           ].join(' ')}
         >
           {prefixNode ? <div className="prefixNode">{prefixNode}</div> : ''}
-          {!isRegister && (
+          {type === 'date' || type === 'datetime-local' ? (
             <input
               name={name}
               ref={ref}
@@ -87,18 +94,34 @@ const Input = forwardRef<HTMLInputElement, IInputProps>(
               readOnly={readOnly}
               value={text}
               placeholder={placeholder}
+              onClick={(e) => e.currentTarget.showPicker()}
             />
-          )}
-          {isRegister && (
-            <input
-              name={name}
-              ref={ref}
-              type={type}
-              disabled={disabled}
-              readOnly={readOnly}
-              placeholder={placeholder}
-              {...props}
-            />
+          ) : (
+            <>
+              {!isRegister && (
+                <input
+                  name={name}
+                  ref={ref}
+                  onChange={handleChange}
+                  type={type}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  value={text}
+                  placeholder={placeholder}
+                />
+              )}
+              {isRegister && (
+                <input
+                  name={name}
+                  ref={ref}
+                  type={type}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  placeholder={placeholder}
+                  {...props}
+                />
+              )}
+            </>
           )}
           {remove && text?.length > 0 && !disabled && !readOnly ? (
             <SvgIcon
@@ -168,7 +191,6 @@ const Root = styled.div`
       border-radius: ${palette['$radius-l']};
       max-height: 50px;
     }
-
     input {
       flex: 1;
       width: 100%;
@@ -180,6 +202,10 @@ const Root = styled.div`
       &:focus-visible {
         outline: none !important;
       }
+    }
+    input[type='date'],
+    input[type='datetime-local'] {
+      cursor: pointer;
     }
 
     &:not(:disabled) {

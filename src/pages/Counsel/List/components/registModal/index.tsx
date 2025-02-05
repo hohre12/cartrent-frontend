@@ -14,6 +14,7 @@ import { Contract, Customer } from '@/types/graphql';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import ReactDatePicker from 'react-datepicker';
 
 const RegistModal = (props: TModal) => {
   const { ...modalProps } = props;
@@ -94,7 +95,11 @@ const RegistModal = (props: TModal) => {
             </div>
             <div>
               <span>상담일시</span>
-              <Input></Input>
+              <Input
+                type="datetime-local"
+                style={{ cursor: 'pointer' }}
+                onTextChange={(text) => console.log(text)}
+              />
             </div>
             <div>
               <span>상담자</span>
