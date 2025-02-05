@@ -20,6 +20,7 @@ import { GET_CONTRACTS_QUERY } from '@/apollo/queries/contract';
 import ContractListTable from './components/table';
 import FilterStatus from './components/filter/status';
 import { Contract, GetContractsDto } from '@/types/graphql';
+import { useGetContracts } from '@/services/contract';
 
 const ContractList = () => {
   const [text, setText] = useState<string>('');
@@ -28,12 +29,8 @@ const ContractList = () => {
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
-  const { data, loading, error } = useQuery<
-    { getContracts: Contract[] },
-    { getContractsDto: GetContractsDto }
-  >(GET_CONTRACTS_QUERY, {
-    variables: { getContractsDto: { search: searchText } },
-  });
+
+  const { data, loading, error } = useGetContracts({ search: searchText });
 
   // filters
   const [filters, setFilters] = useRecoilState(contractFiltersState);

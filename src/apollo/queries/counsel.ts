@@ -11,7 +11,6 @@ export const GET_COUNSELS_QUERY = gql`
       id
       context
       status
-      type
       image_url
       user_id
       customer_id
@@ -44,7 +43,6 @@ export const GET_COUNSEL_QUERY = gql`
       id
       context
       status
-      type
       image_url
       user_id
       customer_id

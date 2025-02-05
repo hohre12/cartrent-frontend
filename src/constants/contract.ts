@@ -2,7 +2,7 @@ export const CONTRACT_LIST_WATCH_OPTIONS = {
   status: '상태',
   userName: '담당자',
   cityName: '지역',
-  contract_at: '계약일',
+  contractAt: '계약일',
   shippingDate: '출고일',
   name: '고객명',
   phone: '연락처',
@@ -37,9 +37,9 @@ export const CONTRACT_LIST_WATCH_OPTIONS = {
   serviceBody3: '내용3',
   incomeEarner: '소득자',
   cashAssistance: '현금지원',
-  supportDetail: '지원내용',
-  // 발비
-  // 발비내용
+  supportDetails: '지원내용',
+  businessExpenses: '발비',
+  businessExpensesDetail: '발비내용',
   totalExpenditure: '총지출',
   totalFee: '수수료합계',
   netIncome: '순수익',
@@ -47,7 +47,7 @@ export const CONTRACT_LIST_WATCH_OPTIONS = {
 
 export const CONTRACT_LIST_WATCH_REQUIRED_OPTIONS = [
   'status',
-  'contract_at',
+  'contractAt',
   'shippingDate',
   'name',
   'phone',

@@ -10,7 +10,7 @@ export const isEmpty = (object: any[] | any): boolean => {
   return Array.isArray(object) ? !object.length : !Object.keys(object).length;
 };
 
-export const numberFormat = (num: number | undefined): string => {
-  if (num === undefined) return '-';
+export const numberFormat = (num: number | undefined | null): string => {
+  if (!num) return '-';
   return num.toLocaleString('ko-KR');
 };

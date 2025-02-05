@@ -19,7 +19,7 @@ import ReactDatePicker from 'react-datepicker';
 const RegistModal = (props: TModal) => {
   const { ...modalProps } = props;
   const [customer, setCustomer] = useState<Customer>();
-  const [counselDate, setCounselDate] = useState<string>();
+  const [counselAt, setCounselAt] = useState<string>();
   const user = useRecoilValue(userState);
   const [contract, setContract] = useState<Contract>();
   const [context, setContext] = useState<string>();
@@ -28,7 +28,7 @@ const RegistModal = (props: TModal) => {
   const { addToast } = useToast();
   const { data: customers } = useGetCustomers({});
 
-  const { data: contracts } = useGetContracts({});
+  const { data: contracts } = useGetContracts({ customerId: customer?.id });
   const hasContracts = (contracts?.getContracts ?? []).length > 0;
   const isContracts = !contract || !hasContracts;
 
@@ -38,29 +38,25 @@ const RegistModal = (props: TModal) => {
     setSubmit(true);
     if (!customer) return;
     if (!context) return;
+    if (!counselAt) return;
     try {
-      console.log('확인', customer);
-      console.log('date', counselDate);
-      console.log('contract', contract);
-      console.log('user', user);
-      console.log('context', context);
-      //   const response = await createCounsel({
-      //     customer_id: customer.id,
-      //     counselDate: counselDate,
-      //     user_id: user?.id,
-      //     contract_id: contract?.id,
-      //     context,
-      //   });
+      const response = await createCounsel({
+        customer_id: customer.id,
+        counselAt,
+        // user_id: user?.id,
+        contract_id: contract?.id,
+        context,
+      });
 
-      //   if (response && response.data.createCounsel.id) {
-      //     addToast({
-      //       id: Date.now(),
-      //       isImage: true,
-      //       content: `상담이 등록되었습니다.`,
-      //       type: 'success',
-      //     });
-      //     modalProps.onConfirm?.();
-      //   }
+      if (response && response.data.createCounsel.id) {
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `상담이 등록되었습니다.`,
+          type: 'success',
+        });
+        modalProps.onConfirm?.();
+      }
     } catch (e) {
       console.warn(e);
     }
@@ -98,7 +94,7 @@ const RegistModal = (props: TModal) => {
               <Input
                 type="datetime-local"
                 style={{ cursor: 'pointer' }}
-                onTextChange={(text) => setCounselDate(text)}
+                onTextChange={(text) => setCounselAt(text)}
               />
             </div>
             <div>

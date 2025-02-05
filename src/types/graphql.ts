@@ -121,7 +121,7 @@ export type Contract = {
   /** 출고 방식 */
   shippingMethod?: Maybe<Scalars['String']['output']>;
   /** 계약 상태 */
-  status: Scalars['String']['output'];
+  status?: Maybe<Status>;
   supportAmounts: Array<SupportAmount>;
   /** 지원 내용 */
   supportDetails?: Maybe<Scalars['String']['output']>;
@@ -156,6 +156,10 @@ export enum ContractSearchType {
 export type Counsel = {
   /** 상담 내용 */
   context: Scalars['String']['output'];
+  contract?: Maybe<Contract>;
+  contract_id?: Maybe<Scalars['Int']['output']>;
+  /** 상담 일시 */
+  counselAt: Scalars['String']['output'];
   created_at?: Maybe<Scalars['DateTime']['output']>;
   customer: Customer;
   customerGroup?: Maybe<CustomerGroup>;
@@ -165,9 +169,7 @@ export type Counsel = {
   /** 이미지 파일 */
   image_url?: Maybe<Scalars['String']['output']>;
   /** 상담 상태 */
-  status: Scalars['String']['output'];
-  /** 상담 유형 */
-  type: Scalars['String']['output'];
+  status?: Maybe<Status>;
   updated_at?: Maybe<Scalars['DateTime']['output']>;
   user: User;
   user_id?: Maybe<Scalars['Int']['output']>;
@@ -197,11 +199,11 @@ export type CreateCityDto = {
 
 export type CreateCounselDto = {
   context: Scalars['String']['input'];
+  contract_id?: InputMaybe<Scalars['Int']['input']>;
+  /** 상담 일시 */
+  counselAt: Scalars['String']['input'];
   customer_id: Scalars['Int']['input'];
   image_url?: InputMaybe<Scalars['String']['input']>;
-  /** 상담 삭제 여부 */
-  status?: Status;
-  type: Scalars['String']['input'];
 };
 
 export type CreateCustomerDto = {
@@ -386,6 +388,7 @@ export type GetCitiesDto = {
 export type GetContractsDto = {
   /** 계약일자 년월 */
   contractAtYearMonth?: InputMaybe<Scalars['String']['input']>;
+  customerId?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
   searchType?: InputMaybe<ContractSearchType>;
   /** 출고방식 */
@@ -486,6 +489,8 @@ export type Mutation = {
   updateContract: Contract;
   /** 계약 상태 수정 */
   updateContractStatus: Contract;
+  /** 상담 수정 */
+  updateCounsel: Counsel;
   /** 고객 정보 수정 */
   updateCustomer: Customer;
   /** 고객 등급 수정 */
@@ -617,6 +622,11 @@ export type MutationUpdateContractArgs = {
 
 export type MutationUpdateContractStatusArgs = {
   updateContractStatus: UpdateContractStatusDto;
+};
+
+
+export type MutationUpdateCounselArgs = {
+  updateCounselDto: UpdateCounselDto;
 };
 
 
@@ -903,6 +913,7 @@ export type UpdateContractDto = {
   contractPeriod?: InputMaybe<Scalars['String']['input']>;
   /** 계약 타입 */
   contractType?: InputMaybe<Scalars['String']['input']>;
+  customerId: Scalars['Int']['input'];
   /** 이외 추가 금액 */
   extraPrice?: InputMaybe<Scalars['Int']['input']>;
   /** 수수료 */
@@ -974,6 +985,18 @@ export type UpdateContractDto = {
 export type UpdateContractStatusDto = {
   contractId: Scalars['Int']['input'];
   status: Scalars['String']['input'];
+};
+
+export type UpdateCounselDto = {
+  context: Scalars['String']['input'];
+  contractId?: InputMaybe<Scalars['Int']['input']>;
+  /** 상담 일시 */
+  counselAt: Scalars['String']['input'];
+  counselId: Scalars['Int']['input'];
+  customerId?: InputMaybe<Scalars['Int']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Status>;
+  userId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type UpdateCustomerDto = {
@@ -1230,28 +1253,28 @@ export type GetContractsQueryVariables = Exact<{
 }>;
 
 
-export type GetContractsQuery = { getContracts: Array<{ id: number, context?: string | null, status: string, totalPrice?: number | null, innerColor?: string | null, outerColor?: string | null, extraPrice?: number | null, bank?: string | null, carName?: string | null, carPrice?: number | null, carOption?: string | null, product?: string | null, financialCompany?: string | null, surtax?: string | null, promotion?: string | null, monthlyPayment?: string | null, shippingMethod?: string | null, branch?: string | null, branchFee?: number | null, collateralType?: string | null, collateralRate?: string | null, contractPeriod?: string | null, agreedMileage?: string | null, insuranceAge?: string | null, object?: string | null, service1?: string | null, service2?: string | null, service3?: string | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: string | null, supportDetails?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, contractType?: string | null, isVATSupport?: boolean | null, isOrdering?: boolean | null, interChangeFee?: number | null, feeRate?: string | null, fee?: number | null, city_id?: number | null, user_id?: number | null, customer_id?: number | null, contractAt?: string | null, shippingDate?: string | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, user: { id: number, email: string, name: string, password: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null }, customer: { id: number, name: string }, city: { id: number, name: string }, supportAmounts: Array<{ id: number, amount: number }> }> };
+export type GetContractsQuery = { getContracts: Array<{ id: number, context?: string | null, status?: Status | null, totalPrice?: number | null, innerColor?: string | null, outerColor?: string | null, extraPrice?: number | null, bank?: string | null, carName?: string | null, carPrice?: number | null, carOption?: string | null, product?: string | null, financialCompany?: string | null, surtax?: string | null, promotion?: string | null, monthlyPayment?: string | null, shippingMethod?: string | null, branch?: string | null, branchFee?: number | null, collateralType?: string | null, collateralRate?: string | null, contractPeriod?: string | null, agreedMileage?: string | null, insuranceAge?: string | null, object?: string | null, service1?: string | null, service2?: string | null, service3?: string | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: string | null, supportDetails?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, contractType?: string | null, isVATSupport?: boolean | null, isOrdering?: boolean | null, interChangeFee?: number | null, feeRate?: string | null, fee?: number | null, city_id?: number | null, user_id?: number | null, customer_id?: number | null, contractAt?: string | null, shippingDate?: string | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, user: { id: number, email: string, name: string, password: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null }, customer: { id: number, name: string }, city: { id: number, name: string }, supportAmounts: Array<{ id: number, amount: number }> }> };
 
 export type GetContractQueryVariables = Exact<{
   contractId: Scalars['Float']['input'];
 }>;
 
 
-export type GetContractQuery = { getContract: { id: number, context?: string | null, status: string, totalPrice?: number | null, innerColor?: string | null, outerColor?: string | null, extraPrice?: number | null, bank?: string | null, carName?: string | null, carPrice?: number | null, carOption?: string | null, product?: string | null, financialCompany?: string | null, surtax?: string | null, promotion?: string | null, monthlyPayment?: string | null, shippingMethod?: string | null, branch?: string | null, branchFee?: number | null, collateralType?: string | null, collateralRate?: string | null, contractPeriod?: string | null, agreedMileage?: string | null, insuranceAge?: string | null, object?: string | null, service1?: string | null, service2?: string | null, service3?: string | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: string | null, supportDetails?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, contractType?: string | null, isVATSupport?: boolean | null, isOrdering?: boolean | null, interChangeFee?: number | null, feeRate?: string | null, fee?: number | null, city_id?: number | null, user_id?: number | null, customer_id?: number | null, contractAt?: string | null, shippingDate?: string | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, user: { id: number, name: string }, customer: { id: number, name: string }, city: { id: number, name: string }, supportAmounts: Array<{ id: number, amount: number }> } };
+export type GetContractQuery = { getContract: { id: number, context?: string | null, status?: Status | null, totalPrice?: number | null, innerColor?: string | null, outerColor?: string | null, extraPrice?: number | null, bank?: string | null, carName?: string | null, carPrice?: number | null, carOption?: string | null, product?: string | null, financialCompany?: string | null, surtax?: string | null, promotion?: string | null, monthlyPayment?: string | null, shippingMethod?: string | null, branch?: string | null, branchFee?: number | null, collateralType?: string | null, collateralRate?: string | null, contractPeriod?: string | null, agreedMileage?: string | null, insuranceAge?: string | null, object?: string | null, service1?: string | null, service2?: string | null, service3?: string | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: string | null, supportDetails?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, contractType?: string | null, isVATSupport?: boolean | null, isOrdering?: boolean | null, interChangeFee?: number | null, feeRate?: string | null, fee?: number | null, city_id?: number | null, user_id?: number | null, customer_id?: number | null, contractAt?: string | null, shippingDate?: string | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, user: { id: number, name: string }, customer: { id: number, name: string }, city: { id: number, name: string }, supportAmounts: Array<{ id: number, amount: number }> } };
 
 export type GetCounselsQueryVariables = Exact<{
   getCounselsDto: GetCounselsDto;
 }>;
 
 
-export type GetCounselsQuery = { getCounsels: Array<{ id: number, context: string, status: string, type: string, image_url?: string | null, user_id?: number | null, customer_id?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, customer: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, user: { id: number, name: string } }> };
+export type GetCounselsQuery = { getCounsels: Array<{ id: number, context: string, status?: Status | null, image_url?: string | null, user_id?: number | null, customer_id?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, customer: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, user: { id: number, name: string } }> };
 
 export type GetCounselQueryVariables = Exact<{
   counselId: Scalars['Float']['input'];
 }>;
 
 
-export type GetCounselQuery = { getCounsel: { id: number, context: string, status: string, type: string, image_url?: string | null, user_id?: number | null, customer_id?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, customer: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, user: { id: number, name: string } } };
+export type GetCounselQuery = { getCounsel: { id: number, context: string, status?: Status | null, image_url?: string | null, user_id?: number | null, customer_id?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, customer: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, user: { id: number, name: string } } };
 
 export type GetCustomersQueryVariables = Exact<{
   getCustomersDto: GetCustomersDto;
@@ -2303,7 +2326,6 @@ export const GetCounselsDocument = gql`
     id
     context
     status
-    type
     image_url
     user_id
     customer_id
@@ -2364,7 +2386,6 @@ export const GetCounselDocument = gql`
     id
     context
     status
-    type
     image_url
     user_id
     customer_id
