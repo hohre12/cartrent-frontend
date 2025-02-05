@@ -39,7 +39,7 @@ export const useGetCustomers = (params: GetCustomersDto) => {
 export const useGetCustomer = (params: Customer['id']) => {
   return useQuery<{ getCustomer: Customer }, { customerId: Customer['id'] }>(
     GET_CUSTOMER_QUERY,
-    { variables: { customerId: params } },
+    { variables: { customerId: params }, skip: !params },
   );
 };
 
