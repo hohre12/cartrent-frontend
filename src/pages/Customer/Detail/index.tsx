@@ -3,6 +3,7 @@ import Checkbox from '@/components/checkbox/Checkbox';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import Input from '@/components/input/Input';
 import TextArea from '@/components/textArea/TextArea';
+import { CustomerStatusEnum } from '@/constants/common';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import { useDeleteCustomer, useGetCustomer } from '@/services/customer';
@@ -104,7 +105,7 @@ const CustomerDetail = () => {
             <Input
               className="inputWrapper"
               disabled
-              value={detail.status ?? ''}
+              value={CustomerStatusEnum[detail.status] ?? ''}
             ></Input>
           </div>
           <div>

@@ -10,6 +10,7 @@ import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
 import { Counsel } from '@/types/graphql';
 import { isColumnsViewHide } from '@/utils/common';
+import { formatDate } from '@/utils/dateUtils';
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -86,10 +87,13 @@ const CounselListTable = ({ data }: TTableProps) => {
                 />
               </div>
             </td>
+            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'status') && (
+              <td>{it.status ?? '-'}</td>
+            )}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
               'created_at',
-            ) && <td>{it.created_at ?? '-'}</td>}
+            ) && <td>{formatDate(it.created_at) ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
               'customerName',
@@ -98,30 +102,36 @@ const CounselListTable = ({ data }: TTableProps) => {
               selectedCounselHideWatchOptions,
               'customerPhone',
             ) && <td>{it.customer?.phone ?? '-'}</td>}
-            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'type') && (
-              <td>{it.type ?? '-'}</td>
-            )}
-            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'status') && (
-              <td>{it.status ?? '-'}</td>
+            {/* {!isColumnsViewHide(selectedCounselHideWatchOptions, 'carName') && (
+              <td>
+                {it.contractList.length > 0
+                  ? it.contractList[it.contractList.length - 1].carName
+                  : '-'}
+              </td>
+            )} */}
+            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'context') && (
+              <td className="textHidden">{it.context ?? '-'}</td>
             )}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
               'userName',
-            ) && <td>{it.user?.name ?? '-'}</td>}
-            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'title') && (
-              <td className="name">{it.context ?? '-'}</td>
-            )}
-            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'context') && (
-              <td className="name">{it.context ?? '-'}</td>
-            )}
+            ) && <td>{it.user.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
               'customerGroup',
             ) && <td>{it.customerGroup?.name ?? '-'}</td>}
-            {/* {!isColumnsViewHide(
+            {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
-              'updated_at',
-            ) && <td>{it.updated_at ?? '-'}</td>} */}
+              'customerGrade',
+            ) && <td>{it.customer.customerGrade?.name ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
+              'customerProduct',
+            ) && <td className="name">{it.customer.product ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
+              'customerDivision',
+            ) && <td className="name">{it.customer.division ?? '-'}</td>}
             <td>
               <Button variant="black">삭제</Button>
             </td>
@@ -176,6 +186,12 @@ export const TableItem = styled.tr`
     border-bottom: 1px solid #eee;
     &.name {
       font-weight: 600;
+    }
+    &.textHidden {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      word-break: break-all;
     }
   }
 `;

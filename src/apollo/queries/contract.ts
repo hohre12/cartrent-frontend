@@ -54,7 +54,7 @@ export const GET_CONTRACTS_QUERY = gql`
       city_id
       user_id
       customer_id
-      contract_at
+      contractAt
       shippingDate
       created_at
       updated_at
@@ -137,7 +137,7 @@ export const GET_CONTRACT_QUERY = gql`
       city_id
       user_id
       customer_id
-      contract_at
+      contractAt
       shippingDate
       created_at
       updated_at

@@ -61,18 +61,6 @@ export const useGetCustomerGroups = () => {
   );
 };
 
-export const useDeleteCustomer = () => {
-  const [deleteCustomerMutate] = useMutation(DELETE_CUSTOMER_MUTATION, {
-    refetchQueries: [GET_CUSTOMERS_QUERY, 'GetCustomers'],
-  });
-
-  const deleteCustomer = async (params: Customer['id']) => {
-    if (!params) return;
-    return deleteCustomerMutate({ variables: { customerId: params } });
-  };
-  return { deleteCustomer };
-};
-
 export const useCreateCustomer = () => {
   const [createCustomerMutate] = useMutation(CREATE_CUSTOMER_MUTATION, {
     refetchQueries: [GET_CUSTOMERS_QUERY, 'GetCustomers'],
@@ -85,25 +73,14 @@ export const useCreateCustomer = () => {
   return { createCustomer };
 };
 
-// // 임시
-// export const useGetCustomers = (params: GetCustomersDto) => {
-//   return useQuery<{ getCustomers: Customer[] }, GetCustomersDto>(
-//     GET_CUSTOMERS_QUERY,
-//     {
-//       variables: params,
-//     },
-//   );
-// };
+export const useDeleteCustomer = () => {
+  const [deleteCustomerMutate] = useMutation(DELETE_CUSTOMER_MUTATION, {
+    refetchQueries: [GET_CUSTOMERS_QUERY, 'GetCustomers'],
+  });
 
-// // 임시
-// export const useCreateCustomer = () => {
-//   const [createCustomerMutate] = useMutation(CREATE_CUSTOMER_MUTATION, {
-//     refetchQueries: [GET_CUSTOMERS_QUERY, 'GetCustomers'],
-//   });
-
-//   const createCustomer = async (params: CreateCustomerDto) => {
-//     if (!params) return;
-//     return createCustomerMutate({ variables: params });
-//   };
-//   return { createCustomer };
-// };
+  const deleteCustomer = async (params: Customer['id']) => {
+    if (!params) return;
+    return deleteCustomerMutate({ variables: { customerId: params } });
+  };
+  return { deleteCustomer };
+};

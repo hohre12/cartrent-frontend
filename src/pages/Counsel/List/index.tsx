@@ -23,6 +23,7 @@ import FloatingMenu from './components/floatingMenu';
 import { useQuery } from '@apollo/client';
 import { GET_COUNSELS_QUERY } from '@/apollo/queries/counsel';
 import { Counsel, GetCounselsDto } from '@/types/graphql';
+import { useGetCounsels } from '@/services/counsel';
 
 const CounselList = () => {
   const [text, setText] = useState<string>('');
@@ -32,12 +33,7 @@ const CounselList = () => {
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
 
-  const { data, loading, error } = useQuery<
-    { getCounsels: Counsel[] },
-    { getCounselsDto: GetCounselsDto }
-  >(GET_COUNSELS_QUERY, {
-    variables: { getCounselsDto: { search: searchText } },
-  });
+  const { data, loading, error } = useGetCounsels({ search: searchText });
 
   // filters
   const [filters, setFilters] = useRecoilState(customerFiltersState);

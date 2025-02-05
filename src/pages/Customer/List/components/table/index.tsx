@@ -1,3 +1,4 @@
+import { CustomerStatusEnum } from '@/constants/common';
 import { CUSTOMER_LIST_WATCH_OPTIONS } from '@/constants/customer';
 // import { dummyCustomerList } from '@/dummy/customer';
 import {
@@ -44,7 +45,7 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
             onClick={() => setSelectedCustomer(it.id)}
           >
             <td>{idx}</td>
-            <td>{it.status}</td>
+            <td>{CustomerStatusEnum[it.status]}</td>
             <td>{formatDate(it.created_at) ?? '-'}</td>
             <td>{it.name ?? '-'}</td>
             <td>{it.phone ?? '-'}</td>
