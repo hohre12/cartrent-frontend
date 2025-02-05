@@ -40,7 +40,7 @@ const RegistModal = (props: TModal) => {
     if (!context) return;
     try {
       console.log('확인', customer);
-      console.log('date', customer);
+      console.log('date', counselDate);
       console.log('contract', contract);
       console.log('user', user);
       console.log('context', context);
@@ -98,7 +98,7 @@ const RegistModal = (props: TModal) => {
               <Input
                 type="datetime-local"
                 style={{ cursor: 'pointer' }}
-                onTextChange={(text) => console.log(text)}
+                onTextChange={(text) => setCounselDate(text)}
               />
             </div>
             <div>

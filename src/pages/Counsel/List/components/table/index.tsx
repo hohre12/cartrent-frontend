@@ -70,7 +70,6 @@ const CounselListTable = ({ data }: TTableProps) => {
               )
             );
           })}
-          <th>상담삭제</th>
         </TableHeader>
       </thead>
       <tbody>
@@ -132,9 +131,6 @@ const CounselListTable = ({ data }: TTableProps) => {
               selectedCounselHideWatchOptions,
               'customerDivision',
             ) && <td className="name">{it.customer.division ?? '-'}</td>}
-            <td>
-              <Button variant="black">삭제</Button>
-            </td>
           </TableItem>
         ))}
       </tbody>
