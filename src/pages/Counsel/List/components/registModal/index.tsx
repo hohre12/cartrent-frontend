@@ -4,42 +4,62 @@ import Select from '@/components/select/Select';
 import TextArea from '@/components/textArea/TextArea';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
+import { useGetContracts } from '@/services/contract';
+import { useCreateCounsel } from '@/services/counsel';
 import { useGetCustomers } from '@/services/customer';
 import { userState } from '@/state/auth';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
-import { Customer } from '@/types/graphql';
+import { Contract, Customer } from '@/types/graphql';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const RegistModal = (props: TModal) => {
   const { ...modalProps } = props;
-  const user = useRecoilValue(userState);
   const [customer, setCustomer] = useState<Customer>();
+  const [counselDate, setCounselDate] = useState<string>();
+  const user = useRecoilValue(userState);
+  const [contract, setContract] = useState<Contract>();
+  const [context, setContext] = useState<string>();
   const [submit, setSubmit] = useState<boolean>(false);
+
   const { addToast } = useToast();
   const { data: customers } = useGetCustomers({});
 
+  const { data: contracts } = useGetContracts({});
+  const hasContracts = (contracts?.getContracts ?? []).length > 0;
+  const isContracts = !contract || !hasContracts;
+
+  const { createCounsel } = useCreateCounsel();
+
   const handleCounselRegist = async () => {
     setSubmit(true);
-    // if (!title) return;
+    if (!customer) return;
+    if (!context) return;
     try {
-      //   const { data } = await postMemberTemp({
-      //     userName: userName,
-      //     empNo: empNo,
-      //     authId: authId,
-      //     email: email,
-      //     teamIdxs: teams?.map((it) => it.teamIdx),
-      //     institutePermIdx: permission?.institutePermIdx,
+      console.log('확인', customer);
+      console.log('date', customer);
+      console.log('contract', contract);
+      console.log('user', user);
+      console.log('context', context);
+      //   const response = await createCounsel({
+      //     customer_id: customer.id,
+      //     counselDate: counselDate,
+      //     user_id: user?.id,
+      //     contract_id: contract?.id,
+      //     context,
       //   });
-      addToast({
-        id: Date.now(),
-        isImage: true,
-        content: `상담이 등록되었습니다.`,
-        type: 'success',
-      });
-      modalProps.onConfirm?.();
+
+      //   if (response && response.data.createCounsel.id) {
+      //     addToast({
+      //       id: Date.now(),
+      //       isImage: true,
+      //       content: `상담이 등록되었습니다.`,
+      //       type: 'success',
+      //     });
+      //     modalProps.onConfirm?.();
+      //   }
     } catch (e) {
       console.warn(e);
     }
@@ -88,19 +108,21 @@ const RegistModal = (props: TModal) => {
               <span>계약</span>
               <Select
                 size="medium"
-                value={customers?.getCustomers[0]}
+                value={{ ...contract }}
                 onChange={(value) => console.log('선택', value)}
-                list={customers?.getCustomers ?? []}
+                list={contracts?.getContracts ?? []}
                 trackBy="id"
                 valueBy="name"
                 placeholder="계약을 선택해주세요"
+                disabled={isContracts}
               />
             </div>
           </div>
           <div className="TextAreaWrapper">
             <span>상담내용</span>
             <TextArea
-              value={''}
+              value={context ?? ''}
+              onTextChange={(value) => setContext(value)}
               style={{ width: '500px' }}
             ></TextArea>
           </div>

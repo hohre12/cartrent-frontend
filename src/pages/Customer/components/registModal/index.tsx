@@ -62,7 +62,7 @@ const RegistModal = (props: TModal) => {
         product,
         type,
       });
-      console.log(response);
+
       if (response && response.data.createCustomer.id) {
         addToast({
           id: Date.now(),
