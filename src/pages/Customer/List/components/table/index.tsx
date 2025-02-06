@@ -45,7 +45,8 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
             onClick={() => setSelectedCustomer(it.id)}
           >
             <td>{idx}</td>
-            <td>{CustomerStatusEnum[it.status]}</td>
+            {/* <td>{CustomerStatusEnum[it.status]}</td> */}
+            <td>{it.customerStatus?.status ?? '-'}</td>
             <td>{formatDate(it.created_at) ?? '-'}</td>
             <td>{it.name ?? '-'}</td>
             <td>{it.phone ?? '-'}</td>
@@ -58,7 +59,10 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
             <td>{it.note ?? '-'}</td>
             <td>
               {it.counselList.length > 0
-                ? it.counselList[it.counselList.length - 1].updated_at
+                ? formatDate(
+                    it.counselList[it.counselList.length - 1].updated_at,
+                    'YYYY-MM-DD HH:mm',
+                  )
                 : '-'}
             </td>
             <td>{it.customerGrade?.name ?? '-'}</td>

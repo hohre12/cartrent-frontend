@@ -197,6 +197,104 @@ export type CreateCityDto = {
   name: Scalars['String']['input'];
 };
 
+export type CreateContractDto = {
+  /** 약정 거리 */
+  agreedMileage?: InputMaybe<Scalars['String']['input']>;
+  /** 은행 */
+  bank?: InputMaybe<Scalars['String']['input']>;
+  /** 지점 */
+  branch?: InputMaybe<Scalars['String']['input']>;
+  /** 지점 수수료 */
+  branchFee?: InputMaybe<Scalars['Int']['input']>;
+  /** 발비 */
+  businessExpenses?: InputMaybe<Scalars['String']['input']>;
+  /** 발비 내용 */
+  businessExpensesDetail?: InputMaybe<Scalars['String']['input']>;
+  /** 차종 */
+  carName?: InputMaybe<Scalars['String']['input']>;
+  /** 차 옵션 */
+  carOption?: InputMaybe<Scalars['String']['input']>;
+  /** 차량 가격 */
+  carPrice?: InputMaybe<Scalars['Int']['input']>;
+  /** 현금 지원 */
+  cashAssistance?: InputMaybe<Scalars['String']['input']>;
+  cityId?: InputMaybe<Scalars['Int']['input']>;
+  /** 담보율 */
+  collateralRate?: InputMaybe<Scalars['String']['input']>;
+  /** 담보 종류 */
+  collateralType?: InputMaybe<Scalars['String']['input']>;
+  /** 계약 내용 */
+  context?: InputMaybe<Scalars['String']['input']>;
+  /** 계약 일 */
+  contractAt?: InputMaybe<Scalars['String']['input']>;
+  /** 약정 기간 */
+  contractPeriod?: InputMaybe<Scalars['String']['input']>;
+  /** 계약 타입 */
+  contractType?: InputMaybe<Scalars['String']['input']>;
+  customerId: Scalars['Int']['input'];
+  /** 이외 추가 금액 */
+  extraPrice?: InputMaybe<Scalars['Int']['input']>;
+  /** 수수료 */
+  fee?: InputMaybe<Scalars['Int']['input']>;
+  /** 수수료 비율 */
+  feeRate?: InputMaybe<Scalars['String']['input']>;
+  /** 금융사 */
+  financialCompany?: InputMaybe<Scalars['String']['input']>;
+  /** 소득자 */
+  incomeEarner?: InputMaybe<Scalars['String']['input']>;
+  /** 내부 색상 */
+  innerColor?: InputMaybe<Scalars['String']['input']>;
+  /** 보험 연령 */
+  insuranceAge?: InputMaybe<Scalars['String']['input']>;
+  /** 정산 수수료 */
+  interChangeFee?: InputMaybe<Scalars['Int']['input']>;
+  /** 발주 여부 */
+  isOrdering?: InputMaybe<Scalars['Boolean']['input']>;
+  /** 부가세 지원 여부 */
+  isVATSupport?: InputMaybe<Scalars['Boolean']['input']>;
+  /** 월 납입료 */
+  monthlyPayment?: InputMaybe<Scalars['String']['input']>;
+  /** 순수익 */
+  netIncome?: InputMaybe<Scalars['Int']['input']>;
+  /** 대물 */
+  object?: InputMaybe<Scalars['String']['input']>;
+  /** 외부 색상 */
+  outerColor?: InputMaybe<Scalars['String']['input']>;
+  /** 상품 */
+  product?: InputMaybe<Scalars['String']['input']>;
+  /** 프로모션 */
+  promotion?: InputMaybe<Scalars['String']['input']>;
+  /** 서비스 1 */
+  service1?: InputMaybe<Scalars['String']['input']>;
+  /** 서비스 2 */
+  service2?: InputMaybe<Scalars['String']['input']>;
+  /** 서비스 3 */
+  service3?: InputMaybe<Scalars['String']['input']>;
+  /** 서비스 내용 1 */
+  serviceBody1?: InputMaybe<Scalars['String']['input']>;
+  /** 서비스 내용 2 */
+  serviceBody2?: InputMaybe<Scalars['String']['input']>;
+  /** 서비스 내용 3 */
+  serviceBody3?: InputMaybe<Scalars['String']['input']>;
+  /** 출고 일 */
+  shippingDate?: InputMaybe<Scalars['String']['input']>;
+  /** 출고 방식 */
+  shippingMethod?: InputMaybe<Scalars['String']['input']>;
+  /** 계약 삭제 여부 */
+  status?: Status;
+  /** 지원 내용 */
+  supportDetails?: InputMaybe<Scalars['String']['input']>;
+  /** 부가세 */
+  surtax?: InputMaybe<Scalars['String']['input']>;
+  /** 총지출 */
+  totalExpenditure?: InputMaybe<Scalars['Int']['input']>;
+  /** 총 수수료 */
+  totalFee?: InputMaybe<Scalars['Int']['input']>;
+  /** 총 계약 금액 */
+  totalPrice?: InputMaybe<Scalars['Int']['input']>;
+  userId: Scalars['Int']['input'];
+};
+
 export type CreateCounselDto = {
   context: Scalars['String']['input'];
   contract_id?: InputMaybe<Scalars['Int']['input']>;
@@ -204,6 +302,7 @@ export type CreateCounselDto = {
   counselAt: Scalars['String']['input'];
   customer_id: Scalars['Int']['input'];
   image_url?: InputMaybe<Scalars['String']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CreateCustomerDto = {
@@ -443,6 +542,8 @@ export type GetRevenuesByUsersDto = {
 export type Mutation = {
   /** 도시 생성 */
   createCity: City;
+  /** 계약 생성 */
+  createContract: Contract;
   /** 상담 생성 */
   createCounsel: Counsel;
   /** 어드민 고객 생성 */
@@ -512,6 +613,11 @@ export type Mutation = {
 
 export type MutationCreateCityArgs = {
   createCityDto: CreateCityDto;
+};
+
+
+export type MutationCreateContractArgs = {
+  createContractDto: CreateContractDto;
 };
 
 

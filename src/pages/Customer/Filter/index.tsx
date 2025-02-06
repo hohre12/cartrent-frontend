@@ -3,8 +3,15 @@ import { textM16Regular, textS14Medium } from '@/styles/typography';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import Checkbox from '@/components/checkbox/Checkbox';
 import { useState } from 'react';
+import {
+  useGetCustomerGrades,
+  useGetCustomerGroups,
+} from '@/services/customer';
 
 const CustomerFilter = () => {
+  const { data: grades } = useGetCustomerGrades();
+  const { data: groups } = useGetCustomerGroups();
+
   const [isOpenFilters, setIsOpenFilters] = useState<string[]>([]);
   const handleOpenFilters = (key: string) => {
     if (isOpenFilters.some((it) => it === key)) {
@@ -113,7 +120,7 @@ const CustomerFilter = () => {
           </div>
           <div>
             <SvgIcon iconName="icon-search" />
-            <SvgIcon iconName="icon-plus" />
+            {/* <SvgIcon iconName="icon-plus" /> */}
           </div>
         </div>
         {isOpenFilters.some((it) => it === 'manager') && (

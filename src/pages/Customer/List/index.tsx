@@ -25,7 +25,9 @@ const CustomerList = () => {
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
 
-  const { data, loading, error } = useGetCustomers({ search: searchText });
+  const { data, loading, error } = useGetCustomers({
+    search: searchText ? searchText : null,
+  });
 
   const handleSearchTextDelete = useCallback(() => {
     setSearchText('');

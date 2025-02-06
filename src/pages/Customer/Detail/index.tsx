@@ -105,7 +105,7 @@ const CustomerDetail = () => {
             <Input
               className="inputWrapper"
               disabled
-              value={CustomerStatusEnum[detail.status] ?? ''}
+              value={detail.customerStatus?.status ?? ''}
             ></Input>
           </div>
           <div>
@@ -207,7 +207,7 @@ const CustomerDetail = () => {
             <Input
               className="inputWrapper"
               disabled
-              value={detail.created_at ?? ''}
+              value={formatDate(detail.created_at) ?? ''}
             ></Input>
           </div>
           <div style={{ width: '100%', height: 'auto', marginLeft: '45px' }}>
