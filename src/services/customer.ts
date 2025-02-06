@@ -44,19 +44,19 @@ export const useGetCustomer = (params: Customer['id']) => {
 };
 
 export const useGetCustomerStatuses = () => {
-  return useQuery<{ customerStatus: CustomerStatus[] }>(
+  return useQuery<{ getCustomerStatuses: CustomerStatus[] }>(
     GET_CUSTOMER_STATUSES_QUERY,
   );
 };
 
 export const useGetCustomerGrades = () => {
-  return useQuery<{ customerGrades: CustomerGrade[] }>(
+  return useQuery<{ getCustomerGrades: CustomerGrade[] }>(
     GET_CUSTOMER_GRADES_QUERY,
   );
 };
 
 export const useGetCustomerGroups = () => {
-  return useQuery<{ customerGroups: CustomerGroup[] }>(
+  return useQuery<{ getCustomerGroups: CustomerGroup[] }>(
     GET_CUSTOMER_GROUPS_QUERY,
   );
 };

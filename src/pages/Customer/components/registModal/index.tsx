@@ -1,9 +1,6 @@
-import { CREATE_CUSTOMER_MUTATION } from '@/apollo/mutations/customer';
-import { GET_CUSTOMERS_QUERY } from '@/apollo/queries/customer';
 import Input from '@/components/input/Input';
 import { Modal } from '@/components/modal/Modal';
 import Select from '@/components/select/Select';
-import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import {
   useCreateCustomer,
@@ -12,8 +9,14 @@ import {
   useGetCustomerStatuses,
 } from '@/services/customer';
 import { TModal } from '@/types/common';
-import { CreateCustomerDto } from '@/types/graphql';
-import { useMutation } from '@apollo/client';
+import {
+  CreateCustomerDto,
+  CreateCustomerGradeDto,
+  CustomerGrade,
+  CustomerGroup,
+  CustomerStatus,
+} from '@/types/graphql';
+import { autoHypenTel, isNumber } from '@/utils/common';
 import { useState } from 'react';
 import styled from 'styled-components';
 
@@ -21,12 +24,11 @@ const RegistModal = (props: TModal) => {
   const { ...modalProps } = props;
   const [companyNameNominee, setCompanyNameNominee] =
     useState<CreateCustomerDto['companyNameNominee']>();
-  const [customerGradeId, setCustomerGradeId] =
-    useState<CreateCustomerDto['customerGradeId']>();
-  const [customerGroupId, setCustomerGroupId] =
-    useState<CreateCustomerDto['customerGroupId']>();
-  const [customerStatusId, setCustomerStatusId] =
-    useState<CreateCustomerDto['customerStatusId']>();
+
+  const [customerGrade, setCustomerGrade] = useState<CustomerGrade>();
+  const [customerGroup, setCustomerGroup] = useState<CustomerGroup>();
+  const [customerStatus, setCustomerStatus] = useState<CustomerStatus>();
+
   const [division, setDivision] = useState<CreateCustomerDto['division']>();
   const [memo, setMemo] = useState<CreateCustomerDto['memo']>();
   const [name, setName] = useState<CreateCustomerDto['name']>();
@@ -51,9 +53,9 @@ const RegistModal = (props: TModal) => {
     try {
       const response = await createCustomer({
         companyNameNominee,
-        customerGradeId,
-        customerGroupId,
-        customerStatusId,
+        customerGradeId: customerGrade?.id,
+        customerGroupId: customerGroup?.id,
+        customerStatusId: customerStatus?.id,
         division,
         memo,
         name,
@@ -101,7 +103,7 @@ const RegistModal = (props: TModal) => {
             <Input
               placeholder="전화번호를 입력해 주세요."
               value={phone}
-              onTextChange={(text) => setPhone(text)}
+              onTextChange={(text) => setPhone(autoHypenTel(text))}
             />
           </div>
           <div>
@@ -148,10 +150,10 @@ const RegistModal = (props: TModal) => {
             <p>상태</p>
             <Select
               size="medium"
-              value={{ name: 'test' }}
-              onChange={(value) => console.log('선택', value)}
-              list={statuses?.customerStatus ?? []}
-              trackBy="status"
+              value={{ ...customerStatus }}
+              onChange={(value) => setCustomerStatus(value)}
+              list={statuses?.getCustomerStatuses ?? []}
+              trackBy="id"
               valueBy="status"
               placeholder="상태를 선택해주세요"
             />
@@ -160,9 +162,9 @@ const RegistModal = (props: TModal) => {
             <p>등급</p>
             <Select
               size="medium"
-              value={{ name: 'test' }}
-              onChange={(value) => console.log('선택', value)}
-              list={grades?.customerGrades ?? []}
+              value={{ ...customerGrade }}
+              onChange={(value) => setCustomerGrade(value)}
+              list={grades?.getCustomerGrades ?? []}
               trackBy="name"
               valueBy="name"
               placeholder="등급을 선택해주세요"
@@ -172,9 +174,9 @@ const RegistModal = (props: TModal) => {
             <p>그룹</p>
             <Select
               size="medium"
-              value={{ name: 'test' }}
-              onChange={(value) => console.log('선택', value)}
-              list={groups?.customerGroups ?? []}
+              value={{ ...customerGroup }}
+              onChange={(value) => setCustomerGroup(value)}
+              list={groups?.getCustomerGroups ?? []}
               trackBy="name"
               valueBy="name"
               placeholder="그룹을 선택해주세요"
