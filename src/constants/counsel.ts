@@ -1,6 +1,6 @@
 export const COUNSEL_LIST_WATCH_OPTIONS = {
   status: '상태',
-  created_at: '상담일시',
+  counselAt: '상담일시',
   customerName: '고객명',
   customerPhone: '연락처',
   //   carName: '차종',
@@ -14,7 +14,7 @@ export const COUNSEL_LIST_WATCH_OPTIONS = {
 
 export const COUNSEL_LIST_WATCH_REQUIRED_OPTIONS = [
   'status',
-  'created_at',
+  'counselAt',
   'customerName',
   'context',
   'userName',

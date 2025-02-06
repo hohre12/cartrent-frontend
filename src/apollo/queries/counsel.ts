@@ -11,19 +11,21 @@ export const GET_COUNSELS_QUERY = gql`
       id
       context
       status
-      image_url
-      user_id
-      customer_id
-      created_at
-      updated_at
-      deleted_at
+      counselAt
       customer {
         id
         name
-      }
-      customerGroup {
-        id
-        name
+        phone
+        product
+        division
+        customerGrade {
+          id
+          name
+        }
+        customerGroup {
+          id
+          name
+        }
       }
       user {
         id
