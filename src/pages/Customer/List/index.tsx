@@ -4,12 +4,16 @@ import Input from '@/components/input/Input';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular } from '@/styles/typography';
 import { useQuery } from '@apollo/client';
-import { GetCustomersDto, TCustomer } from '@/types/customer';
 import { GET_CUSTOMERS_QUERY } from '@/apollo/queries/customer';
 import { useCallback, useEffect, useState } from 'react';
 import SearchBox from '@/components/searchBox/SearchBox';
 import { useRecoilState } from 'recoil';
 import { selectedCustomerIdxState } from '@/state/customer';
+import { Customer, GetCustomersDto } from '@/types/graphql';
+import Button from '@/components/button/Button';
+import RegistModal from '../components/registModal';
+import WatchOptionModal from '../components/watchOptionModal';
+import { useGetCustomers } from '@/services/customer';
 
 const CustomerList = () => {
   const [text, setText] = useState<string>('');
@@ -17,13 +21,11 @@ const CustomerList = () => {
   const [selectedCustomer, setSelectedCustomer] = useRecoilState(
     selectedCustomerIdxState,
   );
+  const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
+    useState<boolean>(false);
+  const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
 
-  const { data, loading, error } = useQuery<
-    { getCustomers: TCustomer[] },
-    { getCustomersDto: GetCustomersDto }
-  >(GET_CUSTOMERS_QUERY, {
-    variables: { getCustomersDto: { search: searchText } },
-  });
+  const { data, loading, error } = useGetCustomers({ search: searchText });
 
   const handleSearchTextDelete = useCallback(() => {
     setSearchText('');
@@ -40,40 +42,73 @@ const CustomerList = () => {
       setSelectedCustomer(data.getCustomers[0].id);
     }
   }, [data]);
+
+  if (error) return <></>;
+
   return (
-    <ListWrapper>
-      <SearchBoxWrapper>
-        <SearchBox
-          value={text}
-          placeholder="검색"
-          recentKey="customerRecent"
-          onTextChange={(text) => setText(text)}
-          onRemoveClick={handleSearchTextDelete}
-          onKeyDown={handleSearch}
-          onRecentClick={handleSearch}
-          keyword="고객명"
-        ></SearchBox>
-      </SearchBoxWrapper>
-      <TableWrapper>
-        <div className="TableControlWrapper">
-          <div>
-            <SvgIcon
-              iconName="icon-arrow_up_s"
-              style={{
-                width: '20px',
-              }}
-            />
-            <p>고객목록</p>
-          </div>
-          {/* <div>
+    <>
+      <ListWrapper>
+        <SearchBoxWrapper>
+          <SearchBox
+            value={text}
+            placeholder="검색"
+            recentKey="customerRecent"
+            onTextChange={(text) => setText(text)}
+            onRemoveClick={handleSearchTextDelete}
+            onKeyDown={handleSearch}
+            onRecentClick={handleSearch}
+            keyword="고객명, 연락처, 상태, 메모, 차종, 구분, 상품, 고객등급, 고객유형, 비고"
+          ></SearchBox>
+          <FunctionWrapper>
+            <Button
+              onClick={() => setIsOpenWatchOptionModal(!isOpenWatchOptionModal)}
+            >
+              <SvgIcon iconName="icon-eye-show" />
+              <p>보기옵션</p>
+            </Button>
+            <Button onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}>
+              <SvgIcon iconName="icon-plus" />
+              <p>고객등록</p>
+            </Button>
+          </FunctionWrapper>
+        </SearchBoxWrapper>
+        <TableWrapper>
+          <div className="TableControlWrapper">
+            <div>
+              <SvgIcon
+                iconName="icon-arrow_up_s"
+                style={{
+                  width: '20px',
+                }}
+              />
+              <p>고객목록</p>
+            </div>
+            {/* <div>
             <SvgIcon iconName="icon-setting" />
           </div> */}
-        </div>
-        {data && (
-          <CustomerListTable data={data.getCustomers}></CustomerListTable>
-        )}
-      </TableWrapper>
-    </ListWrapper>
+          </div>
+          {data && (
+            <CustomerListTable data={data.getCustomers}></CustomerListTable>
+          )}
+        </TableWrapper>
+      </ListWrapper>
+      {isOpenWatchOptionModal && (
+        <WatchOptionModal
+          isOpen={isOpenWatchOptionModal}
+          onCancel={() => setIsOpenWatchOptionModal(false)}
+          onConfirm={() => {
+            setIsOpenWatchOptionModal(false);
+          }}
+        />
+      )}
+      {isOpenRegistModal && (
+        <RegistModal
+          isOpen={isOpenRegistModal}
+          onCancel={() => setIsOpenRegistModal(false)}
+          onConfirm={() => setIsOpenRegistModal(false)}
+        ></RegistModal>
+      )}
+    </>
   );
 };
 
@@ -112,4 +147,11 @@ export const TableWrapper = styled.div`
       }
     }
   }
+`;
+
+const FunctionWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
 `;

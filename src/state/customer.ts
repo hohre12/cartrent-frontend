@@ -1,4 +1,5 @@
-import { TCustomerFiltersStateType, TCustomer } from '@/types/customer';
+import { TCustomerFiltersStateType } from '@/types/customer';
+import { Customer } from '@/types/graphql';
 import { atom } from 'recoil';
 
 export const selectedCustomerIdxState = atom<number>({
@@ -6,7 +7,7 @@ export const selectedCustomerIdxState = atom<number>({
   default: undefined,
 });
 
-export const selectedCustomerState = atom<TCustomer[]>({
+export const selectedCustomerState = atom<Customer[]>({
   key: 'selectedCustomerState',
   default: [],
 });

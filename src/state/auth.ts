@@ -4,14 +4,14 @@ import LocalStorage from '../utils/localStorage';
 import { setAuth } from '../services/api';
 import { TOKEN_KEY } from '../constants/common';
 import { recoilPersist } from 'recoil-persist';
-import { TUser } from '@/types/auth';
+import { User } from '@/types/graphql';
 
 const { persistAtom } = recoilPersist({
   key: 'user',
   storage: localStorage,
 });
 
-export const userState = atom<TUser | null>({
+export const userState = atom<User | null>({
   key: 'userState',
   default: null,
   effects_UNSTABLE: [persistAtom],

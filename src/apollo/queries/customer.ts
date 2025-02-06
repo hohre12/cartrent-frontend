@@ -8,27 +8,41 @@ import { gql } from '@apollo/client';
 export const GET_CUSTOMERS_QUERY = gql`
   query GetCustomers($getCustomersDto: GetCustomersDto!) {
     getCustomers(getCustomersDto: $getCustomersDto) {
-      status
       id
-      created_at
       name
       phone
-      contractList {
-        carModel {
-          id
-          name
-        }
-        contractType
-        status
-      }
-      counselList {
-        created_at
-      }
-      updated_at
+      sub_phone
+      product
+      division
+      company_name_nominee
       memo
+      type
+      note
+      status
+      user_id
+      customer_group_id
+      customer_grade_id
+      customer_status_id
+      created_at
+      updated_at
+      deleted_at
+      counselList {
+        id
+      }
+      contractList {
+        id
+      }
+      customerGroup {
+        id
+      }
+      userList {
+        id
+      }
       customerGrade {
         id
-        name
+      }
+      customerStatus {
+        id
       }
     }
   }
@@ -44,24 +58,29 @@ export const GET_CUSTOMER_QUERY = gql`
       id
       name
       phone
-      email
-      birth
-      address
-      job
+      sub_phone
+      product
+      division
+      company_name_nominee
+      memo
+      type
+      note
       status
       user_id
       customer_group_id
+      customer_grade_id
+      customer_status_id
       created_at
       updated_at
       deleted_at
       counselList {
-        id
-        customer {
-          name
-        }
         context
         created_at
+        updated_at
         user {
+          name
+        }
+        customer {
           name
         }
       }
@@ -74,15 +93,21 @@ export const GET_CUSTOMER_QUERY = gql`
       userList {
         id
       }
+      customerGrade {
+        id
+      }
+      customerStatus {
+        id
+      }
     }
   }
 `;
 
 /**
- * 고객 그룹 쿼리
- * - 고객 그룹 호출
+ * 고객 그룹 리스트 쿼리
+ * - 고객 그룹 리스트 호출
  */
-export const GET_CUSTOMER_GROUP_QUERY = gql`
+export const GET_CUSTOMER_GROUPS_QUERY = gql`
   query GetCustomerGroups {
     getCustomerGroups {
       id
@@ -93,58 +118,33 @@ export const GET_CUSTOMER_GROUP_QUERY = gql`
     }
   }
 `;
-/* Query */
 
-/* Mutation */
-export const CREATE_CUSTOMER_MUTATION = gql`
-  mutation CreateCustomer($createCustomerDto: CreateCustomerDto!) {
-    createCustomer(createCustomerDto: $createCustomerDto) {
+/**
+ * 고객 등급 리스트 쿼리
+ * - 고객 등급 리스트 호출
+ */
+export const GET_CUSTOMER_GRADES_QUERY = gql`
+  query GetCustomerGrades {
+    getCustomerGrades {
       id
+      name
+      created_at
+      updated_at
+      deleted_at
     }
   }
 `;
-export const UPDATE_CUSTOMER_MUTATION = gql`
-  mutation UpdateCustomer($updateCustomerDto: UpdateCustomerDto!) {
-    updateCustomer(updateCustomerDto: $updateCustomerDto) {
+
+/**
+ * 고객 상태 리스트 쿼리
+ * - 고객 상태 리스트 호출
+ */
+export const GET_CUSTOMER_STATUSES_QUERY = gql`
+  query GetCustomerStatuses {
+    getCustomerStatuses {
       id
+      status
     }
   }
 `;
-export const DELETE_CUSTOMER_MUTATION = gql`
-  mutation DeleteCustomer($customerId: Float!) {
-    deleteCustomer(customerId: $customerId)
-  }
-`;
-export const UPDATE_CUSTOMER_OF_USER_MUTATION = gql`
-  mutation UpdateCustomerOfUser(
-    $updateCustomerOfUserDto: UpdateCustomerOfUserDto!
-  ) {
-    updateCustomerOfUser(updateCustomerOfUserDto: $updateCustomerOfUserDto) {
-      id
-    }
-  }
-`;
-export const CREATE_CUSTOMER_GROUP_MUTATION = gql`
-  mutation CreateCustomerGroup(
-    $createCustomerGroupDto: CreateCustomerGroupDto!
-  ) {
-    createCustomerGroup(CreateCustomerGroupDto: $createCustomerGroupDto) {
-      id
-    }
-  }
-`;
-export const UPDATE_CUSTOMER_GROUP_MUTATION = gql`
-  mutation UpdateCustomerGroup(
-    $updateCustomerGroupDto: UpdateCustomerGroupDto!
-  ) {
-    updateCustomerGroup(UpdateCustomerGroupDto: $updateCustomerGroupDto) {
-      id
-    }
-  }
-`;
-export const DELETE_CUSTOMER_GROUP_MUTATION = gql`
-  mutation DeleteCustomerGroup($customerGroupId: Float!) {
-    deleteCustomerGroup(customerGroupId: $customerGroupId)
-  }
-`;
-/* Mutation */
+/* Query */

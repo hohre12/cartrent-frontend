@@ -1,53 +1,86 @@
-// import {
-//   TCustomerListRequest,
-//   TCustomerListResponse,
-//   TCustomerRequest,
-//   TCustomerResponse,
-// } from '@/types/customer';
-// import axiosInstance from './api';
-// import { TDefaultResponse } from '@/types/common';
-// import { useQuery } from '@tanstack/react-query';
-// import customer from './keys/customer';
+import {
+  CREATE_CUSTOMER_MUTATION,
+  DELETE_CUSTOMER_MUTATION,
+} from '@/apollo/mutations/customer';
+import {
+  GET_CUSTOMER_GRADES_QUERY,
+  GET_CUSTOMER_GROUPS_QUERY,
+  GET_CUSTOMER_QUERY,
+  GET_CUSTOMER_STATUSES_QUERY,
+  GET_CUSTOMERS_QUERY,
+} from '@/apollo/queries/customer';
+import {
+  CreateCustomerDto,
+  Customer,
+  CustomerGrade,
+  CustomerGroup,
+  CustomerStatus,
+  GetCustomersDto,
+} from '@/types/graphql';
+import { useMutation, useQuery } from '@apollo/client';
 
-// /**
-//  * 고객 목록을 조회한다.
-//  * @param params TCustomerListRequest
-//  * @returns Promise<TCustomerListResponse>
-//  */
-// export const getCustomerList = async (
-//   params: TCustomerListRequest,
-// ): Promise<TCustomerListResponse> => {
-//   const { data } = await axiosInstance.get<
-//     TDefaultResponse<TCustomerListResponse>
-//   >(``, { params });
-//   return data?.data;
+// type GetCustomersResponse = {
+//   getCustomers: Customer[];
 // };
 
-// export const useGetCustomerList = (params: TCustomerListRequest) => {
-//   return useQuery({
-//     queryKey: customer.list(params),
-//     queryFn: () => getCustomerList(params),
-//   });
+// type GetCustomerResponse = {
+//   getCustomer: Customer;
 // };
 
-// /**
-//  * 고객 상세 조회
-//   - 고객 상세를 조회한다.
-//  * @param params TCustomerRequest
-//  * @returns Promise<TCustomerResponse>
-//  */
-// export const getCustomer = async (
-//   params: TCustomerRequest,
-// ): Promise<TCustomerResponse> => {
-//   const { data } = await axiosInstance.get(``, {
-//     params,
-//   });
+export const useGetCustomers = (params: GetCustomersDto) => {
+  return useQuery<
+    { getCustomers: Customer[] },
+    { getCustomersDto: GetCustomersDto }
+  >(GET_CUSTOMERS_QUERY, {
+    variables: { getCustomersDto: params },
+  });
+};
 
-//   return data?.data;
-// };
-// export const useGetCustomer = (params: TCustomerRequest) => {
-//   return useQuery({
-//     queryKey: customer.detail(params),
-//     queryFn: () => getCustomer(params),
-//   });
-// };
+export const useGetCustomer = (params: Customer['id']) => {
+  return useQuery<{ getCustomer: Customer }, { customerId: Customer['id'] }>(
+    GET_CUSTOMER_QUERY,
+    { variables: { customerId: params }, skip: !params },
+  );
+};
+
+export const useGetCustomerStatuses = () => {
+  return useQuery<{ getCustomerStatuses: CustomerStatus[] }>(
+    GET_CUSTOMER_STATUSES_QUERY,
+  );
+};
+
+export const useGetCustomerGrades = () => {
+  return useQuery<{ getCustomerGrades: CustomerGrade[] }>(
+    GET_CUSTOMER_GRADES_QUERY,
+  );
+};
+
+export const useGetCustomerGroups = () => {
+  return useQuery<{ getCustomerGroups: CustomerGroup[] }>(
+    GET_CUSTOMER_GROUPS_QUERY,
+  );
+};
+
+export const useCreateCustomer = () => {
+  const [createCustomerMutate] = useMutation(CREATE_CUSTOMER_MUTATION, {
+    refetchQueries: [GET_CUSTOMERS_QUERY, 'GetCustomers'],
+  });
+
+  const createCustomer = async (params: CreateCustomerDto) => {
+    if (!params) return;
+    return createCustomerMutate({ variables: { createCustomerDto: params } });
+  };
+  return { createCustomer };
+};
+
+export const useDeleteCustomer = () => {
+  const [deleteCustomerMutate] = useMutation(DELETE_CUSTOMER_MUTATION, {
+    refetchQueries: [GET_CUSTOMERS_QUERY, 'GetCustomers'],
+  });
+
+  const deleteCustomer = async (params: Customer['id']) => {
+    if (!params) return;
+    return deleteCustomerMutate({ variables: { customerId: params } });
+  };
+  return { deleteCustomer };
+};

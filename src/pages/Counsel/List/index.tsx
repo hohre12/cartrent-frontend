@@ -1,10 +1,7 @@
 import styled from 'styled-components';
-import CustomerListTable from './components/table';
-import Input from '@/components/input/Input';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import Button from '@/components/button/Button';
-// import { dummyCustomerList } from '@/dummy/customer';
 import Pagination from '@/components/pagination/Pagination';
 import { useCallback, useState } from 'react';
 import WatchOptionModal from './components/watchOptionModal';
@@ -17,12 +14,9 @@ import { TFilterList } from '@/types/common';
 import { Circle, FilterContent } from '@/styles/common';
 import RegistModal from './components/registModal';
 import CounselListTable from './components/table';
-// import { dummyCounselList } from '@/dummy/counsel';
 import { selectedCounselState } from '@/state/counsel';
 import FloatingMenu from './components/floatingMenu';
-import { useQuery } from '@apollo/client';
-import { GetCounselsDto, TCounsel } from '@/types/counsel';
-import { GET_COUNSELS_QUERY } from '@/apollo/queries/counsel';
+import { useGetCounsels } from '@/services/counsel';
 
 const CounselList = () => {
   const [text, setText] = useState<string>('');
@@ -32,12 +26,7 @@ const CounselList = () => {
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
 
-  const { data, loading, error } = useQuery<
-    { getCounsels: TCounsel[] },
-    { getCounselsDto: GetCounselsDto }
-  >(GET_COUNSELS_QUERY, {
-    variables: { getCounselsDto: { search: searchText } },
-  });
+  const { data, loading, error } = useGetCounsels({ search: searchText });
 
   // filters
   const [filters, setFilters] = useRecoilState(customerFiltersState);

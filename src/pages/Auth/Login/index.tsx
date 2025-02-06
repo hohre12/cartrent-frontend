@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { titleXxl24Bold } from '@/styles/typography';
 import styles from './index.module.scss';
 import { useMutation } from '@apollo/client';
-import { SIGNIN_MUTATION } from '@/apollo/queries/auth';
+import { SIGNIN_MUTATION } from '@/apollo/mutations/auth';
 const Login = () => {
   const navigate = useNavigate();
   const [signIn] = useMutation(SIGNIN_MUTATION);
