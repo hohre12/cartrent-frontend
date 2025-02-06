@@ -8,12 +8,13 @@ import { userState } from '@/state/auth';
 import { textM16Medium, titleXl20Bold } from '@/styles/typography';
 import { City, CreateContractDto, Customer, User } from '@/types/graphql';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const ContractRegist = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const customerIdx = Number(id);
   const my = useRecoilValue(userState);
   const { addToast } = useToast();
@@ -50,7 +51,19 @@ const ContractRegist = () => {
         cityId: city?.id,
         customerId: customer.id,
       };
+
       console.log(createContractPayload);
+
+      //   const response = await createContract(createContractPayload);
+      //   if (response && response.data.createContract.id) {
+      //     addToast({
+      //       id: Date.now(),
+      //       isImage: true,
+      //       content: `계약이 등록되었습니다.`,
+      //       type: 'success',
+      //     });
+      //     navigate('/contract');
+      //   }
     } catch (e) {
       console.warn(e);
     }
@@ -198,6 +211,18 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
+              <span>수수료 비율</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>프로모션</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
               <span>월 납입료</span>
               <InputWrapper>
                 <Input />
@@ -257,55 +282,67 @@ const ContractRegist = () => {
           <h5>계약내용 추가 입력 (관리자 전용)</h5>
           <InfoBox>
             <InputLine>
-              <span>계약 내용</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>계약 타입</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
               <span>출고 일 - 캘린더</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>수수료 비율</span>
+              <span>부가세 지원 여부 - 체크박스</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            {/* <InputLine>
+              <span>부가세</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine> */}
+            <InputLine>
+              <span>발주 여부(출고여부)</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>총 수수료</span>
+              <span>품의내용 1</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>담보 종류</span>
+              <span>품의내용 2</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>순수익</span>
+              <span>품의내용 3</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>발비</span>
+              <span>품의금액 1</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>발비 내용</span>
+              <span>품의금액 2</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>품의금액 3</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>현금 지원</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
@@ -317,18 +354,75 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
+              <span>지원 내용</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>발비(경비)</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>발비내용(경비내용)</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>총 수수료(매출합계)</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>총 지출(지출합계)</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>순수익(순익합계)</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+
+            {/* <InputLine>
+              <span>계약 내용</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>계약 타입</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine> */}
+            {/* <InputLine>
+              <span>총 계약 금액</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine> */}
+
+            {/* <InputLine>
+              <span>담보 종류</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            
+            <InputLine>
               <span>정산 수수료</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>발주 여부</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
+            </InputLine> */}
+            {/* <InputLine>
               <span>상품</span>
               <InputWrapper>
                 <Input />
@@ -341,89 +435,11 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>총 지출</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>총 계약 금액</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
               <span>은행</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>부가세 지원 여부 - 체크박스</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>부가세</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>프로모션</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>현금 지원</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>지원 내용</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>서비스 1</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>서비스 내용 1</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>서비스 2</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>서비스 내용 2</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>서비스 3</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>서비스 내용 3</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
+            </InputLine> */}
           </InfoBox>
         </InfoBoxWrapper>
       </InfoWrapper>
