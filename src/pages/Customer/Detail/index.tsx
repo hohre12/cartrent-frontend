@@ -14,12 +14,14 @@ import {
   textS14Regular,
 } from '@/styles/typography';
 import { formatDate } from '@/utils/dateUtils';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import EditModal from '../components/editModal';
 
 const CustomerDetail = () => {
   const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
+  const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
   const { data, loading, error } = useGetCustomer(selectedCustomerIdx);
@@ -46,197 +48,202 @@ const CustomerDetail = () => {
   if (!detail) return <></>;
 
   return (
-    <DetailWrapper>
-      <InfoWrapper>
-        <div className="ProfileWrapper">
-          <SvgIcon
-            iconName="icon-member"
-            style={{ background: '#eee' }}
-          />
-          <div className="ControlWrapper">
-            <Button>고객 수정</Button>
-            <Button
-              onClick={() =>
-                showConfirm({
-                  isOpen: true,
-                  title: '고객 삭제',
-                  content: `${detail?.name} 고객을 삭제하시겠습니까?`,
-                  cancelText: '취소',
-                  confirmText: '삭제',
-                  confirmVariant: 'primaryDanger',
-                  onClose: hideConfirm,
-                  onCancel: hideConfirm,
-                  onConfirm: handleDeleteCustomer,
-                })
-              }
-            >
-              고객 삭제
-            </Button>
+    <>
+      <DetailWrapper>
+        <InfoWrapper>
+          <div className="ProfileWrapper">
+            <SvgIcon
+              iconName="icon-member"
+              style={{ background: '#eee' }}
+            />
+            <div className="ControlWrapper">
+              <Button onClick={() => setIsOpenEditModal(true)}>
+                고객 수정
+              </Button>
+              <Button
+                onClick={() =>
+                  showConfirm({
+                    isOpen: true,
+                    title: '고객 삭제',
+                    content: `${detail?.name} 고객을 삭제하시겠습니까?`,
+                    cancelText: '취소',
+                    confirmText: '삭제',
+                    confirmVariant: 'primaryDanger',
+                    onClose: hideConfirm,
+                    onCancel: hideConfirm,
+                    onConfirm: handleDeleteCustomer,
+                  })
+                }
+              >
+                고객 삭제
+              </Button>
+            </div>
           </div>
-        </div>
-        <div className="Info">
-          <div>
-            <span>담당자</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.userList.name ?? ''}
-            ></Input>
-          </div>
-          <div>
-            <span>고객그룹</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.customerGroup?.name ?? ''}
-            ></Input>
-          </div>
+          <div className="Info">
+            <div>
+              <span>담당자</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.userList.name ?? ''}
+              ></Input>
+            </div>
+            <div>
+              <span>고객그룹</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.customerGroup?.name ?? ''}
+              ></Input>
+            </div>
 
-          <div>
-            <span>고객명</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.name ?? ''}
-            ></Input>
+            <div>
+              <span>고객명</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.name ?? ''}
+              ></Input>
+            </div>
+            <div>
+              <span>상태</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.customerStatus?.status ?? ''}
+              ></Input>
+            </div>
+            <div>
+              <span>연락처</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.phone ?? ''}
+              ></Input>
+            </div>
+            <div>
+              <span>회사명/명의자</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.company_name_nominee ?? ''}
+              ></Input>
+            </div>
+            <div>
+              <span>추가연락처</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.sub_phone ?? ''}
+              ></Input>
+            </div>
+            <div>
+              <span>구분</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.division ?? ''}
+              ></Input>
+            </div>
+            <div>
+              <span>상품</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.product ?? ''}
+              ></Input>
+            </div>
+            <div>
+              <span>차종</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.contractList.map((it) => it.carName).join(' / ')}
+              ></Input>
+            </div>
+            <div>
+              <span>옵션</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.contractList
+                  .map((it) => it.carOption)
+                  .join(' / ')}
+              ></Input>
+            </div>
+            <div>
+              <span>약정기간</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.contractList
+                  .map((it) => it.contractPeriod)
+                  .join(' / ')}
+              ></Input>
+            </div>
+            <div>
+              <span>약정거리</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.contractList
+                  .map((it) => it.agreedMileage)
+                  .join(' / ')}
+              ></Input>
+            </div>
+            <div>
+              <span>담보율</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.contractList
+                  .map((it) => it.collateralRate)
+                  .join(' / ')}
+              ></Input>
+            </div>
+            <div>
+              <span>고객유형</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.type ?? ''}
+              ></Input>
+            </div>
+            <div>
+              <span>등록일</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={formatDate(detail.created_at) ?? ''}
+              ></Input>
+            </div>
+            <div style={{ width: '100%', height: 'auto', marginLeft: '45px' }}>
+              <span>메모</span>
+              <TextArea
+                value={detail.memo ?? ''}
+                disabled
+                height="100px"
+              ></TextArea>
+            </div>
+            <div>
+              <span>고객등급</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.customerGrade?.name ?? ''}
+              ></Input>
+            </div>
+            <div>
+              <span>비고</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.note ?? ''}
+              ></Input>
+            </div>
           </div>
-          <div>
-            <span>상태</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.customerStatus?.status ?? ''}
-            ></Input>
-          </div>
-          <div>
-            <span>연락처</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.phone ?? ''}
-            ></Input>
-          </div>
-          <div>
-            <span>회사명/명의자</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.company_name_nominee ?? ''}
-            ></Input>
-          </div>
-          <div>
-            <span>추가연락처</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.sub_phone ?? ''}
-            ></Input>
-          </div>
-          <div>
-            <span>구분</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.division ?? ''}
-            ></Input>
-          </div>
-          <div>
-            <span>상품</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.product ?? ''}
-            ></Input>
-          </div>
-          <div>
-            <span>차종</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.contractList.map((it) => it.carName).join(' / ')}
-            ></Input>
-          </div>
-          <div>
-            <span>옵션</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.contractList.map((it) => it.carOption).join(' / ')}
-            ></Input>
-          </div>
-          <div>
-            <span>약정기간</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.contractList
-                .map((it) => it.contractPeriod)
-                .join(' / ')}
-            ></Input>
-          </div>
-          <div>
-            <span>약정거리</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.contractList
-                .map((it) => it.agreedMileage)
-                .join(' / ')}
-            ></Input>
-          </div>
-          <div>
-            <span>담보율</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.contractList
-                .map((it) => it.collateralRate)
-                .join(' / ')}
-            ></Input>
-          </div>
-          <div>
-            <span>고객유형</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.type ?? ''}
-            ></Input>
-          </div>
-          <div>
-            <span>등록일</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={formatDate(detail.created_at) ?? ''}
-            ></Input>
-          </div>
-          <div style={{ width: '100%', height: 'auto', marginLeft: '45px' }}>
-            <span>메모</span>
-            <TextArea
-              value={detail.memo ?? ''}
-              disabled
-              height="100px"
-            ></TextArea>
-          </div>
-          <div>
-            <span>고객등급</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.customerGrade?.name ?? ''}
-            ></Input>
-          </div>
-          <div>
-            <span>비고</span>
-            <Input
-              className="inputWrapper"
-              disabled
-              value={detail.note ?? ''}
-            ></Input>
-          </div>
-        </div>
-      </InfoWrapper>
-      {/* <BoxWrapper>
+        </InfoWrapper>
+        {/* <BoxWrapper>
         <div className="Box">
           <p>고객요청</p>
           <span>고객1</span>
@@ -258,23 +265,31 @@ const CustomerDetail = () => {
           <span>10회</span>
         </div>
       </BoxWrapper> */}
-      <HistoryWrapper>
-        {detail.counselList?.map((it, idx) => (
-          <div key={idx}>
-            <SvgIcon iconName="icon-edit" />
-            <div className="DateTimeWrapper">
-              <span>상담일시</span>
-              <p>{formatDate(it.updated_at)}</p>
+        <HistoryWrapper>
+          {detail.counselList?.map((it, idx) => (
+            <div key={idx}>
+              <SvgIcon iconName="icon-edit" />
+              <div className="DateTimeWrapper">
+                <span>상담일시</span>
+                <p>{formatDate(it.updated_at)}</p>
+              </div>
+              <div className="HistoryText">
+                <p>고객명 : {it.customer?.name}</p>
+                <p>상담사 : {it.user?.name}</p>
+                <p>상담내용 : {it.context}</p>
+              </div>
             </div>
-            <div className="HistoryText">
-              <p>고객명 : {it.customer?.name}</p>
-              <p>상담사 : {it.user?.name}</p>
-              <p>상담내용 : {it.context}</p>
-            </div>
-          </div>
-        ))}
-      </HistoryWrapper>
-    </DetailWrapper>
+          ))}
+        </HistoryWrapper>
+      </DetailWrapper>
+      {isOpenEditModal && (
+        <EditModal
+          isOpen={isOpenEditModal}
+          onCancel={() => setIsOpenEditModal(false)}
+          onConfirm={() => setIsOpenEditModal(false)}
+        ></EditModal>
+      )}
+    </>
   );
 };
 
