@@ -11,12 +11,11 @@ import {
 import { TModal } from '@/types/common';
 import {
   CreateCustomerDto,
-  CreateCustomerGradeDto,
   CustomerGrade,
   CustomerGroup,
   CustomerStatus,
 } from '@/types/graphql';
-import { autoHypenTel, isNumber } from '@/utils/common';
+import { autoHypenTel } from '@/utils/common';
 import { useState } from 'react';
 import styled from 'styled-components';
 

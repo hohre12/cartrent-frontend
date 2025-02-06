@@ -89,15 +89,18 @@ export const GET_CUSTOMER_QUERY = gql`
       }
       customerGroup {
         id
+        name
       }
       userList {
         id
       }
       customerGrade {
         id
+        name
       }
       customerStatus {
         id
+        status
       }
     }
   }

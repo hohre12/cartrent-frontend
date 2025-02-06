@@ -43,7 +43,7 @@ const RegistModal = (props: TModal) => {
       const response = await createCounsel({
         customer_id: customer.id,
         counselAt,
-        // user_id: user?.id,
+        user_id: user?.id,
         contract_id: contract?.id,
         context,
       });
