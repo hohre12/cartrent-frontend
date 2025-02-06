@@ -91,7 +91,6 @@ const ContractRegist = () => {
                 <Input />
               </InputWrapper>
             </InputLine>
-            {/* 사업자명 */}
             <InputLine>
               <span>고객명</span>
               <InputWrapper>
@@ -109,7 +108,6 @@ const ContractRegist = () => {
                 />
               </InputWrapper>
             </InputLine>
-            {/* 연락처 */}
             <InputLine>
               <span>차종</span>
               <InputWrapper>
@@ -188,8 +186,18 @@ const ContractRegist = () => {
                 <Input />
               </InputWrapper>
             </InputLine>
-            {/* 개월수 */}
-            {/* 키로수 */}
+            <InputLine>
+              <span>약정 기간</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>약정 거리</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
             <InputLine>
               <span>보험 연령</span>
               <InputWrapper>
@@ -215,18 +223,6 @@ const ContractRegist = () => {
             </InputLine>
             <InputLine>
               <span>계약 타입</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>약정 기간</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>약정 거리</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
