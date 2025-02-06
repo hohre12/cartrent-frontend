@@ -11,38 +11,36 @@ export const GET_CUSTOMERS_QUERY = gql`
       id
       name
       phone
-      sub_phone
       product
       division
-      company_name_nominee
       memo
       type
       note
       status
-      user_id
-      customer_group_id
-      customer_grade_id
-      customer_status_id
       created_at
-      updated_at
-      deleted_at
       counselList {
         id
+        updated_at
       }
       contractList {
         id
+        carName
       }
       customerGroup {
         id
+        name
       }
       userList {
         id
+        name
       }
       customerGrade {
         id
+        name
       }
       customerStatus {
         id
+        status
       }
     }
   }
@@ -66,13 +64,8 @@ export const GET_CUSTOMER_QUERY = gql`
       type
       note
       status
-      user_id
-      customer_group_id
-      customer_grade_id
-      customer_status_id
       created_at
       updated_at
-      deleted_at
       counselList {
         context
         created_at
@@ -86,6 +79,11 @@ export const GET_CUSTOMER_QUERY = gql`
       }
       contractList {
         id
+        carName
+        carOption
+        contractPeriod
+        agreedMileage
+        collateralRate
       }
       customerGroup {
         id
@@ -93,6 +91,7 @@ export const GET_CUSTOMER_QUERY = gql`
       }
       userList {
         id
+        name
       }
       customerGrade {
         id

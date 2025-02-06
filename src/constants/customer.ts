@@ -1,5 +1,6 @@
 export const CUSTOMER_LIST_WATCH_OPTIONS = {
-  status: '상태',
+  //   status: '상태',
+  customerStatus: '상태',
   created_at: '등록일',
   name: '고객명',
   phone: '연락처',
@@ -15,7 +16,8 @@ export const CUSTOMER_LIST_WATCH_OPTIONS = {
 };
 
 export const CUSTOMER_LIST_WATCH_REQUIRED_OPTIONS = [
-  'status',
+  //   'status',
+  'customerStatus',
   'created_at',
   'name',
   'phone',
