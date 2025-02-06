@@ -390,11 +390,15 @@ export const HistoryWrapper = styled.div`
       white-space: nowrap;
       text-overflow: ellipsis;
       word-break: break-all;
-      span {
+      display: flex;
+      flex-direction: column;
+      & > span {
         font-weight: 600;
+        text-align: right;
       }
-      p {
-        ${textS14Regular}
+      & > p {
+        ${textS14Regular};
+        text-align: right;
         color: #666;
       }
     }

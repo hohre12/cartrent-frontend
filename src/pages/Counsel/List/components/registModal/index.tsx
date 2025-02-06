@@ -11,7 +11,7 @@ import { userState } from '@/state/auth';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
 import { Contract, Customer } from '@/types/graphql';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import ReactDatePicker from 'react-datepicker';
@@ -29,8 +29,8 @@ const RegistModal = (props: TModal) => {
   const { data: customers } = useGetCustomers({});
 
   const { data: contracts } = useGetContracts({ customerId: customer?.id });
-  const hasContracts = (contracts?.getContracts ?? []).length > 0;
-  const isContracts = !contract || !hasContracts;
+  const isContracts =
+    contracts && contracts?.getContracts?.length > 0 ? true : false;
 
   const { createCounsel } = useCreateCounsel();
 
@@ -61,6 +61,13 @@ const RegistModal = (props: TModal) => {
       console.warn(e);
     }
   };
+
+  useEffect(() => {
+    if (customers && customers?.getCustomers?.length > 0) {
+      setCustomer(customers?.getCustomers[0]);
+    }
+  }, [customers, setCustomer]);
+
   return (
     <>
       <Modal
@@ -110,12 +117,12 @@ const RegistModal = (props: TModal) => {
               <Select
                 size="medium"
                 value={{ ...contract }}
-                onChange={(value) => console.log('선택', value)}
+                onChange={(value) => setContract(value)}
                 list={contracts?.getContracts ?? []}
                 trackBy="id"
-                valueBy="name"
+                valueBy="context"
                 placeholder="계약을 선택해주세요"
-                disabled={isContracts}
+                disabled={!isContracts}
               />
             </div>
           </div>
