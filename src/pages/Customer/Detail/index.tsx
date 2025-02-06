@@ -80,6 +80,9 @@ const CustomerDetail = () => {
               >
                 고객 삭제
               </Button>
+              <Button onClick={() => navigate(`/contract/regist/${detail.id}`)}>
+                계약 등록
+              </Button>
             </div>
           </div>
           <div className="Info">

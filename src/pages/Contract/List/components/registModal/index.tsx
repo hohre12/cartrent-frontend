@@ -34,7 +34,7 @@ const RegistModal = (props: TModal) => {
       addToast({
         id: Date.now(),
         isImage: true,
-        content: `고객이 등록되었습니다.`,
+        content: `계약이 등록되었습니다.`,
         type: 'success',
       });
       modalProps.onConfirm?.();
@@ -46,7 +46,7 @@ const RegistModal = (props: TModal) => {
     <>
       <SModal
         {...modalProps}
-        title="고객등록"
+        title="계약등록"
         size="small"
         onConfirm={handleCustomerRegist}
       >

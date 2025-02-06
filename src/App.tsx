@@ -25,6 +25,7 @@ import CounselList from './pages/Counsel/List';
 import ContractList from './pages/Contract/List';
 import ContractDetail from './pages/Contract/Detail';
 import Customer from './pages/Customer';
+import ContractRegist from './pages/Contract/Regist';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -104,6 +105,14 @@ function App() {
           <Route
             path=":id"
             element={<ContractDetail></ContractDetail>}
+          />
+          <Route
+            path="regist/:id"
+            element={<ContractRegist></ContractRegist>}
+          />
+          <Route
+            path="regist"
+            element={<ContractRegist></ContractRegist>}
           />
         </Route>
         <Route

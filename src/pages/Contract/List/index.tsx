@@ -21,8 +21,10 @@ import ContractListTable from './components/table';
 import FilterStatus from './components/filter/status';
 import { Contract, GetContractsDto } from '@/types/graphql';
 import { useGetContracts } from '@/services/contract';
+import { useNavigate } from 'react-router-dom';
 
 const ContractList = () => {
+  const navigate = useNavigate();
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const selectedContract = useRecoilValue(selectedContractState);
@@ -110,7 +112,7 @@ const ContractList = () => {
                 <SvgIcon iconName="icon-eye-show" />
                 <p>보기옵션</p>
               </Button>
-              <Button onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}>
+              <Button onClick={() => navigate('regist')}>
                 <SvgIcon iconName="icon-plus" />
                 <p>계약등록</p>
               </Button>
