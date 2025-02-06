@@ -67,9 +67,9 @@ export const GET_CUSTOMER_QUERY = gql`
       created_at
       updated_at
       counselList {
+        id
         context
-        created_at
-        updated_at
+        counselAt
         user {
           name
         }

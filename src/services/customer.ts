@@ -1,6 +1,7 @@
 import {
   CREATE_CUSTOMER_MUTATION,
   DELETE_CUSTOMER_MUTATION,
+  UPDATE_CUSTOMER_MUTATION,
 } from '@/apollo/mutations/customer';
 import {
   GET_CUSTOMER_GRADES_QUERY,
@@ -16,6 +17,7 @@ import {
   CustomerGroup,
   CustomerStatus,
   GetCustomersDto,
+  UpdateCustomerDto,
 } from '@/types/graphql';
 import { useMutation, useQuery } from '@apollo/client';
 
@@ -83,4 +85,16 @@ export const useDeleteCustomer = () => {
     return deleteCustomerMutate({ variables: { customerId: params } });
   };
   return { deleteCustomer };
+};
+
+export const useUpdateCustomer = () => {
+  const [updateCustomerMutate] = useMutation(UPDATE_CUSTOMER_MUTATION, {
+    refetchQueries: [GET_CUSTOMERS_QUERY, 'GetCustomers'],
+  });
+
+  const updateCustomer = async (params: UpdateCustomerDto) => {
+    if (!params) return;
+    return updateCustomerMutate({ variables: { updateCustomerDto: params } });
+  };
+  return { updateCustomer };
 };
