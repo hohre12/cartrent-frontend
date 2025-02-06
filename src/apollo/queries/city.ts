@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const GET_CITES_QUERY = gql`
+export const GET_CITIES_QUERY = gql`
   query GetCities($getCitiesDto: GetCitiesDto!) {
     getCities(getCitiesDto: $getCitiesDto) {
       id

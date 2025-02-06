@@ -2,10 +2,11 @@ import Button from '@/components/button/Button';
 import Input from '@/components/input/Input';
 import Select from '@/components/select/Select';
 import { useToast } from '@/hooks/useToast';
+import { useGetCites } from '@/services/city';
 import { useGetCustomers } from '@/services/customer';
 import { userState } from '@/state/auth';
 import { textM16Medium, titleXl20Bold } from '@/styles/typography';
-import { CreateContractDto, Customer } from '@/types/graphql';
+import { City, CreateContractDto, Customer, User } from '@/types/graphql';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -14,28 +15,60 @@ import styled from 'styled-components';
 const ContractRegist = () => {
   const { id } = useParams();
   const customerIdx = Number(id);
-  const user = useRecoilValue(userState);
+  const my = useRecoilValue(userState);
   const { addToast } = useToast();
+  const [submit, setSubmit] = useState<boolean>(false);
+
   const { data: customers } = useGetCustomers({});
+  const { data: cites } = useGetCites({});
 
   const [createContract, setCreateContract] = useState<CreateContractDto>();
 
   const [customer, setCustomer] = useState<Customer>();
-  useEffect(() => {
-    if (
-      user &&
-      customerIdx &&
-      customers &&
-      customers?.getCustomers?.length > 0
-    ) {
-      setCustomer(customers.getCustomers.find((it) => it.id === customerIdx));
-      setCreateContract((prevState) => ({
-        ...prevState,
-        customerId: customerIdx,
-        userId: user.id,
-      }));
+  const [city, setCity] = useState<City>();
+  const [user, setUser] = useState<User>();
+
+  //   const { createContract } = useCreateContract();
+
+  const handleValueChange = (value: string, key: string) => {
+    setCreateContract((prevState) => ({
+      ...prevState,
+      [key]: value,
+      customerId: customer ? customer.id : customerIdx,
+      userId: user ? user.id : my ? my.id : 0,
+    }));
+  };
+
+  const handleContractRegist = async () => {
+    setSubmit(true);
+    if (!my) return;
+    if (!customer) return;
+    try {
+      const createContractPayload: CreateContractDto = {
+        ...createContract,
+        userId: user ? user.id : my.id,
+        cityId: city?.id,
+        customerId: customer.id,
+      };
+      console.log(createContractPayload);
+    } catch (e) {
+      console.warn(e);
     }
-  }, [user, customerIdx, setCustomer, customers]);
+  };
+
+  useEffect(() => {
+    if (my) {
+      setUser(my);
+      if (customerIdx && customers && customers?.getCustomers?.length > 0) {
+        setCustomer(customers.getCustomers.find((it) => it.id === customerIdx));
+        setCreateContract((prevState) => ({
+          ...prevState,
+          customerId: customerIdx,
+          userId: my.id,
+        }));
+      }
+    }
+  }, [my, customerIdx, setCustomer, customers]);
 
   return (
     <DetailWrapper>
@@ -44,7 +77,7 @@ const ContractRegist = () => {
           <h2>{`계약 등록`}</h2>
         </div>
         <div className="right">
-          <Button>등록</Button>
+          <Button onClick={handleContractRegist}>등록</Button>
         </div>
       </DetailHeaderWrapper>
       <InfoWrapper>
@@ -57,14 +90,14 @@ const ContractRegist = () => {
                 <Select
                   size="medium"
                   value={{
-                    ...customer,
+                    ...user,
                   }}
-                  onChange={(value) => setCustomer(value)}
+                  onChange={(value) => setUser(value)}
                   list={customers?.getCustomers ?? []}
                   trackBy="id"
                   valueBy="name"
-                  placeholder="고객을 선택해주세요"
-                  disabled={!!customerIdx}
+                  placeholder="담당자를 선택해주세요"
+                  disabled={false}
                 />
               </InputWrapper>
             </InputLine>
@@ -74,19 +107,18 @@ const ContractRegist = () => {
                 <Select
                   size="medium"
                   value={{
-                    ...customer,
+                    ...city,
                   }}
-                  onChange={(value) => setCustomer(value)}
-                  list={customers?.getCustomers ?? []}
+                  onChange={(value) => setCity(value)}
+                  list={cites?.getCities ?? []}
                   trackBy="id"
                   valueBy="name"
-                  placeholder="고객을 선택해주세요"
-                  disabled={!!customerIdx}
+                  placeholder="지역을 선택해주세요"
                 />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>계약날짜</span>
+              <span>계약날짜 - 캘린더</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
@@ -109,9 +141,18 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>차종</span>
+              <span>회사명/명의자</span>
               <InputWrapper>
                 <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>차종</span>
+              <InputWrapper>
+                <Input
+                  value={createContract?.carName ?? ''}
+                  onTextChange={(text) => handleValueChange(text, 'carName')}
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
@@ -145,7 +186,7 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>구분</span>
+              <span>구분 - 셀렉트박스</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
@@ -228,7 +269,7 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>출고 일</span>
+              <span>출고 일 - 캘린더</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
