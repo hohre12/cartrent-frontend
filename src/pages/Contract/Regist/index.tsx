@@ -3,23 +3,40 @@ import Input from '@/components/input/Input';
 import Select from '@/components/select/Select';
 import { useToast } from '@/hooks/useToast';
 import { useGetCustomers } from '@/services/customer';
+import { userState } from '@/state/auth';
 import { textM16Medium, titleXl20Bold } from '@/styles/typography';
-import { Customer } from '@/types/graphql';
+import { CreateContractDto, Customer } from '@/types/graphql';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const ContractRegist = () => {
   const { id } = useParams();
   const customerIdx = Number(id);
+  const user = useRecoilValue(userState);
   const { addToast } = useToast();
   const { data: customers } = useGetCustomers({});
+
+  const [createContract, setCreateContract] = useState<CreateContractDto>();
+
   const [customer, setCustomer] = useState<Customer>();
   useEffect(() => {
-    if (customerIdx && customers && customers?.getCustomers?.length > 0) {
+    if (
+      user &&
+      customerIdx &&
+      customers &&
+      customers?.getCustomers?.length > 0
+    ) {
       setCustomer(customers.getCustomers.find((it) => it.id === customerIdx));
+      setCreateContract((prevState) => ({
+        ...prevState,
+        customerId: customerIdx,
+        userId: user.id,
+      }));
     }
-  }, [customerIdx, setCustomer, customers]);
+  }, [user, customerIdx, setCustomer, customers]);
+
   return (
     <DetailWrapper>
       <DetailHeaderWrapper>
@@ -32,10 +49,10 @@ const ContractRegist = () => {
       </DetailHeaderWrapper>
       <InfoWrapper>
         <InfoBoxWrapper>
-          <h5>고객지정</h5>
+          <h5>계약내용 입력</h5>
           <InfoBox>
             <InputLine>
-              <span>계약자</span>
+              <span>담당자</span>
               <InputWrapper>
                 <Select
                   size="medium"
@@ -51,11 +68,48 @@ const ContractRegist = () => {
                 />
               </InputWrapper>
             </InputLine>
-          </InfoBox>
-        </InfoBoxWrapper>
-        <InfoBoxWrapper>
-          <h5>차량지정</h5>
-          <InfoBox>
+            <InputLine>
+              <span>지역</span>
+              <InputWrapper>
+                <Select
+                  size="medium"
+                  value={{
+                    ...customer,
+                  }}
+                  onChange={(value) => setCustomer(value)}
+                  list={customers?.getCustomers ?? []}
+                  trackBy="id"
+                  valueBy="name"
+                  placeholder="고객을 선택해주세요"
+                  disabled={!!customerIdx}
+                />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>계약날짜</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            {/* 사업자명 */}
+            <InputLine>
+              <span>고객명</span>
+              <InputWrapper>
+                <Select
+                  size="medium"
+                  value={{
+                    ...customer,
+                  }}
+                  onChange={(value) => setCustomer(value)}
+                  list={customers?.getCustomers ?? []}
+                  trackBy="id"
+                  valueBy="name"
+                  placeholder="고객을 선택해주세요"
+                  disabled={!!customerIdx}
+                />
+              </InputWrapper>
+            </InputLine>
+            {/* 연락처 */}
             <InputLine>
               <span>차종</span>
               <InputWrapper>
@@ -69,19 +123,81 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>내부 색상</span>
+              <span>외장색상</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>외부 색상</span>
+              <span>내장색상</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>차량 가격</span>
+              <span>총차량가</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>금융사</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>구분</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>수수료</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>월 납입료</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>출고 방식</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>지점명</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>지점 수수료</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>담보율</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            {/* 개월수 */}
+            {/* 키로수 */}
+            <InputLine>
+              <span>보험 연령</span>
+              <InputWrapper>
+                <Input />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>대물</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
@@ -89,14 +205,8 @@ const ContractRegist = () => {
           </InfoBox>
         </InfoBoxWrapper>
         <InfoBoxWrapper>
-          <h5>계약내용 입력</h5>
+          <h5>계약내용 추가 입력 (관리자 전용)</h5>
           <InfoBox>
-            <InputLine>
-              <span>계약 일</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
             <InputLine>
               <span>계약 내용</span>
               <InputWrapper>
@@ -128,30 +238,6 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>출고 방식</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>지점</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>지점 수수료</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>수수료</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
               <span>수수료 비율</span>
               <InputWrapper>
                 <Input />
@@ -164,19 +250,7 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>담보율</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
               <span>담보 종류</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>월 납입료</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
@@ -224,12 +298,6 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>대물</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
               <span>이외 추가 금액</span>
               <InputWrapper>
                 <Input />
@@ -247,34 +315,12 @@ const ContractRegist = () => {
                 <Input />
               </InputWrapper>
             </InputLine>
-          </InfoBox>
-        </InfoBoxWrapper>
-        <InfoBoxWrapper>
-          <h5>은행 / 금융 / 보험</h5>
-          <InfoBox>
             <InputLine>
               <span>은행</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>
             </InputLine>
-            <InputLine>
-              <span>금융사</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>보험 연령</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-          </InfoBox>
-        </InfoBoxWrapper>
-        <InfoBoxWrapper>
-          <h5>부가지원</h5>
-          <InfoBox>
             <InputLine>
               <span>부가세 지원 여부 - 체크박스</span>
               <InputWrapper>
@@ -305,11 +351,6 @@ const ContractRegist = () => {
                 <Input />
               </InputWrapper>
             </InputLine>
-          </InfoBox>
-        </InfoBoxWrapper>
-        <InfoBoxWrapper>
-          <h5>서비스</h5>
-          <InfoBox>
             <InputLine>
               <span>서비스 1</span>
               <InputWrapper>
