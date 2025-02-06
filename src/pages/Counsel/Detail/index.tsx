@@ -1,5 +1,4 @@
 import Button from '@/components/button/Button';
-import { SvgIcon } from '@/components/common/SvgIcon';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import { useDeleteCounsel, useGetCounsel } from '@/services/counsel';
@@ -79,7 +78,7 @@ const CounselDetail = () => {
           </div>
           <div>
             <p>상담일시</p>
-            <div>{formatDate(detail.updated_at, 'YYYY-MM-DD HH:mm')}</div>
+            <div>{formatDate(detail.counselAt, 'YYYY-MM-DD HH:mm')}</div>
           </div>
           <div>
             <p>고객등급</p>
@@ -105,79 +104,10 @@ const CounselDetail = () => {
           </div>
           <div>
             <p>고객그룹</p>
-            <div>{detail.customerGroup?.name ?? '-'}</div>
+            <div>{detail.customer.customerGroup?.name ?? '-'}</div>
           </div>
         </div>
       </InfoWrapper>
-      {/* <h6>상담 기록</h6>
-      <HistoryWrapper>
-        <div>
-          <SvgIcon iconName="icon-edit" />
-          <div className="DateTimeWrapper">
-            <span>2024-09-27</span>
-            <p>14:00 (화)</p>
-          </div>
-          <div className="HistoryText">
-            상담자 : 직원A<br></br>
-            상담내용 : 테스트입니다.
-          </div>
-        </div>
-        <div>
-          <SvgIcon iconName="icon-edit" />
-          <div className="DateTimeWrapper">
-            <span>2024-09-26</span>
-            <p>11:00 (월)</p>
-          </div>
-          <div className="HistoryText">
-            상담자 : 직원B<br></br>
-            상담내용 : 첫번째 테스트입니다.
-          </div>
-        </div>
-        <div>
-          <SvgIcon iconName="icon-edit" />
-          <div className="DateTimeWrapper">
-            <span>2024-09-27</span>
-            <p>14:00 (화)</p>
-          </div>
-          <div className="HistoryText">
-            상담자 : 직원A<br></br>
-            상담내용 : 테스트입니다.
-          </div>
-        </div>
-        <div>
-          <SvgIcon iconName="icon-edit" />
-          <div className="DateTimeWrapper">
-            <span>2024-09-26</span>
-            <p>11:00 (월)</p>
-          </div>
-          <div className="HistoryText">
-            상담자 : 직원B<br></br>
-            상담내용 : 첫번째 테스트입니다.
-          </div>
-        </div>
-        <div>
-          <SvgIcon iconName="icon-edit" />
-          <div className="DateTimeWrapper">
-            <span>2024-09-27</span>
-            <p>14:00 (화)</p>
-          </div>
-          <div className="HistoryText">
-            상담자 : 직원A<br></br>
-            상담내용 : 테스트입니다.
-          </div>
-        </div>
-        <div>
-          <SvgIcon iconName="icon-edit" />
-          <div className="DateTimeWrapper">
-            <span>2024-09-26</span>
-            <p>11:00 (월)</p>
-          </div>
-          <div className="HistoryText">
-            상담자 : 직원B<br></br>
-            상담내용 : 첫번째 테스트입니다.
-          </div>
-        </div>
-      </HistoryWrapper> */}
     </DetailWrapper>
   );
 };

@@ -18,8 +18,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import EditModal from '../components/editModal';
+import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 const CustomerDetail = () => {
+  const navigate = useNavigate();
   const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
   const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
   const { showConfirm, hideConfirm } = useConfirm();
@@ -267,11 +270,14 @@ const CustomerDetail = () => {
       </BoxWrapper> */}
         <HistoryWrapper>
           {detail.counselList?.map((it, idx) => (
-            <div key={idx}>
+            <div
+              key={idx}
+              onClick={() => navigate(`/counsel/${it.id}`)}
+            >
               <SvgIcon iconName="icon-edit" />
               <div className="DateTimeWrapper">
-                <span>상담일시</span>
-                <p>{formatDate(it.updated_at)}</p>
+                <span>{formatDate(it.counselAt)}</span>
+                <p>{`${formatDate(it.counselAt, 'HH:mm')}`}</p>
               </div>
               <div className="HistoryText">
                 <p>고객명 : {it.customer?.name}</p>
@@ -400,6 +406,7 @@ export const HistoryWrapper = styled.div`
     display: flex;
     gap: 10px;
     align-items: center;
+    cursor: pointer;
     .DateTimeWrapper {
       width: 100px;
       white-space: nowrap;
@@ -419,8 +426,9 @@ export const HistoryWrapper = styled.div`
     }
     .HistoryText {
       ${textS14Medium}
+
       background: #eee;
-      width: 410px;
+      min-width: 430px;
       padding: 10px;
       text-align: left;
       p {
