@@ -1,4 +1,5 @@
 import Button from '@/components/button/Button';
+import Checkbox from '@/components/checkbox/Checkbox';
 import Input from '@/components/input/Input';
 import Select from '@/components/select/Select';
 import { useToast } from '@/hooks/useToast';
@@ -10,6 +11,7 @@ import {
   useGetShippingMethods,
 } from '@/services/contract';
 import { useGetCustomers } from '@/services/customer';
+import { useGetUsers } from '@/services/user';
 import { userState } from '@/state/auth';
 import { textM16Medium, titleXl20Bold } from '@/styles/typography';
 import {
@@ -35,6 +37,7 @@ const ContractRegist = () => {
   const { addToast } = useToast();
   const [submit, setSubmit] = useState<boolean>(false);
 
+  const { data: users } = useGetUsers();
   const { data: customers } = useGetCustomers({});
   const { data: cites } = useGetCites({});
   const { data: financialCompanies } = useGetFinancialCompanies();
@@ -53,7 +56,7 @@ const ContractRegist = () => {
 
   const { createContractMutation } = useCreateCountract();
 
-  const handleValueChange = (value: string | number, key: string) => {
+  const handleValueChange = (value: string | number | boolean, key: string) => {
     if (
       (key === 'fee' || key === 'feeRate') &&
       createContract?.carPrice &&
@@ -156,7 +159,7 @@ const ContractRegist = () => {
                     ...user,
                   }}
                   onChange={(value) => setUser(value)}
-                  list={customers?.getCustomers ?? []}
+                  list={users?.getUsers ?? []}
                   trackBy="id"
                   valueBy="name"
                   placeholder="담당자를 선택해주세요"
@@ -399,9 +402,29 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>담보율</span>
+              <span>선납금</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  disabled={!createContract?.collateralType}
+                  postfixNode={'%'}
+                />
+                <Input
+                  disabled={!createContract?.collateralType}
+                  postfixNode={'원'}
+                />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>보증금</span>
+              <InputWrapper>
+                <Input
+                  disabled={!createContract?.collateralType}
+                  postfixNode={'%'}
+                />
+                <Input
+                  disabled={!createContract?.collateralType}
+                  postfixNode={'원'}
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
@@ -413,19 +436,34 @@ const ContractRegist = () => {
             <InputLine>
               <span>약정 거리</span>
               <InputWrapper>
-                <Input postfixNode={'km'} />
+                <Input
+                  postfixNode={'km'}
+                  value={createContract?.agreedMileage ?? ''}
+                  onTextChange={(text) =>
+                    handleValueChange(text, 'agreedMileage')
+                  }
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
               <span>보험 연령</span>
               <InputWrapper>
-                <Input postfixNode={'세'} />
+                <Input
+                  postfixNode={'세'}
+                  value={createContract?.insuranceAge ?? ''}
+                  onTextChange={(text) =>
+                    handleValueChange(text, 'insuranceAge')
+                  }
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
               <span>대물</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.object ?? ''}
+                  onTextChange={(text) => handleValueChange(text, 'object')}
+                />
               </InputWrapper>
             </InputLine>
           </InfoBox>
@@ -440,158 +478,179 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>부가세 지원 여부 - 체크박스</span>
+              <span>부가세 지원 여부</span>
               <InputWrapper>
-                <Input />
+                <Checkbox
+                  value={createContract?.isVATSupport ?? false}
+                  onCheckedChange={(val) => {
+                    handleValueChange(val, 'isVATSupport');
+                  }}
+                />
               </InputWrapper>
             </InputLine>
-            {/* <InputLine>
-              <span>부가세</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine> */}
             <InputLine>
-              <span>발주 여부(출고여부)</span>
+              <span>출고여부</span>
               <InputWrapper>
-                <Input />
+                <Checkbox
+                  value={createContract?.isOrdering ?? false}
+                  onCheckedChange={(val) => {
+                    handleValueChange(val, 'isOrdering');
+                  }}
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
               <span>품의내용 1</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.serviceBody1 ?? ''}
+                  onTextChange={(text) =>
+                    handleValueChange(text, 'serviceBody1')
+                  }
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
               <span>품의내용 2</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.serviceBody2 ?? ''}
+                  onTextChange={(text) =>
+                    handleValueChange(text, 'serviceBody2')
+                  }
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
               <span>품의내용 3</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.serviceBody3 ?? ''}
+                  onTextChange={(text) =>
+                    handleValueChange(text, 'serviceBody3')
+                  }
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
               <span>품의금액 1</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.service1 ?? ''}
+                  onTextChange={(text) => handleValueChange(text, 'service1')}
+                  postfixNode={'원'}
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
               <span>품의금액 2</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.service2 ?? ''}
+                  onTextChange={(text) => handleValueChange(text, 'service2')}
+                  postfixNode={'원'}
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
               <span>품의금액 3</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.service3 ?? ''}
+                  onTextChange={(text) => handleValueChange(text, 'service3')}
+                  postfixNode={'원'}
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
               <span>현금 지원</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.cashAssistance ?? ''}
+                  onTextChange={(text) =>
+                    handleValueChange(text, 'cashAssistance')
+                  }
+                  postfixNode={'원'}
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
               <span>소득자</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.incomeEarner ?? ''}
+                  onTextChange={(text) =>
+                    handleValueChange(text, 'incomeEarner')
+                  }
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
               <span>지원 내용</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.supportDetails ?? ''}
+                  onTextChange={(text) =>
+                    handleValueChange(text, 'supportDetails')
+                  }
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>발비(경비)</span>
+              <span>경비</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.businessExpenses ?? ''}
+                  onTextChange={(text) =>
+                    handleValueChange(text, 'businessExpenses')
+                  }
+                  postfixNode={'원'}
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>발비내용(경비내용)</span>
+              <span>경비내용</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.businessExpensesDetail ?? ''}
+                  onTextChange={(text) =>
+                    handleValueChange(text, 'businessExpensesDetail')
+                  }
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>총 수수료(매출합계)</span>
+              <span>매출합계</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.totalFee ?? ''}
+                  onTextChange={(text) => handleValueChange(text, 'totalFee')}
+                  postfixNode={'원'}
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>총 지출(지출합계)</span>
+              <span>지출합계</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.totalExpenditure ?? ''}
+                  onTextChange={(text) =>
+                    handleValueChange(text, 'totalExpenditure')
+                  }
+                  postfixNode={'원'}
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>순수익(순익합계)</span>
+              <span>순익합계</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.netIncome ?? ''}
+                  onTextChange={(text) => handleValueChange(text, 'netIncome')}
+                  postfixNode={'원'}
+                />
               </InputWrapper>
             </InputLine>
-
-            {/* <InputLine>
-              <span>계약 내용</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>계약 타입</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine> */}
-            {/* <InputLine>
-              <span>총 계약 금액</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine> */}
-
-            {/* <InputLine>
-              <span>담보 종류</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            
-            <InputLine>
-              <span>정산 수수료</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine> */}
-            {/* <InputLine>
-              <span>상품</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>이외 추가 금액</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>은행</span>
-              <InputWrapper>
-                <Input />
-              </InputWrapper>
-            </InputLine> */}
           </InfoBox>
         </InfoBoxWrapper>
       </InfoWrapper>
@@ -666,4 +725,6 @@ const InputLine = styled.div`
 `;
 const InputWrapper = styled.div`
   width: 400px;
+  display: flex;
+  gap: 20px;
 `;
