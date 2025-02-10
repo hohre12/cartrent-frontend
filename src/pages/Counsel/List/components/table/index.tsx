@@ -1,7 +1,5 @@
-import Button from '@/components/button/Button';
 import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
 import { COUNSEL_LIST_WATCH_OPTIONS } from '@/constants/counsel';
-import { CUSTOMER_LIST_WATCH_OPTIONS } from '@/constants/customer';
 import {
   selectedCounselHideWatchOptionsState,
   selectedCounselState,
@@ -101,13 +99,6 @@ const CounselListTable = ({ data }: TTableProps) => {
               selectedCounselHideWatchOptions,
               'customerPhone',
             ) && <td>{it.customer?.phone ?? '-'}</td>}
-            {/* {!isColumnsViewHide(selectedCounselHideWatchOptions, 'carName') && (
-              <td>
-                {it.contractList.length > 0
-                  ? it.contractList[it.contractList.length - 1].carName
-                  : '-'}
-              </td>
-            )} */}
             {!isColumnsViewHide(selectedCounselHideWatchOptions, 'context') && (
               <td className="textHidden">{it.context ?? '-'}</td>
             )}
@@ -125,12 +116,8 @@ const CounselListTable = ({ data }: TTableProps) => {
             ) && <td>{it.customer.customerGrade?.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
-              'customerProduct',
-            ) && <td className="name">{it.customer.product ?? '-'}</td>}
-            {!isColumnsViewHide(
-              selectedCounselHideWatchOptions,
               'customerDivision',
-            ) && <td className="name">{it.customer.division ?? '-'}</td>}
+            ) && <td className="name">{it.contract?.division?.name ?? '-'}</td>}
           </TableItem>
         ))}
       </tbody>

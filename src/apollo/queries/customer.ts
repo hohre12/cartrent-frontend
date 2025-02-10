@@ -9,37 +9,28 @@ export const GET_CUSTOMERS_QUERY = gql`
   query GetCustomers($getCustomersDto: GetCustomersDto!) {
     getCustomers(getCustomersDto: $getCustomersDto) {
       id
+      created_at
       name
       phone
-      product
-      division
       memo
-      type
       note
-      status
-      created_at
-      counselList {
-        id
-        updated_at
-      }
+      type
       contractList {
-        id
         carName
+        division {
+          name
+        }
       }
-      customerGroup {
-        id
+      counselList {
+        counselAt
+      }
+      customerGrade {
         name
       }
       userList {
-        id
-        name
-      }
-      customerGrade {
-        id
         name
       }
       customerStatus {
-        id
         status
       }
     }
@@ -57,49 +48,48 @@ export const GET_CUSTOMER_QUERY = gql`
       name
       phone
       sub_phone
-      product
-      division
-      company_name_nominee
-      memo
       type
-      note
-      status
       created_at
-      updated_at
-      counselList {
-        id
-        context
-        counselAt
-        user {
-          name
-        }
-        customer {
-          name
-        }
-      }
-      contractList {
-        id
-        carName
-        carOption
-        contractPeriod
-        agreedMileage
-        collateralRate
-      }
-      customerGroup {
-        id
-        name
-      }
+      memo
+      note
       userList {
         id
         name
       }
-      customerGrade {
+      customerGroup {
         id
         name
       }
       customerStatus {
         id
         status
+      }
+      contractList {
+        id
+        company_name_nominee
+        division {
+          name
+        }
+        carName
+        carOption
+        contractPeriod
+        agreedMileage
+        collateralType
+      }
+      customerGrade {
+        id
+        name
+      }
+      counselList {
+        id
+        counselAt
+        customer {
+          name
+        }
+        user {
+          name
+        }
+        context
       }
     }
   }

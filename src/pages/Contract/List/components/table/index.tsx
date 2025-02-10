@@ -89,7 +89,6 @@ const ContractListTable = ({ data }: TTableProps) => {
               )
             );
           })}
-          <th>계약삭제</th>
         </TableHeader>
       </thead>
       <tbody>
@@ -116,7 +115,7 @@ const ContractListTable = ({ data }: TTableProps) => {
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'cityName',
-            ) && <td>{it.city.name ?? '-'}</td>}
+            ) && <td>{it.city?.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'contractAt',
@@ -126,10 +125,10 @@ const ContractListTable = ({ data }: TTableProps) => {
               'shippingDate',
             ) && <td>{formatDate(it.shippingDate) ?? '-'}</td>}
             {!isColumnsViewHide(selectedContractHideWatchOptions, 'name') && (
-              <td>{it.customer.name ?? '-'}</td>
+              <td>{it.customer?.name ?? '-'}</td>
             )}
             {!isColumnsViewHide(selectedContractHideWatchOptions, 'phone') && (
-              <td>{it.customer.phone ?? '-'}</td>
+              <td>{it.customer?.phone ?? '-'}</td>
             )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
@@ -156,14 +155,7 @@ const ContractListTable = ({ data }: TTableProps) => {
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'financialCompany',
-            ) && <td>{it.financialCompany ?? '-'}</td>}
-            {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
-              'product',
-            ) && <td>{it.product ?? '-'}</td>}
-            {!isColumnsViewHide(selectedContractHideWatchOptions, 'surtax') && (
-              <td>{it.surtax ?? '-'}</td>
-            )}
+            ) && <td>{it.financialCompany?.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'feeRate',
@@ -177,20 +169,16 @@ const ContractListTable = ({ data }: TTableProps) => {
             ) && <td>{it.promotion ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
-              'interChangeFee',
-            ) && <td>{it.interChangeFee ?? '-'}</td>}
-            {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
               'monthlyPayment',
             ) && <td>{it.monthlyPayment ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'shippingMethod',
-            ) && <td>{it.shippingMethod ?? '-'}</td>}
+            ) && <td>{it.shippingMethod?.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'isOrdering',
-            ) && <td>{it.isOrdering ?? '-'}</td>}
+            ) && <td>{it.isOrdering ? '출고' : '미출고'}</td>}
             {!isColumnsViewHide(selectedContractHideWatchOptions, 'branch') && (
               <td>{it.branch ?? '-'}</td>
             )}
@@ -198,10 +186,6 @@ const ContractListTable = ({ data }: TTableProps) => {
               selectedContractHideWatchOptions,
               'branchFee',
             ) && <td>{it.branchFee ?? '-'}</td>}
-            {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
-              'collateralType',
-            ) && <td>{it.collateralType ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'collateralRate',
@@ -277,7 +261,15 @@ const ContractListTable = ({ data }: TTableProps) => {
               selectedContractHideWatchOptions,
               'netIncome',
             ) && <td>{it.netIncome ?? '-'}</td>}
-            <td>
+            {!isColumnsViewHide(
+              selectedContractHideWatchOptions,
+              'company_name_nominee',
+            ) && <td>{it.company_name_nominee ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedContractHideWatchOptions,
+              'divisionName',
+            ) && <td>{it.division?.name ?? '-'}</td>}
+            {/* <td>
               <div onClick={(e) => e.stopPropagation()}>
                 <Button
                   variant="black"
@@ -298,7 +290,7 @@ const ContractListTable = ({ data }: TTableProps) => {
                   삭제
                 </Button>
               </div>
-            </td>
+            </td> */}
           </TableItem>
         ))}
       </tbody>

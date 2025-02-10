@@ -3,10 +3,12 @@ import Input from '@/components/input/Input';
 import Select from '@/components/select/Select';
 import { useToast } from '@/hooks/useToast';
 import { useGetCites } from '@/services/city';
+import { useCreateCountract } from '@/services/contract';
 import { useGetCustomers } from '@/services/customer';
 import { userState } from '@/state/auth';
 import { textM16Medium, titleXl20Bold } from '@/styles/typography';
 import { City, CreateContractDto, Customer, User } from '@/types/graphql';
+import { numberFormat } from '@/utils/common';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -29,9 +31,11 @@ const ContractRegist = () => {
   const [city, setCity] = useState<City>();
   const [user, setUser] = useState<User>();
 
-  //   const { createContract } = useCreateContract();
+  const { createContractMutation } = useCreateCountract();
 
-  const handleValueChange = (value: string, key: string) => {
+  const handleValueChange = (value: string | number, key: string) => {
+    console.log('key', key);
+    console.log('value', value);
     setCreateContract((prevState) => ({
       ...prevState,
       [key]: value,
@@ -54,16 +58,16 @@ const ContractRegist = () => {
 
       console.log(createContractPayload);
 
-      //   const response = await createContract(createContractPayload);
-      //   if (response && response.data.createContract.id) {
-      //     addToast({
-      //       id: Date.now(),
-      //       isImage: true,
-      //       content: `계약이 등록되었습니다.`,
-      //       type: 'success',
-      //     });
-      //     navigate('/contract');
-      //   }
+      const response = await createContractMutation(createContractPayload);
+      if (response && response.data.createContract.id) {
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `계약이 등록되었습니다.`,
+          type: 'success',
+        });
+        navigate('/contract');
+      }
     } catch (e) {
       console.warn(e);
     }
@@ -156,7 +160,12 @@ const ContractRegist = () => {
             <InputLine>
               <span>회사명/명의자</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.company_name_nominee ?? ''}
+                  onTextChange={(text) =>
+                    handleValueChange(text, 'company_name_nominee')
+                  }
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
@@ -171,29 +180,50 @@ const ContractRegist = () => {
             <InputLine>
               <span>차 옵션</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.carOption ?? ''}
+                  onTextChange={(text) => handleValueChange(text, 'carOption')}
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
               <span>외장색상</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.outerColor ?? ''}
+                  onTextChange={(text) => handleValueChange(text, 'outerColor')}
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
               <span>내장색상</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={createContract?.innerColor ?? ''}
+                  onTextChange={(text) => handleValueChange(text, 'innerColor')}
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
               <span>총차량가</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  value={
+                    createContract?.totalPrice
+                      ? numberFormat(createContract.totalPrice)
+                      : 0
+                  }
+                  onTextChange={(text) =>
+                    handleValueChange(
+                      Number(text.replace(/,/g, '')),
+                      'totalPrice',
+                    )
+                  }
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>금융사</span>
+              <span>금융사 - 셀렉트박스</span>
               <InputWrapper>
                 <Input />
               </InputWrapper>

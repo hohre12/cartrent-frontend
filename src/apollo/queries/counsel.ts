@@ -9,26 +9,26 @@ export const GET_COUNSELS_QUERY = gql`
   query GetCounsels($getCounselsDto: GetCounselsDto!) {
     getCounsels(getCounselsDto: $getCounselsDto) {
       id
-      context
       status
       counselAt
+      context
       customer {
-        id
         name
         phone
-        product
-        division
-        customerGrade {
-          id
+        customerGroup {
           name
         }
-        customerGroup {
-          id
+        customerGrade {
+          name
+        }
+      }
+      contract {
+        carName
+        division {
           name
         }
       }
       user {
-        id
         name
       }
     }
@@ -43,27 +43,26 @@ export const GET_COUNSEL_QUERY = gql`
   query GetCounsel($counselId: Float!) {
     getCounsel(counselId: $counselId) {
       id
-      context
       status
-      image_url
       counselAt
+      context
       customer {
-        id
         name
         phone
-        product
-        division
-        customerGrade {
-          id
+        customerGroup {
           name
         }
-        customerGroup {
-          id
+        customerGrade {
+          name
+        }
+      }
+      contract {
+        carName
+        division {
           name
         }
       }
       user {
-        id
         name
       }
     }

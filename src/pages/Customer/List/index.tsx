@@ -59,7 +59,7 @@ const CustomerList = () => {
             onRemoveClick={handleSearchTextDelete}
             onKeyDown={handleSearch}
             onRecentClick={handleSearch}
-            keyword="고객명, 연락처, 상태, 메모, 차종, 구분, 상품, 고객등급, 고객유형, 비고"
+            keyword="고객명, 연락처, 상태, 메모, 차종, 구분, 고객등급, 고객유형, 비고"
           ></SearchBox>
           <FunctionWrapper>
             <Button

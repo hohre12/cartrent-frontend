@@ -29,19 +29,13 @@ const EditModal = (props: TModal) => {
   const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
   const { data, loading, error } = useGetCustomer(selectedCustomerIdx);
 
-  const [companyNameNominee, setCompanyNameNominee] =
-    useState<UpdateCustomerDto['companyNameNominee']>();
-
   const [customerGrade, setCustomerGrade] = useState<CustomerGrade>();
   const [customerGroup, setCustomerGroup] = useState<CustomerGroup>();
   const [customerStatus, setCustomerStatus] = useState<CustomerStatus>();
-
-  const [division, setDivision] = useState<UpdateCustomerDto['division']>();
   const [memo, setMemo] = useState<UpdateCustomerDto['memo']>();
   const [name, setName] = useState<UpdateCustomerDto['name']>();
   const [note, setNote] = useState<UpdateCustomerDto['note']>();
   const [phone, setPhone] = useState<UpdateCustomerDto['phone']>();
-  const [product, setProduct] = useState<UpdateCustomerDto['product']>();
   const [type, setType] = useState<UpdateCustomerDto['type']>();
 
   const { data: statuses } = useGetCustomerStatuses();
@@ -60,16 +54,13 @@ const EditModal = (props: TModal) => {
     try {
       const response = await updateCustomer({
         customerId: selectedCustomerIdx,
-        companyNameNominee,
         customerGradeId: customerGrade?.id,
         customerGroupId: customerGroup?.id,
         customerStatusId: customerStatus?.id,
-        division,
         memo,
         name,
         note,
         phone,
-        product,
         type,
       });
 
@@ -95,9 +86,6 @@ const EditModal = (props: TModal) => {
       setPhone(detail.phone);
       setMemo(detail.memo);
       setType(detail.type);
-      setProduct(detail.product);
-      setDivision(detail.division);
-      setCompanyNameNominee(detail.company_name_nominee);
       setCustomerStatus(detail.customerStatus ?? undefined);
       setCustomerGrade(detail.customerGrade ?? undefined);
       setCustomerGroup(detail.customerGroup ?? undefined);
@@ -109,9 +97,6 @@ const EditModal = (props: TModal) => {
     setPhone,
     setMemo,
     setType,
-    setProduct,
-    setDivision,
-    setCompanyNameNominee,
     setCustomerStatus,
     setCustomerGrade,
     setCustomerGroup,
@@ -127,12 +112,12 @@ const EditModal = (props: TModal) => {
         onConfirm={handleCustomerEdit}
       >
         <RegistCustomerWrapper>
-          {/* 이름, 전화번호, 메모, 고객유형, 상품, 구분, 회사명/명의자, 상태, 등급, 그룹, 비고 */}
+          {/* 이름, 전화번호, 메모, 고객유형, 상태, 등급, 그룹, 비고 */}
           <div>
             <p>고객명</p>
             <Input
               placeholder="고객명을 입력해 주세요."
-              value={name}
+              value={name ?? ''}
               onTextChange={(text) => setName(text)}
             />
           </div>
@@ -140,7 +125,7 @@ const EditModal = (props: TModal) => {
             <p>전화번호</p>
             <Input
               placeholder="전화번호를 입력해 주세요."
-              value={phone}
+              value={phone ?? ''}
               onTextChange={(text) => setPhone(autoHypenTel(text))}
             />
           </div>
@@ -158,30 +143,6 @@ const EditModal = (props: TModal) => {
               placeholder="고객유형을 입력해 주세요."
               value={type ?? ''}
               onTextChange={(text) => setType(text)}
-            />
-          </div>
-          <div>
-            <p>상품</p>
-            <Input
-              placeholder="상품을 입력해 주세요."
-              value={product ?? ''}
-              onTextChange={(text) => setProduct(text)}
-            />
-          </div>
-          <div>
-            <p>구분</p>
-            <Input
-              placeholder="구분을 입력해 주세요."
-              value={division ?? ''}
-              onTextChange={(text) => setDivision(text)}
-            />
-          </div>
-          <div>
-            <p>회사명/명의자</p>
-            <Input
-              placeholder="회사명/명의자를 입력해 주세요."
-              value={companyNameNominee ?? ''}
-              onTextChange={(text) => setCompanyNameNominee(text)}
             />
           </div>
           <div>
@@ -203,7 +164,7 @@ const EditModal = (props: TModal) => {
               value={{ ...customerGrade }}
               onChange={(value) => setCustomerGrade(value)}
               list={grades?.getCustomerGrades ?? []}
-              trackBy="name"
+              trackBy="id"
               valueBy="name"
               placeholder="등급을 선택해주세요"
             />
@@ -215,7 +176,7 @@ const EditModal = (props: TModal) => {
               value={{ ...customerGroup }}
               onChange={(value) => setCustomerGroup(value)}
               list={groups?.getCustomerGroups ?? []}
-              trackBy="name"
+              trackBy="id"
               valueBy="name"
               placeholder="그룹을 선택해주세요"
             />

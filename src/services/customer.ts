@@ -16,6 +16,7 @@ import {
   CustomerGrade,
   CustomerGroup,
   CustomerStatus,
+  DeleteCustomerDto,
   GetCustomersDto,
   UpdateCustomerDto,
 } from '@/types/graphql';
@@ -35,13 +36,18 @@ export const useGetCustomers = (params: GetCustomersDto) => {
     { getCustomersDto: GetCustomersDto }
   >(GET_CUSTOMERS_QUERY, {
     variables: { getCustomersDto: params },
+    fetchPolicy: 'network-only',
   });
 };
 
 export const useGetCustomer = (params: Customer['id']) => {
   return useQuery<{ getCustomer: Customer }, { customerId: Customer['id'] }>(
     GET_CUSTOMER_QUERY,
-    { variables: { customerId: params }, skip: !params },
+    {
+      variables: { customerId: params },
+      skip: !params,
+      fetchPolicy: 'network-only',
+    },
   );
 };
 
@@ -80,9 +86,9 @@ export const useDeleteCustomer = () => {
     refetchQueries: [GET_CUSTOMERS_QUERY, 'GetCustomers'],
   });
 
-  const deleteCustomer = async (params: Customer['id']) => {
+  const deleteCustomer = async (params: DeleteCustomerDto) => {
     if (!params) return;
-    return deleteCustomerMutate({ variables: { customerId: params } });
+    return deleteCustomerMutate({ variables: { deleteCustomerDto: params } });
   };
   return { deleteCustomer };
 };

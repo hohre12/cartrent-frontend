@@ -21,19 +21,14 @@ import styled from 'styled-components';
 
 const RegistModal = (props: TModal) => {
   const { ...modalProps } = props;
-  const [companyNameNominee, setCompanyNameNominee] =
-    useState<CreateCustomerDto['companyNameNominee']>();
 
   const [customerGrade, setCustomerGrade] = useState<CustomerGrade>();
   const [customerGroup, setCustomerGroup] = useState<CustomerGroup>();
   const [customerStatus, setCustomerStatus] = useState<CustomerStatus>();
-
-  const [division, setDivision] = useState<CreateCustomerDto['division']>();
   const [memo, setMemo] = useState<CreateCustomerDto['memo']>();
   const [name, setName] = useState<CreateCustomerDto['name']>();
   const [note, setNote] = useState<CreateCustomerDto['note']>();
   const [phone, setPhone] = useState<CreateCustomerDto['phone']>();
-  const [product, setProduct] = useState<CreateCustomerDto['product']>();
   const [type, setType] = useState<CreateCustomerDto['type']>();
 
   const { data: statuses } = useGetCustomerStatuses();
@@ -51,16 +46,13 @@ const RegistModal = (props: TModal) => {
     if (!phone) return;
     try {
       const response = await createCustomer({
-        companyNameNominee,
         customerGradeId: customerGrade?.id,
         customerGroupId: customerGroup?.id,
         customerStatusId: customerStatus?.id,
-        division,
         memo,
         name,
         note,
         phone,
-        product,
         type,
       });
 
@@ -88,7 +80,7 @@ const RegistModal = (props: TModal) => {
         onConfirm={handleCustomerRegist}
       >
         <RegistCustomerWrapper>
-          {/* 이름, 전화번호, 메모, 고객유형, 상품, 구분, 회사명/명의자, 상태, 등급, 그룹, 비고 */}
+          {/* 이름, 전화번호, 메모, 고객유형, 구분, 회사명/명의자, 상태, 등급, 그룹, 비고 */}
           <div>
             <p>고객명</p>
             <Input
@@ -122,30 +114,6 @@ const RegistModal = (props: TModal) => {
             />
           </div>
           <div>
-            <p>상품</p>
-            <Input
-              placeholder="상품을 입력해 주세요."
-              value={product ?? ''}
-              onTextChange={(text) => setProduct(text)}
-            />
-          </div>
-          <div>
-            <p>구분</p>
-            <Input
-              placeholder="구분을 입력해 주세요."
-              value={division ?? ''}
-              onTextChange={(text) => setDivision(text)}
-            />
-          </div>
-          <div>
-            <p>회사명/명의자</p>
-            <Input
-              placeholder="회사명/명의자를 입력해 주세요."
-              value={companyNameNominee ?? ''}
-              onTextChange={(text) => setCompanyNameNominee(text)}
-            />
-          </div>
-          <div>
             <p>상태</p>
             <Select
               size="medium"
@@ -164,7 +132,7 @@ const RegistModal = (props: TModal) => {
               value={{ ...customerGrade }}
               onChange={(value) => setCustomerGrade(value)}
               list={grades?.getCustomerGrades ?? []}
-              trackBy="name"
+              trackBy="id"
               valueBy="name"
               placeholder="등급을 선택해주세요"
             />
@@ -176,7 +144,7 @@ const RegistModal = (props: TModal) => {
               value={{ ...customerGroup }}
               onChange={(value) => setCustomerGroup(value)}
               list={groups?.getCustomerGroups ?? []}
-              trackBy="name"
+              trackBy="id"
               valueBy="name"
               placeholder="그룹을 선택해주세요"
             />

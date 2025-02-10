@@ -60,15 +60,18 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
             <td>
               {it.counselList.length > 0
                 ? formatDate(
-                    it.counselList[it.counselList.length - 1].updated_at,
+                    it.counselList[it.counselList.length - 1].counselAt,
                     'YYYY-MM-DD HH:mm',
                   )
                 : '-'}
             </td>
             <td>{it.customerGrade?.name ?? '-'}</td>
             <td>{it.userList?.name ?? '-'}</td>
-            <td>{it.product ?? '-'}</td>
-            <td>{it.division ?? '-'}</td>
+            <td>
+              {it.contractList.length > 0
+                ? it.contractList[it.contractList.length - 1].division?.name
+                : '-'}
+            </td>
             <td>{it.type ?? '-'}</td>
           </tr>
         ))}

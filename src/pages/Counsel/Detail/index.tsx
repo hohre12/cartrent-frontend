@@ -73,8 +73,8 @@ const CounselDetail = () => {
             <div>{detail.status ?? '-'}</div>
           </div>
           <div>
-            <p>상품</p>
-            <div>{detail.customer.product ?? '-'}</div>
+            <p>차종</p>
+            <div>{detail.contract?.carName ?? '-'}</div>
           </div>
           <div>
             <p>상담일시</p>
@@ -96,7 +96,7 @@ const CounselDetail = () => {
           </div>
           <div>
             <p>구분</p>
-            <div>{detail.customer.division ?? '-'}</div>
+            <div>{detail.contract?.division?.name ?? '-'}</div>
           </div>
           <div>
             <p>상담내용</p>

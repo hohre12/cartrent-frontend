@@ -32,7 +32,9 @@ const CustomerDetail = () => {
 
   const handleDeleteCustomer = useCallback(async () => {
     try {
-      const response = await deleteCustomer(selectedCustomerIdx);
+      const response = await deleteCustomer({
+        customerIds: [selectedCustomerIdx],
+      });
       if (response && response.data.deleteCustomer === 'success') {
         hideConfirm();
         addToast({
@@ -132,7 +134,9 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled
-                value={detail.company_name_nominee ?? ''}
+                value={detail.contractList
+                  .map((it) => it.company_name_nominee)
+                  .join(' / ')}
               ></Input>
             </div>
             <div>
@@ -148,15 +152,9 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled
-                value={detail.division ?? ''}
-              ></Input>
-            </div>
-            <div>
-              <span>상품</span>
-              <Input
-                className="inputWrapper"
-                disabled
-                value={detail.product ?? ''}
+                value={detail.contractList
+                  .map((it) => it.division?.name)
+                  .join(' / ')}
               ></Input>
             </div>
             <div>
@@ -272,23 +270,29 @@ const CustomerDetail = () => {
         </div>
       </BoxWrapper> */}
         <HistoryWrapper>
-          {detail.counselList?.map((it, idx) => (
-            <div
-              key={idx}
-              onClick={() => navigate(`/counsel/${it.id}`)}
-            >
-              <SvgIcon iconName="icon-edit" />
-              <div className="DateTimeWrapper">
-                <span>{formatDate(it.counselAt)}</span>
-                <p>{`${formatDate(it.counselAt, 'HH:mm')}`}</p>
-              </div>
-              <div className="HistoryText">
-                <p>고객명 : {it.customer?.name}</p>
-                <p>상담사 : {it.user?.name}</p>
-                <p>상담내용 : {it.context}</p>
-              </div>
-            </div>
-          ))}
+          {detail.counselList.length > 0 ? (
+            <>
+              {detail.counselList?.map((it, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => navigate(`/counsel/${it.id}`)}
+                >
+                  <SvgIcon iconName="icon-edit" />
+                  <div className="DateTimeWrapper">
+                    <span>{formatDate(it.counselAt)}</span>
+                    <p>{`${formatDate(it.counselAt, 'HH:mm')}`}</p>
+                  </div>
+                  <div className="HistoryText">
+                    <p>고객명 : {it.customer?.name}</p>
+                    <p>상담사 : {it.user?.name}</p>
+                    <p>상담내용 : {it.context}</p>
+                  </div>
+                </div>
+              ))}
+            </>
+          ) : (
+            <div>상담 기록이 없습니다.</div>
+          )}
         </HistoryWrapper>
       </DetailWrapper>
       {isOpenEditModal && (
