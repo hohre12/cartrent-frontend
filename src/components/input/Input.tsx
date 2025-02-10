@@ -29,6 +29,7 @@ interface IInputProps extends HTMLAttributes<HTMLDivElement> {
   prefixNode?: ReactNode;
   postfixNode?: ReactNode;
   onTextChange?: (value: string) => void;
+  max?: number;
   isRegister?: boolean;
 }
 
@@ -51,6 +52,7 @@ const Input = forwardRef<HTMLInputElement, IInputProps>(
       prefixNode,
       postfixNode,
       isRegister = false,
+      max,
       ...props
     },
     ref,
@@ -108,6 +110,7 @@ const Input = forwardRef<HTMLInputElement, IInputProps>(
                   readOnly={readOnly}
                   value={text}
                   placeholder={placeholder}
+                  max={max}
                 />
               )}
               {isRegister && (
@@ -118,6 +121,7 @@ const Input = forwardRef<HTMLInputElement, IInputProps>(
                   disabled={disabled}
                   readOnly={readOnly}
                   placeholder={placeholder}
+                  max={max}
                   {...props}
                 />
               )}
@@ -176,7 +180,7 @@ const Root = styled.div`
   .inputBox {
     display: flex;
     gap: 2px;
-
+    align-items: center;
     transition: 0.2s all;
     color: ${palette['$text-inputfield-entered']};
     border: 1px solid ${palette['$border-inputfield-enable']};

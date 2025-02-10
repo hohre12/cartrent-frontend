@@ -132,4 +132,31 @@ export const GET_CONTRACT_QUERY = gql`
     }
   }
 `;
+
+export const GET_FINANCIAL_COMPANIES_QUERY = gql`
+  query Query {
+    getFinancialCompanies {
+      id
+      name
+    }
+  }
+`;
+
+export const GET_DIVISIONS_QUERY = gql`
+  query GetDivisions {
+    getDivisions {
+      id
+      name
+    }
+  }
+`;
+
+export const GET_SHIPPING_METHODS_QUERY = gql`
+  query Query {
+    getShippingMethods {
+      id
+      name
+    }
+  }
+`;
 /* Query */
