@@ -67,8 +67,11 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
             </td>
             <td>{it.customerGrade?.name ?? '-'}</td>
             <td>{it.userList?.name ?? '-'}</td>
-            <td>{it.product ?? '-'}</td>
-            <td>{it.division ?? '-'}</td>
+            <td>
+              {it.contractList.length > 0
+                ? it.contractList[it.contractList.length - 1].carName
+                : '-'}
+            </td>
             <td>{it.type ?? '-'}</td>
           </tr>
         ))}

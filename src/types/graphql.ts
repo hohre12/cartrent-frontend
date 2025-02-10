@@ -35,15 +35,13 @@ export type City = {
 export type Contract = {
   /** 약정 거리 */
   agreedMileage?: Maybe<Scalars['String']['output']>;
-  /** 은행 */
-  bank?: Maybe<Scalars['String']['output']>;
   /** 지점 */
   branch?: Maybe<Scalars['String']['output']>;
   /** 지점 수수료 */
   branchFee?: Maybe<Scalars['Int']['output']>;
-  /** 발비 */
+  /** 경비 */
   businessExpenses?: Maybe<Scalars['String']['output']>;
-  /** 발비 내용 */
+  /** 경비 내용 */
   businessExpensesDetail?: Maybe<Scalars['String']['output']>;
   /** 차종 */
   carName?: Maybe<Scalars['String']['output']>;
@@ -53,32 +51,30 @@ export type Contract = {
   carPrice?: Maybe<Scalars['Int']['output']>;
   /** 현금 지원 */
   cashAssistance?: Maybe<Scalars['String']['output']>;
-  city: City;
+  city?: Maybe<City>;
   city_id?: Maybe<Scalars['Int']['output']>;
   /** 담보율 */
   collateralRate?: Maybe<Scalars['String']['output']>;
-  /** 담보 종류 */
+  /** 담보 타입 선납금/보증금 */
   collateralType?: Maybe<Scalars['String']['output']>;
-  /** 계약 내용 */
-  context?: Maybe<Scalars['String']['output']>;
+  /** 회사명/명의자 */
+  company_name_nominee?: Maybe<Scalars['String']['output']>;
   /** 계약 일 */
   contractAt?: Maybe<Scalars['String']['output']>;
   /** 약정 기간 */
   contractPeriod?: Maybe<Scalars['String']['output']>;
-  /** 계약 타입 */
-  contractType?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['DateTime']['output']>;
-  customer: Customer;
+  customer?: Maybe<Customer>;
   customer_id?: Maybe<Scalars['Int']['output']>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
-  /** 이외 추가 금액 */
-  extraPrice?: Maybe<Scalars['Int']['output']>;
+  division?: Maybe<Division>;
+  divisionId?: Maybe<Scalars['Int']['output']>;
   /** 수수료 */
   fee?: Maybe<Scalars['Int']['output']>;
   /** 수수료 비율 */
   feeRate?: Maybe<Scalars['String']['output']>;
-  /** 금융사 */
-  financialCompany?: Maybe<Scalars['String']['output']>;
+  financialCompany?: Maybe<FinancialCompany>;
+  financialCompanyId?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   /** 소득자 */
   incomeEarner?: Maybe<Scalars['String']['output']>;
@@ -86,50 +82,44 @@ export type Contract = {
   innerColor?: Maybe<Scalars['String']['output']>;
   /** 보험 연령 */
   insuranceAge?: Maybe<Scalars['String']['output']>;
-  /** 정산 수수료 */
-  interChangeFee?: Maybe<Scalars['Int']['output']>;
-  /** 발주 여부 */
+  /** 출고 여부 */
   isOrdering?: Maybe<Scalars['Boolean']['output']>;
   /** 부가세 지원 여부 */
   isVATSupport?: Maybe<Scalars['Boolean']['output']>;
   /** 월 납입료 */
   monthlyPayment?: Maybe<Scalars['String']['output']>;
-  /** 순수익 */
+  /** 수익합계 */
   netIncome?: Maybe<Scalars['Int']['output']>;
   /** 대물 */
   object?: Maybe<Scalars['String']['output']>;
   /** 외부 색상 */
   outerColor?: Maybe<Scalars['String']['output']>;
-  /** 상품 */
-  product?: Maybe<Scalars['String']['output']>;
   /** 프로모션 */
   promotion?: Maybe<Scalars['String']['output']>;
-  /** 서비스 1 */
+  /** 품의 금액 1 */
   service1?: Maybe<Scalars['String']['output']>;
-  /** 서비스 2 */
+  /** 품의 금액 2 */
   service2?: Maybe<Scalars['String']['output']>;
-  /** 서비스 3 */
+  /** 품의 금액 3 */
   service3?: Maybe<Scalars['String']['output']>;
-  /** 서비스 내용 1 */
+  /** 품의 내용 1 */
   serviceBody1?: Maybe<Scalars['String']['output']>;
-  /** 서비스 내용 2 */
+  /** 품의 내용 2 */
   serviceBody2?: Maybe<Scalars['String']['output']>;
-  /** 서비스 내용 3 */
+  /** 품의 내용 3 */
   serviceBody3?: Maybe<Scalars['String']['output']>;
   /** 출고 일 */
   shippingDate?: Maybe<Scalars['String']['output']>;
-  /** 출고 방식 */
-  shippingMethod?: Maybe<Scalars['String']['output']>;
+  shippingMethod?: Maybe<ShippingMethod>;
+  shippingMethodId?: Maybe<Scalars['Int']['output']>;
   /** 계약 상태 */
-  status?: Maybe<Status>;
-  supportAmounts: Array<SupportAmount>;
+  status: Status;
+  supportAmounts?: Maybe<Array<SupportAmount>>;
   /** 지원 내용 */
   supportDetails?: Maybe<Scalars['String']['output']>;
-  /** 부가세 */
-  surtax?: Maybe<Scalars['String']['output']>;
-  /** 총지출 */
+  /** 지출합계 */
   totalExpenditure?: Maybe<Scalars['Int']['output']>;
-  /** 총 수수료 */
+  /** 매출 합계 */
   totalFee?: Maybe<Scalars['Int']['output']>;
   /** 총 계약 금액 */
   totalPrice?: Maybe<Scalars['Int']['output']>;
@@ -200,8 +190,6 @@ export type CreateCityDto = {
 export type CreateContractDto = {
   /** 약정 거리 */
   agreedMileage?: InputMaybe<Scalars['String']['input']>;
-  /** 은행 */
-  bank?: InputMaybe<Scalars['String']['input']>;
   /** 지점 */
   branch?: InputMaybe<Scalars['String']['input']>;
   /** 지점 수수료 */
@@ -221,33 +209,29 @@ export type CreateContractDto = {
   cityId?: InputMaybe<Scalars['Int']['input']>;
   /** 담보율 */
   collateralRate?: InputMaybe<Scalars['String']['input']>;
-  /** 담보 종류 */
+  /** 담보 타입 선납금/보증금 */
   collateralType?: InputMaybe<Scalars['String']['input']>;
-  /** 계약 내용 */
-  context?: InputMaybe<Scalars['String']['input']>;
+  /** 회사명/명의자 */
+  company_name_nominee?: InputMaybe<Scalars['String']['input']>;
   /** 계약 일 */
   contractAt?: InputMaybe<Scalars['String']['input']>;
   /** 약정 기간 */
   contractPeriod?: InputMaybe<Scalars['String']['input']>;
-  /** 계약 타입 */
-  contractType?: InputMaybe<Scalars['String']['input']>;
   customerId: Scalars['Int']['input'];
-  /** 이외 추가 금액 */
-  extraPrice?: InputMaybe<Scalars['Int']['input']>;
+  /** 구분 */
+  divisionId?: InputMaybe<Scalars['Int']['input']>;
   /** 수수료 */
   fee?: InputMaybe<Scalars['Int']['input']>;
   /** 수수료 비율 */
   feeRate?: InputMaybe<Scalars['String']['input']>;
-  /** 금융사 */
-  financialCompany?: InputMaybe<Scalars['String']['input']>;
+  /** 금융사 id */
+  financialCompanyId?: InputMaybe<Scalars['Int']['input']>;
   /** 소득자 */
   incomeEarner?: InputMaybe<Scalars['String']['input']>;
   /** 내부 색상 */
   innerColor?: InputMaybe<Scalars['String']['input']>;
   /** 보험 연령 */
   insuranceAge?: InputMaybe<Scalars['String']['input']>;
-  /** 정산 수수료 */
-  interChangeFee?: InputMaybe<Scalars['Int']['input']>;
   /** 발주 여부 */
   isOrdering?: InputMaybe<Scalars['Boolean']['input']>;
   /** 부가세 지원 여부 */
@@ -260,8 +244,6 @@ export type CreateContractDto = {
   object?: InputMaybe<Scalars['String']['input']>;
   /** 외부 색상 */
   outerColor?: InputMaybe<Scalars['String']['input']>;
-  /** 상품 */
-  product?: InputMaybe<Scalars['String']['input']>;
   /** 프로모션 */
   promotion?: InputMaybe<Scalars['String']['input']>;
   /** 서비스 1 */
@@ -278,14 +260,10 @@ export type CreateContractDto = {
   serviceBody3?: InputMaybe<Scalars['String']['input']>;
   /** 출고 일 */
   shippingDate?: InputMaybe<Scalars['String']['input']>;
-  /** 출고 방식 */
-  shippingMethod?: InputMaybe<Scalars['String']['input']>;
-  /** 계약 삭제 여부 */
-  status?: Status;
+  /** 출고 방식 id */
+  shippingMethodId?: InputMaybe<Scalars['Int']['input']>;
   /** 지원 내용 */
   supportDetails?: InputMaybe<Scalars['String']['input']>;
-  /** 부가세 */
-  surtax?: InputMaybe<Scalars['String']['input']>;
   /** 총지출 */
   totalExpenditure?: InputMaybe<Scalars['Int']['input']>;
   /** 총 수수료 */
@@ -306,21 +284,15 @@ export type CreateCounselDto = {
 };
 
 export type CreateCustomerDto = {
-  /** 회사명/명의자 */
-  companyNameNominee?: InputMaybe<Scalars['String']['input']>;
   customerGradeId?: InputMaybe<Scalars['Int']['input']>;
   customerGroupId?: InputMaybe<Scalars['Int']['input']>;
   customerStatusId?: InputMaybe<Scalars['Int']['input']>;
-  /** 구분 */
-  division?: InputMaybe<Scalars['String']['input']>;
   /** 메모 */
   memo?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   /** 비고 */
   note?: InputMaybe<Scalars['String']['input']>;
   phone: Scalars['String']['input'];
-  /** 상품 */
-  product?: InputMaybe<Scalars['String']['input']>;
   /** 고객 유형 */
   type?: InputMaybe<Scalars['String']['input']>;
 };
@@ -364,8 +336,6 @@ export type CreateTeamDto = {
 
 /** 고객 */
 export type Customer = {
-  /** 회사명/명의자 */
-  company_name_nominee?: Maybe<Scalars['String']['output']>;
   contractList: Array<Contract>;
   counselList: Array<Counsel>;
   created_at?: Maybe<Scalars['DateTime']['output']>;
@@ -376,8 +346,6 @@ export type Customer = {
   customer_group_id?: Maybe<Scalars['Int']['output']>;
   customer_status_id?: Maybe<Scalars['Int']['output']>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
-  /** 구분 */
-  division?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   /** 고객 메모 */
   memo?: Maybe<Scalars['String']['output']>;
@@ -387,12 +355,10 @@ export type Customer = {
   note?: Maybe<Scalars['String']['output']>;
   /** 핸드폰 번호 */
   phone: Scalars['String']['output'];
-  /** 상품 */
-  product?: Maybe<Scalars['String']['output']>;
   /** 상태 */
-  status: Status;
+  status: Scalars['String']['output'];
   /** 추가 연락처 */
-  sub_phone: Scalars['String']['output'];
+  sub_phone?: Maybe<Scalars['String']['output']>;
   /** 고객 유형 */
   type?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['DateTime']['output']>;
@@ -438,8 +404,6 @@ export enum CustomerSearchType {
   Note = 'NOTE',
   /** 연락처 */
   Phone = 'PHONE',
-  /** 상품 */
-  Product = 'PRODUCT',
   /** 고객유형 */
   Type = 'TYPE'
 }
@@ -450,6 +414,24 @@ export type CustomerStatus = {
   id: Scalars['Int']['output'];
   /** 고객 상태 이름 */
   status: Scalars['String']['output'];
+};
+
+export type DeleteCustomerDto = {
+  /** customerIds */
+  customerIds: Array<Scalars['Int']['input']>;
+};
+
+/** 구분 */
+export type Division = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+};
+
+/** 금융사 */
+export type FinancialCompany = {
+  id: Scalars['Int']['output'];
+  /** 이름 */
+  name: Scalars['String']['output'];
 };
 
 export type FirstContractCountUser = {
@@ -485,38 +467,40 @@ export type GetCitiesDto = {
 };
 
 export type GetContractsDto = {
+  customerId?: InputMaybe<Array<Scalars['Int']['input']>>;
   /** 계약일자 년월 */
-  contractAtYearMonth?: InputMaybe<Scalars['String']['input']>;
-  customerId?: InputMaybe<Scalars['Int']['input']>;
+  endContractAtYearMonth?: InputMaybe<Scalars['String']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
   searchType?: InputMaybe<ContractSearchType>;
-  /** 출고방식 */
-  shippingMethod?: InputMaybe<Scalars['String']['input']>;
-  userId?: InputMaybe<Scalars['Int']['input']>;
+  /** 출고방식 ids */
+  shippingMethodIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+  /** 계약일자 년월 시작일 */
+  startContractAtYearMonth?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type GetCounselsDto = {
-  customerGroupId?: InputMaybe<Scalars['Int']['input']>;
-  customerStatusId?: InputMaybe<Scalars['Int']['input']>;
+  customerGroupId?: InputMaybe<Array<Scalars['Int']['input']>>;
+  customerStatusId?: InputMaybe<Array<Scalars['Int']['input']>>;
   /** 검색 내용 */
   search?: InputMaybe<Scalars['String']['input']>;
   /** 검색 타입 */
   searchType?: InputMaybe<CounselSearchType>;
-  userId?: InputMaybe<Scalars['Int']['input']>;
+  userId?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type GetCustomersDto = {
   /** 고객 등급 Id */
-  customerGradeId?: InputMaybe<Scalars['Int']['input']>;
+  customerGradeId?: InputMaybe<Array<Scalars['Int']['input']>>;
   /** 고객 그룹 Id */
-  customerGroupId?: InputMaybe<Scalars['Int']['input']>;
+  customerGroupId?: InputMaybe<Array<Scalars['Int']['input']>>;
   /** 고객 상태 Id */
-  customerStatusId?: InputMaybe<Scalars['Int']['input']>;
+  customerStatusId?: InputMaybe<Array<Scalars['Int']['input']>>;
   search?: InputMaybe<Scalars['String']['input']>;
   /** 검색 타입 */
   searchType?: InputMaybe<CustomerSearchType>;
   /** 유저 Id */
-  userId?: InputMaybe<Scalars['Int']['input']>;
+  userId?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type GetDeliveryDetailsDto = {
@@ -667,7 +651,7 @@ export type MutationDeleteCityArgs = {
 
 
 export type MutationDeleteCustomerArgs = {
-  customerId: Scalars['Float']['input'];
+  deleteCustomerDto: DeleteCustomerDto;
 };
 
 
@@ -829,6 +813,10 @@ export type Query = {
   getCustomers: Array<Customer>;
   /** 출고 내역 리스트 조회 */
   getDeliverDetails: Array<Contract>;
+  /** 구분 리스트 */
+  getDivisions: Array<Division>;
+  /** 금융사 리스트 */
+  getFinancialCompanies: Array<FinancialCompany>;
   /** 월별 계약 1위 유저 */
   getFirstContractUserByMonth: FirstContractCountUser;
   /** 월별 매출 1위 유저 */
@@ -843,6 +831,8 @@ export type Query = {
   getPayStubsByUser: Array<PayStub>;
   /** 월별 매출 현황 */
   getRevenuesByUsersMonth: Array<User>;
+  /** 출고방식 리스트 */
+  getShippingMethods: Array<ShippingMethod>;
   /** 지원금 조회 */
   getSupportAmount: SupportAmount;
   /** 지원금 리스트 조회 */
@@ -851,6 +841,8 @@ export type Query = {
   getTeam: Team;
   /** 팀 리스트 조회 */
   getTeams: Array<Team>;
+  /** 담당자 리스트 */
+  getUsers: Array<User>;
   userInfo: Scalars['String']['output'];
 };
 
@@ -934,6 +926,12 @@ export type QueryGetTeamArgs = {
   teamId: Scalars['Float']['input'];
 };
 
+/** 출고방식 */
+export type ShippingMethod = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+};
+
 export type SignInDto = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -987,8 +985,6 @@ export type UpdateCityDto = {
 export type UpdateContractDto = {
   /** 약정 거리 */
   agreedMileage?: InputMaybe<Scalars['String']['input']>;
-  /** 은행 */
-  bank?: InputMaybe<Scalars['String']['input']>;
   /** 지점 */
   branch?: InputMaybe<Scalars['String']['input']>;
   /** 지점 수수료 */
@@ -1008,26 +1004,24 @@ export type UpdateContractDto = {
   cityId?: InputMaybe<Scalars['Int']['input']>;
   /** 담보율 */
   collateralRate?: InputMaybe<Scalars['String']['input']>;
-  /** 담보 종류 */
+  /** 담보 타입 선납금/보증금 */
   collateralType?: InputMaybe<Scalars['String']['input']>;
-  /** 계약 내용 */
-  context?: InputMaybe<Scalars['String']['input']>;
+  /** 회사명/명의자 */
+  company_name_nominee?: InputMaybe<Scalars['String']['input']>;
   /** 계약 일 */
   contractAt?: InputMaybe<Scalars['String']['input']>;
   contractId: Scalars['Int']['input'];
   /** 약정 기간 */
   contractPeriod?: InputMaybe<Scalars['String']['input']>;
-  /** 계약 타입 */
-  contractType?: InputMaybe<Scalars['String']['input']>;
   customerId: Scalars['Int']['input'];
-  /** 이외 추가 금액 */
-  extraPrice?: InputMaybe<Scalars['Int']['input']>;
+  /** 구분 id */
+  divisionId?: InputMaybe<Scalars['Int']['input']>;
   /** 수수료 */
   fee?: InputMaybe<Scalars['Int']['input']>;
   /** 수수료 비율 */
   feeRate?: InputMaybe<Scalars['String']['input']>;
-  /** 금융사 */
-  financialCompany?: InputMaybe<Scalars['String']['input']>;
+  /** 금융사 id */
+  financialCompanyId?: InputMaybe<Scalars['Int']['input']>;
   /** 소득자 */
   incomeEarner?: InputMaybe<Scalars['String']['input']>;
   /** 내부 색상 */
@@ -1048,8 +1042,6 @@ export type UpdateContractDto = {
   object?: InputMaybe<Scalars['String']['input']>;
   /** 외부 색상 */
   outerColor?: InputMaybe<Scalars['String']['input']>;
-  /** 상품 */
-  product?: InputMaybe<Scalars['String']['input']>;
   /** 프로모션 */
   promotion?: InputMaybe<Scalars['String']['input']>;
   /** 서비스 1 */
@@ -1066,14 +1058,12 @@ export type UpdateContractDto = {
   serviceBody3?: InputMaybe<Scalars['String']['input']>;
   /** 출고 일 */
   shippingDate?: InputMaybe<Scalars['String']['input']>;
-  /** 출고 방식 */
-  shippingMethod?: InputMaybe<Scalars['String']['input']>;
+  /** 출고 방식 id */
+  shippingMethodId?: InputMaybe<Scalars['Int']['input']>;
   /** 계약 삭제 여부 */
   status?: Status;
   /** 지원 내용 */
   supportDetails?: InputMaybe<Scalars['String']['input']>;
-  /** 부가세 */
-  surtax?: InputMaybe<Scalars['String']['input']>;
   /** 총지출 */
   totalExpenditure?: InputMaybe<Scalars['Int']['input']>;
   /** 총 수수료 */
@@ -1083,14 +1073,9 @@ export type UpdateContractDto = {
   userId: Scalars['Int']['input'];
 };
 
-/**
- * status : 계약완료 -> 'COMPLETED'
- *   계약 진행중 -> 'IN_PROGRESSING',
- *   계약 취소 -> 'CANCEL'
- */
 export type UpdateContractStatusDto = {
   contractId: Scalars['Int']['input'];
-  status: Scalars['String']['input'];
+  status: Status;
 };
 
 export type UpdateCounselDto = {
@@ -1106,24 +1091,18 @@ export type UpdateCounselDto = {
 };
 
 export type UpdateCustomerDto = {
-  /** 회사명/명의자 */
-  companyNameNominee?: InputMaybe<Scalars['String']['input']>;
   customerGradeId?: InputMaybe<Scalars['Int']['input']>;
   customerGroupId?: InputMaybe<Scalars['Int']['input']>;
   customerId: Scalars['Int']['input'];
   customerStatusId?: InputMaybe<Scalars['Int']['input']>;
-  /** 구분 */
-  division?: InputMaybe<Scalars['String']['input']>;
   /** 메모 */
   memo?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   /** 비고 */
   note?: InputMaybe<Scalars['String']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
-  /** 상품 */
-  product?: InputMaybe<Scalars['String']['input']>;
   /** 고객 삭제 상태 */
-  status?: InputMaybe<Status>;
+  status?: InputMaybe<Scalars['String']['input']>;
   /** 고객 유형 */
   type?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1285,7 +1264,7 @@ export type UpdateCustomerMutationVariables = Exact<{
 export type UpdateCustomerMutation = { updateCustomer: { id: number } };
 
 export type DeleteCustomerMutationVariables = Exact<{
-  customerId: Scalars['Float']['input'];
+  deleteCustomerDto: DeleteCustomerDto;
 }>;
 
 
@@ -1359,42 +1338,42 @@ export type GetContractsQueryVariables = Exact<{
 }>;
 
 
-export type GetContractsQuery = { getContracts: Array<{ id: number, context?: string | null, status?: Status | null, totalPrice?: number | null, innerColor?: string | null, outerColor?: string | null, extraPrice?: number | null, bank?: string | null, carName?: string | null, carPrice?: number | null, carOption?: string | null, product?: string | null, financialCompany?: string | null, surtax?: string | null, promotion?: string | null, monthlyPayment?: string | null, shippingMethod?: string | null, branch?: string | null, branchFee?: number | null, collateralType?: string | null, collateralRate?: string | null, contractPeriod?: string | null, agreedMileage?: string | null, insuranceAge?: string | null, object?: string | null, service1?: string | null, service2?: string | null, service3?: string | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: string | null, supportDetails?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, contractType?: string | null, isVATSupport?: boolean | null, isOrdering?: boolean | null, interChangeFee?: number | null, feeRate?: string | null, fee?: number | null, city_id?: number | null, user_id?: number | null, customer_id?: number | null, contractAt?: string | null, shippingDate?: string | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, user: { id: number, email: string, name: string, password: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null }, customer: { id: number, name: string }, city: { id: number, name: string }, supportAmounts: Array<{ id: number, amount: number }> }> };
+export type GetContractsQuery = { getContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: string | null, fee?: number | null, promotion?: string | null, monthlyPayment?: string | null, isOrdering?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: string | null, contractPeriod?: string | null, agreedMileage?: string | null, insuranceAge?: string | null, object?: string | null, service1?: string | null, serviceBody1?: string | null, service2?: string | null, serviceBody2?: string | null, service3?: string | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: string | null, supportDetails?: string | null, businessExpenses?: string | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, user: { name: string }, city?: { name: string } | null, customer?: { name: string, phone: string } | null, financialCompany?: { name: string } | null, shippingMethod?: { name: string } | null, division?: { name: string } | null }> };
 
 export type GetContractQueryVariables = Exact<{
   contractId: Scalars['Float']['input'];
 }>;
 
 
-export type GetContractQuery = { getContract: { id: number, context?: string | null, status?: Status | null, totalPrice?: number | null, innerColor?: string | null, outerColor?: string | null, extraPrice?: number | null, bank?: string | null, carName?: string | null, carPrice?: number | null, carOption?: string | null, product?: string | null, financialCompany?: string | null, surtax?: string | null, promotion?: string | null, monthlyPayment?: string | null, shippingMethod?: string | null, branch?: string | null, branchFee?: number | null, collateralType?: string | null, collateralRate?: string | null, contractPeriod?: string | null, agreedMileage?: string | null, insuranceAge?: string | null, object?: string | null, service1?: string | null, service2?: string | null, service3?: string | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: string | null, supportDetails?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, contractType?: string | null, isVATSupport?: boolean | null, isOrdering?: boolean | null, interChangeFee?: number | null, feeRate?: string | null, fee?: number | null, city_id?: number | null, user_id?: number | null, customer_id?: number | null, contractAt?: string | null, shippingDate?: string | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, user: { id: number, name: string }, customer: { id: number, name: string }, city: { id: number, name: string }, supportAmounts: Array<{ id: number, amount: number }> } };
+export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: string | null, fee?: number | null, promotion?: string | null, monthlyPayment?: string | null, isOrdering?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: string | null, contractPeriod?: string | null, agreedMileage?: string | null, insuranceAge?: string | null, object?: string | null, service1?: string | null, serviceBody1?: string | null, service2?: string | null, serviceBody2?: string | null, service3?: string | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: string | null, supportDetails?: string | null, businessExpenses?: string | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, user: { name: string }, city?: { name: string } | null, customer?: { name: string, phone: string } | null, financialCompany?: { name: string } | null, shippingMethod?: { name: string } | null, division?: { name: string } | null } };
 
 export type GetCounselsQueryVariables = Exact<{
   getCounselsDto: GetCounselsDto;
 }>;
 
 
-export type GetCounselsQuery = { getCounsels: Array<{ id: number, context: string, status?: Status | null, image_url?: string | null, user_id?: number | null, customer_id?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, customer: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, user: { id: number, name: string } }> };
+export type GetCounselsQuery = { getCounsels: Array<{ id: number, status?: Status | null, counselAt: string, context: string, customer: { name: string, phone: string, customerGroup?: { name: string } | null, customerGrade?: { name: string } | null }, contract?: { carName?: string | null, division?: { name: string } | null } | null, user: { name: string } }> };
 
 export type GetCounselQueryVariables = Exact<{
   counselId: Scalars['Float']['input'];
 }>;
 
 
-export type GetCounselQuery = { getCounsel: { id: number, context: string, status?: Status | null, image_url?: string | null, user_id?: number | null, customer_id?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, customer: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, user: { id: number, name: string } } };
+export type GetCounselQuery = { getCounsel: { id: number, status?: Status | null, counselAt: string, context: string, customer: { name: string, phone: string, customerGroup?: { name: string } | null, customerGrade?: { name: string } | null }, contract?: { carName?: string | null, division?: { name: string } | null } | null, user: { name: string } } };
 
 export type GetCustomersQueryVariables = Exact<{
   getCustomersDto: GetCustomersDto;
 }>;
 
 
-export type GetCustomersQuery = { getCustomers: Array<{ id: number, name: string, phone: string, sub_phone: string, product?: string | null, division?: string | null, company_name_nominee?: string | null, memo?: string | null, type?: string | null, note?: string | null, status: Status, user_id: number, customer_group_id?: number | null, customer_grade_id?: number | null, customer_status_id?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, counselList: Array<{ id: number }>, contractList: Array<{ id: number }>, customerGroup?: { id: number } | null, userList: { id: number }, customerGrade?: { id: number } | null, customerStatus?: { id: number } | null }> };
+export type GetCustomersQuery = { getCustomers: Array<{ id: number, created_at?: string | null, name: string, phone: string, memo?: string | null, note?: string | null, type?: string | null, contractList: Array<{ carName?: string | null, division?: { name: string } | null }>, counselList: Array<{ counselAt: string }>, customerGrade?: { name: string } | null, userList: { name: string }, customerStatus?: { status: string } | null }> };
 
 export type GetCustomerQueryVariables = Exact<{
   customerId: Scalars['Float']['input'];
 }>;
 
 
-export type GetCustomerQuery = { getCustomer: { id: number, name: string, phone: string, sub_phone: string, product?: string | null, division?: string | null, company_name_nominee?: string | null, memo?: string | null, type?: string | null, note?: string | null, status: Status, user_id: number, customer_group_id?: number | null, customer_grade_id?: number | null, customer_status_id?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, counselList: Array<{ context: string, created_at?: string | null, updated_at?: string | null, user: { name: string }, customer: { name: string } }>, contractList: Array<{ id: number }>, customerGroup?: { id: number } | null, userList: { id: number }, customerGrade?: { id: number } | null, customerStatus?: { id: number } | null } };
+export type GetCustomerQuery = { getCustomer: { id: number, name: string, phone: string, sub_phone?: string | null, type?: string | null, created_at?: string | null, memo?: string | null, note?: string | null, userList: { name: string }, customerGroup?: { name: string } | null, customerStatus?: { status: string } | null, contractList: Array<{ company_name_nominee?: string | null, carName?: string | null, carOption?: string | null, contractPeriod?: string | null, agreedMileage?: string | null, collateralType?: string | null, division?: { name: string } | null }>, customerGrade?: { name: string } | null } };
 
 export type GetCustomerGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1870,8 +1849,8 @@ export type UpdateCustomerMutationHookResult = ReturnType<typeof useUpdateCustom
 export type UpdateCustomerMutationResult = Apollo.MutationResult<UpdateCustomerMutation>;
 export type UpdateCustomerMutationOptions = Apollo.BaseMutationOptions<UpdateCustomerMutation, UpdateCustomerMutationVariables>;
 export const DeleteCustomerDocument = gql`
-    mutation DeleteCustomer($customerId: Float!) {
-  deleteCustomer(customerId: $customerId)
+    mutation DeleteCustomer($deleteCustomerDto: DeleteCustomerDto!) {
+  deleteCustomer(deleteCustomerDto: $deleteCustomerDto)
 }
     `;
 export type DeleteCustomerMutationFn = Apollo.MutationFunction<DeleteCustomerMutation, DeleteCustomerMutationVariables>;
@@ -1889,7 +1868,7 @@ export type DeleteCustomerMutationFn = Apollo.MutationFunction<DeleteCustomerMut
  * @example
  * const [deleteCustomerMutation, { data, loading, error }] = useDeleteCustomerMutation({
  *   variables: {
- *      customerId: // value for 'customerId'
+ *      deleteCustomerDto: // value for 'deleteCustomerDto'
  *   },
  * });
  */
@@ -2213,76 +2192,59 @@ export const GetContractsDocument = gql`
     query GetContracts($getContractsDto: GetContractsDto!) {
   getContracts(getContractsDto: $getContractsDto) {
     id
-    context
     status
-    totalPrice
+    user {
+      name
+    }
+    city {
+      name
+    }
+    contractAt
+    shippingDate
+    customer {
+      name
+      phone
+    }
+    carName
+    carOption
     innerColor
     outerColor
-    extraPrice
-    bank
-    carName
     carPrice
-    carOption
-    product
-    financialCompany
-    surtax
+    financialCompany {
+      name
+    }
+    feeRate
+    fee
     promotion
     monthlyPayment
-    shippingMethod
+    shippingMethod {
+      name
+    }
+    isOrdering
     branch
     branchFee
-    collateralType
     collateralRate
     contractPeriod
     agreedMileage
     insuranceAge
     object
     service1
-    service2
-    service3
     serviceBody1
+    service2
     serviceBody2
+    service3
     serviceBody3
     incomeEarner
     cashAssistance
     supportDetails
+    businessExpenses
+    businessExpensesDetail
     totalExpenditure
     totalFee
     netIncome
-    contractType
-    isVATSupport
-    isOrdering
-    interChangeFee
-    feeRate
-    fee
-    city_id
-    user_id
-    customer_id
-    contractAt
-    shippingDate
-    created_at
-    updated_at
-    deleted_at
-    user {
-      id
-      email
+    company_name_nominee
+    division {
       name
-      password
-      created_at
-      updated_at
-      deleted_at
-    }
-    customer {
-      id
-      name
-    }
-    city {
-      id
-      name
-    }
-    supportAmounts {
-      id
-      amount
     }
   }
 }
@@ -2324,71 +2286,59 @@ export const GetContractDocument = gql`
     query GetContract($contractId: Float!) {
   getContract(contractId: $contractId) {
     id
-    context
     status
-    totalPrice
+    user {
+      name
+    }
+    city {
+      name
+    }
+    contractAt
+    shippingDate
+    customer {
+      name
+      phone
+    }
+    carName
+    carOption
     innerColor
     outerColor
-    extraPrice
-    bank
-    carName
     carPrice
-    carOption
-    product
-    financialCompany
-    surtax
+    financialCompany {
+      name
+    }
+    feeRate
+    fee
     promotion
     monthlyPayment
-    shippingMethod
+    shippingMethod {
+      name
+    }
+    isOrdering
     branch
     branchFee
-    collateralType
     collateralRate
     contractPeriod
     agreedMileage
     insuranceAge
     object
     service1
-    service2
-    service3
     serviceBody1
+    service2
     serviceBody2
+    service3
     serviceBody3
     incomeEarner
     cashAssistance
     supportDetails
+    businessExpenses
+    businessExpensesDetail
     totalExpenditure
     totalFee
     netIncome
-    contractType
-    isVATSupport
-    isOrdering
-    interChangeFee
-    feeRate
-    fee
-    city_id
-    user_id
-    customer_id
-    contractAt
-    shippingDate
-    created_at
-    updated_at
-    deleted_at
-    user {
-      id
+    company_name_nominee
+    division {
       name
-    }
-    customer {
-      id
-      name
-    }
-    city {
-      id
-      name
-    }
-    supportAmounts {
-      id
-      amount
     }
   }
 }
@@ -2430,24 +2380,26 @@ export const GetCounselsDocument = gql`
     query GetCounsels($getCounselsDto: GetCounselsDto!) {
   getCounsels(getCounselsDto: $getCounselsDto) {
     id
-    context
     status
-    image_url
-    user_id
-    customer_id
-    created_at
-    updated_at
-    deleted_at
+    counselAt
+    context
     customer {
-      id
       name
+      phone
+      customerGroup {
+        name
+      }
+      customerGrade {
+        name
+      }
     }
-    customerGroup {
-      id
-      name
+    contract {
+      carName
+      division {
+        name
+      }
     }
     user {
-      id
       name
     }
   }
@@ -2490,24 +2442,26 @@ export const GetCounselDocument = gql`
     query GetCounsel($counselId: Float!) {
   getCounsel(counselId: $counselId) {
     id
-    context
     status
-    image_url
-    user_id
-    customer_id
-    created_at
-    updated_at
-    deleted_at
+    counselAt
+    context
     customer {
-      id
       name
+      phone
+      customerGroup {
+        name
+      }
+      customerGrade {
+        name
+      }
     }
-    customerGroup {
-      id
-      name
+    contract {
+      carName
+      division {
+        name
+      }
     }
     user {
-      id
       name
     }
   }
@@ -2550,40 +2504,29 @@ export const GetCustomersDocument = gql`
     query GetCustomers($getCustomersDto: GetCustomersDto!) {
   getCustomers(getCustomersDto: $getCustomersDto) {
     id
+    created_at
     name
     phone
-    sub_phone
-    product
-    division
-    company_name_nominee
     memo
-    type
     note
-    status
-    user_id
-    customer_group_id
-    customer_grade_id
-    customer_status_id
-    created_at
-    updated_at
-    deleted_at
-    counselList {
-      id
-    }
+    type
     contractList {
-      id
+      carName
+      division {
+        name
+      }
     }
-    customerGroup {
-      id
-    }
-    userList {
-      id
+    counselList {
+      counselAt
     }
     customerGrade {
-      id
+      name
+    }
+    userList {
+      name
     }
     customerStatus {
-      id
+      status
     }
   }
 }
@@ -2628,45 +2571,32 @@ export const GetCustomerDocument = gql`
     name
     phone
     sub_phone
-    product
-    division
-    company_name_nominee
-    memo
     type
-    note
-    status
-    user_id
-    customer_group_id
-    customer_grade_id
-    customer_status_id
     created_at
-    updated_at
-    deleted_at
-    counselList {
-      context
-      created_at
-      updated_at
-      user {
-        name
-      }
-      customer {
-        name
-      }
-    }
-    contractList {
-      id
+    memo
+    note
+    userList {
+      name
     }
     customerGroup {
-      id
-    }
-    userList {
-      id
-    }
-    customerGrade {
-      id
+      name
     }
     customerStatus {
-      id
+      status
+    }
+    contractList {
+      company_name_nominee
+      division {
+        name
+      }
+      carName
+      carOption
+      contractPeriod
+      agreedMileage
+      collateralType
+    }
+    customerGrade {
+      name
     }
   }
 }

@@ -9,76 +9,59 @@ export const GET_CONTRACTS_QUERY = gql`
   query GetContracts($getContractsDto: GetContractsDto!) {
     getContracts(getContractsDto: $getContractsDto) {
       id
-      context
       status
-      totalPrice
+      user {
+        name
+      }
+      city {
+        name
+      }
+      contractAt
+      shippingDate
+      customer {
+        name
+        phone
+      }
+      carName
+      carOption
       innerColor
       outerColor
-      extraPrice
-      bank
-      carName
       carPrice
-      carOption
-      product
-      financialCompany
-      surtax
+      financialCompany {
+        name
+      }
+      feeRate
+      fee
       promotion
       monthlyPayment
-      shippingMethod
+      shippingMethod {
+        name
+      }
+      isOrdering
       branch
       branchFee
-      collateralType
       collateralRate
       contractPeriod
       agreedMileage
       insuranceAge
       object
       service1
-      service2
-      service3
       serviceBody1
+      service2
       serviceBody2
+      service3
       serviceBody3
       incomeEarner
       cashAssistance
       supportDetails
+      businessExpenses
+      businessExpensesDetail
       totalExpenditure
       totalFee
       netIncome
-      contractType
-      isVATSupport
-      isOrdering
-      interChangeFee
-      feeRate
-      fee
-      city_id
-      user_id
-      customer_id
-      contractAt
-      shippingDate
-      created_at
-      updated_at
-      deleted_at
-      user {
-        id
-        email
+      company_name_nominee
+      division {
         name
-        password
-        created_at
-        updated_at
-        deleted_at
-      }
-      customer {
-        id
-        name
-      }
-      city {
-        id
-        name
-      }
-      supportAmounts {
-        id
-        amount
       }
     }
   }
@@ -92,71 +75,59 @@ export const GET_CONTRACT_QUERY = gql`
   query GetContract($contractId: Float!) {
     getContract(contractId: $contractId) {
       id
-      context
       status
-      totalPrice
+      user {
+        name
+      }
+      city {
+        name
+      }
+      contractAt
+      shippingDate
+      customer {
+        name
+        phone
+      }
+      carName
+      carOption
       innerColor
       outerColor
-      extraPrice
-      bank
-      carName
       carPrice
-      carOption
-      product
-      financialCompany
-      surtax
+      financialCompany {
+        name
+      }
+      feeRate
+      fee
       promotion
       monthlyPayment
-      shippingMethod
+      shippingMethod {
+        name
+      }
+      isOrdering
       branch
       branchFee
-      collateralType
       collateralRate
       contractPeriod
       agreedMileage
       insuranceAge
       object
       service1
-      service2
-      service3
       serviceBody1
+      service2
       serviceBody2
+      service3
       serviceBody3
       incomeEarner
       cashAssistance
       supportDetails
+      businessExpenses
+      businessExpensesDetail
       totalExpenditure
       totalFee
       netIncome
-      contractType
-      isVATSupport
-      isOrdering
-      interChangeFee
-      feeRate
-      fee
-      city_id
-      user_id
-      customer_id
-      contractAt
-      shippingDate
-      created_at
-      updated_at
-      deleted_at
-      user {
-        id
+      company_name_nominee
+      division {
         name
-      }
-      customer {
-        id
-        name
-      }
-      city {
-        id
-        name
-      }
-      supportAmounts {
-        id
-        amount
       }
     }
   }

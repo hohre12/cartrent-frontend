@@ -10,7 +10,6 @@ export const CUSTOMER_LIST_WATCH_OPTIONS = {
   counselUpdate_at: '최근상담일시',
   gradeName: '고객등급',
   userName: '담당자',
-  product: '상품',
   division: '구분',
   type: '고객유형',
 };
