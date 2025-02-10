@@ -7,7 +7,7 @@ export const CUSTOMER_LIST_WATCH_OPTIONS = {
   memo: '메모',
   carName: '차종',
   note: '비고',
-  counselUpdate_at: '최근상담일시',
+  counselAt: '최근상담일시',
   gradeName: '고객등급',
   userName: '담당자',
   division: '구분',
@@ -23,5 +23,5 @@ export const CUSTOMER_LIST_WATCH_REQUIRED_OPTIONS = [
   'memo',
   'carName',
   'note',
-  'counselUpdate_at',
+  'counselAt',
 ];
