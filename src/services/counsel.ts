@@ -1,4 +1,7 @@
-import { CREATE_COUNSEL_MUTATION } from '@/apollo/mutations/counsel';
+import {
+  CREATE_COUNSEL_MUTATION,
+  DELETE_COUNSEL_MUTATION,
+} from '@/apollo/mutations/counsel';
 import { DELETE_CUSTOMER_MUTATION } from '@/apollo/mutations/customer';
 import {
   GET_COUNSEL_QUERY,
@@ -13,13 +16,18 @@ export const useGetCounsels = (params: GetCounselsDto) => {
     { getCounselsDto: GetCounselsDto }
   >(GET_COUNSELS_QUERY, {
     variables: { getCounselsDto: params },
+    fetchPolicy: 'network-only',
   });
 };
 
 export const useGetCounsel = (params: Counsel['id']) => {
   return useQuery<{ getCounsel: Counsel }, { counselId: Counsel['id'] }>(
     GET_COUNSEL_QUERY,
-    { variables: { counselId: params }, skip: !params },
+    {
+      variables: { counselId: params },
+      skip: !params,
+      fetchPolicy: 'network-only',
+    },
   );
 };
 
@@ -36,7 +44,7 @@ export const useCreateCounsel = () => {
 };
 
 export const useDeleteCounsel = () => {
-  const [deleteCounselMutate] = useMutation(DELETE_CUSTOMER_MUTATION, {
+  const [deleteCounselMutate] = useMutation(DELETE_COUNSEL_MUTATION, {
     refetchQueries: [GET_COUNSELS_QUERY, 'GetCounsels'],
   });
 

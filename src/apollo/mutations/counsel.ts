@@ -8,4 +8,12 @@ export const CREATE_COUNSEL_MUTATION = gql`
     }
   }
 `;
+
+export const DELETE_COUNSEL_MUTATION = gql`
+  mutation DeleteCounsel($createCounselDto: CreateCounselDto!) {
+    deleteCounsel(createCounselDto: $createCounselDto) {
+      id
+    }
+  }
+`;
 /* Mutation */

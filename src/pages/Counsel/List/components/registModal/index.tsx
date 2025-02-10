@@ -28,7 +28,9 @@ const RegistModal = (props: TModal) => {
   const { addToast } = useToast();
   const { data: customers } = useGetCustomers({});
 
-  const { data: contracts } = useGetContracts({ customerId: customer?.id });
+  const { data: contracts } = useGetContracts({
+    customerId: customer?.id ? [customer?.id] : [],
+  });
   const isContracts =
     contracts && contracts?.getContracts?.length > 0 ? true : false;
 
@@ -67,6 +69,10 @@ const RegistModal = (props: TModal) => {
       setCustomer(customers?.getCustomers[0]);
     }
   }, [customers, setCustomer]);
+
+  useEffect(() => {
+    setContract(undefined);
+  }, [customer]);
 
   return (
     <>
@@ -120,7 +126,7 @@ const RegistModal = (props: TModal) => {
                 onChange={(value) => setContract(value)}
                 list={contracts?.getContracts ?? []}
                 trackBy="id"
-                valueBy="context"
+                valueBy="carName"
                 placeholder="계약을 선택해주세요"
                 disabled={!isContracts}
               />

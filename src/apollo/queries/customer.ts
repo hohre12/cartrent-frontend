@@ -53,15 +53,19 @@ export const GET_CUSTOMER_QUERY = gql`
       memo
       note
       userList {
+        id
         name
       }
       customerGroup {
+        id
         name
       }
       customerStatus {
+        id
         status
       }
       contractList {
+        id
         company_name_nominee
         division {
           name
@@ -73,7 +77,19 @@ export const GET_CUSTOMER_QUERY = gql`
         collateralType
       }
       customerGrade {
+        id
         name
+      }
+      counselList {
+        id
+        counselAt
+        customer {
+          name
+        }
+        user {
+          name
+        }
+        context
       }
     }
   }

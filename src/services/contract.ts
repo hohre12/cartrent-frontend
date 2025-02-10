@@ -8,6 +8,7 @@ export const useGetContracts = (params: GetContractsDto) => {
     { getContractsDto: GetContractsDto }
   >(GET_CONTRACTS_QUERY, {
     variables: { getContractsDto: params },
+    fetchPolicy: 'network-only',
   });
 };
 
