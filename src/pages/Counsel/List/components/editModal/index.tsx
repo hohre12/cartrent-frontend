@@ -2,23 +2,15 @@ import Input from '@/components/input/Input';
 import { Modal } from '@/components/modal/Modal';
 import Select from '@/components/select/Select';
 import TextArea from '@/components/textArea/TextArea';
-import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import { useGetContracts } from '@/services/contract';
-import {
-  useCreateCounsel,
-  useGetCounsel,
-  useUpdateCounsel,
-} from '@/services/counsel';
+import { useGetCounsel, useUpdateCounsel } from '@/services/counsel';
 import { useGetCustomers } from '@/services/customer';
-import { userState } from '@/state/auth';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
 import { Contract, Customer, UpdateCounselDto, User } from '@/types/graphql';
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import ReactDatePicker from 'react-datepicker';
 
 const EditModal = (props: TModal & { idx: number }) => {
   const { idx, ...modalProps } = props;
