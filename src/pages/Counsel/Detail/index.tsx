@@ -4,8 +4,10 @@ import { useToast } from '@/hooks/useToast';
 import { useDeleteCounsel, useGetCounsel } from '@/services/counsel';
 import { textS14Medium, textS14Regular } from '@/styles/typography';
 import { formatDate } from '@/utils/dateUtils';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import EditModal from '../List/components/editModal';
 
 const CounselDetail = () => {
   const { id } = useParams();
@@ -14,6 +16,7 @@ const CounselDetail = () => {
   const counselIdx = Number(id);
   const { data, loading, error } = useGetCounsel(counselIdx);
   const { deleteCounsel } = useDeleteCounsel();
+  const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
 
   const handleDeleteCounsel = async () => {
     try {
@@ -36,79 +39,91 @@ const CounselDetail = () => {
   if (!detail) return <></>;
 
   return (
-    <DetailWrapper>
-      <DetailHeaderWrapper>
-        <div className="left">
-          <h2>{`${detail.customer.name} 님의 상담`}</h2>
-        </div>
-        <div className="right">
-          <Button
-            onClick={() =>
-              showConfirm({
-                isOpen: true,
-                title: '상담 삭제',
-                content: `${detail?.customer.name} 고객의 상담을 삭제하시겠습니까?`,
-                cancelText: '취소',
-                confirmText: '삭제',
-                confirmVariant: 'primaryDanger',
-                onClose: hideConfirm,
-                onCancel: hideConfirm,
-                onConfirm: handleDeleteCounsel,
-              })
-            }
-          >
-            삭제
-          </Button>
-          <Button>편집</Button>
-        </div>
-      </DetailHeaderWrapper>
-      <InfoWrapper>
-        <div>
+    <>
+      <DetailWrapper>
+        <DetailHeaderWrapper>
+          <div className="left">
+            <h2>{`${detail.customer.name} 님의 상담`}</h2>
+          </div>
+          <div className="right">
+            <Button
+              onClick={() =>
+                showConfirm({
+                  isOpen: true,
+                  title: '상담 삭제',
+                  content: `${detail?.customer.name} 고객의 상담을 삭제하시겠습니까?`,
+                  cancelText: '취소',
+                  confirmText: '삭제',
+                  confirmVariant: 'primaryDanger',
+                  onClose: hideConfirm,
+                  onCancel: hideConfirm,
+                  onConfirm: handleDeleteCounsel,
+                })
+              }
+            >
+              삭제
+            </Button>
+            <Button onClick={() => setIsOpenEditModal(!isOpenEditModal)}>
+              수정
+            </Button>
+          </div>
+        </DetailHeaderWrapper>
+        <InfoWrapper>
           <div>
-            <p>상담자</p>
-            <div>{detail.user.name ?? '-'}</div>
+            <div>
+              <p>상담자</p>
+              <div>{detail.user.name ?? '-'}</div>
+            </div>
+            <div>
+              <p>상담상태</p>
+              <div>{detail.status ?? '-'}</div>
+            </div>
+            <div>
+              <p>차종</p>
+              <div>{detail.contract?.carName ?? '-'}</div>
+            </div>
+            <div>
+              <p>상담일시</p>
+              <div>{formatDate(detail.counselAt, 'YYYY-MM-DD HH:mm')}</div>
+            </div>
+            <div>
+              <p>고객등급</p>
+              <div>{detail.customer.customerGrade?.name ?? '-'}</div>
+            </div>
           </div>
           <div>
-            <p>상담상태</p>
-            <div>{detail.status ?? '-'}</div>
+            <div>
+              <p>고객명</p>
+              <div>{detail.customer.name ?? '-'}</div>
+            </div>
+            <div>
+              <p>연락처</p>
+              <div>{detail.customer.phone ?? '-'}</div>
+            </div>
+            <div>
+              <p>구분</p>
+              <div>{detail.contract?.division?.name ?? '-'}</div>
+            </div>
+            <div>
+              <p>상담내용</p>
+              <div>{detail.context}</div>
+            </div>
+            <div>
+              <p>고객그룹</p>
+              <div>{detail.customer.customerGroup?.name ?? '-'}</div>
+            </div>
           </div>
-          <div>
-            <p>차종</p>
-            <div>{detail.contract?.carName ?? '-'}</div>
-          </div>
-          <div>
-            <p>상담일시</p>
-            <div>{formatDate(detail.counselAt, 'YYYY-MM-DD HH:mm')}</div>
-          </div>
-          <div>
-            <p>고객등급</p>
-            <div>{detail.customer.customerGrade?.name ?? '-'}</div>
-          </div>
-        </div>
-        <div>
-          <div>
-            <p>고객명</p>
-            <div>{detail.customer.name ?? '-'}</div>
-          </div>
-          <div>
-            <p>연락처</p>
-            <div>{detail.customer.phone ?? '-'}</div>
-          </div>
-          <div>
-            <p>구분</p>
-            <div>{detail.contract?.division?.name ?? '-'}</div>
-          </div>
-          <div>
-            <p>상담내용</p>
-            <div>{detail.context}</div>
-          </div>
-          <div>
-            <p>고객그룹</p>
-            <div>{detail.customer.customerGroup?.name ?? '-'}</div>
-          </div>
-        </div>
-      </InfoWrapper>
-    </DetailWrapper>
+        </InfoWrapper>
+      </DetailWrapper>
+      {isOpenEditModal && (
+        <EditModal
+          idx={counselIdx}
+          isOpen={isOpenEditModal}
+          onCancel={() => setIsOpenEditModal(false)}
+          onConfirm={() => setIsOpenEditModal(false)}
+        ></EditModal>
+      )}
+    </>
   );
 };
 

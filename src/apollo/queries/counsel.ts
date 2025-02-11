@@ -13,22 +13,28 @@ export const GET_COUNSELS_QUERY = gql`
       counselAt
       context
       customer {
+        id
         name
         phone
         customerGroup {
+          id
           name
         }
         customerGrade {
+          id
           name
         }
       }
       contract {
+        id
         carName
         division {
+          id
           name
         }
       }
       user {
+        id
         name
       }
     }
@@ -47,22 +53,28 @@ export const GET_COUNSEL_QUERY = gql`
       counselAt
       context
       customer {
+        id
         name
         phone
         customerGroup {
+          id
           name
         }
         customerGrade {
+          id
           name
         }
       }
       contract {
+        id
         carName
         division {
+          id
           name
         }
       }
       user {
+        id
         name
       }
     }
