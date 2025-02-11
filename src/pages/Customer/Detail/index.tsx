@@ -133,7 +133,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.contractList
-                  .map((it) => it.company_name_nominee)
+                  .map((it) => it.company_name_nominee ?? '-')
                   .join(' / ')}
               ></Input>
             </div>
@@ -151,7 +151,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.contractList
-                  .map((it) => it.division?.name)
+                  .map((it) => it.division?.name ?? '-')
                   .join(' / ')}
               ></Input>
             </div>
@@ -164,12 +164,12 @@ const CustomerDetail = () => {
               ></Input>
             </div>
             <div>
-              <span>옵션</span>
+              <span>차옵션</span>
               <Input
                 className="inputWrapper"
                 disabled
                 value={detail.contractList
-                  .map((it) => it.carOption)
+                  .map((it) => it.carOption ?? '-')
                   .join(' / ')}
               ></Input>
             </div>
@@ -179,9 +179,10 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.contractList
-                  .map(
-                    (it) =>
-                      `${it.contractPeriodStartAt} ~ ${it.contractPeriodEndAt}`,
+                  .map((it) =>
+                    it.contractPeriodStartAt && it.contractPeriodEndAt
+                      ? `${it.contractPeriodStartAt} ~ ${it.contractPeriodEndAt}`
+                      : '-',
                   )
                   .join(' / ')}
               ></Input>
@@ -192,17 +193,27 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.contractList
-                  .map((it) => it.agreedMileage)
+                  .map((it) => it.agreedMileage ?? '-')
                   .join(' / ')}
               ></Input>
             </div>
             <div>
-              <span>담보율</span>
+              <span>선납금</span>
               <Input
                 className="inputWrapper"
                 disabled
                 value={detail.contractList
-                  .map((it) => it.collateralRate)
+                  .map((it) => it.advancePayment ?? '-')
+                  .join(' / ')}
+              ></Input>
+            </div>
+            <div>
+              <span>보증금</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.contractList
+                  .map((it) => it.security ?? '-')
                   .join(' / ')}
               ></Input>
             </div>
