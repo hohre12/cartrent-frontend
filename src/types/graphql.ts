@@ -190,6 +190,8 @@ export type CreateCityDto = {
 };
 
 export type CreateContractDto = {
+  /** 선납금 */
+  advancePayment?: InputMaybe<Scalars['Int']['input']>;
   /** 약정 거리 */
   agreedMileage?: InputMaybe<Scalars['Int']['input']>;
   /** 지점 */
@@ -246,6 +248,8 @@ export type CreateContractDto = {
   outerColor?: InputMaybe<Scalars['String']['input']>;
   /** 프로모션 */
   promotion?: InputMaybe<Scalars['Int']['input']>;
+  /** 보증금 */
+  security?: InputMaybe<Scalars['Int']['input']>;
   /** 서비스 1 */
   service1?: InputMaybe<Scalars['Int']['input']>;
   /** 서비스 2 */
@@ -416,11 +420,6 @@ export type CustomerStatus = {
   status: Scalars['String']['output'];
 };
 
-export type DeleteCustomerDto = {
-  /** customerIds */
-  customerIds: Array<Scalars['Int']['input']>;
-};
-
 /** 구분 */
 export type Division = {
   id: Scalars['Int']['output'];
@@ -546,8 +545,10 @@ export type Mutation = {
   createTeam: Team;
   /** 도시 삭제 */
   deleteCity: Scalars['String']['output'];
+  /** 계약 삭제 */
+  deleteContract: Scalars['String']['output'];
   /** 상담 삭제 */
-  deleteCounsel: Scalars['Boolean']['output'];
+  deleteCounsel: Scalars['String']['output'];
   /** 고객 삭제 */
   deleteCustomer: Scalars['String']['output'];
   /** 고객 그룹 삭제 */
@@ -574,8 +575,6 @@ export type Mutation = {
   updateCity: City;
   /** 계약 수정 */
   updateContract: Contract;
-  /** 계약 상태 수정 */
-  updateContractStatus: Contract;
   /** 상담 수정 */
   updateCounsel: Counsel;
   /** 고객 정보 수정 */
@@ -652,13 +651,18 @@ export type MutationDeleteCityArgs = {
 };
 
 
+export type MutationDeleteContractArgs = {
+  contractIds: Array<Scalars['Int']['input']>;
+};
+
+
 export type MutationDeleteCounselArgs = {
-  counselId: Scalars['Float']['input'];
+  counselIds: Array<Scalars['Int']['input']>;
 };
 
 
 export type MutationDeleteCustomerArgs = {
-  deleteCustomerDto: DeleteCustomerDto;
+  customerIds: Array<Scalars['Int']['input']>;
 };
 
 
@@ -714,11 +718,6 @@ export type MutationUpdateCityArgs = {
 
 export type MutationUpdateContractArgs = {
   updateContractDto: UpdateContractDto;
-};
-
-
-export type MutationUpdateContractStatusArgs = {
-  updateContractStatus: UpdateContractStatusDto;
 };
 
 
@@ -990,6 +989,8 @@ export type UpdateCityDto = {
 };
 
 export type UpdateContractDto = {
+  /** 선납금 */
+  advancePayment?: InputMaybe<Scalars['Int']['input']>;
   /** 약정 거리 */
   agreedMileage?: InputMaybe<Scalars['Int']['input']>;
   /** 지점 */
@@ -1049,6 +1050,8 @@ export type UpdateContractDto = {
   outerColor?: InputMaybe<Scalars['String']['input']>;
   /** 프로모션 */
   promotion?: InputMaybe<Scalars['Int']['input']>;
+  /** 보증금 */
+  security?: InputMaybe<Scalars['Int']['input']>;
   /** 서비스 1 */
   service1?: InputMaybe<Scalars['Int']['input']>;
   /** 서비스 2 */
@@ -1076,11 +1079,6 @@ export type UpdateContractDto = {
   /** 총 계약 금액 */
   totalPrice?: InputMaybe<Scalars['Int']['input']>;
   userId: Scalars['Int']['input'];
-};
-
-export type UpdateContractStatusDto = {
-  contractId: Scalars['Int']['input'];
-  status: Status;
 };
 
 export type UpdateCounselDto = {
@@ -1247,12 +1245,12 @@ export type UpdateContractMutationVariables = Exact<{
 
 export type UpdateContractMutation = { updateContract: { id: number } };
 
-export type UpdateContractStatusMutationVariables = Exact<{
-  updateContractStatus: UpdateContractStatusDto;
+export type DeleteContractMutationVariables = Exact<{
+  contractIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
 }>;
 
 
-export type UpdateContractStatusMutation = { updateContractStatus: { id: number } };
+export type DeleteContractMutation = { deleteContract: string };
 
 export type CreateCounselMutationVariables = Exact<{
   createCounselDto: CreateCounselDto;
@@ -1262,11 +1260,11 @@ export type CreateCounselMutationVariables = Exact<{
 export type CreateCounselMutation = { createCounsel: { id: number } };
 
 export type DeleteCounselMutationVariables = Exact<{
-  counselId: Scalars['Float']['input'];
+  counselIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
 }>;
 
 
-export type DeleteCounselMutation = { deleteCounsel: boolean };
+export type DeleteCounselMutation = { deleteCounsel: string };
 
 export type CreateCustomerMutationVariables = Exact<{
   createCustomerDto: CreateCustomerDto;
@@ -1283,7 +1281,7 @@ export type UpdateCustomerMutationVariables = Exact<{
 export type UpdateCustomerMutation = { updateCustomer: { id: number } };
 
 export type DeleteCustomerMutationVariables = Exact<{
-  deleteCustomerDto: DeleteCustomerDto;
+  customerIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
 }>;
 
 
@@ -1788,39 +1786,37 @@ export function useUpdateContractMutation(baseOptions?: Apollo.MutationHookOptio
 export type UpdateContractMutationHookResult = ReturnType<typeof useUpdateContractMutation>;
 export type UpdateContractMutationResult = Apollo.MutationResult<UpdateContractMutation>;
 export type UpdateContractMutationOptions = Apollo.BaseMutationOptions<UpdateContractMutation, UpdateContractMutationVariables>;
-export const UpdateContractStatusDocument = gql`
-    mutation UpdateContractStatus($updateContractStatus: UpdateContractStatusDto!) {
-  updateContractStatus(updateContractStatus: $updateContractStatus) {
-    id
-  }
+export const DeleteContractDocument = gql`
+    mutation DeleteContract($contractIds: [Int!]!) {
+  deleteContract(contractIds: $contractIds)
 }
     `;
-export type UpdateContractStatusMutationFn = Apollo.MutationFunction<UpdateContractStatusMutation, UpdateContractStatusMutationVariables>;
+export type DeleteContractMutationFn = Apollo.MutationFunction<DeleteContractMutation, DeleteContractMutationVariables>;
 
 /**
- * __useUpdateContractStatusMutation__
+ * __useDeleteContractMutation__
  *
- * To run a mutation, you first call `useUpdateContractStatusMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateContractStatusMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteContractMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteContractMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateContractStatusMutation, { data, loading, error }] = useUpdateContractStatusMutation({
+ * const [deleteContractMutation, { data, loading, error }] = useDeleteContractMutation({
  *   variables: {
- *      updateContractStatus: // value for 'updateContractStatus'
+ *      contractIds: // value for 'contractIds'
  *   },
  * });
  */
-export function useUpdateContractStatusMutation(baseOptions?: Apollo.MutationHookOptions<UpdateContractStatusMutation, UpdateContractStatusMutationVariables>) {
+export function useDeleteContractMutation(baseOptions?: Apollo.MutationHookOptions<DeleteContractMutation, DeleteContractMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateContractStatusMutation, UpdateContractStatusMutationVariables>(UpdateContractStatusDocument, options);
+        return Apollo.useMutation<DeleteContractMutation, DeleteContractMutationVariables>(DeleteContractDocument, options);
       }
-export type UpdateContractStatusMutationHookResult = ReturnType<typeof useUpdateContractStatusMutation>;
-export type UpdateContractStatusMutationResult = Apollo.MutationResult<UpdateContractStatusMutation>;
-export type UpdateContractStatusMutationOptions = Apollo.BaseMutationOptions<UpdateContractStatusMutation, UpdateContractStatusMutationVariables>;
+export type DeleteContractMutationHookResult = ReturnType<typeof useDeleteContractMutation>;
+export type DeleteContractMutationResult = Apollo.MutationResult<DeleteContractMutation>;
+export type DeleteContractMutationOptions = Apollo.BaseMutationOptions<DeleteContractMutation, DeleteContractMutationVariables>;
 export const CreateCounselDocument = gql`
     mutation CreateCounsel($createCounselDto: CreateCounselDto!) {
   createCounsel(createCounselDto: $createCounselDto) {
@@ -1855,8 +1851,8 @@ export type CreateCounselMutationHookResult = ReturnType<typeof useCreateCounsel
 export type CreateCounselMutationResult = Apollo.MutationResult<CreateCounselMutation>;
 export type CreateCounselMutationOptions = Apollo.BaseMutationOptions<CreateCounselMutation, CreateCounselMutationVariables>;
 export const DeleteCounselDocument = gql`
-    mutation DeleteCounsel($counselId: Float!) {
-  deleteCounsel(counselId: $counselId)
+    mutation DeleteCounsel($counselIds: [Int!]!) {
+  deleteCounsel(counselIds: $counselIds)
 }
     `;
 export type DeleteCounselMutationFn = Apollo.MutationFunction<DeleteCounselMutation, DeleteCounselMutationVariables>;
@@ -1874,7 +1870,7 @@ export type DeleteCounselMutationFn = Apollo.MutationFunction<DeleteCounselMutat
  * @example
  * const [deleteCounselMutation, { data, loading, error }] = useDeleteCounselMutation({
  *   variables: {
- *      counselId: // value for 'counselId'
+ *      counselIds: // value for 'counselIds'
  *   },
  * });
  */
@@ -1952,8 +1948,8 @@ export type UpdateCustomerMutationHookResult = ReturnType<typeof useUpdateCustom
 export type UpdateCustomerMutationResult = Apollo.MutationResult<UpdateCustomerMutation>;
 export type UpdateCustomerMutationOptions = Apollo.BaseMutationOptions<UpdateCustomerMutation, UpdateCustomerMutationVariables>;
 export const DeleteCustomerDocument = gql`
-    mutation DeleteCustomer($deleteCustomerDto: DeleteCustomerDto!) {
-  deleteCustomer(deleteCustomerDto: $deleteCustomerDto)
+    mutation DeleteCustomer($customerIds: [Int!]!) {
+  deleteCustomer(customerIds: $customerIds)
 }
     `;
 export type DeleteCustomerMutationFn = Apollo.MutationFunction<DeleteCustomerMutation, DeleteCustomerMutationVariables>;
@@ -1971,7 +1967,7 @@ export type DeleteCustomerMutationFn = Apollo.MutationFunction<DeleteCustomerMut
  * @example
  * const [deleteCustomerMutation, { data, loading, error }] = useDeleteCustomerMutation({
  *   variables: {
- *      deleteCustomerDto: // value for 'deleteCustomerDto'
+ *      customerIds: // value for 'customerIds'
  *   },
  * });
  */

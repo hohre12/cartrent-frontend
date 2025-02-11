@@ -30,6 +30,7 @@ interface IInputProps extends HTMLAttributes<HTMLDivElement> {
   postfixNode?: ReactNode;
   onTextChange?: (value: string) => void;
   max?: number;
+  isNumber?: boolean;
   isRegister?: boolean;
 }
 
@@ -53,6 +54,7 @@ const Input = forwardRef<HTMLInputElement, IInputProps>(
       postfixNode,
       isRegister = false,
       max,
+      isNumber = false,
       ...props
     },
     ref,
@@ -60,8 +62,13 @@ const Input = forwardRef<HTMLInputElement, IInputProps>(
     const [text, setText] = useState<any>('');
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       e.preventDefault();
-      setText(e.target.value);
-      if (onTextChange) onTextChange(e.target.value);
+      if (
+        !isNumber ||
+        (isNumber && !isNaN(Number(e.target.value.replace(/,/g, ''))))
+      ) {
+        setText(e.target.value);
+        if (onTextChange) onTextChange(e.target.value);
+      }
     };
     const onRemoveClick = () => {
       setText('');

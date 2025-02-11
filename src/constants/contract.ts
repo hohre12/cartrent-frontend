@@ -58,3 +58,16 @@ export const CONTRACT_LIST_WATCH_REQUIRED_OPTIONS = [
   'totalFee',
   'netIncome',
 ];
+
+// value={
+// createContract?.carPrice
+// ? numberFormat(createContract.carPrice)
+// : 0
+// }
+
+// onTextChange={(text) =>
+// handleValueChange(
+// Number(text.replace(/,/g, '')),
+// 'carPrice',
+// )
+// }

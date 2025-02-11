@@ -10,8 +10,8 @@ export const CREATE_COUNSEL_MUTATION = gql`
 `;
 
 export const DELETE_COUNSEL_MUTATION = gql`
-  mutation DeleteCounsel($counselId: Float!) {
-    deleteCounsel(counselId: $counselId)
+  mutation DeleteCounsel($counselIds: [Int!]!) {
+    deleteCounsel(counselIds: $counselIds)
   }
 `;
 /* Mutation */
