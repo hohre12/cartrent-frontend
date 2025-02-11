@@ -13,17 +13,30 @@ import {
   useGetDivisions,
   useGetFinancialCompanies,
   useGetShippingMethods,
+  useUpdateContract,
 } from '@/services/contract';
 import { useGetCustomers } from '@/services/customer';
 import { useGetUsers } from '@/services/user';
 // import { dummyCustomerList } from '@/dummy/customer';
 // import { useGetCustomer } from '@/services/customer';
 import {
+  textM16Medium,
   textM16Regular,
   textS14Medium,
   textS14Regular,
+  titleXl20Bold,
 } from '@/styles/typography';
-import { useState } from 'react';
+import {
+  City,
+  Customer,
+  Division,
+  FinancialCompany,
+  ShippingMethod,
+  UpdateContractDto,
+  User,
+} from '@/types/graphql';
+import { numberFormat } from '@/utils/common';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -38,14 +51,119 @@ const ContractDetail = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [submit, setSubmit] = useState<boolean>(false);
 
-  //   const { data: users } = useGetUsers();
-  //   const { data: customers } = useGetCustomers({});
-  //   const { data: cites } = useGetCites({});
-  //   const { data: financialCompanies } = useGetFinancialCompanies();
-  //   const { data: divisions } = useGetDivisions();
-  //   const { data: shippingMethods } = useGetShippingMethods();
+  const { data: users } = useGetUsers();
+  const { data: customers } = useGetCustomers({});
+  const { data: cites } = useGetCites({});
+  const { data: financialCompanies } = useGetFinancialCompanies();
+  const { data: divisions } = useGetDivisions();
+  const { data: shippingMethods } = useGetShippingMethods();
+
+  const [updateContract, setUpdateContract] = useState<UpdateContractDto>({
+    contractId: contractIdx,
+    customerId: data?.getContract?.customer_id ?? 0,
+    carName: data?.getContract?.carName ?? '',
+    userId: data?.getContract?.user_id ?? 0,
+  });
+
+  const [user, setUser] = useState<User>();
+  const [customer, setCustomer] = useState<Customer>();
+  const [city, setCity] = useState<City>();
+  const [financialCompany, setFinancialCompany] = useState<FinancialCompany>();
+  const [division, setDivision] = useState<Division>();
+  const [shippingMethod, setShippingMethod] = useState<ShippingMethod>();
+
+  const { updateContractMutation } = useUpdateContract();
+
+  const handleValueChange = (value: string | number | boolean, key: string) => {
+    if (
+      (key === 'fee' || key === 'feeRate') &&
+      updateContract?.carPrice &&
+      typeof value === 'number'
+    ) {
+      const feeObject = {
+        [key]: value,
+        ...(key === 'fee' && {
+          feeRate: (value / updateContract.carPrice) * 100,
+        }),
+        ...(key === 'feeRate' && {
+          fee: (value * updateContract.carPrice) / 100,
+        }),
+      };
+
+      setUpdateContract((prevState) => ({
+        ...prevState,
+        ...feeObject,
+        customerId: customer ? customer.id : 0,
+        userId: user ? user.id : 0,
+      }));
+    } else {
+      setUpdateContract((prevState) => ({
+        ...prevState,
+        [key]: value,
+        customerId: customer ? customer.id : 0,
+        userId: user ? user.id : 0,
+      }));
+    }
+  };
+
+  const handleContractEdit = async () => {
+    setSubmit(true);
+    if (!user) return;
+    if (!customer) return;
+    if (!updateContract?.carName) return;
+    try {
+      const updateContractPayload: UpdateContractDto = {
+        ...updateContract,
+        userId: user.id,
+        customerId: customer.id,
+        // 셀렉
+        cityId: city?.id,
+        financialCompanyId: financialCompany?.id,
+        divisionId: division?.id,
+        shippingMethodId: shippingMethod?.id,
+      };
+
+      console.log(updateContractPayload);
+
+      const response = await updateContractMutation(updateContractPayload);
+      if (response && response.data.createContract.id) {
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `${customer.name} 고객님의 계약이 수정되었습니다.`,
+          type: 'success',
+        });
+      }
+    } catch (e) {
+      console.warn(e);
+    }
+  };
+
+  const handleInit = () => {
+    if (detail) {
+      setUser(detail.user);
+      setCustomer(detail.customer ?? undefined);
+      setCity(detail.city ?? undefined);
+      setFinancialCompany(detail.financialCompany ?? undefined);
+      setDivision(detail.financialCompany ?? undefined);
+      setShippingMethod(detail.shippingMethod ?? undefined);
+      setUpdateContract({
+        ...detail,
+        contractId: contractIdx,
+        customerId: detail.customer?.id ?? 0,
+        userId: detail.user.id,
+      });
+    }
+  };
 
   const detail = data?.getContract;
+
+  useEffect(() => {
+    if (detail) {
+      handleInit();
+    }
+  }, [detail]);
+
   if (!detail) return <></>;
 
   return (
@@ -55,8 +173,24 @@ const ContractDetail = () => {
           <h2>{`${detail.customer?.name} 고객님의 ${detail.carName} 차량 계약`}</h2>
         </div>
         <div className="right">
-          <Button>삭제</Button>
-          <Button onClick={() => setIsEdit(!isEdit)}>편집</Button>
+          {isEdit ? (
+            <>
+              <Button
+                onClick={() => {
+                  handleInit();
+                  setIsEdit(false);
+                }}
+              >
+                취소
+              </Button>
+              <Button onClick={handleContractEdit}>저장</Button>
+            </>
+          ) : (
+            <>
+              <Button>삭제</Button>
+              <Button onClick={() => setIsEdit(!isEdit)}>편집</Button>
+            </>
+          )}
         </div>
       </DetailHeaderWrapper>
       <InfoWrapper>
@@ -78,7 +212,7 @@ const ContractDetail = () => {
                   trackBy="id"
                   valueBy="name"
                   placeholder="담당자를 선택해주세요"
-                  disabled={false}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -95,6 +229,7 @@ const ContractDetail = () => {
                   trackBy="id"
                   valueBy="name"
                   placeholder="지역을 선택해주세요"
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -103,8 +238,10 @@ const ContractDetail = () => {
               <InputWrapper>
                 <Input
                   type="date"
+                  value={updateContract?.contractAt ?? ''}
                   style={{ cursor: 'pointer' }}
                   onTextChange={(text) => handleValueChange(text, 'contractAt')}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -123,7 +260,7 @@ const ContractDetail = () => {
                   trackBy="id"
                   valueBy="name"
                   placeholder="고객을 선택해주세요"
-                  disabled={!!customerIdx}
+                  disabled
                 />
               </InputWrapper>
             </InputLine>
@@ -135,6 +272,7 @@ const ContractDetail = () => {
                   onTextChange={(text) =>
                     handleValueChange(text, 'company_name_nominee')
                   }
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -144,8 +282,9 @@ const ContractDetail = () => {
               </span>
               <InputWrapper>
                 <Input
-                  value={updateContract?.carName}
+                  value={updateContract?.carName ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'carName')}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -155,6 +294,7 @@ const ContractDetail = () => {
                 <Input
                   value={updateContract?.carOption ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'carOption')}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -164,6 +304,7 @@ const ContractDetail = () => {
                 <Input
                   value={updateContract?.outerColor ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'outerColor')}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -173,6 +314,7 @@ const ContractDetail = () => {
                 <Input
                   value={updateContract?.innerColor ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'innerColor')}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -193,6 +335,7 @@ const ContractDetail = () => {
                   }
                   isNumber
                   postfixNode={'원'}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -209,6 +352,7 @@ const ContractDetail = () => {
                   trackBy="id"
                   valueBy="name"
                   placeholder="금융사를 선택해주세요"
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -225,6 +369,7 @@ const ContractDetail = () => {
                   trackBy="id"
                   valueBy="name"
                   placeholder="구분을 선택해주세요"
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -232,7 +377,7 @@ const ContractDetail = () => {
               <span>수수료</span>
               <InputWrapper>
                 <Input
-                  disabled={!updateContract?.carPrice}
+                  disabled={!updateContract?.carPrice || !isEdit}
                   value={
                     updateContract?.fee ? numberFormat(updateContract.fee) : 0
                   }
@@ -248,7 +393,7 @@ const ContractDetail = () => {
               <span>수수료 비율</span>
               <InputWrapper>
                 <Input
-                  disabled={!updateContract?.carPrice}
+                  disabled={!updateContract?.carPrice || !isEdit}
                   value={
                     updateContract?.feeRate
                       ? numberFormat(updateContract.feeRate)
@@ -268,7 +413,7 @@ const ContractDetail = () => {
               <span>프로모션</span>
               <InputWrapper>
                 <Input
-                  disabled={!updateContract?.carPrice}
+                  disabled={!updateContract?.carPrice || !isEdit}
                   onTextChange={(text) => {
                     if (updateContract?.carPrice) {
                       handleValueChange(
@@ -281,7 +426,7 @@ const ContractDetail = () => {
                   postfixNode={'%'}
                 />
                 <Input
-                  disabled={!updateContract?.carPrice}
+                  disabled={!updateContract?.carPrice || !isEdit}
                   value={
                     updateContract?.promotion
                       ? numberFormat(updateContract.promotion)
@@ -315,6 +460,7 @@ const ContractDetail = () => {
                     )
                   }
                   postfixNode={'원'}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -331,6 +477,7 @@ const ContractDetail = () => {
                   trackBy="id"
                   valueBy="name"
                   placeholder="출고방식을 선택해주세요"
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -340,6 +487,7 @@ const ContractDetail = () => {
                 <Input
                   value={updateContract?.branch ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'branch')}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -359,6 +507,7 @@ const ContractDetail = () => {
                     )
                   }
                   postfixNode={'원'}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -367,7 +516,9 @@ const ContractDetail = () => {
               <InputWrapper>
                 <Input
                   disabled={
-                    !!updateContract?.security || !updateContract?.carPrice
+                    !!updateContract?.security ||
+                    !updateContract?.carPrice ||
+                    !isEdit
                   }
                   onTextChange={(text) => {
                     if (updateContract?.carPrice) {
@@ -382,7 +533,9 @@ const ContractDetail = () => {
                 />
                 <Input
                   disabled={
-                    !!updateContract?.security || !updateContract?.carPrice
+                    !!updateContract?.security ||
+                    !updateContract?.carPrice ||
+                    !isEdit
                   }
                   value={
                     updateContract?.advancePayment
@@ -406,7 +559,8 @@ const ContractDetail = () => {
                 <Input
                   disabled={
                     !!updateContract?.advancePayment ||
-                    !updateContract?.carPrice
+                    !updateContract?.carPrice ||
+                    !isEdit
                   }
                   onTextChange={(text) => {
                     if (updateContract?.carPrice) {
@@ -422,7 +576,8 @@ const ContractDetail = () => {
                 <Input
                   disabled={
                     !!updateContract?.advancePayment ||
-                    !updateContract?.carPrice
+                    !updateContract?.carPrice ||
+                    !isEdit
                   }
                   value={
                     updateContract?.security
@@ -445,18 +600,22 @@ const ContractDetail = () => {
               <InputWrapper>
                 <Input
                   type="date"
+                  value={updateContract?.contractPeriodStartAt ?? ''}
                   style={{ cursor: 'pointer' }}
                   onTextChange={(text) =>
                     handleValueChange(text, 'contractPeriodStartAt')
                   }
+                  disabled={!isEdit}
                 />
                 <span>~</span>
                 <Input
                   type="date"
+                  value={updateContract?.contractPeriodEndAt ?? ''}
                   style={{ cursor: 'pointer' }}
                   onTextChange={(text) =>
                     handleValueChange(text, 'contractPeriodEndAt')
                   }
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -477,6 +636,7 @@ const ContractDetail = () => {
                     )
                   }
                   isNumber
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -497,6 +657,7 @@ const ContractDetail = () => {
                     )
                   }
                   isNumber
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -506,6 +667,7 @@ const ContractDetail = () => {
                 <Input
                   value={updateContract?.object ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'object')}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -519,10 +681,12 @@ const ContractDetail = () => {
               <InputWrapper>
                 <Input
                   type="date"
+                  value={updateContract?.shippingDate ?? ''}
                   style={{ cursor: 'pointer' }}
                   onTextChange={(text) =>
                     handleValueChange(text, 'shippingDate')
                   }
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -532,8 +696,11 @@ const ContractDetail = () => {
                 <Checkbox
                   value={updateContract?.isVATSupport ?? false}
                   onCheckedChange={(val) => {
-                    handleValueChange(val, 'isVATSupport');
+                    if (isEdit) {
+                      handleValueChange(val, 'isVATSupport');
+                    }
                   }}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -543,8 +710,11 @@ const ContractDetail = () => {
                 <Checkbox
                   value={updateContract?.isOrdering ?? false}
                   onCheckedChange={(val) => {
-                    handleValueChange(val, 'isOrdering');
+                    if (isEdit) {
+                      handleValueChange(val, 'isOrdering');
+                    }
                   }}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -556,6 +726,7 @@ const ContractDetail = () => {
                   onTextChange={(text) =>
                     handleValueChange(text, 'serviceBody1')
                   }
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -567,6 +738,7 @@ const ContractDetail = () => {
                   onTextChange={(text) =>
                     handleValueChange(text, 'serviceBody2')
                   }
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -578,6 +750,7 @@ const ContractDetail = () => {
                   onTextChange={(text) =>
                     handleValueChange(text, 'serviceBody3')
                   }
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -598,6 +771,7 @@ const ContractDetail = () => {
                   }
                   isNumber
                   postfixNode={'원'}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -618,6 +792,7 @@ const ContractDetail = () => {
                   }
                   isNumber
                   postfixNode={'원'}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -638,6 +813,7 @@ const ContractDetail = () => {
                   }
                   isNumber
                   postfixNode={'원'}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -658,6 +834,7 @@ const ContractDetail = () => {
                   }
                   isNumber
                   postfixNode={'원'}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -669,6 +846,7 @@ const ContractDetail = () => {
                   onTextChange={(text) =>
                     handleValueChange(text, 'incomeEarner')
                   }
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -680,6 +858,7 @@ const ContractDetail = () => {
                   onTextChange={(text) =>
                     handleValueChange(text, 'supportDetails')
                   }
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -700,6 +879,7 @@ const ContractDetail = () => {
                   }
                   isNumber
                   postfixNode={'원'}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -711,6 +891,7 @@ const ContractDetail = () => {
                   onTextChange={(text) =>
                     handleValueChange(text, 'businessExpensesDetail')
                   }
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -731,6 +912,7 @@ const ContractDetail = () => {
                   }
                   isNumber
                   postfixNode={'원'}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -751,6 +933,7 @@ const ContractDetail = () => {
                   }
                   isNumber
                   postfixNode={'원'}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
@@ -771,6 +954,7 @@ const ContractDetail = () => {
                   }
                   isNumber
                   postfixNode={'원'}
+                  disabled={!isEdit}
                 />
               </InputWrapper>
             </InputLine>
