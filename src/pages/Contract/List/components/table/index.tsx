@@ -159,18 +159,26 @@ const ContractListTable = ({ data }: TTableProps) => {
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'feeRate',
-            ) && <td>{it.feeRate ?? '-'}</td>}
+            ) && <td>{it.feeRate ? `${it.feeRate}%` : '-'}</td>}
             {!isColumnsViewHide(selectedContractHideWatchOptions, 'fee') && (
-              <td>{it.fee ?? '-'}</td>
+              <td>{it.fee ? `${numberFormat(it.fee)}원` : '-'}</td>
             )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'promotion',
-            ) && <td>{it.promotion ?? '-'}</td>}
+            ) && (
+              <td>{it.promotion ? `${numberFormat(it.promotion)}원` : '-'}</td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'monthlyPayment',
-            ) && <td>{it.monthlyPayment ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.monthlyPayment
+                  ? `${numberFormat(it.monthlyPayment)}원`
+                  : '-'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'shippingMethod',
@@ -185,11 +193,25 @@ const ContractListTable = ({ data }: TTableProps) => {
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'branchFee',
-            ) && <td>{it.branchFee ?? '-'}</td>}
+            ) && (
+              <td>{it.branchFee ? `${numberFormat(it.branchFee)}원` : '-'}</td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
-              'collateralRate',
-            ) && <td>{it.collateralRate ?? '-'}</td>}
+              'advancePayment',
+            ) && (
+              <td>
+                {it.advancePayment
+                  ? `${numberFormat(it.advancePayment)}원`
+                  : '-'}
+              </td>
+            )}
+            {!isColumnsViewHide(
+              selectedContractHideWatchOptions,
+              'security',
+            ) && (
+              <td>{it.security ? `${numberFormat(it.security)}원` : '-'}</td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'contractPeriod',
@@ -203,18 +225,26 @@ const ContractListTable = ({ data }: TTableProps) => {
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'agreedMileage',
-            ) && <td>{it.agreedMileage ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.agreedMileage
+                  ? `${numberFormat(it.agreedMileage)} km`
+                  : '-'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'insuranceAge',
-            ) && <td>{it.insuranceAge ?? '-'}</td>}
+            ) && <td>{it.insuranceAge ? `${it.insuranceAge} 세` : '-'}</td>}
             {!isColumnsViewHide(selectedContractHideWatchOptions, 'object') && (
               <td>{it.object ?? '-'}</td>
             )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'service1',
-            ) && <td>{it.service1 ?? '-'}</td>}
+            ) && (
+              <td>{it.service1 ? `${numberFormat(it.service1)}원` : '-'}</td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'serviceBody1',
@@ -222,7 +252,9 @@ const ContractListTable = ({ data }: TTableProps) => {
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'service2',
-            ) && <td>{it.service2 ?? '-'}</td>}
+            ) && (
+              <td>{it.service2 ? `${numberFormat(it.service2)}원` : '-'}</td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'serviceBody2',
@@ -230,7 +262,9 @@ const ContractListTable = ({ data }: TTableProps) => {
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'service3',
-            ) && <td>{it.service3 ?? '-'}</td>}
+            ) && (
+              <td>{it.service3 ? `${numberFormat(it.service3)}원` : '-'}</td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'serviceBody3',
@@ -242,7 +276,13 @@ const ContractListTable = ({ data }: TTableProps) => {
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'cashAssistance',
-            ) && <td>{it.cashAssistance ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.cashAssistance
+                  ? `${numberFormat(it.cashAssistance)}원`
+                  : '-'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'supportDetail',
@@ -250,7 +290,13 @@ const ContractListTable = ({ data }: TTableProps) => {
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'businessExpenses',
-            ) && <td>{it.businessExpenses ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.businessExpenses
+                  ? `${numberFormat(it.businessExpenses)}원`
+                  : '-'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'businessExpensesDetail',
@@ -258,15 +304,25 @@ const ContractListTable = ({ data }: TTableProps) => {
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'totalExpenditure',
-            ) && <td>{it.totalExpenditure ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.totalExpenditure
+                  ? `${numberFormat(it.totalExpenditure)}원`
+                  : '-'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'totalFee',
-            ) && <td>{it.totalFee ?? '-'}</td>}
+            ) && (
+              <td>{it.totalFee ? `${numberFormat(it.totalFee)}원` : '-'}</td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'netIncome',
-            ) && <td>{it.netIncome ?? '-'}</td>}
+            ) && (
+              <td>{it.netIncome ? `${numberFormat(it.netIncome)}원` : '-'}</td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'company_name_nominee',
