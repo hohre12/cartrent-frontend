@@ -17,7 +17,7 @@ const CounselDetail = () => {
 
   const handleDeleteCounsel = async () => {
     try {
-      const response = await deleteCounsel(counselIdx);
+      const response = await deleteCounsel([counselIdx]);
       if (response && response.data.deleteCounsel === 'success') {
         hideConfirm();
         addToast({

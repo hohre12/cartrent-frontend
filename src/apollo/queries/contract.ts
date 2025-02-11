@@ -134,7 +134,7 @@ export const GET_CONTRACT_QUERY = gql`
 `;
 
 export const GET_FINANCIAL_COMPANIES_QUERY = gql`
-  query Query {
+  query GetFinancialCompanies {
     getFinancialCompanies {
       id
       name
@@ -152,7 +152,7 @@ export const GET_DIVISIONS_QUERY = gql`
 `;
 
 export const GET_SHIPPING_METHODS_QUERY = gql`
-  query Query {
+  query GetShippingMethods {
     getShippingMethods {
       id
       name

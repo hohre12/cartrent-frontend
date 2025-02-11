@@ -33,14 +33,16 @@ export type City = {
 
 /** 계약 */
 export type Contract = {
+  /** 선납금 */
+  advancePayment?: Maybe<Scalars['Int']['output']>;
   /** 약정 거리 */
-  agreedMileage?: Maybe<Scalars['String']['output']>;
+  agreedMileage?: Maybe<Scalars['Int']['output']>;
   /** 지점 */
   branch?: Maybe<Scalars['String']['output']>;
   /** 지점 수수료 */
   branchFee?: Maybe<Scalars['Int']['output']>;
   /** 경비 */
-  businessExpenses?: Maybe<Scalars['String']['output']>;
+  businessExpenses?: Maybe<Scalars['Int']['output']>;
   /** 경비 내용 */
   businessExpensesDetail?: Maybe<Scalars['String']['output']>;
   /** 차종 */
@@ -50,13 +52,11 @@ export type Contract = {
   /** 차량 가격 */
   carPrice?: Maybe<Scalars['Int']['output']>;
   /** 현금 지원 */
-  cashAssistance?: Maybe<Scalars['String']['output']>;
+  cashAssistance?: Maybe<Scalars['Int']['output']>;
   city?: Maybe<City>;
   city_id?: Maybe<Scalars['Int']['output']>;
   /** 담보율 */
-  collateralRate?: Maybe<Scalars['String']['output']>;
-  /** 담보 타입 선납금/보증금 */
-  collateralType?: Maybe<Scalars['String']['output']>;
+  collateralRate?: Maybe<Scalars['Int']['output']>;
   /** 회사명/명의자 */
   company_name_nominee?: Maybe<Scalars['String']['output']>;
   /** 계약 일 */
@@ -72,7 +72,7 @@ export type Contract = {
   /** 수수료 */
   fee?: Maybe<Scalars['Int']['output']>;
   /** 수수료 비율 */
-  feeRate?: Maybe<Scalars['String']['output']>;
+  feeRate?: Maybe<Scalars['Int']['output']>;
   financialCompany?: Maybe<FinancialCompany>;
   financialCompanyId?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
@@ -81,13 +81,13 @@ export type Contract = {
   /** 내부 색상 */
   innerColor?: Maybe<Scalars['String']['output']>;
   /** 보험 연령 */
-  insuranceAge?: Maybe<Scalars['String']['output']>;
+  insuranceAge?: Maybe<Scalars['Int']['output']>;
   /** 출고 여부 */
   isOrdering?: Maybe<Scalars['Boolean']['output']>;
   /** 부가세 지원 여부 */
   isVATSupport?: Maybe<Scalars['Boolean']['output']>;
   /** 월 납입료 */
-  monthlyPayment?: Maybe<Scalars['String']['output']>;
+  monthlyPayment?: Maybe<Scalars['Int']['output']>;
   /** 수익합계 */
   netIncome?: Maybe<Scalars['Int']['output']>;
   /** 대물 */
@@ -95,13 +95,15 @@ export type Contract = {
   /** 외부 색상 */
   outerColor?: Maybe<Scalars['String']['output']>;
   /** 프로모션 */
-  promotion?: Maybe<Scalars['String']['output']>;
+  promotion?: Maybe<Scalars['Int']['output']>;
+  /** 보증금 */
+  security?: Maybe<Scalars['Int']['output']>;
   /** 품의 금액 1 */
-  service1?: Maybe<Scalars['String']['output']>;
+  service1?: Maybe<Scalars['Int']['output']>;
   /** 품의 금액 2 */
-  service2?: Maybe<Scalars['String']['output']>;
+  service2?: Maybe<Scalars['Int']['output']>;
   /** 품의 금액 3 */
-  service3?: Maybe<Scalars['String']['output']>;
+  service3?: Maybe<Scalars['Int']['output']>;
   /** 품의 내용 1 */
   serviceBody1?: Maybe<Scalars['String']['output']>;
   /** 품의 내용 2 */
@@ -188,8 +190,10 @@ export type CreateCityDto = {
 };
 
 export type CreateContractDto = {
+  /** 선납금 */
+  advancePayment?: InputMaybe<Scalars['Int']['input']>;
   /** 약정 거리 */
-  agreedMileage?: InputMaybe<Scalars['String']['input']>;
+  agreedMileage?: InputMaybe<Scalars['Int']['input']>;
   /** 지점 */
   branch?: InputMaybe<Scalars['String']['input']>;
   /** 지점 수수료 */
@@ -199,18 +203,16 @@ export type CreateContractDto = {
   /** 발비 내용 */
   businessExpensesDetail?: InputMaybe<Scalars['String']['input']>;
   /** 차종 */
-  carName?: InputMaybe<Scalars['String']['input']>;
+  carName: Scalars['String']['input'];
   /** 차 옵션 */
   carOption?: InputMaybe<Scalars['String']['input']>;
   /** 차량 가격 */
   carPrice?: InputMaybe<Scalars['Int']['input']>;
   /** 현금 지원 */
-  cashAssistance?: InputMaybe<Scalars['String']['input']>;
+  cashAssistance?: InputMaybe<Scalars['Int']['input']>;
   cityId?: InputMaybe<Scalars['Int']['input']>;
   /** 담보율 */
-  collateralRate?: InputMaybe<Scalars['String']['input']>;
-  /** 담보 타입 선납금/보증금 */
-  collateralType?: InputMaybe<Scalars['String']['input']>;
+  collateralRate?: InputMaybe<Scalars['Int']['input']>;
   /** 회사명/명의자 */
   company_name_nominee?: InputMaybe<Scalars['String']['input']>;
   /** 계약 일 */
@@ -223,7 +225,7 @@ export type CreateContractDto = {
   /** 수수료 */
   fee?: InputMaybe<Scalars['Int']['input']>;
   /** 수수료 비율 */
-  feeRate?: InputMaybe<Scalars['String']['input']>;
+  feeRate?: InputMaybe<Scalars['Int']['input']>;
   /** 금융사 id */
   financialCompanyId?: InputMaybe<Scalars['Int']['input']>;
   /** 소득자 */
@@ -231,13 +233,13 @@ export type CreateContractDto = {
   /** 내부 색상 */
   innerColor?: InputMaybe<Scalars['String']['input']>;
   /** 보험 연령 */
-  insuranceAge?: InputMaybe<Scalars['String']['input']>;
+  insuranceAge?: InputMaybe<Scalars['Int']['input']>;
   /** 발주 여부 */
   isOrdering?: InputMaybe<Scalars['Boolean']['input']>;
   /** 부가세 지원 여부 */
   isVATSupport?: InputMaybe<Scalars['Boolean']['input']>;
   /** 월 납입료 */
-  monthlyPayment?: InputMaybe<Scalars['String']['input']>;
+  monthlyPayment?: InputMaybe<Scalars['Int']['input']>;
   /** 순수익 */
   netIncome?: InputMaybe<Scalars['Int']['input']>;
   /** 대물 */
@@ -245,13 +247,15 @@ export type CreateContractDto = {
   /** 외부 색상 */
   outerColor?: InputMaybe<Scalars['String']['input']>;
   /** 프로모션 */
-  promotion?: InputMaybe<Scalars['String']['input']>;
+  promotion?: InputMaybe<Scalars['Int']['input']>;
+  /** 보증금 */
+  security?: InputMaybe<Scalars['Int']['input']>;
   /** 서비스 1 */
-  service1?: InputMaybe<Scalars['String']['input']>;
+  service1?: InputMaybe<Scalars['Int']['input']>;
   /** 서비스 2 */
-  service2?: InputMaybe<Scalars['String']['input']>;
+  service2?: InputMaybe<Scalars['Int']['input']>;
   /** 서비스 3 */
-  service3?: InputMaybe<Scalars['String']['input']>;
+  service3?: InputMaybe<Scalars['Int']['input']>;
   /** 서비스 내용 1 */
   serviceBody1?: InputMaybe<Scalars['String']['input']>;
   /** 서비스 내용 2 */
@@ -416,11 +420,6 @@ export type CustomerStatus = {
   status: Scalars['String']['output'];
 };
 
-export type DeleteCustomerDto = {
-  /** customerIds */
-  customerIds: Array<Scalars['Int']['input']>;
-};
-
 /** 구분 */
 export type Division = {
   id: Scalars['Int']['output'];
@@ -546,6 +545,10 @@ export type Mutation = {
   createTeam: Team;
   /** 도시 삭제 */
   deleteCity: Scalars['String']['output'];
+  /** 계약 삭제 */
+  deleteContract: Scalars['String']['output'];
+  /** 상담 삭제 */
+  deleteCounsel: Scalars['String']['output'];
   /** 고객 삭제 */
   deleteCustomer: Scalars['String']['output'];
   /** 고객 그룹 삭제 */
@@ -572,8 +575,6 @@ export type Mutation = {
   updateCity: City;
   /** 계약 수정 */
   updateContract: Contract;
-  /** 계약 상태 수정 */
-  updateContractStatus: Contract;
   /** 상담 수정 */
   updateCounsel: Counsel;
   /** 고객 정보 수정 */
@@ -650,8 +651,18 @@ export type MutationDeleteCityArgs = {
 };
 
 
+export type MutationDeleteContractArgs = {
+  contractIds: Array<Scalars['Int']['input']>;
+};
+
+
+export type MutationDeleteCounselArgs = {
+  counselIds: Array<Scalars['Int']['input']>;
+};
+
+
 export type MutationDeleteCustomerArgs = {
-  deleteCustomerDto: DeleteCustomerDto;
+  customerIds: Array<Scalars['Int']['input']>;
 };
 
 
@@ -707,11 +718,6 @@ export type MutationUpdateCityArgs = {
 
 export type MutationUpdateContractArgs = {
   updateContractDto: UpdateContractDto;
-};
-
-
-export type MutationUpdateContractStatusArgs = {
-  updateContractStatus: UpdateContractStatusDto;
 };
 
 
@@ -983,8 +989,10 @@ export type UpdateCityDto = {
 };
 
 export type UpdateContractDto = {
+  /** 선납금 */
+  advancePayment?: InputMaybe<Scalars['Int']['input']>;
   /** 약정 거리 */
-  agreedMileage?: InputMaybe<Scalars['String']['input']>;
+  agreedMileage?: InputMaybe<Scalars['Int']['input']>;
   /** 지점 */
   branch?: InputMaybe<Scalars['String']['input']>;
   /** 지점 수수료 */
@@ -1000,12 +1008,10 @@ export type UpdateContractDto = {
   /** 차량 가격 */
   carPrice?: InputMaybe<Scalars['Int']['input']>;
   /** 현금 지원 */
-  cashAssistance?: InputMaybe<Scalars['String']['input']>;
+  cashAssistance?: InputMaybe<Scalars['Int']['input']>;
   cityId?: InputMaybe<Scalars['Int']['input']>;
   /** 담보율 */
-  collateralRate?: InputMaybe<Scalars['String']['input']>;
-  /** 담보 타입 선납금/보증금 */
-  collateralType?: InputMaybe<Scalars['String']['input']>;
+  collateralRate?: InputMaybe<Scalars['Int']['input']>;
   /** 회사명/명의자 */
   company_name_nominee?: InputMaybe<Scalars['String']['input']>;
   /** 계약 일 */
@@ -1019,7 +1025,7 @@ export type UpdateContractDto = {
   /** 수수료 */
   fee?: InputMaybe<Scalars['Int']['input']>;
   /** 수수료 비율 */
-  feeRate?: InputMaybe<Scalars['String']['input']>;
+  feeRate?: InputMaybe<Scalars['Int']['input']>;
   /** 금융사 id */
   financialCompanyId?: InputMaybe<Scalars['Int']['input']>;
   /** 소득자 */
@@ -1027,7 +1033,7 @@ export type UpdateContractDto = {
   /** 내부 색상 */
   innerColor?: InputMaybe<Scalars['String']['input']>;
   /** 보험 연령 */
-  insuranceAge?: InputMaybe<Scalars['String']['input']>;
+  insuranceAge?: InputMaybe<Scalars['Int']['input']>;
   /** 정산 수수료 */
   interChangeFee?: InputMaybe<Scalars['Int']['input']>;
   /** 발주 여부 */
@@ -1035,7 +1041,7 @@ export type UpdateContractDto = {
   /** 부가세 지원 여부 */
   isVATSupport?: InputMaybe<Scalars['Boolean']['input']>;
   /** 월 납입료 */
-  monthlyPayment?: InputMaybe<Scalars['String']['input']>;
+  monthlyPayment?: InputMaybe<Scalars['Int']['input']>;
   /** 순수익 */
   netIncome?: InputMaybe<Scalars['Int']['input']>;
   /** 대물 */
@@ -1043,13 +1049,15 @@ export type UpdateContractDto = {
   /** 외부 색상 */
   outerColor?: InputMaybe<Scalars['String']['input']>;
   /** 프로모션 */
-  promotion?: InputMaybe<Scalars['String']['input']>;
+  promotion?: InputMaybe<Scalars['Int']['input']>;
+  /** 보증금 */
+  security?: InputMaybe<Scalars['Int']['input']>;
   /** 서비스 1 */
-  service1?: InputMaybe<Scalars['String']['input']>;
+  service1?: InputMaybe<Scalars['Int']['input']>;
   /** 서비스 2 */
-  service2?: InputMaybe<Scalars['String']['input']>;
+  service2?: InputMaybe<Scalars['Int']['input']>;
   /** 서비스 3 */
-  service3?: InputMaybe<Scalars['String']['input']>;
+  service3?: InputMaybe<Scalars['Int']['input']>;
   /** 서비스 내용 1 */
   serviceBody1?: InputMaybe<Scalars['String']['input']>;
   /** 서비스 내용 2 */
@@ -1071,11 +1079,6 @@ export type UpdateContractDto = {
   /** 총 계약 금액 */
   totalPrice?: InputMaybe<Scalars['Int']['input']>;
   userId: Scalars['Int']['input'];
-};
-
-export type UpdateContractStatusDto = {
-  contractId: Scalars['Int']['input'];
-  status: Status;
 };
 
 export type UpdateCounselDto = {
@@ -1228,6 +1231,13 @@ export type DeleteCityMutationVariables = Exact<{
 
 export type DeleteCityMutation = { deleteCity: string };
 
+export type CreateContractMutationVariables = Exact<{
+  createContractDto: CreateContractDto;
+}>;
+
+
+export type CreateContractMutation = { createContract: { id: number } };
+
 export type UpdateContractMutationVariables = Exact<{
   updateContractDto: UpdateContractDto;
 }>;
@@ -1235,12 +1245,12 @@ export type UpdateContractMutationVariables = Exact<{
 
 export type UpdateContractMutation = { updateContract: { id: number } };
 
-export type UpdateContractStatusMutationVariables = Exact<{
-  updateContractStatus: UpdateContractStatusDto;
+export type DeleteContractMutationVariables = Exact<{
+  contractIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
 }>;
 
 
-export type UpdateContractStatusMutation = { updateContractStatus: { id: number } };
+export type DeleteContractMutation = { deleteContract: string };
 
 export type CreateCounselMutationVariables = Exact<{
   createCounselDto: CreateCounselDto;
@@ -1248,6 +1258,13 @@ export type CreateCounselMutationVariables = Exact<{
 
 
 export type CreateCounselMutation = { createCounsel: { id: number } };
+
+export type DeleteCounselMutationVariables = Exact<{
+  counselIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
+}>;
+
+
+export type DeleteCounselMutation = { deleteCounsel: string };
 
 export type CreateCustomerMutationVariables = Exact<{
   createCustomerDto: CreateCustomerDto;
@@ -1264,7 +1281,7 @@ export type UpdateCustomerMutationVariables = Exact<{
 export type UpdateCustomerMutation = { updateCustomer: { id: number } };
 
 export type DeleteCustomerMutationVariables = Exact<{
-  deleteCustomerDto: DeleteCustomerDto;
+  customerIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
 }>;
 
 
@@ -1338,14 +1355,29 @@ export type GetContractsQueryVariables = Exact<{
 }>;
 
 
-export type GetContractsQuery = { getContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: string | null, fee?: number | null, promotion?: string | null, monthlyPayment?: string | null, isOrdering?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: string | null, contractPeriod?: string | null, agreedMileage?: string | null, insuranceAge?: string | null, object?: string | null, service1?: string | null, serviceBody1?: string | null, service2?: string | null, serviceBody2?: string | null, service3?: string | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: string | null, supportDetails?: string | null, businessExpenses?: string | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, user: { name: string }, city?: { name: string } | null, customer?: { name: string, phone: string } | null, financialCompany?: { name: string } | null, shippingMethod?: { name: string } | null, division?: { name: string } | null }> };
+export type GetContractsQuery = { getContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: string | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: string | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, user: { name: string }, city?: { name: string } | null, customer?: { name: string, phone: string } | null, financialCompany?: { name: string } | null, shippingMethod?: { name: string } | null, division?: { name: string } | null }> };
 
 export type GetContractQueryVariables = Exact<{
   contractId: Scalars['Float']['input'];
 }>;
 
 
-export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: string | null, fee?: number | null, promotion?: string | null, monthlyPayment?: string | null, isOrdering?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: string | null, contractPeriod?: string | null, agreedMileage?: string | null, insuranceAge?: string | null, object?: string | null, service1?: string | null, serviceBody1?: string | null, service2?: string | null, serviceBody2?: string | null, service3?: string | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: string | null, supportDetails?: string | null, businessExpenses?: string | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, user: { name: string }, city?: { name: string } | null, customer?: { name: string, phone: string } | null, financialCompany?: { name: string } | null, shippingMethod?: { name: string } | null, division?: { name: string } | null } };
+export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: string | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: string | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, user: { name: string }, city?: { name: string } | null, customer?: { name: string, phone: string } | null, financialCompany?: { name: string } | null, shippingMethod?: { name: string } | null, division?: { name: string } | null } };
+
+export type GetFinancialCompaniesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetFinancialCompaniesQuery = { getFinancialCompanies: Array<{ id: number, name: string }> };
+
+export type GetDivisionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetDivisionsQuery = { getDivisions: Array<{ id: number, name: string }> };
+
+export type GetShippingMethodsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetShippingMethodsQuery = { getShippingMethods: Array<{ id: number, name: string }> };
 
 export type GetCounselsQueryVariables = Exact<{
   getCounselsDto: GetCounselsDto;
@@ -1373,7 +1405,7 @@ export type GetCustomerQueryVariables = Exact<{
 }>;
 
 
-export type GetCustomerQuery = { getCustomer: { id: number, name: string, phone: string, sub_phone?: string | null, type?: string | null, created_at?: string | null, memo?: string | null, note?: string | null, userList: { name: string }, customerGroup?: { name: string } | null, customerStatus?: { status: string } | null, contractList: Array<{ company_name_nominee?: string | null, carName?: string | null, carOption?: string | null, contractPeriod?: string | null, agreedMileage?: string | null, collateralType?: string | null, division?: { name: string } | null }>, customerGrade?: { name: string } | null } };
+export type GetCustomerQuery = { getCustomer: { id: number, name: string, phone: string, sub_phone?: string | null, type?: string | null, created_at?: string | null, memo?: string | null, note?: string | null, userList: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null, contractList: Array<{ id: number, company_name_nominee?: string | null, carName?: string | null, carOption?: string | null, contractPeriod?: string | null, agreedMileage?: number | null, division?: { name: string } | null }>, customerGrade?: { id: number, name: string } | null, counselList: Array<{ id: number, counselAt: string, context: string, customer: { name: string }, user: { name: string } }> } };
 
 export type GetCustomerGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1401,6 +1433,11 @@ export type GetTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetTeamsQuery = { getTeams: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, userList: Array<{ id: number, name: string }> }> };
+
+export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUsersQuery = { getUsers: Array<{ id: number, name: string, email: string, created_at?: string | null, updated_at?: string | null }> };
 
 
 export const SignInDocument = gql`
@@ -1683,6 +1720,39 @@ export function useDeleteCityMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteCityMutationHookResult = ReturnType<typeof useDeleteCityMutation>;
 export type DeleteCityMutationResult = Apollo.MutationResult<DeleteCityMutation>;
 export type DeleteCityMutationOptions = Apollo.BaseMutationOptions<DeleteCityMutation, DeleteCityMutationVariables>;
+export const CreateContractDocument = gql`
+    mutation CreateContract($createContractDto: CreateContractDto!) {
+  createContract(createContractDto: $createContractDto) {
+    id
+  }
+}
+    `;
+export type CreateContractMutationFn = Apollo.MutationFunction<CreateContractMutation, CreateContractMutationVariables>;
+
+/**
+ * __useCreateContractMutation__
+ *
+ * To run a mutation, you first call `useCreateContractMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateContractMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createContractMutation, { data, loading, error }] = useCreateContractMutation({
+ *   variables: {
+ *      createContractDto: // value for 'createContractDto'
+ *   },
+ * });
+ */
+export function useCreateContractMutation(baseOptions?: Apollo.MutationHookOptions<CreateContractMutation, CreateContractMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateContractMutation, CreateContractMutationVariables>(CreateContractDocument, options);
+      }
+export type CreateContractMutationHookResult = ReturnType<typeof useCreateContractMutation>;
+export type CreateContractMutationResult = Apollo.MutationResult<CreateContractMutation>;
+export type CreateContractMutationOptions = Apollo.BaseMutationOptions<CreateContractMutation, CreateContractMutationVariables>;
 export const UpdateContractDocument = gql`
     mutation UpdateContract($updateContractDto: UpdateContractDto!) {
   updateContract(updateContractDto: $updateContractDto) {
@@ -1716,39 +1786,37 @@ export function useUpdateContractMutation(baseOptions?: Apollo.MutationHookOptio
 export type UpdateContractMutationHookResult = ReturnType<typeof useUpdateContractMutation>;
 export type UpdateContractMutationResult = Apollo.MutationResult<UpdateContractMutation>;
 export type UpdateContractMutationOptions = Apollo.BaseMutationOptions<UpdateContractMutation, UpdateContractMutationVariables>;
-export const UpdateContractStatusDocument = gql`
-    mutation UpdateContractStatus($updateContractStatus: UpdateContractStatusDto!) {
-  updateContractStatus(updateContractStatus: $updateContractStatus) {
-    id
-  }
+export const DeleteContractDocument = gql`
+    mutation DeleteContract($contractIds: [Int!]!) {
+  deleteContract(contractIds: $contractIds)
 }
     `;
-export type UpdateContractStatusMutationFn = Apollo.MutationFunction<UpdateContractStatusMutation, UpdateContractStatusMutationVariables>;
+export type DeleteContractMutationFn = Apollo.MutationFunction<DeleteContractMutation, DeleteContractMutationVariables>;
 
 /**
- * __useUpdateContractStatusMutation__
+ * __useDeleteContractMutation__
  *
- * To run a mutation, you first call `useUpdateContractStatusMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateContractStatusMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteContractMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteContractMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateContractStatusMutation, { data, loading, error }] = useUpdateContractStatusMutation({
+ * const [deleteContractMutation, { data, loading, error }] = useDeleteContractMutation({
  *   variables: {
- *      updateContractStatus: // value for 'updateContractStatus'
+ *      contractIds: // value for 'contractIds'
  *   },
  * });
  */
-export function useUpdateContractStatusMutation(baseOptions?: Apollo.MutationHookOptions<UpdateContractStatusMutation, UpdateContractStatusMutationVariables>) {
+export function useDeleteContractMutation(baseOptions?: Apollo.MutationHookOptions<DeleteContractMutation, DeleteContractMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateContractStatusMutation, UpdateContractStatusMutationVariables>(UpdateContractStatusDocument, options);
+        return Apollo.useMutation<DeleteContractMutation, DeleteContractMutationVariables>(DeleteContractDocument, options);
       }
-export type UpdateContractStatusMutationHookResult = ReturnType<typeof useUpdateContractStatusMutation>;
-export type UpdateContractStatusMutationResult = Apollo.MutationResult<UpdateContractStatusMutation>;
-export type UpdateContractStatusMutationOptions = Apollo.BaseMutationOptions<UpdateContractStatusMutation, UpdateContractStatusMutationVariables>;
+export type DeleteContractMutationHookResult = ReturnType<typeof useDeleteContractMutation>;
+export type DeleteContractMutationResult = Apollo.MutationResult<DeleteContractMutation>;
+export type DeleteContractMutationOptions = Apollo.BaseMutationOptions<DeleteContractMutation, DeleteContractMutationVariables>;
 export const CreateCounselDocument = gql`
     mutation CreateCounsel($createCounselDto: CreateCounselDto!) {
   createCounsel(createCounselDto: $createCounselDto) {
@@ -1782,6 +1850,37 @@ export function useCreateCounselMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateCounselMutationHookResult = ReturnType<typeof useCreateCounselMutation>;
 export type CreateCounselMutationResult = Apollo.MutationResult<CreateCounselMutation>;
 export type CreateCounselMutationOptions = Apollo.BaseMutationOptions<CreateCounselMutation, CreateCounselMutationVariables>;
+export const DeleteCounselDocument = gql`
+    mutation DeleteCounsel($counselIds: [Int!]!) {
+  deleteCounsel(counselIds: $counselIds)
+}
+    `;
+export type DeleteCounselMutationFn = Apollo.MutationFunction<DeleteCounselMutation, DeleteCounselMutationVariables>;
+
+/**
+ * __useDeleteCounselMutation__
+ *
+ * To run a mutation, you first call `useDeleteCounselMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCounselMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCounselMutation, { data, loading, error }] = useDeleteCounselMutation({
+ *   variables: {
+ *      counselIds: // value for 'counselIds'
+ *   },
+ * });
+ */
+export function useDeleteCounselMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCounselMutation, DeleteCounselMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCounselMutation, DeleteCounselMutationVariables>(DeleteCounselDocument, options);
+      }
+export type DeleteCounselMutationHookResult = ReturnType<typeof useDeleteCounselMutation>;
+export type DeleteCounselMutationResult = Apollo.MutationResult<DeleteCounselMutation>;
+export type DeleteCounselMutationOptions = Apollo.BaseMutationOptions<DeleteCounselMutation, DeleteCounselMutationVariables>;
 export const CreateCustomerDocument = gql`
     mutation CreateCustomer($createCustomerDto: CreateCustomerDto!) {
   createCustomer(createCustomerDto: $createCustomerDto) {
@@ -1849,8 +1948,8 @@ export type UpdateCustomerMutationHookResult = ReturnType<typeof useUpdateCustom
 export type UpdateCustomerMutationResult = Apollo.MutationResult<UpdateCustomerMutation>;
 export type UpdateCustomerMutationOptions = Apollo.BaseMutationOptions<UpdateCustomerMutation, UpdateCustomerMutationVariables>;
 export const DeleteCustomerDocument = gql`
-    mutation DeleteCustomer($deleteCustomerDto: DeleteCustomerDto!) {
-  deleteCustomer(deleteCustomerDto: $deleteCustomerDto)
+    mutation DeleteCustomer($customerIds: [Int!]!) {
+  deleteCustomer(customerIds: $customerIds)
 }
     `;
 export type DeleteCustomerMutationFn = Apollo.MutationFunction<DeleteCustomerMutation, DeleteCustomerMutationVariables>;
@@ -1868,7 +1967,7 @@ export type DeleteCustomerMutationFn = Apollo.MutationFunction<DeleteCustomerMut
  * @example
  * const [deleteCustomerMutation, { data, loading, error }] = useDeleteCustomerMutation({
  *   variables: {
- *      deleteCustomerDto: // value for 'deleteCustomerDto'
+ *      customerIds: // value for 'customerIds'
  *   },
  * });
  */
@@ -2376,6 +2475,126 @@ export type GetContractQueryHookResult = ReturnType<typeof useGetContractQuery>;
 export type GetContractLazyQueryHookResult = ReturnType<typeof useGetContractLazyQuery>;
 export type GetContractSuspenseQueryHookResult = ReturnType<typeof useGetContractSuspenseQuery>;
 export type GetContractQueryResult = Apollo.QueryResult<GetContractQuery, GetContractQueryVariables>;
+export const GetFinancialCompaniesDocument = gql`
+    query GetFinancialCompanies {
+  getFinancialCompanies {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetFinancialCompaniesQuery__
+ *
+ * To run a query within a React component, call `useGetFinancialCompaniesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFinancialCompaniesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFinancialCompaniesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetFinancialCompaniesQuery(baseOptions?: Apollo.QueryHookOptions<GetFinancialCompaniesQuery, GetFinancialCompaniesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFinancialCompaniesQuery, GetFinancialCompaniesQueryVariables>(GetFinancialCompaniesDocument, options);
+      }
+export function useGetFinancialCompaniesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFinancialCompaniesQuery, GetFinancialCompaniesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFinancialCompaniesQuery, GetFinancialCompaniesQueryVariables>(GetFinancialCompaniesDocument, options);
+        }
+export function useGetFinancialCompaniesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetFinancialCompaniesQuery, GetFinancialCompaniesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetFinancialCompaniesQuery, GetFinancialCompaniesQueryVariables>(GetFinancialCompaniesDocument, options);
+        }
+export type GetFinancialCompaniesQueryHookResult = ReturnType<typeof useGetFinancialCompaniesQuery>;
+export type GetFinancialCompaniesLazyQueryHookResult = ReturnType<typeof useGetFinancialCompaniesLazyQuery>;
+export type GetFinancialCompaniesSuspenseQueryHookResult = ReturnType<typeof useGetFinancialCompaniesSuspenseQuery>;
+export type GetFinancialCompaniesQueryResult = Apollo.QueryResult<GetFinancialCompaniesQuery, GetFinancialCompaniesQueryVariables>;
+export const GetDivisionsDocument = gql`
+    query GetDivisions {
+  getDivisions {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetDivisionsQuery__
+ *
+ * To run a query within a React component, call `useGetDivisionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDivisionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDivisionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetDivisionsQuery(baseOptions?: Apollo.QueryHookOptions<GetDivisionsQuery, GetDivisionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetDivisionsQuery, GetDivisionsQueryVariables>(GetDivisionsDocument, options);
+      }
+export function useGetDivisionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDivisionsQuery, GetDivisionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetDivisionsQuery, GetDivisionsQueryVariables>(GetDivisionsDocument, options);
+        }
+export function useGetDivisionsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetDivisionsQuery, GetDivisionsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetDivisionsQuery, GetDivisionsQueryVariables>(GetDivisionsDocument, options);
+        }
+export type GetDivisionsQueryHookResult = ReturnType<typeof useGetDivisionsQuery>;
+export type GetDivisionsLazyQueryHookResult = ReturnType<typeof useGetDivisionsLazyQuery>;
+export type GetDivisionsSuspenseQueryHookResult = ReturnType<typeof useGetDivisionsSuspenseQuery>;
+export type GetDivisionsQueryResult = Apollo.QueryResult<GetDivisionsQuery, GetDivisionsQueryVariables>;
+export const GetShippingMethodsDocument = gql`
+    query GetShippingMethods {
+  getShippingMethods {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetShippingMethodsQuery__
+ *
+ * To run a query within a React component, call `useGetShippingMethodsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetShippingMethodsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetShippingMethodsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetShippingMethodsQuery(baseOptions?: Apollo.QueryHookOptions<GetShippingMethodsQuery, GetShippingMethodsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetShippingMethodsQuery, GetShippingMethodsQueryVariables>(GetShippingMethodsDocument, options);
+      }
+export function useGetShippingMethodsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetShippingMethodsQuery, GetShippingMethodsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetShippingMethodsQuery, GetShippingMethodsQueryVariables>(GetShippingMethodsDocument, options);
+        }
+export function useGetShippingMethodsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetShippingMethodsQuery, GetShippingMethodsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetShippingMethodsQuery, GetShippingMethodsQueryVariables>(GetShippingMethodsDocument, options);
+        }
+export type GetShippingMethodsQueryHookResult = ReturnType<typeof useGetShippingMethodsQuery>;
+export type GetShippingMethodsLazyQueryHookResult = ReturnType<typeof useGetShippingMethodsLazyQuery>;
+export type GetShippingMethodsSuspenseQueryHookResult = ReturnType<typeof useGetShippingMethodsSuspenseQuery>;
+export type GetShippingMethodsQueryResult = Apollo.QueryResult<GetShippingMethodsQuery, GetShippingMethodsQueryVariables>;
 export const GetCounselsDocument = gql`
     query GetCounsels($getCounselsDto: GetCounselsDto!) {
   getCounsels(getCounselsDto: $getCounselsDto) {
@@ -2576,15 +2795,19 @@ export const GetCustomerDocument = gql`
     memo
     note
     userList {
+      id
       name
     }
     customerGroup {
+      id
       name
     }
     customerStatus {
+      id
       status
     }
     contractList {
+      id
       company_name_nominee
       division {
         name
@@ -2593,10 +2816,21 @@ export const GetCustomerDocument = gql`
       carOption
       contractPeriod
       agreedMileage
-      collateralType
     }
     customerGrade {
+      id
       name
+    }
+    counselList {
+      id
+      counselAt
+      customer {
+        name
+      }
+      user {
+        name
+      }
+      context
     }
   }
 }
@@ -2855,3 +3089,46 @@ export type GetTeamsQueryHookResult = ReturnType<typeof useGetTeamsQuery>;
 export type GetTeamsLazyQueryHookResult = ReturnType<typeof useGetTeamsLazyQuery>;
 export type GetTeamsSuspenseQueryHookResult = ReturnType<typeof useGetTeamsSuspenseQuery>;
 export type GetTeamsQueryResult = Apollo.QueryResult<GetTeamsQuery, GetTeamsQueryVariables>;
+export const GetUsersDocument = gql`
+    query GetUsers {
+  getUsers {
+    id
+    name
+    email
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetUsersQuery__
+ *
+ * To run a query within a React component, call `useGetUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUsersQuery(baseOptions?: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+      }
+export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+        }
+export function useGetUsersSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options);
+        }
+export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
+export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
+export type GetUsersSuspenseQueryHookResult = ReturnType<typeof useGetUsersSuspenseQuery>;
+export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;

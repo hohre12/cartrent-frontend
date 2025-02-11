@@ -32,9 +32,7 @@ const CustomerDetail = () => {
 
   const handleDeleteCustomer = useCallback(async () => {
     try {
-      const response = await deleteCustomer({
-        customerIds: [selectedCustomerIdx],
-      });
+      const response = await deleteCustomer([selectedCustomerIdx]);
       if (response && response.data.deleteCustomer === 'success') {
         hideConfirm();
         addToast({

@@ -17,13 +17,9 @@ export const UPDATE_CONTRACT_MUTATION = gql`
   }
 `;
 
-export const UPDATE_CONTRACT_STATUS_MUTATION = gql`
-  mutation UpdateContractStatus(
-    $updateContractStatus: UpdateContractStatusDto!
-  ) {
-    updateContractStatus(updateContractStatus: $updateContractStatus) {
-      id
-    }
+export const DELETE_CONTRACT_MUTATION = gql`
+  mutation DeleteContract($contractIds: [Int!]!) {
+    deleteContract(contractIds: $contractIds)
   }
 `;
 /* Mutation */

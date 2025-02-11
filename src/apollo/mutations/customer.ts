@@ -16,8 +16,8 @@ export const UPDATE_CUSTOMER_MUTATION = gql`
   }
 `;
 export const DELETE_CUSTOMER_MUTATION = gql`
-  mutation DeleteCustomer($deleteCustomerDto: DeleteCustomerDto!) {
-    deleteCustomer(deleteCustomerDto: $deleteCustomerDto)
+  mutation DeleteCustomer($customerIds: [Int!]!) {
+    deleteCustomer(customerIds: $customerIds)
   }
 `;
 export const UPDATE_CUSTOMER_OF_USER_MUTATION = gql`
