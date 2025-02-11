@@ -44,7 +44,9 @@ const ContractRegist = () => {
   const { data: divisions } = useGetDivisions();
   const { data: shippingMethods } = useGetShippingMethods();
 
-  const [createContract, setCreateContract] = useState<CreateContractDto>();
+  const [createContract, setCreateContract] = useState<CreateContractDto>({
+    carName: '',
+  });
 
   const [customer, setCustomer] = useState<Customer>();
   const [city, setCity] = useState<City>();
@@ -65,7 +67,7 @@ const ContractRegist = () => {
       const feeObject = {
         [key]: key === 'fee' ? value : value.toString(),
         ...(key === 'fee' && {
-          feeRate: ((value / createContract.carPrice) * 100).toString(),
+          feeRate: (value / createContract.carPrice) * 100,
         }),
         ...(key === 'feeRate' && {
           fee: (value * createContract.carPrice) / 100,
@@ -93,6 +95,7 @@ const ContractRegist = () => {
     setSubmit(true);
     if (!my) return;
     if (!customer) return;
+    if (!createContract?.carName) return;
     try {
       const createContractPayload: CreateContractDto = {
         ...createContract,
@@ -341,6 +344,19 @@ const ContractRegist = () => {
               <span>프로모션</span>
               <InputWrapper>
                 <Input
+                  disabled={!createContract?.carPrice}
+                  onTextChange={(text) => {
+                    if (createContract?.carPrice) {
+                      handleValueChange(
+                        (Number(text) * createContract.carPrice) / 100,
+                        'promotion',
+                      );
+                    }
+                  }}
+                  postfixNode={'%'}
+                />
+                <Input
+                  disabled={!createContract?.carPrice}
                   value={createContract?.promotion ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'promotion')}
                   postfixNode={'원'}

@@ -74,7 +74,6 @@ export const GET_CUSTOMER_QUERY = gql`
         carOption
         contractPeriod
         agreedMileage
-        collateralType
       }
       customerGrade {
         id
