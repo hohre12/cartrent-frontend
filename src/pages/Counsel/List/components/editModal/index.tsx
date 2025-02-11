@@ -14,7 +14,7 @@ import { useGetCustomers } from '@/services/customer';
 import { userState } from '@/state/auth';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
-import { Contract, Customer, UpdateCounselDto } from '@/types/graphql';
+import { Contract, Customer, UpdateCounselDto, User } from '@/types/graphql';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -26,7 +26,7 @@ const EditModal = (props: TModal & { idx: number }) => {
   const { data } = useGetCounsel(idx);
 
   const [customer, setCustomer] = useState<Customer>();
-  const user = useRecoilValue(userState);
+  const [user, setUser] = useState<User>();
   const [contract, setContract] = useState<Contract>();
 
   const [counselAt, setCounselAt] = useState<UpdateCounselDto['counselAt']>();
@@ -78,6 +78,7 @@ const EditModal = (props: TModal & { idx: number }) => {
     if (detail) {
       setCustomer(detail.customer);
       setCounselAt(detail.counselAt);
+      setUser(detail.user);
       setContract(detail.contract ?? undefined);
       setContext(detail.context);
     }
