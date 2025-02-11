@@ -61,8 +61,10 @@ export type Contract = {
   company_name_nominee?: Maybe<Scalars['String']['output']>;
   /** 계약 일 */
   contractAt?: Maybe<Scalars['String']['output']>;
-  /** 약정 기간 */
-  contractPeriod?: Maybe<Scalars['String']['output']>;
+  /** 약정 기간 종료일 */
+  contractPeriodEndAt?: Maybe<Scalars['String']['output']>;
+  /** 약정 기간 시작일 */
+  contractPeriodStartAt?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['DateTime']['output']>;
   customer?: Maybe<Customer>;
   customer_id?: Maybe<Scalars['Int']['output']>;
@@ -199,7 +201,7 @@ export type CreateContractDto = {
   /** 지점 수수료 */
   branchFee?: InputMaybe<Scalars['Int']['input']>;
   /** 발비 */
-  businessExpenses?: InputMaybe<Scalars['String']['input']>;
+  businessExpenses?: InputMaybe<Scalars['Int']['input']>;
   /** 발비 내용 */
   businessExpensesDetail?: InputMaybe<Scalars['String']['input']>;
   /** 차종 */
@@ -217,8 +219,10 @@ export type CreateContractDto = {
   company_name_nominee?: InputMaybe<Scalars['String']['input']>;
   /** 계약 일 */
   contractAt?: InputMaybe<Scalars['String']['input']>;
-  /** 약정 기간 */
-  contractPeriod?: InputMaybe<Scalars['String']['input']>;
+  /** 약정 기간 종료일 */
+  contractPeriodEndAt?: InputMaybe<Scalars['String']['input']>;
+  /** 약정 기간 시작일 */
+  contractPeriodStartAt?: InputMaybe<Scalars['String']['input']>;
   customerId: Scalars['Int']['input'];
   /** 구분 */
   divisionId?: InputMaybe<Scalars['Int']['input']>;
@@ -998,7 +1002,7 @@ export type UpdateContractDto = {
   /** 지점 수수료 */
   branchFee?: InputMaybe<Scalars['Int']['input']>;
   /** 발비 */
-  businessExpenses?: InputMaybe<Scalars['String']['input']>;
+  businessExpenses?: InputMaybe<Scalars['Int']['input']>;
   /** 발비 내용 */
   businessExpensesDetail?: InputMaybe<Scalars['String']['input']>;
   /** 차종 */
@@ -1017,8 +1021,10 @@ export type UpdateContractDto = {
   /** 계약 일 */
   contractAt?: InputMaybe<Scalars['String']['input']>;
   contractId: Scalars['Int']['input'];
-  /** 약정 기간 */
-  contractPeriod?: InputMaybe<Scalars['String']['input']>;
+  /** 약정 기간 종료일 */
+  contractPeriodEndAt?: InputMaybe<Scalars['String']['input']>;
+  /** 약정 기간 시작일 */
+  contractPeriodStartAt?: InputMaybe<Scalars['String']['input']>;
   customerId: Scalars['Int']['input'];
   /** 구분 id */
   divisionId?: InputMaybe<Scalars['Int']['input']>;
@@ -1355,14 +1361,14 @@ export type GetContractsQueryVariables = Exact<{
 }>;
 
 
-export type GetContractsQuery = { getContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: string | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: string | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, user: { name: string }, city?: { name: string } | null, customer?: { name: string, phone: string } | null, financialCompany?: { name: string } | null, shippingMethod?: { name: string } | null, division?: { name: string } | null }> };
+export type GetContractsQuery = { getContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriodStartAt?: string | null, contractPeriodEndAt?: string | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: string | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, user: { name: string }, city?: { name: string } | null, customer?: { name: string, phone: string } | null, financialCompany?: { name: string } | null, shippingMethod?: { name: string } | null, division?: { name: string } | null }> };
 
 export type GetContractQueryVariables = Exact<{
   contractId: Scalars['Float']['input'];
 }>;
 
 
-export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: string | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: string | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, user: { name: string }, city?: { name: string } | null, customer?: { name: string, phone: string } | null, financialCompany?: { name: string } | null, shippingMethod?: { name: string } | null, division?: { name: string } | null } };
+export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriodEndAt?: string | null, contractPeriodStartAt?: string | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: string | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, user: { name: string }, city?: { name: string } | null, customer?: { name: string, phone: string } | null, financialCompany?: { name: string } | null, shippingMethod?: { name: string } | null, division?: { name: string } | null } };
 
 export type GetFinancialCompaniesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1405,7 +1411,7 @@ export type GetCustomerQueryVariables = Exact<{
 }>;
 
 
-export type GetCustomerQuery = { getCustomer: { id: number, name: string, phone: string, sub_phone?: string | null, type?: string | null, created_at?: string | null, memo?: string | null, note?: string | null, userList: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null, contractList: Array<{ id: number, company_name_nominee?: string | null, carName?: string | null, carOption?: string | null, contractPeriod?: string | null, agreedMileage?: number | null, division?: { name: string } | null }>, customerGrade?: { id: number, name: string } | null, counselList: Array<{ id: number, counselAt: string, context: string, customer: { name: string }, user: { name: string } }> } };
+export type GetCustomerQuery = { getCustomer: { id: number, name: string, phone: string, sub_phone?: string | null, type?: string | null, created_at?: string | null, memo?: string | null, note?: string | null, userList: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null, contractList: Array<{ id: number, company_name_nominee?: string | null, carName?: string | null, carOption?: string | null, contractPeriodStartAt?: string | null, contractPeriodEndAt?: string | null, agreedMileage?: number | null, division?: { name: string } | null }>, customerGrade?: { id: number, name: string } | null, counselList: Array<{ id: number, counselAt: string, context: string, customer: { name: string }, user: { name: string } }> } };
 
 export type GetCustomerGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2323,7 +2329,8 @@ export const GetContractsDocument = gql`
     branch
     branchFee
     collateralRate
-    contractPeriod
+    contractPeriodStartAt
+    contractPeriodEndAt
     agreedMileage
     insuranceAge
     object
@@ -2417,7 +2424,8 @@ export const GetContractDocument = gql`
     branch
     branchFee
     collateralRate
-    contractPeriod
+    contractPeriodEndAt
+    contractPeriodStartAt
     agreedMileage
     insuranceAge
     object
@@ -2814,7 +2822,8 @@ export const GetCustomerDocument = gql`
       }
       carName
       carOption
-      contractPeriod
+      contractPeriodStartAt
+      contractPeriodEndAt
       agreedMileage
     }
     customerGrade {

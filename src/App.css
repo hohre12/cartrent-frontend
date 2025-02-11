@@ -11,3 +11,9 @@
   left: 150px;
   top: 60px;
 }
+
+/* span required */
+p.required {
+  display: inline-block;
+  color: #ff3b31;
+}

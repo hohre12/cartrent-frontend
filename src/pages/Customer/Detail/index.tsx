@@ -179,7 +179,10 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.contractList
-                  .map((it) => it.contractPeriod)
+                  .map(
+                    (it) =>
+                      `${it.contractPeriodStartAt} ~ ${it.contractPeriodEndAt}`,
+                  )
                   .join(' / ')}
               ></Input>
             </div>
