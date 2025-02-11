@@ -41,7 +41,8 @@ export const GET_CONTRACTS_QUERY = gql`
       branch
       branchFee
       collateralRate
-      contractPeriod
+      contractPeriodStartAt
+      contractPeriodEndAt
       agreedMileage
       insuranceAge
       object
@@ -107,7 +108,8 @@ export const GET_CONTRACT_QUERY = gql`
       branch
       branchFee
       collateralRate
-      contractPeriod
+      contractPeriodEndAt
+      contractPeriodStartAt
       agreedMileage
       insuranceAge
       object

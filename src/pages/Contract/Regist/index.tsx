@@ -67,7 +67,7 @@ const ContractRegist = () => {
       typeof value === 'number'
     ) {
       const feeObject = {
-        [key]: key === 'fee' ? value : value.toString(),
+        [key]: value,
         ...(key === 'fee' && {
           feeRate: (value / createContract.carPrice) * 100,
         }),
@@ -75,8 +75,7 @@ const ContractRegist = () => {
           fee: (value * createContract.carPrice) / 100,
         }),
       };
-      console.log(key);
-      console.log(value);
+
       setCreateContract((prevState) => ({
         ...prevState,
         ...feeObject,
@@ -117,7 +116,7 @@ const ContractRegist = () => {
         addToast({
           id: Date.now(),
           isImage: true,
-          content: `계약이 등록되었습니다.`,
+          content: `${customer.name} 고객님의 계약이 등록되었습니다.`,
           type: 'success',
         });
         navigate('/contract');
@@ -156,7 +155,9 @@ const ContractRegist = () => {
           <h5>계약내용 입력</h5>
           <InfoBox>
             <InputLine>
-              <span>담당자</span>
+              <span>
+                담당자 <p className="required">*</p>
+              </span>
               <InputWrapper>
                 <Select
                   size="medium"
@@ -199,7 +200,9 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>고객명</span>
+              <span>
+                고객명 <p className="required">*</p>
+              </span>
               <InputWrapper>
                 <Select
                   size="medium"
@@ -227,7 +230,9 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>차종</span>
+              <span>
+                차종 <p className="required">*</p>
+              </span>
               <InputWrapper>
                 <Input
                   value={createContract?.carName}
@@ -335,12 +340,13 @@ const ContractRegist = () => {
               <InputWrapper>
                 <Input
                   disabled={!createContract?.carPrice}
-                  value={createContract?.feeRate ?? ''}
+                  value={
+                    createContract?.feeRate
+                      ? numberFormat(createContract.feeRate)
+                      : 0
+                  }
                   onTextChange={(text) =>
-                    handleValueChange(
-                      Number(text) > 100 ? 100 : Number(text),
-                      'feeRate',
-                    )
+                    handleValueChange(Number(text.replace(/,/g, '')), 'feeRate')
                   }
                   max={100}
                   type="number"
@@ -526,9 +532,23 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>약정 기간 - 캘린더 ~ 캘린더</span>
+              <span>약정 기간</span>
               <InputWrapper>
-                <Input />
+                <Input
+                  type="date"
+                  style={{ cursor: 'pointer' }}
+                  onTextChange={(text) =>
+                    handleValueChange(text, 'contractPeriodStartAt')
+                  }
+                />
+                <span>~</span>
+                <Input
+                  type="date"
+                  style={{ cursor: 'pointer' }}
+                  onTextChange={(text) =>
+                    handleValueChange(text, 'contractPeriodEndAt')
+                  }
+                />
               </InputWrapper>
             </InputLine>
             <InputLine>
@@ -915,10 +935,13 @@ const InputLine = styled.div`
   & > span {
     ${textM16Medium}
     width: 250px;
+    display: flex;
+    gap: 5px;
   }
 `;
 const InputWrapper = styled.div`
   width: 400px;
   display: flex;
   gap: 20px;
+  align-items: center;
 `;

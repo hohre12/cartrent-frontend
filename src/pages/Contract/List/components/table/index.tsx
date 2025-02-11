@@ -193,7 +193,13 @@ const ContractListTable = ({ data }: TTableProps) => {
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'contractPeriod',
-            ) && <td>{it.contractPeriod ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.contractPeriodStartAt && it.contractPeriodEndAt
+                  ? `${it.contractPeriodStartAt} ~ ${it.contractPeriodEndAt}`
+                  : '-'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'agreedMileage',
