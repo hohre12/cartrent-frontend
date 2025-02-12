@@ -11,14 +11,17 @@ export const GET_CONTRACTS_QUERY = gql`
       id
       status
       user {
+        id
         name
       }
       city {
+        id
         name
       }
       contractAt
       shippingDate
       customer {
+        id
         name
         phone
       }
@@ -28,6 +31,7 @@ export const GET_CONTRACTS_QUERY = gql`
       outerColor
       carPrice
       financialCompany {
+        id
         name
       }
       feeRate
@@ -35,9 +39,11 @@ export const GET_CONTRACTS_QUERY = gql`
       promotion
       monthlyPayment
       shippingMethod {
+        id
         name
       }
       isOrdering
+      isVATSupport
       branch
       branchFee
       collateralRate
@@ -62,8 +68,11 @@ export const GET_CONTRACTS_QUERY = gql`
       netIncome
       company_name_nominee
       division {
+        id
         name
       }
+      advancePayment
+      security
     }
   }
 `;
@@ -78,14 +87,17 @@ export const GET_CONTRACT_QUERY = gql`
       id
       status
       user {
+        id
         name
       }
       city {
+        id
         name
       }
       contractAt
       shippingDate
       customer {
+        id
         name
         phone
       }
@@ -95,6 +107,7 @@ export const GET_CONTRACT_QUERY = gql`
       outerColor
       carPrice
       financialCompany {
+        id
         name
       }
       feeRate
@@ -102,9 +115,11 @@ export const GET_CONTRACT_QUERY = gql`
       promotion
       monthlyPayment
       shippingMethod {
+        id
         name
       }
       isOrdering
+      isVATSupport
       branch
       branchFee
       collateralRate
@@ -129,8 +144,11 @@ export const GET_CONTRACT_QUERY = gql`
       netIncome
       company_name_nominee
       division {
+        id
         name
       }
+      advancePayment
+      security
     }
   }
 `;

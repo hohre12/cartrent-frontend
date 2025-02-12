@@ -53,7 +53,7 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
             <td>{it.memo ?? '-'}</td>
             <td>
               {it.contractList.length > 0
-                ? it.contractList[it.contractList.length - 1].carName
+                ? it.contractList.map((it) => it.carName).join(' / ')
                 : '-'}
             </td>
             <td>{it.note ?? '-'}</td>
@@ -69,7 +69,7 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
             <td>{it.userList?.name ?? '-'}</td>
             <td>
               {it.contractList.length > 0
-                ? it.contractList[it.contractList.length - 1].division?.name
+                ? it.contractList.map((it) => it.division?.name).join(' / ')
                 : '-'}
             </td>
             <td>{it.type ?? '-'}</td>

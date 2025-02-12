@@ -5,7 +5,7 @@ import Select from '@/components/select/Select';
 import { useToast } from '@/hooks/useToast';
 import { useGetCites } from '@/services/city';
 import {
-  useCreateCountract,
+  useCreateContract,
   useGetDivisions,
   useGetFinancialCompanies,
   useGetShippingMethods,
@@ -53,12 +53,11 @@ const ContractRegist = () => {
   const [customer, setCustomer] = useState<Customer>();
   const [city, setCity] = useState<City>();
   const [user, setUser] = useState<User>();
-
   const [financialCompany, setFinancialCompany] = useState<FinancialCompany>();
   const [division, setDivision] = useState<Division>();
   const [shippingMethod, setShippingMethod] = useState<ShippingMethod>();
 
-  const { createContractMutation } = useCreateCountract();
+  const { createContractMutation } = useCreateContract();
 
   const handleValueChange = (value: string | number | boolean, key: string) => {
     if (

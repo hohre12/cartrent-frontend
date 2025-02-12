@@ -1,12 +1,18 @@
 import {
   CREATE_COUNSEL_MUTATION,
   DELETE_COUNSEL_MUTATION,
+  UPDATE_COUNSEL_MUTATION,
 } from '@/apollo/mutations/counsel';
 import {
   GET_COUNSEL_QUERY,
   GET_COUNSELS_QUERY,
 } from '@/apollo/queries/counsel';
-import { Counsel, CreateCounselDto, GetCounselsDto } from '@/types/graphql';
+import {
+  Counsel,
+  CreateCounselDto,
+  GetCounselsDto,
+  UpdateCounselDto,
+} from '@/types/graphql';
 import { useMutation, useQuery } from '@apollo/client';
 
 export const useGetCounsels = (params: GetCounselsDto) => {
@@ -40,6 +46,18 @@ export const useCreateCounsel = () => {
     return createCounselMutate({ variables: { createCounselDto: params } });
   };
   return { createCounsel };
+};
+
+export const useUpdateCounsel = () => {
+  const [updateCounselMutate] = useMutation(UPDATE_COUNSEL_MUTATION, {
+    refetchQueries: [GET_COUNSEL_QUERY, 'GetCounsel'],
+  });
+
+  const updateCounsel = async (params: UpdateCounselDto) => {
+    if (!params) return;
+    return updateCounselMutate({ variables: { updateCounselDto: params } });
+  };
+  return { updateCounsel };
 };
 
 export const useDeleteCounsel = () => {
