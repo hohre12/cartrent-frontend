@@ -11,12 +11,19 @@ import {
 import { useGetUsers } from '@/services/user';
 import { useRecoilState } from 'recoil';
 import { customerFiltersState } from '@/state/customer';
+import RegistGradeModal from '../components/registGradeModal';
+import RegistGroupModal from '../components/registGroupModal';
 
 const CustomerFilter = () => {
   const { data: groups } = useGetCustomerGroups();
   const { data: grades } = useGetCustomerGrades();
   const { data: statuses } = useGetCustomerStatuses();
   const { data: users } = useGetUsers();
+
+  const [isOpenRegistGradeModal, setIsOpenRegistGradeModal] =
+    useState<boolean>(false);
+  const [isOpenRegistGroupModal, setIsOpenRegistGroupModal] =
+    useState<boolean>(false);
 
   const [filters, setFilters] = useRecoilState(customerFiltersState);
   const [isOpenFilters, setIsOpenFilters] = useState<string[]>([]);
@@ -47,122 +54,144 @@ const CustomerFilter = () => {
     }
   };
   return (
-    <FilterWrapper>
-      <Filter>
-        <div
-          className="Menu"
-          onClick={() => handleOpenFilters('group')}
-        >
-          <div>
-            <SvgIcon
-              iconName="icon-arrow_up_s"
-              style={{
-                width: '20px',
-                transform: isOpenFilters.some((it) => it === 'group')
-                  ? 'rotate(90deg)'
-                  : '',
-              }}
-            />
-            <p>고객그룹</p>
+    <>
+      <FilterWrapper>
+        <Filter>
+          <div
+            className="Menu"
+            onClick={() => handleOpenFilters('group')}
+          >
+            <div>
+              <SvgIcon
+                iconName="icon-arrow_up_s"
+                style={{
+                  width: '20px',
+                  transform: isOpenFilters.some((it) => it === 'group')
+                    ? 'rotate(90deg)'
+                    : '',
+                }}
+              />
+              <p>고객그룹</p>
+            </div>
+            <div onClick={(e) => e.stopPropagation()}>
+              {/* <SvgIcon iconName="icon-search" /> */}
+              <SvgIcon
+                iconName="icon-plus"
+                onClick={() => setIsOpenRegistGroupModal(true)}
+              />
+            </div>
           </div>
-          <div onClick={(e) => e.stopPropagation()}>
-            {/* <SvgIcon iconName="icon-search" /> */}
-            <SvgIcon iconName="icon-plus" />
+          {isOpenFilters.some((it) => it === 'group') && (
+            <div className="SubMenu">
+              {groups?.getCustomerGroups.map((it) => (
+                <div key={it.id}>
+                  <Checkbox
+                    value={filters.groups
+                      .map((filter) => filter.value)
+                      .includes(it.id)}
+                    onCheckedChange={(val) => handleChecked(val, it, 'groups')}
+                  ></Checkbox>
+                  <p>{it.name}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </Filter>
+        <Filter>
+          <div
+            className="Menu"
+            onClick={() => handleOpenFilters('grade')}
+          >
+            <div>
+              <SvgIcon
+                iconName="icon-arrow_up_s"
+                style={{
+                  width: '20px',
+                  transform: isOpenFilters.some((it) => it === 'grade')
+                    ? 'rotate(90deg)'
+                    : '',
+                }}
+              />
+              <p>고객등급</p>
+            </div>
+            <div onClick={(e) => e.stopPropagation()}>
+              {/* <SvgIcon iconName="icon-search" /> */}
+              <SvgIcon
+                iconName="icon-plus"
+                onClick={() => setIsOpenRegistGradeModal(true)}
+              />
+            </div>
           </div>
-        </div>
-        {isOpenFilters.some((it) => it === 'group') && (
-          <div className="SubMenu">
-            {groups?.getCustomerGroups.map((it) => (
-              <div key={it.id}>
-                <Checkbox
-                  value={filters.groups
-                    .map((filter) => filter.value)
-                    .includes(it.id)}
-                  onCheckedChange={(val) => handleChecked(val, it, 'groups')}
-                ></Checkbox>
-                <p>{it.name}</p>
-              </div>
-            ))}
+          {isOpenFilters.some((it) => it === 'grade') && (
+            <div className="SubMenu">
+              {grades?.getCustomerGrades.map((it) => (
+                <div key={it.id}>
+                  <Checkbox
+                    value={filters.grades
+                      .map((filter) => filter.value)
+                      .includes(it.id)}
+                    onCheckedChange={(val) => handleChecked(val, it, 'grades')}
+                  ></Checkbox>
+                  <p>{it.name}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </Filter>
+        <Filter>
+          <div
+            className="Menu"
+            onClick={() => handleOpenFilters('user')}
+          >
+            <div>
+              <SvgIcon
+                iconName="icon-arrow_up_s"
+                style={{
+                  width: '20px',
+                  transform: isOpenFilters.some((it) => it === 'user')
+                    ? 'rotate(90deg)'
+                    : '',
+                }}
+              />
+              <p>담당자</p>
+            </div>
+            <div onClick={(e) => e.stopPropagation()}>
+              {/* <SvgIcon iconName="icon-search" /> */}
+              {/* <SvgIcon iconName="icon-plus" /> */}
+            </div>
           </div>
-        )}
-      </Filter>
-      <Filter>
-        <div
-          className="Menu"
-          onClick={() => handleOpenFilters('grade')}
-        >
-          <div>
-            <SvgIcon
-              iconName="icon-arrow_up_s"
-              style={{
-                width: '20px',
-                transform: isOpenFilters.some((it) => it === 'grade')
-                  ? 'rotate(90deg)'
-                  : '',
-              }}
-            />
-            <p>고객등급</p>
-          </div>
-          <div onClick={(e) => e.stopPropagation()}>
-            {/* <SvgIcon iconName="icon-search" /> */}
-            <SvgIcon iconName="icon-plus" />
-          </div>
-        </div>
-        {isOpenFilters.some((it) => it === 'grade') && (
-          <div className="SubMenu">
-            {grades?.getCustomerGrades.map((it) => (
-              <div key={it.id}>
-                <Checkbox
-                  value={filters.grades
-                    .map((filter) => filter.value)
-                    .includes(it.id)}
-                  onCheckedChange={(val) => handleChecked(val, it, 'grades')}
-                ></Checkbox>
-                <p>{it.name}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </Filter>
-      <Filter>
-        <div
-          className="Menu"
-          onClick={() => handleOpenFilters('user')}
-        >
-          <div>
-            <SvgIcon
-              iconName="icon-arrow_up_s"
-              style={{
-                width: '20px',
-                transform: isOpenFilters.some((it) => it === 'user')
-                  ? 'rotate(90deg)'
-                  : '',
-              }}
-            />
-            <p>담당자</p>
-          </div>
-          <div onClick={(e) => e.stopPropagation()}>
-            {/* <SvgIcon iconName="icon-search" /> */}
-            {/* <SvgIcon iconName="icon-plus" /> */}
-          </div>
-        </div>
-        {isOpenFilters.some((it) => it === 'user') && (
-          <div className="SubMenu">
-            {users?.getUsers.map((it) => (
-              <div key={it.id}>
-                <Checkbox
-                  value={filters.users
-                    .map((filter) => filter.value)
-                    .includes(it.id)}
-                  onCheckedChange={(val) => handleChecked(val, it, 'users')}
-                ></Checkbox>
-                <p>{it.name}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </Filter>
-    </FilterWrapper>
+          {isOpenFilters.some((it) => it === 'user') && (
+            <div className="SubMenu">
+              {users?.getUsers.map((it) => (
+                <div key={it.id}>
+                  <Checkbox
+                    value={filters.users
+                      .map((filter) => filter.value)
+                      .includes(it.id)}
+                    onCheckedChange={(val) => handleChecked(val, it, 'users')}
+                  ></Checkbox>
+                  <p>{it.name}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </Filter>
+      </FilterWrapper>
+      {isOpenRegistGroupModal && (
+        <RegistGroupModal
+          isOpen={isOpenRegistGroupModal}
+          onCancel={() => setIsOpenRegistGroupModal(false)}
+          onConfirm={() => setIsOpenRegistGroupModal(false)}
+        />
+      )}
+      {isOpenRegistGradeModal && (
+        <RegistGradeModal
+          isOpen={isOpenRegistGradeModal}
+          onCancel={() => setIsOpenRegistGradeModal(false)}
+          onConfirm={() => setIsOpenRegistGradeModal(false)}
+        />
+      )}
+    </>
   );
 };
 
@@ -179,12 +208,12 @@ export const FilterWrapper = styled.div`
   user-select: none;
 `;
 export const Filter = styled.div`
+  ${textS14Medium}
   text-align: left;
   display: flex;
   flex-direction: column;
   gap: 5px;
   height: 270px;
-  ${textS14Medium}
   .Menu {
     background: #eee;
     padding: 5px;
@@ -201,6 +230,10 @@ export const Filter = styled.div`
     flex-direction: column;
     gap: 5px;
     cursor: pointer;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     & > div {
       padding: 5px;
       display: flex;

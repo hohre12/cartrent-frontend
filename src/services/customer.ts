@@ -1,4 +1,6 @@
 import {
+  CREATE_CUSTOMER_GRADE_MUTATION,
+  CREATE_CUSTOMER_GROUP_MUTATION,
   CREATE_CUSTOMER_MUTATION,
   DELETE_CUSTOMER_MUTATION,
   UPDATE_CUSTOMER_MUTATION,
@@ -12,6 +14,8 @@ import {
 } from '@/apollo/queries/customer';
 import {
   CreateCustomerDto,
+  CreateCustomerGradeDto,
+  CreateCustomerGroupDto,
   Customer,
   CustomerGrade,
   CustomerGroup,
@@ -102,4 +106,38 @@ export const useUpdateCustomer = () => {
     return updateCustomerMutate({ variables: { updateCustomerDto: params } });
   };
   return { updateCustomer };
+};
+
+export const useCreateCustomerGrade = () => {
+  const [createCustomerGradeMutate] = useMutation(
+    CREATE_CUSTOMER_GRADE_MUTATION,
+    {
+      refetchQueries: [GET_CUSTOMER_GRADES_QUERY, 'GetCustomerGrades'],
+    },
+  );
+
+  const createCustomerGrade = async (params: CreateCustomerGradeDto) => {
+    if (!params) return;
+    return createCustomerGradeMutate({
+      variables: { createCustomerGradeDto: params },
+    });
+  };
+  return { createCustomerGrade };
+};
+
+export const useCreateCustomerGroup = () => {
+  const [createCustomerGroupMutate] = useMutation(
+    CREATE_CUSTOMER_GROUP_MUTATION,
+    {
+      refetchQueries: [GET_CUSTOMER_GROUPS_QUERY, 'GetCustomerGroups'],
+    },
+  );
+
+  const createCustomerGroup = async (params: CreateCustomerGroupDto) => {
+    if (!params) return;
+    return createCustomerGroupMutate({
+      variables: { createCustomerGroupDto: params },
+    });
+  };
+  return { createCustomerGroup };
 };

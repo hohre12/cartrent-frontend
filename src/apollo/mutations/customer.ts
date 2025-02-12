@@ -29,6 +29,7 @@ export const UPDATE_CUSTOMER_OF_USER_MUTATION = gql`
     }
   }
 `;
+
 export const CREATE_CUSTOMER_GROUP_MUTATION = gql`
   mutation CreateCustomerGroup(
     $createCustomerGroupDto: CreateCustomerGroupDto!
@@ -38,18 +39,13 @@ export const CREATE_CUSTOMER_GROUP_MUTATION = gql`
     }
   }
 `;
-export const UPDATE_CUSTOMER_GROUP_MUTATION = gql`
-  mutation UpdateCustomerGroup(
-    $updateCustomerGroupDto: UpdateCustomerGroupDto!
+export const CREATE_CUSTOMER_GRADE_MUTATION = gql`
+  mutation CreateCustomerGrade(
+    $createCustomerGradeDto: CreateCustomerGradeDto!
   ) {
-    updateCustomerGroup(UpdateCustomerGroupDto: $updateCustomerGroupDto) {
+    createCustomerGrade(CreateCustomerGradeDto: $createCustomerGradeDto) {
       id
     }
-  }
-`;
-export const DELETE_CUSTOMER_GROUP_MUTATION = gql`
-  mutation DeleteCustomerGroup($customerGroupId: Float!) {
-    deleteCustomerGroup(customerGroupId: $customerGroupId)
   }
 `;
 /* Mutation */
