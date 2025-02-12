@@ -2,6 +2,7 @@ import Button from '@/components/button/Button';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
+import { useDeleteContract } from '@/services/contract';
 import { selectedContractState } from '@/state/contract';
 import { TConfirm, TToast } from '@/types/common';
 import { useCallback, useState } from 'react';
@@ -15,16 +16,23 @@ const FloatingMenu = () => {
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
 
-  const handleContractDelete = () => {
+  const { deleteContractMutation } = useDeleteContract();
+
+  const handleContractDelete = async () => {
     try {
-      addToast({
-        id: Date.now(),
-        isImage: true,
-        content: `${selectedContract.length}개의 계약이 삭제되었습니다.`,
-        type: 'success',
-      });
-      hideConfirm();
-      setSelectedContract([]);
+      const response = await deleteContractMutation(
+        selectedContract.map((it) => it.id),
+      );
+      if (response && response.data.deleteContract === 'success') {
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `${selectedContract.length}개의 계약이 삭제되었습니다.`,
+          type: 'success',
+        });
+        hideConfirm();
+        setSelectedContract([]);
+      }
     } catch (e) {
       console.warn(e);
     }
@@ -36,8 +44,8 @@ const FloatingMenu = () => {
       title: '계약 삭제',
       content: `${selectedContract.length}개의 계약을 삭제하시겠습니까?`,
       cancelText: '취소',
-      confirmText: '완료',
-      confirmVariant: 'primaryInfo',
+      confirmText: '삭제',
+      confirmVariant: 'primaryDanger',
       onClose: () => hideConfirm(),
       onCancel: () => hideConfirm(),
       onConfirm: handleContractDelete,

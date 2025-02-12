@@ -2,28 +2,33 @@ import Button from '@/components/button/Button';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
+import { useDeleteCounsel } from '@/services/counsel';
 import { selectedCounselState } from '@/state/counsel';
-import { TConfirm, TToast } from '@/types/common';
 import { useCallback, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 const FloatingMenu = () => {
-  const [selectedCounsel, setselectedCounsel] =
+  const [selectedCounsel, setSelectedCounsel] =
     useRecoilState(selectedCounselState);
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
 
-  const handleCounselDelete = () => {
+  const { deleteCounsel } = useDeleteCounsel();
+
+  const handleCounselDelete = async () => {
     try {
-      addToast({
-        id: Date.now(),
-        isImage: true,
-        content: `${selectedCounsel.length}개의 상담이 삭제되었습니다.`,
-        type: 'success',
-      });
-      hideConfirm();
-      setselectedCounsel([]);
+      const response = await deleteCounsel(selectedCounsel.map((it) => it.id));
+      if (response && response.data.deleteCounsel === 'success') {
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `${selectedCounsel.length}개의 상담이 삭제되었습니다.`,
+          type: 'success',
+        });
+        hideConfirm();
+        setSelectedCounsel([]);
+      }
     } catch (e) {
       console.warn(e);
     }
@@ -35,8 +40,8 @@ const FloatingMenu = () => {
       title: '상담 삭제',
       content: `${selectedCounsel.length}개의 상담을 삭제하시겠습니까?`,
       cancelText: '취소',
-      confirmText: '완료',
-      confirmVariant: 'primaryInfo',
+      confirmText: '삭제',
+      confirmVariant: 'primaryDanger',
       onClose: () => hideConfirm(),
       onCancel: () => hideConfirm(),
       onConfirm: handleCounselDelete,

@@ -16,8 +16,8 @@ const CounselDetail = () => {
   const { addToast } = useToast();
   const counselIdx = Number(id);
   const { data, loading, error } = useGetCounsel(counselIdx);
-  const { deleteCounsel } = useDeleteCounsel();
   const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
+  const { deleteCounsel } = useDeleteCounsel();
 
   const handleDeleteCounsel = async () => {
     try {

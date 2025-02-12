@@ -65,7 +65,6 @@ const ContractDetail = () => {
     carName: data?.getContract?.carName ?? '',
     userId: data?.getContract?.user_id ?? 0,
   });
-  const { deleteContractMutation } = useDeleteContract();
 
   const [user, setUser] = useState<User>();
   const [customer, setCustomer] = useState<Customer>();
@@ -75,6 +74,7 @@ const ContractDetail = () => {
   const [shippingMethod, setShippingMethod] = useState<ShippingMethod>();
 
   const { updateContractMutation } = useUpdateContract();
+  const { deleteContractMutation } = useDeleteContract();
 
   const handleValueChange = (value: string | number | boolean, key: string) => {
     if (
@@ -144,7 +144,7 @@ const ContractDetail = () => {
   const handleDeleteContract = async () => {
     try {
       const response = await deleteContractMutation([contractIdx]);
-      if (response && response.data.deleteCountract === 'success') {
+      if (response && response.data.deleteContract === 'success') {
         hideConfirm();
         addToast({
           id: Date.now(),
