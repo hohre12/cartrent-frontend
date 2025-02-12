@@ -40,6 +40,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import _ from 'lodash';
 
 const ContractDetail = () => {
   const { id } = useParams();
@@ -147,8 +148,18 @@ const ContractDetail = () => {
       setFinancialCompany(detail.financialCompany ?? undefined);
       setDivision(detail.financialCompany ?? undefined);
       setShippingMethod(detail.shippingMethod ?? undefined);
+      const newDetail = _.omit(detail, [
+        'id',
+        'user',
+        'city',
+        'customer',
+        'financialCompany',
+        'shippingMethod',
+        'division',
+      ]);
+
       setUpdateContract({
-        ...detail,
+        ...newDetail,
         contractId: contractIdx,
         customerId: detail.customer?.id ?? 0,
         userId: detail.user.id,

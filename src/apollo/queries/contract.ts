@@ -71,6 +71,8 @@ export const GET_CONTRACTS_QUERY = gql`
         id
         name
       }
+      advancePayment
+      security
     }
   }
 `;
@@ -145,6 +147,8 @@ export const GET_CONTRACT_QUERY = gql`
         id
         name
       }
+      advancePayment
+      security
     }
   }
 `;
