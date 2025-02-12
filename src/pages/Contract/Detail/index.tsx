@@ -37,18 +37,18 @@ import {
 } from '@/types/graphql';
 import { numberFormat } from '@/utils/common';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import _ from 'lodash';
 
 const ContractDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
   const contractIdx = Number(id);
   const { data, loading, error } = useGetContract(contractIdx);
-  const { deleteContract } = useDeleteContract();
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [submit, setSubmit] = useState<boolean>(false);
 
@@ -143,15 +143,16 @@ const ContractDetail = () => {
 
   const handleDeleteContract = async () => {
     try {
-      const response = await deleteCounsel([counselIdx]);
-      if (response && response.data.deleteCounsel === 'success') {
+      const response = await deleteContractMutation([contractIdx]);
+      if (response && response.data.deleteCountract === 'success') {
         hideConfirm();
         addToast({
           id: Date.now(),
           isImage: true,
-          content: `상담이 삭제되었습니다.`,
+          content: `계약이 삭제되었습니다.`,
           type: 'success',
         });
+        navigate(-1);
       }
     } catch (e) {
       console.warn(e);
@@ -191,7 +192,7 @@ const ContractDetail = () => {
     if (detail) {
       handleInit();
     }
-  }, [detail]);
+  }, [detail, navigate]);
 
   if (!detail) return <></>;
 
@@ -216,7 +217,23 @@ const ContractDetail = () => {
             </>
           ) : (
             <>
-              <Button>삭제</Button>
+              <Button
+                onClick={() =>
+                  showConfirm({
+                    isOpen: true,
+                    title: '계약 삭제',
+                    content: `${detail?.customer.name} 고객의 계약을 삭제하시겠습니까?`,
+                    cancelText: '취소',
+                    confirmText: '삭제',
+                    confirmVariant: 'primaryDanger',
+                    onClose: hideConfirm,
+                    onCancel: hideConfirm,
+                    onConfirm: handleDeleteContract,
+                  })
+                }
+              >
+                삭제
+              </Button>
               <Button onClick={() => setIsEdit(!isEdit)}>편집</Button>
             </>
           )}

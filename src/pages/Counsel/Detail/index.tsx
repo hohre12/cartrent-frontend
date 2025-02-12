@@ -4,13 +4,14 @@ import { useToast } from '@/hooks/useToast';
 import { useDeleteCounsel, useGetCounsel } from '@/services/counsel';
 import { textS14Medium, textS14Regular } from '@/styles/typography';
 import { formatDate } from '@/utils/dateUtils';
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import EditModal from '../List/components/editModal';
 
 const CounselDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
   const counselIdx = Number(id);
@@ -29,6 +30,7 @@ const CounselDetail = () => {
           content: `상담이 삭제되었습니다.`,
           type: 'success',
         });
+        navigate(-1);
       }
     } catch (e) {
       console.warn(e);
