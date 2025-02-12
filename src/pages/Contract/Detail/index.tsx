@@ -65,6 +65,7 @@ const ContractDetail = () => {
     carName: data?.getContract?.carName ?? '',
     userId: data?.getContract?.user_id ?? 0,
   });
+  const { deleteContractMutation } = useDeleteContract();
 
   const [user, setUser] = useState<User>();
   const [customer, setCustomer] = useState<Customer>();
@@ -132,6 +133,23 @@ const ContractDetail = () => {
           id: Date.now(),
           isImage: true,
           content: `${customer.name} 고객님의 계약이 수정되었습니다.`,
+          type: 'success',
+        });
+      }
+    } catch (e) {
+      console.warn(e);
+    }
+  };
+
+  const handleDeleteContract = async () => {
+    try {
+      const response = await deleteCounsel([counselIdx]);
+      if (response && response.data.deleteCounsel === 'success') {
+        hideConfirm();
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `상담이 삭제되었습니다.`,
           type: 'success',
         });
       }
