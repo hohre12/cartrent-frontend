@@ -12,6 +12,12 @@
   top: 60px;
 }
 
+.verticalLine {
+  width: 1px;
+  height: 28px;
+  background-color: #ddd;
+}
+
 /* span required */
 p.required {
   display: inline-block;

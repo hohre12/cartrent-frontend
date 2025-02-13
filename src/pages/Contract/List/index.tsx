@@ -10,13 +10,15 @@ import useClickOutside from '@/hooks/useClickOutside';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { contractFiltersState, selectedContractState } from '@/state/contract';
 import { TFilterList } from '@/types/common';
-import { Circle, FilterContent } from '@/styles/common';
+import { Circle, FilterContent, FilterWrapper } from '@/styles/common';
 import RegistModal from './components/registModal';
 import FloatingMenu from './components/floatingMenu';
 import ContractListTable from './components/table';
-import FilterStatus from './components/filter/status';
 import { useGetContracts } from '@/services/contract';
 import { useNavigate } from 'react-router-dom';
+import FilterUser from './components/filter/user';
+import FilterShippingMethod from './components/filter/shippingMethod';
+import Input from '@/components/input/Input';
 
 const ContractList = () => {
   const navigate = useNavigate();
@@ -27,15 +29,44 @@ const ContractList = () => {
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
 
-  const { data, loading, error } = useGetContracts({ search: searchText });
-
   // filters
   const [filters, setFilters] = useRecoilState(contractFiltersState);
   const resetFilters = useResetRecoilState(contractFiltersState);
 
-  // filter - status
-  const [isFilterStatusOpen, setIsFilterStatusOpen] = useState<boolean>(false);
-  const filterStatusRef = useClickOutside(() => setIsFilterStatusOpen(false));
+  const { data, loading, error } = useGetContracts({
+    search: searchText ? searchText : null,
+    shippingMethodIds:
+      filters?.shippingMethods?.length > 0
+        ? filters.shippingMethods.map((it) => it.value)
+        : null,
+    userId:
+      filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
+    startContractAtYearMonth: filters?.startContractAtYearMonth
+      ? filters.startContractAtYearMonth
+      : null,
+    endContractAtYearMonth: filters?.endContractAtYearMonth
+      ? filters.endContractAtYearMonth
+      : null,
+  });
+
+  // filter - shippingMethod
+  const [isFilterShippingMethodOpen, setIsFilterShippingMethodOpen] =
+    useState<boolean>(false);
+  const filterShippingMethodRef = useClickOutside(() =>
+    setIsFilterShippingMethodOpen(false),
+  );
+
+  // filter - user
+  const [isFilterUserOpen, setIsFilterUserOpen] = useState<boolean>(false);
+  const filterUserRef = useClickOutside(() => setIsFilterUserOpen(false));
+
+  //   // filter - startContractAtYearMonth
+  //   const [isFilterStatusOpen, setIsFilterStatusOpen] = useState<boolean>(false);
+  //   const filterStatusRef = useClickOutside(() => setIsFilterStatusOpen(false));
+
+  //   // filter - startContractAtYearMonth
+  //   const [isFilterStatusOpen, setIsFilterStatusOpen] = useState<boolean>(false);
+  //   const filterStatusRef = useClickOutside(() => setIsFilterStatusOpen(false));
 
   const handleSearchTextDelete = useCallback(() => {
     setSearchText('');
@@ -48,12 +79,20 @@ const ContractList = () => {
     [setSearchText],
   );
 
-  const handleSetFilterStatus = useCallback(
+  const handleSetFilterUser = useCallback(
     (selectedFilters: TFilterList<number>[]) => {
-      setFilters({ ...filters, status: selectedFilters });
-      setIsFilterStatusOpen(false);
+      setFilters({ ...filters, users: selectedFilters });
+      setIsFilterUserOpen(false);
     },
-    [filters, setFilters, setIsFilterStatusOpen],
+    [filters, setFilters, setIsFilterUserOpen],
+  );
+
+  const handleSetFilterShippingMethod = useCallback(
+    (selectedFilters: TFilterList<number>[]) => {
+      setFilters({ ...filters, shippingMethods: selectedFilters });
+      setIsFilterShippingMethodOpen(false);
+    },
+    [filters, setFilters, setIsFilterShippingMethodOpen],
   );
 
   return (
@@ -73,30 +112,93 @@ const ContractList = () => {
                 onRecentClick={handleSearch}
                 keyword="고객명, 담당자, 연락처, 차종, 금융사"
               ></SearchBox>
-              <FilterContent ref={filterStatusRef}>
-                <Button
-                  variant="white"
-                  configuration="stroke"
-                  style={{
-                    borderColor: filters.status.length > 0 ? '#333' : '#ddd',
-                  }}
-                  onClick={() => setIsFilterStatusOpen(!isFilterStatusOpen)}
-                >
-                  계약일자
-                  {filters.status.length > 0 && (
-                    <Circle>{filters.status.length}</Circle>
+              <FilterWrapper>
+                <FilterContent ref={filterShippingMethodRef}>
+                  <Button
+                    variant="white"
+                    configuration="stroke"
+                    style={{
+                      borderColor:
+                        filters.shippingMethods.length > 0 ? '#333' : '#ddd',
+                    }}
+                    onClick={() =>
+                      setIsFilterShippingMethodOpen(!isFilterShippingMethodOpen)
+                    }
+                  >
+                    출고방식
+                    {filters.shippingMethods.length > 0 && (
+                      <Circle>{filters.shippingMethods.length}</Circle>
+                    )}
+                    <SvgIcon
+                      iconName="icon-arrowButton"
+                      style={{ fill: '#333' }}
+                    />
+                  </Button>
+                  {isFilterShippingMethodOpen && (
+                    <FilterShippingMethod
+                      handleApply={handleSetFilterShippingMethod}
+                    ></FilterShippingMethod>
                   )}
-                  <SvgIcon
-                    iconName="icon-arrowButton"
-                    style={{ fill: '#333' }}
+                </FilterContent>
+                <FilterContent ref={filterUserRef}>
+                  <Button
+                    variant="white"
+                    configuration="stroke"
+                    style={{
+                      borderColor: filters.users.length > 0 ? '#333' : '#ddd',
+                    }}
+                    onClick={() => setIsFilterUserOpen(!isFilterUserOpen)}
+                  >
+                    담당자
+                    {filters.users.length > 0 && (
+                      <Circle>{filters.users.length}</Circle>
+                    )}
+                    <SvgIcon
+                      iconName="icon-arrowButton"
+                      style={{ fill: '#333' }}
+                    />
+                  </Button>
+                  {isFilterUserOpen && (
+                    <FilterUser handleApply={handleSetFilterUser}></FilterUser>
+                  )}
+                </FilterContent>
+                <div className="verticalLine"></div>
+                <DateWrapper>
+                  {!filters?.startContractAtYearMonth && (
+                    <label htmlFor="startDate">계약일(언제부터)</label>
+                  )}
+                  <Input
+                    type="date"
+                    inputId="startDate"
+                    style={{ cursor: 'pointer' }}
+                    value={filters?.startContractAtYearMonth ?? ''}
+                    onTextChange={(text) =>
+                      setFilters((prevState) => ({
+                        ...prevState,
+                        startContractAtYearMonth: text,
+                      }))
+                    }
                   />
-                </Button>
-                {isFilterStatusOpen && (
-                  <FilterStatus
-                    handleApply={handleSetFilterStatus}
-                  ></FilterStatus>
-                )}
-              </FilterContent>
+                </DateWrapper>
+                ~
+                <DateWrapper>
+                  {!filters?.endContractAtYearMonth && (
+                    <label htmlFor="endDate">계약일(언제까지)</label>
+                  )}
+                  <Input
+                    type="date"
+                    inputId="endDate"
+                    style={{ cursor: 'pointer' }}
+                    value={filters?.endContractAtYearMonth ?? ''}
+                    onTextChange={(text) =>
+                      setFilters((prevState) => ({
+                        ...prevState,
+                        endContractAtYearMonth: text,
+                      }))
+                    }
+                  />
+                </DateWrapper>
+              </FilterWrapper>
             </SearchBoxWrapper>
             <FunctionWrapper>
               <Button
@@ -224,5 +326,31 @@ export const ListContent = styled.div`
     p {
       ${textS14Regular}
     }
+  }
+`;
+
+export const DateWrapper = styled.div`
+  position: relative;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  & > label {
+    z-index: 1;
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #111;
+    pointer-events: none;
+    transition: 0.2s ease-out;
+    background: #fff;
+    width: 75%;
+    height: 100%;
+    padding: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .inputBox {
+    border: none;
   }
 `;

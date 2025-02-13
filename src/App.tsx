@@ -179,4 +179,27 @@ const GlobalStyle = createGlobalStyle`
 :root {
   /* --System-Token-color-bg-bg-neutral-tertiary: black; */
 }
+div::-webkit-scrollbar,
+section::-webkit-scrollbar,
+ul::-webkit-scrollbar,
+table::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+div::-webkit-scrollbar-thumb,
+section::-webkit-scrollbar-thumb,
+ul::-webkit-scrollbar-thumb,
+table::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  background-clip: padding-box;
+  border: 3px solid transparent;
+}
+div::-webkit-scrollbar-track,
+section::-webkit-scrollbar-track,
+ul::-webkit-scrollbar-track,
+table::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 6px;
+}
 `;

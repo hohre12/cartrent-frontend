@@ -1,8 +1,6 @@
 import Button from '@/components/button/Button';
 import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
-import { SvgIcon } from '@/components/common/SvgIcon';
-import SearchBox from '@/components/searchBox/SearchBox';
-// import { useGetFilterList } from '@/services/common';
+import { useGetShippingMethods } from '@/services/contract';
 import { contractFiltersState } from '@/state/contract';
 import { TFilterList } from '@/types/common';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -13,17 +11,12 @@ type TFilterProps = {
   handleApply: (selectedList: TFilterList<number>[]) => void;
 };
 
-const FilterStatus = ({ handleApply }: TFilterProps) => {
-  const [text, setText] = useState<string>('');
-  const [searchText, setSearchText] = useState<string>('');
+const FilterShippingMethod = ({ handleApply }: TFilterProps) => {
   const [selectedFilters, setSelectedFilters] = useState<TFilterList<number>[]>(
     [],
   );
   const filters = useRecoilValue(contractFiltersState);
-  // const { data } = useGetFilterList<number>('ship/in', 'category', {
-  //   offset: 0,
-  //   keyword: searchText ? searchText : null,
-  // });
+  const { data: shippingMethods } = useGetShippingMethods();
 
   const [list, setList] = useState([] as TFilterList<number>[]);
 
@@ -57,44 +50,25 @@ const FilterStatus = ({ handleApply }: TFilterProps) => {
     [selectedFilters, setSelectedFilters],
   );
 
-  const handleSearchTextDelete = useCallback(() => {
-    setSearchText('');
-  }, [setSearchText]);
-
-  const handleSearch = useCallback(
-    (value: string) => {
-      setSearchText(value);
-    },
-    [setSearchText],
-  );
-
   useEffect(() => {
-    if (filters.status.length > 0) {
-      setSelectedFilters(filters.status);
+    if (filters.shippingMethods.length > 0) {
+      setSelectedFilters(filters.shippingMethods);
     }
   }, [filters, setSelectedFilters]);
 
   useEffect(() => {
-    // setList(data?.list || []);
-    setList([]);
-  }, [setList]);
+    if (shippingMethods?.getShippingMethods) {
+      const newList = shippingMethods.getShippingMethods.map((it) => ({
+        name: it.name,
+        value: it.id,
+      }));
+      setList(newList);
+    } else {
+      setList([]);
+    }
+  }, [shippingMethods, setList]);
   return (
     <Filter>
-      <SearchBox
-        className="searchBox"
-        value={text}
-        placeholder="상태 검색"
-        onTextChange={(text) => setText(text)}
-        onRemoveClick={handleSearchTextDelete}
-        onKeyDown={handleSearch}
-      ></SearchBox>
-      <SortWrapper>
-        <SvgIcon
-          iconName="icon-filterSort"
-          alt="filter"
-        />
-        <p>기본순</p>
-      </SortWrapper>
       <FilterList>
         <li>
           <span>전체선택</span>
@@ -129,7 +103,7 @@ const FilterStatus = ({ handleApply }: TFilterProps) => {
   );
 };
 
-export default FilterStatus;
+export default FilterShippingMethod;
 
 export const Filter = styled.div`
   top: 40px;

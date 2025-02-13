@@ -32,6 +32,7 @@ interface IInputProps extends HTMLAttributes<HTMLDivElement> {
   max?: number;
   isNumber?: boolean;
   isRegister?: boolean;
+  inputId?: string;
 }
 
 const Input = forwardRef<HTMLInputElement, IInputProps>(
@@ -55,6 +56,7 @@ const Input = forwardRef<HTMLInputElement, IInputProps>(
       isRegister = false,
       max,
       isNumber = false,
+      inputId,
       ...props
     },
     ref,
@@ -95,6 +97,7 @@ const Input = forwardRef<HTMLInputElement, IInputProps>(
           {prefixNode ? <div className="prefixNode">{prefixNode}</div> : ''}
           {type === 'date' || type === 'datetime-local' ? (
             <input
+              id={inputId}
               name={name}
               ref={ref}
               onChange={handleChange}

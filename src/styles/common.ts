@@ -4,6 +4,7 @@ import { textXxs10Medium } from './typography';
 export const FilterWrapper = styled.div`
   display: flex;
   gap: 10px;
+  align-items: center;
 `;
 
 export const FilterContent = styled.div`

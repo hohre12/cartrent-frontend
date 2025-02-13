@@ -15,7 +15,9 @@ export const selectedContractHideWatchOptionsState = atom<string[]>({
 export const contractFiltersState = atom<TContractFiltersStateType>({
   key: 'contractFiltersState',
   default: {
-    status: [],
-    createdAt: undefined,
+    shippingMethods: [],
+    users: [],
+    startContractAtYearMonth: '',
+    endContractAtYearMonth: '',
   },
 });
