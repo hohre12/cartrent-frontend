@@ -168,7 +168,8 @@ const ContractRegist = () => {
                   trackBy="id"
                   valueBy="name"
                   placeholder="담당자를 선택해주세요"
-                  disabled={false}
+                  disabled
+                  isError={submit && !user}
                 />
               </InputWrapper>
             </InputLine>
@@ -214,6 +215,7 @@ const ContractRegist = () => {
                   valueBy="name"
                   placeholder="고객을 선택해주세요"
                   disabled={!!customerIdx}
+                  isError={submit && !customer}
                 />
               </InputWrapper>
             </InputLine>
@@ -236,6 +238,8 @@ const ContractRegist = () => {
                 <Input
                   value={createContract?.carName}
                   onTextChange={(text) => handleValueChange(text, 'carName')}
+                  isError={submit && !createContract.carName}
+                  errorMessage="차종은 필수입니다."
                 />
               </InputWrapper>
             </InputLine>

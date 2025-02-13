@@ -2,7 +2,6 @@ import Input from '@/components/input/Input';
 import { Modal } from '@/components/modal/Modal';
 import Select from '@/components/select/Select';
 import TextArea from '@/components/textArea/TextArea';
-import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import { useGetContracts } from '@/services/contract';
 import { useCreateCounsel } from '@/services/counsel';
@@ -14,7 +13,6 @@ import { Contract, CreateCounselDto, Customer } from '@/types/graphql';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import ReactDatePicker from 'react-datepicker';
 
 const RegistModal = (props: TModal) => {
   const { ...modalProps } = props;
@@ -41,8 +39,8 @@ const RegistModal = (props: TModal) => {
   const handleCounselRegist = async () => {
     setSubmit(true);
     if (!customer) return;
-    if (!context) return;
     if (!counselAt) return;
+    if (!context) return;
     try {
       const response = await createCounsel({
         customer_id: customer.id,
@@ -104,6 +102,7 @@ const RegistModal = (props: TModal) => {
                 trackBy="id"
                 valueBy="name"
                 placeholder="고객을 선택해주세요"
+                isError={submit && !customer}
               />
             </div>
             <div>
@@ -114,6 +113,8 @@ const RegistModal = (props: TModal) => {
                 type="datetime-local"
                 style={{ cursor: 'pointer' }}
                 onTextChange={(text) => setCounselAt(text)}
+                isError={submit && !counselAt}
+                errorMessage="상담일시는 필수입니다."
               />
             </div>
             <div>
@@ -133,7 +134,9 @@ const RegistModal = (props: TModal) => {
                 list={contracts?.getContracts ?? []}
                 trackBy="id"
                 valueBy="carName"
-                placeholder="계약을 선택해주세요"
+                placeholder={
+                  !isContracts ? '계약이 없습니다.' : '계약을 선택해주세요.'
+                }
                 disabled={!isContracts}
               />
             </div>
@@ -146,6 +149,8 @@ const RegistModal = (props: TModal) => {
               value={context ?? ''}
               onTextChange={(value) => setContext(value)}
               style={{ width: '500px' }}
+              isError={submit && !context}
+              errorMessage="상담내용은 필수입니다."
             ></TextArea>
           </div>
         </CounselModalContentWrapper>
