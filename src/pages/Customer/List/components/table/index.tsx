@@ -1,6 +1,4 @@
-import { CustomerStatusEnum } from '@/constants/common';
 import { CUSTOMER_LIST_WATCH_OPTIONS } from '@/constants/customer';
-// import { dummyCustomerList } from '@/dummy/customer';
 import {
   selectedCustomerHideWatchOptionsState,
   selectedCustomerIdxState,
@@ -9,7 +7,7 @@ import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import { Customer } from '@/types/graphql';
 import { isColumnsViewHide } from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 type TCustomerListTableProps = {
@@ -20,15 +18,13 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
   const selectedCustomerHideWatchOptions = useRecoilValue(
     selectedCustomerHideWatchOptionsState,
   );
-  const [selectedCustomer, setSelectedCustomer] = useRecoilState(
-    selectedCustomerIdxState,
-  );
+  const setSelectedCustomer = useSetRecoilState(selectedCustomerIdxState);
 
   return (
     <CustomerListTableWrapper>
       <thead>
         <tr>
-          <th></th>
+          <th>번호</th>
           {Object.entries(CUSTOMER_LIST_WATCH_OPTIONS).map(([key, value]) => {
             return (
               !isColumnsViewHide(selectedCustomerHideWatchOptions, key) && (
@@ -90,31 +86,32 @@ export const CustomerListTableWrapper = styled.table`
     position: sticky;
     top: -1px;
     z-index: 10;
-    background: #f5f5f5;
+    background: #fff;
     th {
       height: 40px;
       ${titleS14Semibold}
       width: 100vw;
-      border: 1px solid #eee;
+      border-top: 1px solid #eee;
       white-space: nowrap;
-      padding: 0px 15px;
+      padding: 0px 25px;
     }
   }
   tbody {
     tr {
       cursor: pointer;
       &:hover {
-        background: #ccf0ff;
+        background: #f5f5f5;
       }
       td {
         height: 40px;
         overflow: hidden;
-        padding: 0px 15px;
-        max-width: 150px;
+        padding: 0px 25px;
+        max-width: 180px;
         white-space: nowrap;
         text-overflow: ellipsis;
         word-break: break-all;
-        border: 1px solid #eee;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
         ${textS14Regular}
       }
     }

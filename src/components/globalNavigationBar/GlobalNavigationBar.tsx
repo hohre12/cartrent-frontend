@@ -43,7 +43,7 @@ const GlobalNavigationBar = () => {
         <GlobalFunctionWrapper>
           <Button
             variant="white"
-            configuration="stroke"
+            style={{ border: '1px solid #111' }}
             onClick={handleLogout}
           >
             로그아웃
