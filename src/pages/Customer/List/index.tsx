@@ -69,12 +69,12 @@ const CustomerList = () => {
             keyword="고객명, 연락처, 상태, 메모, 차종, 구분, 고객등급, 고객유형, 비고"
           ></SearchBox>
           <FunctionWrapper>
-            <Button
+            {/* <Button
               onClick={() => setIsOpenWatchOptionModal(!isOpenWatchOptionModal)}
             >
               <SvgIcon iconName="icon-eye-show" />
               <p>보기옵션</p>
-            </Button>
+            </Button> */}
             <Button onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}>
               <SvgIcon iconName="icon-plus" />
               <p>고객등록</p>
@@ -130,6 +130,7 @@ export const ListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  border-radius: 5px;
 `;
 
 export const SearchBoxWrapper = styled.div`
@@ -138,10 +139,11 @@ export const SearchBoxWrapper = styled.div`
 `;
 
 export const TableWrapper = styled.div`
-  border: 1px solid #eee;
+  border: 1px solid #ddd;
   height: 100%;
   width: 100%;
   overflow: auto;
+  border-radius: 5px;
   .TableControlWrapper {
     display: flex;
     justify-content: space-between;

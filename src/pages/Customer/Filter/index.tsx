@@ -1,12 +1,11 @@
 import styled from 'styled-components';
-import { textM16Regular, textS14Medium } from '@/styles/typography';
+import { textS14Medium } from '@/styles/typography';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
 import { useState } from 'react';
 import {
   useGetCustomerGrades,
   useGetCustomerGroups,
-  useGetCustomerStatuses,
 } from '@/services/customer';
 import { useGetUsers } from '@/services/user';
 import { useRecoilState } from 'recoil';
@@ -17,7 +16,6 @@ import RegistGroupModal from '../components/registGroupModal';
 const CustomerFilter = () => {
   const { data: groups } = useGetCustomerGroups();
   const { data: grades } = useGetCustomerGrades();
-  const { data: statuses } = useGetCustomerStatuses();
   const { data: users } = useGetUsers();
 
   const [isOpenRegistGradeModal, setIsOpenRegistGradeModal] =
@@ -201,6 +199,7 @@ export const FilterWrapper = styled.div`
   background: #fff;
   min-width: 200px;
   padding: 5px;
+  border-radius: 5px;
   // 드래그 방지
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -215,7 +214,9 @@ export const Filter = styled.div`
   gap: 5px;
   height: 270px;
   .Menu {
-    background: #eee;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
     padding: 5px;
     cursor: pointer;
     display: flex;

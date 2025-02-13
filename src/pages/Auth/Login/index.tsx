@@ -12,11 +12,10 @@ import { SvgIcon } from '@/components/common/SvgIcon';
 import styled from 'styled-components';
 import { titleXxl24Bold } from '@/styles/typography';
 import styles from './index.module.scss';
-import { useMutation } from '@apollo/client';
-import { SIGNIN_MUTATION } from '@/apollo/mutations/auth';
+import { useSignIn } from '@/services/auth';
 const Login = () => {
   const navigate = useNavigate();
-  const [signIn] = useMutation(SIGNIN_MUTATION);
+  const { signIn } = useSignIn();
   const [id, setId, isIdValid] = useValidationState<string>('', validEmpty);
   const [password, setPassword, isPasswordValid] = useValidationState<string>(
     '',
@@ -34,11 +33,7 @@ const Login = () => {
 
   useEffect(() => {
     setToken(null);
-    // const getId = LocalStorage.getItem('id');
-    // if (getId) {
-    //   setId(getId);
-    // }
-  }, [setId, setToken]);
+  }, [setToken]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -57,15 +52,13 @@ const Login = () => {
       return false;
     }
     try {
-      const response = await signIn({
-        variables: { signInDto: { email: id, password } },
-      });
-      if (response.data.signIn) {
+      const response = await signIn({ email: id, password });
+      if (response && response.data.signIn) {
         const { accessToken, refreshToken, user } = response.data.signIn;
         setToken(accessToken);
+        setUser(user);
         LocalStorage.setItem(TOKEN_KEY, accessToken);
         LocalStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-        setUser(user);
         navigate('/dashboard');
       }
     } catch (e: any) {
@@ -81,18 +74,10 @@ const Login = () => {
     }
   }, [passwordInputType]);
 
-  // useEffect(() => {
-  //   console.log(cookies.access_token);
-  // }, []);
-
   return (
     <Wrapper className={styles.wrapper}>
       <LoginWrapper>
         <LoginInputWrapper>
-          {/* <img
-            src={HkLogo}
-            alt="logo"
-          /> */}
           <h1>CartRent Car 로그인</h1>
           <div>
             <Input
@@ -147,12 +132,6 @@ const Login = () => {
             로그인
           </Button>
         </LoginInputWrapper>
-        {/* <ImageWrapper>
-          <img
-            src={ImgLogin}
-            alt=""
-          />
-        </ImageWrapper> */}
       </LoginWrapper>
     </Wrapper>
   );

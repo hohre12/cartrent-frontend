@@ -1,37 +1,31 @@
-import { titleL18Bold, titleM16Semibold } from '@/styles/typography';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Modal } from '../modal/Modal';
-import { useState } from 'react';
-import Input from '../input/Input';
-import TextArea from '../textArea/TextArea';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { tokenState, userState } from '@/state/auth';
 import LocalStorage from '@/utils/localStorage';
 import { REFRESH_TOKEN_KEY, TOKEN_KEY } from '@/constants/common';
 import { SIDE_MENU } from '@/constants/menu';
 import { SvgIcon } from '../common/SvgIcon';
+import Button from '../button/Button';
+import { useSignOut } from '@/services/auth';
 
 const GlobalNavigationBar = () => {
-  const navigate = useNavigate();
   const location = useLocation();
-  // const [isCounselModal, setIsCounselModal] = useState<boolean>(false);
   const resetToken = useResetRecoilState(tokenState);
+  const resetUser = useResetRecoilState(userState);
   const user = useRecoilValue(userState);
+  const { signOut } = useSignOut();
 
   const handleLogout = async () => {
     try {
-      resetToken();
-      LocalStorage.removeItem(TOKEN_KEY);
-      LocalStorage.removeItem(REFRESH_TOKEN_KEY);
-      LocalStorage.removeItem('institute');
-      // TODO: api 연동후 주석 해제
-      //   const { data } = await authSignout();
-      //   if (data.data) {
-      //     resetToken();
-      //     LocalStorage.removeItem(TOKEN_KEY);
-      //     LocalStorage.removeItem('institute');
-      //   }
+      const response = await signOut();
+      if (response && response.data?.signOut === 'success') {
+        resetToken();
+        resetUser();
+        LocalStorage.removeItem(TOKEN_KEY);
+        LocalStorage.removeItem(REFRESH_TOKEN_KEY);
+        LocalStorage.removeItem('institute');
+      }
     } catch (e) {
       console.warn('로그아웃 에러', e);
     }
@@ -47,51 +41,19 @@ const GlobalNavigationBar = () => {
           <b>{pageName}</b>
         </RouteWrapper>
         <GlobalFunctionWrapper>
-          <div
-            className="userInfo"
+          <Button
+            variant="white"
+            style={{ border: '1px solid #111' }}
             onClick={handleLogout}
           >
+            로그아웃
+          </Button>
+          <div className="userInfo">
             <SvgIcon iconName="icon-memberDefault" />
             <h3>{user?.name ? `${user.name}님` : '-'}</h3>
           </div>
         </GlobalFunctionWrapper>
       </GlobalNavigationBarWrapper>
-      {/* {isCounselModal && (
-        <Modal
-          isOpen={isCounselModal}
-          title="상담정보등록"
-          size={'small'}
-          footerOption={{
-            cancelText: '취소',
-            confirmText: '등록',
-          }}
-          onCancel={() => setIsCounselModal(false)}
-        >
-          <CounselModalContentWrapper>
-            <div className="InputWrapper">
-              <div>
-                <span>고객명</span>
-                <Input></Input>
-              </div>
-              <div>
-                <span>상담일시</span>
-                <Input></Input>
-              </div>
-              <div>
-                <span>상담자</span>
-                <Input disabled></Input>
-              </div>
-            </div>
-            <div className="TextAreaWrapper">
-              <span>상담내용</span>
-              <TextArea
-                value={''}
-                style={{ width: '500px' }}
-              ></TextArea>
-            </div>
-          </CounselModalContentWrapper>
-        </Modal>
-      )} */}
     </>
   );
 };
@@ -124,6 +86,7 @@ const RouteWrapper = styled.div`
 export const GlobalFunctionWrapper = styled.div`
   display: flex;
   gap: 15px;
+  align-items: center;
   & > span {
     padding: 10px;
     font-size: 14px;

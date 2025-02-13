@@ -1,24 +1,17 @@
 import Button from '@/components/button/Button';
-import Checkbox from '@/components/checkbox/Checkbox';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import Input from '@/components/input/Input';
 import TextArea from '@/components/textArea/TextArea';
-import { CustomerStatusEnum } from '@/constants/common';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import { useDeleteCustomer, useGetCustomer } from '@/services/customer';
 import { selectedCustomerIdxState } from '@/state/customer';
-import {
-  textM16Regular,
-  textS14Medium,
-  textS14Regular,
-} from '@/styles/typography';
+import { textS14Medium, textS14Regular } from '@/styles/typography';
 import { formatDate } from '@/utils/dateUtils';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import EditModal from '../components/editModal';
-import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 
 const CustomerDetail = () => {
@@ -92,6 +85,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.userList.name ?? ''}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -100,6 +94,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.customerGroup?.name ?? ''}
+                placeholder="정보없음"
               ></Input>
             </div>
 
@@ -109,6 +104,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.name ?? ''}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -117,6 +113,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.customerStatus?.status ?? ''}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -125,6 +122,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.phone ?? ''}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -135,6 +133,7 @@ const CustomerDetail = () => {
                 value={detail.contractList
                   .map((it) => it.company_name_nominee ?? '-')
                   .join(' / ')}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -143,6 +142,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.sub_phone ?? ''}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -153,6 +153,7 @@ const CustomerDetail = () => {
                 value={detail.contractList
                   .map((it) => it.division?.name ?? '-')
                   .join(' / ')}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -161,6 +162,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.contractList.map((it) => it.carName).join(' / ')}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -171,6 +173,7 @@ const CustomerDetail = () => {
                 value={detail.contractList
                   .map((it) => it.carOption ?? '-')
                   .join(' / ')}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -185,6 +188,7 @@ const CustomerDetail = () => {
                       : '-',
                   )
                   .join(' / ')}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -195,6 +199,7 @@ const CustomerDetail = () => {
                 value={detail.contractList
                   .map((it) => it.agreedMileage ?? '-')
                   .join(' / ')}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -205,6 +210,7 @@ const CustomerDetail = () => {
                 value={detail.contractList
                   .map((it) => it.advancePayment ?? '-')
                   .join(' / ')}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -215,6 +221,7 @@ const CustomerDetail = () => {
                 value={detail.contractList
                   .map((it) => it.security ?? '-')
                   .join(' / ')}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -223,6 +230,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.type ?? ''}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -231,6 +239,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={formatDate(detail.created_at) ?? ''}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div style={{ width: '100%', height: 'auto', marginLeft: '45px' }}>
@@ -239,6 +248,7 @@ const CustomerDetail = () => {
                 value={detail.memo ?? ''}
                 disabled
                 height="100px"
+                placeholder="정보없음"
               ></TextArea>
             </div>
             <div>
@@ -247,6 +257,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.customerGrade?.name ?? ''}
+                placeholder="정보없음"
               ></Input>
             </div>
             <div>
@@ -255,6 +266,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.note ?? ''}
+                placeholder="정보없음"
               ></Input>
             </div>
           </div>
@@ -326,6 +338,7 @@ export const DetailWrapper = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 600px;
+  border-radius: 5px;
 `;
 
 export const InfoWrapper = styled.div`
@@ -445,8 +458,9 @@ export const HistoryWrapper = styled.div`
     }
     .HistoryText {
       ${textS14Medium}
-
-      background: #eee;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
       min-width: 430px;
       padding: 10px;
       text-align: left;
