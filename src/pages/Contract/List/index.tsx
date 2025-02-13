@@ -14,9 +14,10 @@ import { Circle, FilterContent } from '@/styles/common';
 import RegistModal from './components/registModal';
 import FloatingMenu from './components/floatingMenu';
 import ContractListTable from './components/table';
-import FilterStatus from './components/filter/status';
 import { useGetContracts } from '@/services/contract';
 import { useNavigate } from 'react-router-dom';
+import FilterUser from './components/filter/user';
+import FilterShippingMethod from './components/filter/shippingMethod';
 
 const ContractList = () => {
   const navigate = useNavigate();
@@ -27,15 +28,44 @@ const ContractList = () => {
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
 
-  const { data, loading, error } = useGetContracts({ search: searchText });
-
   // filters
   const [filters, setFilters] = useRecoilState(contractFiltersState);
   const resetFilters = useResetRecoilState(contractFiltersState);
 
-  // filter - status
-  const [isFilterStatusOpen, setIsFilterStatusOpen] = useState<boolean>(false);
-  const filterStatusRef = useClickOutside(() => setIsFilterStatusOpen(false));
+  const { data, loading, error } = useGetContracts({
+    search: searchText ? searchText : null,
+    shippingMethodIds:
+      filters?.shippingMethods?.length > 0
+        ? filters.shippingMethods.map((it) => it.value)
+        : null,
+    userId:
+      filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
+    startContractAtYearMonth: filters?.startContractAtYearMonth
+      ? filters.startContractAtYearMonth
+      : null,
+    endContractAtYearMonth: filters?.endContractAtYearMonth
+      ? filters.endContractAtYearMonth
+      : null,
+  });
+
+  // filter - shippingMethod
+  const [isFilterShippingMethodOpen, setIsFilterShippingMethodOpen] =
+    useState<boolean>(false);
+  const filterShippingMethodRef = useClickOutside(() =>
+    setIsFilterShippingMethodOpen(false),
+  );
+
+  // filter - user
+  const [isFilterUserOpen, setIsFilterUserOpen] = useState<boolean>(false);
+  const filterUserRef = useClickOutside(() => setIsFilterUserOpen(false));
+
+  //   // filter - startContractAtYearMonth
+  //   const [isFilterStatusOpen, setIsFilterStatusOpen] = useState<boolean>(false);
+  //   const filterStatusRef = useClickOutside(() => setIsFilterStatusOpen(false));
+
+  //   // filter - startContractAtYearMonth
+  //   const [isFilterStatusOpen, setIsFilterStatusOpen] = useState<boolean>(false);
+  //   const filterStatusRef = useClickOutside(() => setIsFilterStatusOpen(false));
 
   const handleSearchTextDelete = useCallback(() => {
     setSearchText('');
@@ -48,12 +78,20 @@ const ContractList = () => {
     [setSearchText],
   );
 
-  const handleSetFilterStatus = useCallback(
+  const handleSetFilterUser = useCallback(
     (selectedFilters: TFilterList<number>[]) => {
-      setFilters({ ...filters, status: selectedFilters });
-      setIsFilterStatusOpen(false);
+      setFilters({ ...filters, users: selectedFilters });
+      setIsFilterUserOpen(false);
     },
-    [filters, setFilters, setIsFilterStatusOpen],
+    [filters, setFilters, setIsFilterUserOpen],
+  );
+
+  const handleSetFilterShippingMethod = useCallback(
+    (selectedFilters: TFilterList<number>[]) => {
+      setFilters({ ...filters, shippingMethods: selectedFilters });
+      setIsFilterShippingMethodOpen(false);
+    },
+    [filters, setFilters, setIsFilterShippingMethodOpen],
   );
 
   return (
@@ -73,28 +111,53 @@ const ContractList = () => {
                 onRecentClick={handleSearch}
                 keyword="고객명, 담당자, 연락처, 차종, 금융사"
               ></SearchBox>
-              <FilterContent ref={filterStatusRef}>
+              <FilterContent ref={filterShippingMethodRef}>
                 <Button
                   variant="white"
                   configuration="stroke"
                   style={{
-                    borderColor: filters.status.length > 0 ? '#333' : '#ddd',
+                    borderColor:
+                      filters.shippingMethods.length > 0 ? '#333' : '#ddd',
                   }}
-                  onClick={() => setIsFilterStatusOpen(!isFilterStatusOpen)}
+                  onClick={() =>
+                    setIsFilterShippingMethodOpen(!isFilterShippingMethodOpen)
+                  }
                 >
-                  계약일자
-                  {filters.status.length > 0 && (
-                    <Circle>{filters.status.length}</Circle>
+                  출고방식
+                  {filters.shippingMethods.length > 0 && (
+                    <Circle>{filters.shippingMethods.length}</Circle>
                   )}
                   <SvgIcon
                     iconName="icon-arrowButton"
                     style={{ fill: '#333' }}
                   />
                 </Button>
-                {isFilterStatusOpen && (
-                  <FilterStatus
-                    handleApply={handleSetFilterStatus}
-                  ></FilterStatus>
+                {isFilterShippingMethodOpen && (
+                  <FilterShippingMethod
+                    handleApply={handleSetFilterShippingMethod}
+                  ></FilterShippingMethod>
+                )}
+              </FilterContent>
+              <FilterContent ref={filterUserRef}>
+                <Button
+                  variant="white"
+                  configuration="stroke"
+                  style={{
+                    borderColor: filters.users.length > 0 ? '#333' : '#ddd',
+                  }}
+                  onClick={() => setIsFilterUserOpen(!isFilterUserOpen)}
+                >
+                  담당자
+                  {filters.users.length > 0 && (
+                    <Circle>{filters.users.length}</Circle>
+                  )}
+                  <SvgIcon
+                    iconName="icon-arrowButton"
+                    style={{ fill: '#333' }}
+                  />
+                </Button>
+                {isFilterUserOpen && (
+                  <FilterUser handleApply={handleSetFilterUser}></FilterUser>
                 )}
               </FilterContent>
             </SearchBoxWrapper>
