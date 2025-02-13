@@ -150,7 +150,9 @@ const Input = forwardRef<HTMLInputElement, IInputProps>(
           )}
           {postfixNode ? <div className="postfixNode">{postfixNode}</div> : ''}
         </div>
-        {(errorMessage || successMessage) && !disabled ? (
+        {(isError || isSuccess) &&
+        (errorMessage || successMessage) &&
+        !disabled ? (
           <div
             className={[
               'messageWrapper',

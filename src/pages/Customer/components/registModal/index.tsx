@@ -87,6 +87,8 @@ const RegistModal = (props: TModal) => {
               placeholder="고객명을 입력해 주세요."
               value={name}
               onTextChange={(text) => setName(text)}
+              isError={submit && !name}
+              errorMessage="고객명은 필수입니다."
             />
           </div>
           <div>
@@ -95,6 +97,8 @@ const RegistModal = (props: TModal) => {
               placeholder="전화번호를 입력해 주세요."
               value={phone}
               onTextChange={(text) => setPhone(autoHypenTel(text))}
+              isError={submit && !phone}
+              errorMessage="전화번호는 필수입니다."
             />
           </div>
           <div>

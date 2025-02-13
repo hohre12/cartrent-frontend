@@ -41,8 +41,8 @@ const RegistModal = (props: TModal) => {
   const handleCounselRegist = async () => {
     setSubmit(true);
     if (!customer) return;
-    if (!context) return;
     if (!counselAt) return;
+    if (!context) return;
     try {
       const response = await createCounsel({
         customer_id: customer.id,
