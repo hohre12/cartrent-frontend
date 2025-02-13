@@ -2,7 +2,11 @@ import Button from '@/components/button/Button';
 import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import SearchBox from '@/components/searchBox/SearchBox';
-import { useGetCustomerGroups } from '@/services/customer';
+import {
+  useGetCustomerGroups,
+  useGetCustomerStatuses,
+} from '@/services/customer';
+import { useGetUsers } from '@/services/user';
 import { counselFiltersState } from '@/state/counsel';
 // import { useGetFilterList } from '@/services/common';
 import { customerFiltersState } from '@/state/customer';
@@ -15,14 +19,12 @@ type TFilterProps = {
   handleApply: (selectedList: TFilterList<number>[]) => void;
 };
 
-const FilterGroup = ({ handleApply }: TFilterProps) => {
-  //   const [text, setText] = useState<string>('');
-  //   const [searchText, setSearchText] = useState<string>('');
+const FilterUser = ({ handleApply }: TFilterProps) => {
   const [selectedFilters, setSelectedFilters] = useState<TFilterList<number>[]>(
     [],
   );
   const filters = useRecoilValue(counselFiltersState);
-  const { data: groups } = useGetCustomerGroups();
+  const { data: users } = useGetUsers();
 
   const [list, setList] = useState([] as TFilterList<number>[]);
 
@@ -56,26 +58,15 @@ const FilterGroup = ({ handleApply }: TFilterProps) => {
     [selectedFilters, setSelectedFilters],
   );
 
-  //   const handleSearchTextDelete = useCallback(() => {
-  //     setSearchText('');
-  //   }, [setSearchText]);
-
-  //   const handleSearch = useCallback(
-  //     (value: string) => {
-  //       setSearchText(value);
-  //     },
-  //     [setSearchText],
-  //   );
-
   useEffect(() => {
-    if (filters.groups.length > 0) {
-      setSelectedFilters(filters.groups);
+    if (filters.users.length > 0) {
+      setSelectedFilters(filters.users);
     }
   }, [filters, setSelectedFilters]);
 
   useEffect(() => {
-    if (groups?.getCustomerGroups) {
-      const newList = groups.getCustomerGroups.map((it) => ({
+    if (users?.getUsers) {
+      const newList = users.getUsers.map((it) => ({
         name: it.name,
         value: it.id,
       }));
@@ -83,24 +74,9 @@ const FilterGroup = ({ handleApply }: TFilterProps) => {
     } else {
       setList([]);
     }
-  }, [groups, setList]);
+  }, [users, setList]);
   return (
     <Filter>
-      {/* <SearchBox
-        className="searchBox"
-        value={text}
-        placeholder="그룹 검색"
-        onTextChange={(text) => setText(text)}
-        onRemoveClick={handleSearchTextDelete}
-        onKeyDown={handleSearch}
-      ></SearchBox>
-      <SortWrapper>
-        <SvgIcon
-          iconName="icon-filterSort"
-          alt="filter"
-        />
-        <p>기본순</p>
-      </SortWrapper> */}
       <FilterList>
         <li>
           <span>전체선택</span>
@@ -135,7 +111,7 @@ const FilterGroup = ({ handleApply }: TFilterProps) => {
   );
 };
 
-export default FilterGroup;
+export default FilterUser;
 
 export const Filter = styled.div`
   top: 40px;

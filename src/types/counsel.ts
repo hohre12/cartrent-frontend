@@ -2,13 +2,8 @@ import { TFilterList } from './common';
 
 /* front handle type */
 export type TCounselFiltersStateType = {
-  // 상담자
-  type: TFilterList<number>[];
-  createdAt:
-    | {
-        createdAtFrom: string;
-        createdAtTo: string;
-      }
-    | undefined;
+  statuses: TFilterList<number>[];
+  groups: TFilterList<number>[];
+  users: TFilterList<number>[];
 };
 /* front handle type */

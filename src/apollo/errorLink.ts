@@ -19,7 +19,6 @@ const errorLink = onError(
           case 'EXPIRESED_ACCESS_TOKEN':
             return fromPromise(
               refreshAccessToken().then((accessToken) => {
-                console.log('accessToken', accessToken);
                 if (!accessToken) throw new Error('토큰 갱신 실패');
                 operation.setContext(({ headers = {} }) => ({
                   headers: {

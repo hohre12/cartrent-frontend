@@ -11,12 +11,14 @@ import useClickOutside from '@/hooks/useClickOutside';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { customerFiltersState } from '@/state/customer';
 import { TFilterList } from '@/types/common';
-import { Circle, FilterContent } from '@/styles/common';
+import { Circle, FilterContent, FilterWrapper } from '@/styles/common';
 import RegistModal from './components/registModal';
 import CounselListTable from './components/table';
-import { selectedCounselState } from '@/state/counsel';
+import { counselFiltersState, selectedCounselState } from '@/state/counsel';
 import FloatingMenu from './components/floatingMenu';
 import { useGetCounsels } from '@/services/counsel';
+import FilterStatus from './components/filter/status';
+import FilterUser from './components/filter/user';
 
 const CounselList = () => {
   const [text, setText] = useState<string>('');
@@ -26,15 +28,33 @@ const CounselList = () => {
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
 
-  const { data, loading, error } = useGetCounsels({ search: searchText });
-
   // filters
-  const [filters, setFilters] = useRecoilState(customerFiltersState);
-  const resetFilters = useResetRecoilState(customerFiltersState);
+  const [filters, setFilters] = useRecoilState(counselFiltersState);
+  const resetFilters = useResetRecoilState(counselFiltersState);
+
+  const { data, loading, error } = useGetCounsels({
+    search: searchText ? searchText : null,
+    customerStatusId:
+      filters?.statuses?.length > 0
+        ? filters.statuses.map((it) => it.value)
+        : null,
+    customerGroupId:
+      filters?.groups?.length > 0 ? filters.groups.map((it) => it.value) : null,
+    userId:
+      filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
+  });
 
   // filter - group
   const [isFilterGroupOpen, setIsFilterGroupOpen] = useState<boolean>(false);
   const filterGroupRef = useClickOutside(() => setIsFilterGroupOpen(false));
+
+  // filter - status
+  const [isFilterStatusOpen, setIsFilterStatusOpen] = useState<boolean>(false);
+  const filterStatusRef = useClickOutside(() => setIsFilterStatusOpen(false));
+
+  // filter - user
+  const [isFilterUserOpen, setIsFilterUserOpen] = useState<boolean>(false);
+  const filterUserRef = useClickOutside(() => setIsFilterUserOpen(false));
 
   const handleSearchTextDelete = useCallback(() => {
     setSearchText('');
@@ -55,6 +75,22 @@ const CounselList = () => {
     [filters, setFilters, setIsFilterGroupOpen],
   );
 
+  const handleSetFilterStatus = useCallback(
+    (selectedFilters: TFilterList<number>[]) => {
+      setFilters({ ...filters, statuses: selectedFilters });
+      setIsFilterStatusOpen(false);
+    },
+    [filters, setFilters, setIsFilterStatusOpen],
+  );
+
+  const handleSetFilterUser = useCallback(
+    (selectedFilters: TFilterList<number>[]) => {
+      setFilters({ ...filters, users: selectedFilters });
+      setIsFilterUserOpen(false);
+    },
+    [filters, setFilters, setIsFilterUserOpen],
+  );
+
   return (
     <>
       <ListWrapper>
@@ -70,30 +106,81 @@ const CounselList = () => {
                 onRemoveClick={handleSearchTextDelete}
                 onKeyDown={handleSearch}
                 onRecentClick={handleSearch}
-                keyword="상담내용"
+                keyword="고객명, 상담자, 연락처, 차종, 상담내용, 고객등급, 비고"
               ></SearchBox>
-              <FilterContent ref={filterGroupRef}>
-                <Button
-                  variant="white"
-                  configuration="stroke"
-                  style={{
-                    borderColor: filters.groups.length > 0 ? '#333' : '#ddd',
-                  }}
-                  onClick={() => setIsFilterGroupOpen(!isFilterGroupOpen)}
-                >
-                  상담자
-                  {filters.groups.length > 0 && (
-                    <Circle>{filters.groups.length}</Circle>
+              <FilterWrapper>
+                <FilterContent ref={filterStatusRef}>
+                  <Button
+                    variant="white"
+                    configuration="stroke"
+                    style={{
+                      borderColor:
+                        filters.statuses.length > 0 ? '#333' : '#ddd',
+                    }}
+                    onClick={() => setIsFilterStatusOpen(!isFilterStatusOpen)}
+                  >
+                    고객상태
+                    {filters.statuses.length > 0 && (
+                      <Circle>{filters.statuses.length}</Circle>
+                    )}
+                    <SvgIcon
+                      iconName="icon-arrowButton"
+                      style={{ fill: '#333' }}
+                    />
+                  </Button>
+                  {isFilterStatusOpen && (
+                    <FilterStatus
+                      handleApply={handleSetFilterStatus}
+                    ></FilterStatus>
                   )}
-                  <SvgIcon
-                    iconName="icon-arrowButton"
-                    style={{ fill: '#333' }}
-                  />
-                </Button>
-                {isFilterGroupOpen && (
-                  <FilterGroup handleApply={handleSetFilterGroup}></FilterGroup>
-                )}
-              </FilterContent>
+                </FilterContent>
+                <FilterContent ref={filterGroupRef}>
+                  <Button
+                    variant="white"
+                    configuration="stroke"
+                    style={{
+                      borderColor: filters.groups.length > 0 ? '#333' : '#ddd',
+                    }}
+                    onClick={() => setIsFilterGroupOpen(!isFilterGroupOpen)}
+                  >
+                    고객그룹
+                    {filters.groups.length > 0 && (
+                      <Circle>{filters.groups.length}</Circle>
+                    )}
+                    <SvgIcon
+                      iconName="icon-arrowButton"
+                      style={{ fill: '#333' }}
+                    />
+                  </Button>
+                  {isFilterGroupOpen && (
+                    <FilterGroup
+                      handleApply={handleSetFilterGroup}
+                    ></FilterGroup>
+                  )}
+                </FilterContent>
+                <FilterContent ref={filterUserRef}>
+                  <Button
+                    variant="white"
+                    configuration="stroke"
+                    style={{
+                      borderColor: filters.users.length > 0 ? '#333' : '#ddd',
+                    }}
+                    onClick={() => setIsFilterUserOpen(!isFilterUserOpen)}
+                  >
+                    담당자
+                    {filters.users.length > 0 && (
+                      <Circle>{filters.users.length}</Circle>
+                    )}
+                    <SvgIcon
+                      iconName="icon-arrowButton"
+                      style={{ fill: '#333' }}
+                    />
+                  </Button>
+                  {isFilterUserOpen && (
+                    <FilterUser handleApply={handleSetFilterUser}></FilterUser>
+                  )}
+                </FilterContent>
+              </FilterWrapper>
             </SearchBoxWrapper>
             <FunctionWrapper>
               <Button

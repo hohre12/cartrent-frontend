@@ -1,10 +1,7 @@
 import styled from 'styled-components';
 import CustomerListTable from './components/table';
-import Input from '@/components/input/Input';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular } from '@/styles/typography';
-import { useQuery } from '@apollo/client';
-import { GET_CUSTOMERS_QUERY } from '@/apollo/queries/customer';
 import { useCallback, useEffect, useState } from 'react';
 import SearchBox from '@/components/searchBox/SearchBox';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -12,7 +9,6 @@ import {
   customerFiltersState,
   selectedCustomerIdxState,
 } from '@/state/customer';
-import { Customer, GetCustomersDto } from '@/types/graphql';
 import Button from '@/components/button/Button';
 import RegistModal from '../components/registModal';
 import WatchOptionModal from '../components/watchOptionModal';
