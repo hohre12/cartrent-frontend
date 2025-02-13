@@ -56,7 +56,7 @@ const CustomerList = () => {
 
   const handleSetFilterGroup = useCallback(
     (selectedFilters: TFilterList<number>[]) => {
-      setFilters({ ...filters, group: selectedFilters });
+      setFilters({ ...filters, groups: selectedFilters });
       setIsFilterGroupOpen(false);
     },
     [filters, setFilters, setIsFilterGroupOpen],
@@ -95,13 +95,13 @@ const CustomerList = () => {
                   variant="white"
                   configuration="stroke"
                   style={{
-                    borderColor: filters.group.length > 0 ? '#333' : '#ddd',
+                    borderColor: filters.groups.length > 0 ? '#333' : '#ddd',
                   }}
                   onClick={() => setIsFilterGroupOpen(!isFilterGroupOpen)}
                 >
                   그룹
-                  {filters.group.length > 0 && (
-                    <Circle>{filters.group.length}</Circle>
+                  {filters.groups.length > 0 && (
+                    <Circle>{filters.groups.length}</Circle>
                   )}
                   <SvgIcon
                     iconName="icon-arrowButton"

@@ -1,5 +1,11 @@
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+} from '@apollo/client';
 import { authLink } from './authLink';
+import errorLink from './errorLink';
 
 const httpLink = new HttpLink({
   uri: import.meta.env.VITE_APP_BASE_URL,
@@ -7,7 +13,7 @@ const httpLink = new HttpLink({
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: ApolloLink.from([errorLink, authLink, httpLink]),
   cache: new InMemoryCache({
     addTypename: false,
   }),

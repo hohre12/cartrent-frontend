@@ -7,7 +7,7 @@ import Button from '@/components/button/Button';
 import useValidationState from '@/hooks/useValidationState';
 import { validEmpty, validPassword } from '@/utils/validation';
 import LocalStorage from '@/utils/localStorage';
-import { REFRESH_TOKEN_KEY } from '@/constants/common';
+import { REFRESH_TOKEN_KEY, TOKEN_KEY } from '@/constants/common';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import styled from 'styled-components';
 import { titleXxl24Bold } from '@/styles/typography';
@@ -63,6 +63,7 @@ const Login = () => {
       if (response.data.signIn) {
         const { accessToken, refreshToken, user } = response.data.signIn;
         setToken(accessToken);
+        LocalStorage.setItem(TOKEN_KEY, accessToken);
         LocalStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
         setUser(user);
         navigate('/dashboard');
