@@ -82,7 +82,9 @@ const RegistModal = (props: TModal) => {
         <RegistCustomerWrapper>
           {/* 이름, 전화번호, 메모, 고객유형, 구분, 회사명/명의자, 상태, 등급, 그룹, 비고 */}
           <div>
-            <p>고객명</p>
+            <span>
+              고객명 <p className="required">*</p>
+            </span>
             <Input
               placeholder="고객명을 입력해 주세요."
               value={name}
@@ -92,7 +94,9 @@ const RegistModal = (props: TModal) => {
             />
           </div>
           <div>
-            <p>전화번호</p>
+            <span>
+              전화번호 <p className="required">*</p>
+            </span>
             <Input
               placeholder="전화번호를 입력해 주세요."
               value={phone}
@@ -102,7 +106,7 @@ const RegistModal = (props: TModal) => {
             />
           </div>
           <div>
-            <p>메모</p>
+            <span>메모</span>
             <Input
               placeholder="메모를 입력해 주세요."
               value={memo ?? ''}
@@ -110,7 +114,7 @@ const RegistModal = (props: TModal) => {
             />
           </div>
           <div>
-            <p>고객유형</p>
+            <span>고객유형</span>
             <Input
               placeholder="고객유형을 입력해 주세요."
               value={type ?? ''}
@@ -118,7 +122,7 @@ const RegistModal = (props: TModal) => {
             />
           </div>
           <div>
-            <p>상태</p>
+            <span>상태</span>
             <Select
               size="medium"
               value={{ ...customerStatus }}
@@ -130,7 +134,7 @@ const RegistModal = (props: TModal) => {
             />
           </div>
           <div>
-            <p>등급</p>
+            <span>등급</span>
             <Select
               size="medium"
               value={{ ...customerGrade }}
@@ -142,7 +146,7 @@ const RegistModal = (props: TModal) => {
             />
           </div>
           <div>
-            <p>그룹</p>
+            <span>그룹</span>
             <Select
               size="medium"
               value={{ ...customerGroup }}
@@ -154,7 +158,7 @@ const RegistModal = (props: TModal) => {
             />
           </div>
           <div>
-            <p>비고</p>
+            <span>비고</span>
             <Input
               placeholder="비고를 입력해 주세요."
               value={note ?? ''}
