@@ -20,7 +20,8 @@ export const selectedCustomerHideWatchOptionsState = atom<string[]>({
 export const customerFiltersState = atom<TCustomerFiltersStateType>({
   key: 'customerFiltersState',
   default: {
-    group: [],
-    createdAt: undefined,
+    groups: [],
+    grades: [],
+    users: [],
   },
 });

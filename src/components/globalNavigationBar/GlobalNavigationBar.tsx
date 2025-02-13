@@ -8,7 +8,7 @@ import TextArea from '../textArea/TextArea';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { tokenState, userState } from '@/state/auth';
 import LocalStorage from '@/utils/localStorage';
-import { TOKEN_KEY } from '@/constants/common';
+import { REFRESH_TOKEN_KEY, TOKEN_KEY } from '@/constants/common';
 import { SIDE_MENU } from '@/constants/menu';
 import { SvgIcon } from '../common/SvgIcon';
 
@@ -23,6 +23,7 @@ const GlobalNavigationBar = () => {
     try {
       resetToken();
       LocalStorage.removeItem(TOKEN_KEY);
+      LocalStorage.removeItem(REFRESH_TOKEN_KEY);
       LocalStorage.removeItem('institute');
       // TODO: api 연동후 주석 해제
       //   const { data } = await authSignout();

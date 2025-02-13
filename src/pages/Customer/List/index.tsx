@@ -1,15 +1,14 @@
 import styled from 'styled-components';
 import CustomerListTable from './components/table';
-import Input from '@/components/input/Input';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular } from '@/styles/typography';
-import { useQuery } from '@apollo/client';
-import { GET_CUSTOMERS_QUERY } from '@/apollo/queries/customer';
 import { useCallback, useEffect, useState } from 'react';
 import SearchBox from '@/components/searchBox/SearchBox';
-import { useRecoilState } from 'recoil';
-import { selectedCustomerIdxState } from '@/state/customer';
-import { Customer, GetCustomersDto } from '@/types/graphql';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+  customerFiltersState,
+  selectedCustomerIdxState,
+} from '@/state/customer';
 import Button from '@/components/button/Button';
 import RegistModal from '../components/registModal';
 import WatchOptionModal from '../components/watchOptionModal';
@@ -25,8 +24,16 @@ const CustomerList = () => {
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
 
+  const filters = useRecoilValue(customerFiltersState);
+
   const { data, loading, error } = useGetCustomers({
     search: searchText ? searchText : null,
+    customerGroupId:
+      filters?.groups?.length > 0 ? filters.groups.map((it) => it.value) : null,
+    customerGradeId:
+      filters?.grades?.length > 0 ? filters.grades.map((it) => it.value) : null,
+    userId:
+      filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
   });
 
   const handleSearchTextDelete = useCallback(() => {

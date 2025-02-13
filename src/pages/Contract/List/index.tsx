@@ -1,9 +1,7 @@
 import styled from 'styled-components';
-import Input from '@/components/input/Input';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import Button from '@/components/button/Button';
-// import { dummyContractList } from '@/dummy/contract';
 import Pagination from '@/components/pagination/Pagination';
 import { useCallback, useState } from 'react';
 import WatchOptionModal from './components/watchOptionModal';
@@ -15,11 +13,8 @@ import { TFilterList } from '@/types/common';
 import { Circle, FilterContent } from '@/styles/common';
 import RegistModal from './components/registModal';
 import FloatingMenu from './components/floatingMenu';
-import { useQuery } from '@apollo/client';
-import { GET_CONTRACTS_QUERY } from '@/apollo/queries/contract';
 import ContractListTable from './components/table';
 import FilterStatus from './components/filter/status';
-import { Contract, GetContractsDto } from '@/types/graphql';
 import { useGetContracts } from '@/services/contract';
 import { useNavigate } from 'react-router-dom';
 
@@ -76,7 +71,7 @@ const ContractList = () => {
                 onRemoveClick={handleSearchTextDelete}
                 onKeyDown={handleSearch}
                 onRecentClick={handleSearch}
-                keyword="계약명"
+                keyword="고객명, 담당자, 연락처, 차종, 금융사"
               ></SearchBox>
               <FilterContent ref={filterStatusRef}>
                 <Button

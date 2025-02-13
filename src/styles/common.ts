@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 import { textXxs10Medium } from './typography';
 
+export const FilterWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
 export const FilterContent = styled.div`
   position: relative;
 `;

@@ -15,7 +15,8 @@ export const selectedCounselHideWatchOptionsState = atom<string[]>({
 export const counselFiltersState = atom<TCounselFiltersStateType>({
   key: 'counselFiltersState',
   default: {
-    type: [],
-    createdAt: undefined,
+    statuses: [],
+    groups: [],
+    users: [],
   },
 });

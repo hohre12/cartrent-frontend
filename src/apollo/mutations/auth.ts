@@ -40,8 +40,8 @@ export const REFRESH_MUTATION = gql`
       accessToken
       refreshToken
       user {
-        name
         id
+        name
       }
     }
   }

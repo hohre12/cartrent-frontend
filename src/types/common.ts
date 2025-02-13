@@ -89,8 +89,8 @@ export type TPagination = {
 };
 
 export type TFilterList<T> = {
-  name: string;
   value: T;
+  name: string;
 };
 
 export type TUIOptions = {
