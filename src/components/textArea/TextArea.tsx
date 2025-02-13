@@ -9,6 +9,7 @@ import {
 import { SvgIcon } from '../common/SvgIcon';
 import styled from 'styled-components';
 import { textS14Regular, textXs12Regular } from '@/styles/typography';
+import palette from '@/styles/variables';
 
 interface ITextAreaProps extends HTMLAttributes<HTMLDivElement> {
   name?: string;
@@ -123,13 +124,13 @@ const TextAreaWrapper = styled.div`
       &:focus,
       &:active,
       &.active {
-        border: 1px solid $border-inputfield-focusing;
+        border: 1px solid ${palette['$border-inputfield-focusing']};
       }
       &.error {
-        border: 1px solid $border-inputfield-danger;
+        border: 1px solid ${palette['$border-inputfield-danger']};
       }
       &.success {
-        border: 1px solid $border-inputfield-success;
+        border: 1px solid ${palette['$border-inputfield-success']};
       }
     }
   }
@@ -139,10 +140,10 @@ const TextAreaWrapper = styled.div`
     gap: 6px;
     align-items: center;
     &.error {
-      color: $text-danger;
+      color: ${palette['$text-danger']};
     }
     &.success {
-      color: $text-success;
+      color: ${palette['$text-success']};
     }
     img {
       margin-top: -4px;

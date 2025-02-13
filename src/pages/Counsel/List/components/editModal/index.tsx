@@ -107,6 +107,7 @@ const EditModal = (props: TModal & { idx: number }) => {
                 trackBy="id"
                 valueBy="name"
                 placeholder="고객을 선택해주세요"
+                isError={submit && !customer}
               />
             </div>
             <div>
@@ -118,6 +119,8 @@ const EditModal = (props: TModal & { idx: number }) => {
                 style={{ cursor: 'pointer' }}
                 value={counselAt}
                 onTextChange={(text) => setCounselAt(text)}
+                isError={submit && !counselAt}
+                errorMessage="상담일시는 필수입니다."
               />
             </div>
             <div>
@@ -150,6 +153,8 @@ const EditModal = (props: TModal & { idx: number }) => {
               value={context ?? ''}
               onTextChange={(value) => setContext(value)}
               style={{ width: '500px' }}
+              isError={submit && !context}
+              errorMessage="상담내용은 필수입니다."
             ></TextArea>
           </div>
         </CounselModalContentWrapper>

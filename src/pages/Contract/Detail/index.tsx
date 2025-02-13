@@ -1,9 +1,7 @@
 import Button from '@/components/button/Button';
 import Checkbox from '@/components/checkbox/Checkbox';
-import { SvgIcon } from '@/components/common/SvgIcon';
 import Input from '@/components/input/Input';
 import Select from '@/components/select/Select';
-import TextArea from '@/components/textArea/TextArea';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import { useGetCites } from '@/services/city';
@@ -19,13 +17,7 @@ import { useGetCustomers } from '@/services/customer';
 import { useGetUsers } from '@/services/user';
 // import { dummyCustomerList } from '@/dummy/customer';
 // import { useGetCustomer } from '@/services/customer';
-import {
-  textM16Medium,
-  textM16Regular,
-  textS14Medium,
-  textS14Regular,
-  titleXl20Bold,
-} from '@/styles/typography';
+import { textM16Medium, titleXl20Bold } from '@/styles/typography';
 import {
   City,
   Customer,
@@ -38,7 +30,6 @@ import {
 import { numberFormat } from '@/utils/common';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import _ from 'lodash';
 
@@ -222,7 +213,7 @@ const ContractDetail = () => {
                   showConfirm({
                     isOpen: true,
                     title: '계약 삭제',
-                    content: `${detail?.customer.name} 고객의 계약을 삭제하시겠습니까?`,
+                    content: `${detail?.customer?.name} 고객의 계약을 삭제하시겠습니까?`,
                     cancelText: '취소',
                     confirmText: '삭제',
                     confirmVariant: 'primaryDanger',
@@ -259,6 +250,7 @@ const ContractDetail = () => {
                   valueBy="name"
                   placeholder="담당자를 선택해주세요"
                   disabled={!isEdit}
+                  isError={submit && !user}
                 />
               </InputWrapper>
             </InputLine>
@@ -307,6 +299,7 @@ const ContractDetail = () => {
                   valueBy="name"
                   placeholder="고객을 선택해주세요"
                   disabled
+                  isError={submit && !customer}
                 />
               </InputWrapper>
             </InputLine>
@@ -331,6 +324,8 @@ const ContractDetail = () => {
                   value={updateContract?.carName ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'carName')}
                   disabled={!isEdit}
+                  isError={submit && !updateContract.carName}
+                  errorMessage="차종은 필수입니다."
                 />
               </InputWrapper>
             </InputLine>
