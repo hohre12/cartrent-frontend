@@ -36,7 +36,7 @@ export const SIDE_MENU = [
     path: '/delivery',
   },
   {
-    title: '권한',
+    title: '관리자 전용',
     engTitle: 'auth',
     icon: 'icon-draft',
     path: '/auth',
