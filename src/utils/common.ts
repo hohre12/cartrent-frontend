@@ -1,5 +1,10 @@
 // list 보기옵션 컬럼 노출 여부
-export const isColumnsViewHide = (keys: string[], val: string) => {
+export const isColumnsViewHide = (
+  keys: string[],
+  val: string,
+  isHide?: boolean,
+) => {
+  if (isHide) return true;
   if (!keys) return false;
   return keys.includes(val);
 };
