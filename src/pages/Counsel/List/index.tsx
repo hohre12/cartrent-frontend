@@ -19,6 +19,8 @@ import FloatingMenu from './components/floatingMenu';
 import { useGetCounsels } from '@/services/counsel';
 import FilterStatus from './components/filter/status';
 import FilterUser from './components/filter/user';
+import { userState } from '@/state/auth';
+import { PermissionType } from '@/types/graphql';
 
 const CounselList = () => {
   const [text, setText] = useState<string>('');
@@ -27,6 +29,7 @@ const CounselList = () => {
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
+  const user = useRecoilValue(userState);
 
   // filters
   const [filters, setFilters] = useRecoilState(counselFiltersState);
@@ -158,39 +161,45 @@ const CounselList = () => {
                     ></FilterGroup>
                   )}
                 </FilterContent>
-                <FilterContent ref={filterUserRef}>
-                  <Button
-                    variant="white"
-                    configuration="stroke"
-                    style={{
-                      borderColor: filters.users.length > 0 ? '#333' : '#ddd',
-                    }}
-                    onClick={() => setIsFilterUserOpen(!isFilterUserOpen)}
-                  >
-                    담당자
-                    {filters.users.length > 0 && (
-                      <Circle>{filters.users.length}</Circle>
+                {user?.role.name === PermissionType.Admin && (
+                  <FilterContent ref={filterUserRef}>
+                    <Button
+                      variant="white"
+                      configuration="stroke"
+                      style={{
+                        borderColor: filters.users.length > 0 ? '#333' : '#ddd',
+                      }}
+                      onClick={() => setIsFilterUserOpen(!isFilterUserOpen)}
+                    >
+                      담당자
+                      {filters.users.length > 0 && (
+                        <Circle>{filters.users.length}</Circle>
+                      )}
+                      <SvgIcon
+                        iconName="icon-arrowButton"
+                        style={{ fill: '#333' }}
+                      />
+                    </Button>
+                    {isFilterUserOpen && (
+                      <FilterUser
+                        handleApply={handleSetFilterUser}
+                      ></FilterUser>
                     )}
-                    <SvgIcon
-                      iconName="icon-arrowButton"
-                      style={{ fill: '#333' }}
-                    />
-                  </Button>
-                  {isFilterUserOpen && (
-                    <FilterUser handleApply={handleSetFilterUser}></FilterUser>
-                  )}
-                </FilterContent>
+                  </FilterContent>
+                )}
               </FilterWrapper>
             </SearchBoxWrapper>
             <FunctionWrapper>
-              <Button
-                onClick={() =>
-                  setIsOpenWatchOptionModal(!isOpenWatchOptionModal)
-                }
-              >
-                <SvgIcon iconName="icon-eye-show" />
-                <p>보기옵션</p>
-              </Button>
+              {user?.role.name === PermissionType.Admin && (
+                <Button
+                  onClick={() =>
+                    setIsOpenWatchOptionModal(!isOpenWatchOptionModal)
+                  }
+                >
+                  <SvgIcon iconName="icon-eye-show" />
+                  <p>보기옵션</p>
+                </Button>
+              )}
               <Button onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}>
                 <SvgIcon iconName="icon-plus" />
                 <p>상담등록</p>

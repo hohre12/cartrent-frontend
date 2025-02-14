@@ -1,12 +1,16 @@
 import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
-import { COUNSEL_LIST_WATCH_OPTIONS } from '@/constants/counsel';
+import {
+  COUNSEL_LIST_WATCH_OPTIONS,
+  COUNSEL_LIST_WATCH_REQUIRED_OPTIONS,
+} from '@/constants/counsel';
+import { userState } from '@/state/auth';
 import {
   selectedCounselHideWatchOptionsState,
   selectedCounselState,
 } from '@/state/counsel';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { Counsel } from '@/types/graphql';
+import { Counsel, PermissionType } from '@/types/graphql';
 import { isColumnsViewHide } from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
 import { useCallback, useMemo } from 'react';
@@ -25,6 +29,13 @@ const CounselListTable = ({ data }: TTableProps) => {
   const selectedCounselHideWatchOptions = useRecoilValue(
     selectedCounselHideWatchOptionsState,
   );
+
+  const user = useRecoilValue(userState);
+  const isHideColumn = (columeKey: string) => {
+    return user?.role.name === PermissionType.Admin
+      ? false
+      : !COUNSEL_LIST_WATCH_REQUIRED_OPTIONS.includes(columeKey);
+  };
 
   const isAllChecked = useMemo(() => {
     return (
@@ -63,9 +74,11 @@ const CounselListTable = ({ data }: TTableProps) => {
           </th>
           {Object.entries(COUNSEL_LIST_WATCH_OPTIONS).map(([key, value]) => {
             return (
-              !isColumnsViewHide(selectedCounselHideWatchOptions, key) && (
-                <th key={key}>{value}</th>
-              )
+              !isColumnsViewHide(
+                selectedCounselHideWatchOptions,
+                key,
+                isHideColumn(key),
+              ) && <th key={key}>{value}</th>
             );
           })}
         </TableHeader>
@@ -84,39 +97,50 @@ const CounselListTable = ({ data }: TTableProps) => {
                 />
               </div>
             </td>
-            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'status') && (
-              <td>{it.status ?? '-'}</td>
-            )}
+            {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
+              'customerStatus',
+              isHideColumn('customerStatus'),
+            ) && <td>{it.customer?.customerStatus?.status ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
               'counselAt',
+              isHideColumn('counselAt'),
             ) && <td>{formatDate(it.counselAt, 'YYYY-MM-DD HH:mm') ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
               'customerName',
+              isHideColumn('customerName'),
             ) && <td>{it.customer?.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
               'customerPhone',
+              isHideColumn('customerPhone'),
             ) && <td>{it.customer?.phone ?? '-'}</td>}
-            {!isColumnsViewHide(selectedCounselHideWatchOptions, 'context') && (
-              <td className="textHidden">{it.context ?? '-'}</td>
-            )}
+            {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
+              'context',
+              isHideColumn('context'),
+            ) && <td className="textHidden">{it.context ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
               'userName',
+              isHideColumn('userName'),
             ) && <td>{it.user.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
               'customerGroup',
+              isHideColumn('customerGroup'),
             ) && <td>{it.customer.customerGroup?.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
               'customerGrade',
+              isHideColumn('customerGrade'),
             ) && <td>{it.customer.customerGrade?.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
               'customerDivision',
+              isHideColumn('customerDivision'),
             ) && <td className="name">{it.contract?.division?.name ?? '-'}</td>}
           </TableItem>
         ))}

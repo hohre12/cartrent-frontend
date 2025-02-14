@@ -6,10 +6,17 @@ import { useToast } from '@/hooks/useToast';
 import { useGetContracts } from '@/services/contract';
 import { useCreateCounsel } from '@/services/counsel';
 import { useGetCustomers } from '@/services/customer';
+import { useGetUsers } from '@/services/user';
 import { userState } from '@/state/auth';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
-import { Contract, CreateCounselDto, Customer } from '@/types/graphql';
+import {
+  Contract,
+  CreateCounselDto,
+  Customer,
+  PermissionType,
+  User,
+} from '@/types/graphql';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -17,7 +24,8 @@ import styled from 'styled-components';
 const RegistModal = (props: TModal) => {
   const { ...modalProps } = props;
   const [customer, setCustomer] = useState<Customer>();
-  const user = useRecoilValue(userState);
+  const [user, setUser] = useState<User>();
+  const my = useRecoilValue(userState);
   const [contract, setContract] = useState<Contract>();
 
   const [counselAt, setCounselAt] = useState<CreateCounselDto['counselAt']>();
@@ -27,6 +35,7 @@ const RegistModal = (props: TModal) => {
 
   const { addToast } = useToast();
   const { data: customers } = useGetCustomers({});
+  const { data: users } = useGetUsers();
 
   const { data: contracts } = useGetContracts({
     customerId: customer?.id ? [customer?.id] : [],
@@ -74,6 +83,12 @@ const RegistModal = (props: TModal) => {
     setContract(undefined);
   }, [customer]);
 
+  useEffect(() => {
+    if (my) {
+      setUser(my);
+    }
+  }, [my, setUser]);
+
   return (
     <>
       <Modal
@@ -119,10 +134,16 @@ const RegistModal = (props: TModal) => {
             </div>
             <div>
               <span>상담자</span>
-              <Input
-                value={user?.name}
+              <Select
                 size="medium"
-                disabled
+                value={{
+                  ...user,
+                }}
+                onChange={(value) => setUser(value)}
+                list={users?.getUsers ?? []}
+                trackBy="id"
+                valueBy="name"
+                disabled={my?.role?.name === PermissionType.User}
               />
             </div>
             <div>

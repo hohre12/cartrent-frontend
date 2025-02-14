@@ -8,6 +8,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import EditModal from '../List/components/editModal';
+import { userState } from '@/state/auth';
+import { useRecoilValue } from 'recoil';
+import { PermissionType } from '@/types/graphql';
 
 const CounselDetail = () => {
   const { id } = useParams();
@@ -18,6 +21,7 @@ const CounselDetail = () => {
   const { data, loading, error } = useGetCounsel(counselIdx);
   const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
   const { deleteCounsel } = useDeleteCounsel();
+  const user = useRecoilValue(userState);
 
   const handleDeleteCounsel = async () => {
     try {
@@ -48,23 +52,25 @@ const CounselDetail = () => {
             <h2>{`${detail.customer.name} 님의 상담`}</h2>
           </div>
           <div className="right">
-            <Button
-              onClick={() =>
-                showConfirm({
-                  isOpen: true,
-                  title: '상담 삭제',
-                  content: `${detail?.customer.name} 고객의 상담을 삭제하시겠습니까?`,
-                  cancelText: '취소',
-                  confirmText: '삭제',
-                  confirmVariant: 'primaryDanger',
-                  onClose: hideConfirm,
-                  onCancel: hideConfirm,
-                  onConfirm: handleDeleteCounsel,
-                })
-              }
-            >
-              삭제
-            </Button>
+            {user?.role.name === PermissionType.Admin && (
+              <Button
+                onClick={() =>
+                  showConfirm({
+                    isOpen: true,
+                    title: '상담 삭제',
+                    content: `${detail?.customer.name} 고객의 상담을 삭제하시겠습니까?`,
+                    cancelText: '취소',
+                    confirmText: '삭제',
+                    confirmVariant: 'primaryDanger',
+                    onClose: hideConfirm,
+                    onCancel: hideConfirm,
+                    onConfirm: handleDeleteCounsel,
+                  })
+                }
+              >
+                삭제
+              </Button>
+            )}
             <Button onClick={() => setIsOpenEditModal(!isOpenEditModal)}>
               수정
             </Button>
@@ -78,7 +84,7 @@ const CounselDetail = () => {
             </div>
             <div>
               <p>상담상태</p>
-              <div>{detail.status ?? '-'}</div>
+              <div>{detail.customer?.customerStatus?.status ?? '-'}</div>
             </div>
             <div>
               <p>차종</p>
