@@ -24,6 +24,10 @@ export const GET_CONTRACTS_QUERY = gql`
         id
         name
         phone
+        customerStatus {
+          id
+          status
+        }
       }
       carName
       carOption

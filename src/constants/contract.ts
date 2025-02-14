@@ -1,13 +1,13 @@
 export const CONTRACT_LIST_WATCH_OPTIONS = {
-  status: '상태',
+  customerStatus: '상태',
   userName: '담당자',
   cityName: '지역',
   contractAt: '계약일',
   shippingDate: '출고일',
-  name: '고객명',
-  phone: '연락처',
+  customerName: '고객명',
+  customerPhone: '연락처',
   carName: '차종',
-  carOption: '옵션',
+  carOption: '차 옵션',
   innerColor: '외장색상',
   outerColor: '내장색상',
   carPrice: '차량가',
@@ -18,7 +18,7 @@ export const CONTRACT_LIST_WATCH_OPTIONS = {
   monthlyPayment: '월납입료',
   shippingMethod: '출고방식',
   isOrdering: '출고여부',
-  branch: '지점',
+  branch: '지점명',
   branchFee: '지점수수료',
   advancePayment: '선납금',
   security: '보증금',
@@ -45,30 +45,45 @@ export const CONTRACT_LIST_WATCH_OPTIONS = {
 };
 
 export const CONTRACT_LIST_WATCH_REQUIRED_OPTIONS = [
-  'status',
+  'customerStatus',
+  'cityName',
   'contractAt',
-  'shippingDate',
-  'name',
-  'phone',
+  'customerName',
+  'customerPhone',
   'carName',
+  'carOption',
+  'innerColor',
+  'outerColor',
   'carPrice',
   'financialCompany',
   'feeRate',
   'fee',
-  'totalExpenditure',
-  'totalFee',
-  'netIncome',
+  'promotion',
+  'monthlyPayment',
+  'shippingMethod',
+  'branch',
+  'branchFee',
+  'advancePayment',
+  'security',
+  'contractPeriod',
+  'agreedMileage',
+  'insuranceAge',
+  'object',
 ];
 
-// value={
-// createContract?.carPrice
-// ? numberFormat(createContract.carPrice)
-// : 0
-// }
-
-// onTextChange={(text) =>
-// handleValueChange(
-// Number(text.replace(/,/g, '')),
-// 'carPrice',
-// )
-// }
+// 저쪽에서 요청한 필수값인데, 이렇게 요청했다가 또 관리자 아닌 유저는 필수값만 보이게 해달라해서 일단 주석
+// export const CONTRACT_LIST_WATCH_REQUIRED_OPTIONS = [
+//     'status',
+//     'contractAt',
+//     'shippingDate',
+//     'name',
+//     'phone',
+//     'carName',
+//     'carPrice',
+//     'financialCompany',
+//     'feeRate',
+//     'fee',
+//     'totalExpenditure',
+//     'totalFee',
+//     'netIncome',
+//   ];

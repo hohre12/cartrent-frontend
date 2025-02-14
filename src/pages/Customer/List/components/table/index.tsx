@@ -22,9 +22,9 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
   const selectedCustomerHideWatchOptions = useRecoilValue(
     selectedCustomerHideWatchOptionsState,
   );
-  const user = useRecoilValue(userState);
+  const my = useRecoilValue(userState);
   const isHideColumn = (columeKey: string) => {
-    return user?.role.name === PermissionType.Admin
+    return my?.role.name === PermissionType.Admin
       ? false
       : !CUSTOMER_LIST_WATCH_REQUIRED_OPTIONS.includes(columeKey);
   };

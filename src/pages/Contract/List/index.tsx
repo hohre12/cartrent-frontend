@@ -19,6 +19,8 @@ import { useNavigate } from 'react-router-dom';
 import FilterUser from './components/filter/user';
 import FilterShippingMethod from './components/filter/shippingMethod';
 import Input from '@/components/input/Input';
+import { userState } from '@/state/auth';
+import { PermissionType } from '@/types/graphql';
 
 const ContractList = () => {
   const navigate = useNavigate();
@@ -28,6 +30,7 @@ const ContractList = () => {
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
+  const my = useRecoilValue(userState);
 
   // filters
   const [filters, setFilters] = useRecoilState(contractFiltersState);
@@ -140,28 +143,32 @@ const ContractList = () => {
                     ></FilterShippingMethod>
                   )}
                 </FilterContent>
-                <FilterContent ref={filterUserRef}>
-                  <Button
-                    variant="white"
-                    configuration="stroke"
-                    style={{
-                      borderColor: filters.users.length > 0 ? '#333' : '#ddd',
-                    }}
-                    onClick={() => setIsFilterUserOpen(!isFilterUserOpen)}
-                  >
-                    담당자
-                    {filters.users.length > 0 && (
-                      <Circle>{filters.users.length}</Circle>
+                {my?.role?.name === PermissionType.Admin && (
+                  <FilterContent ref={filterUserRef}>
+                    <Button
+                      variant="white"
+                      configuration="stroke"
+                      style={{
+                        borderColor: filters.users.length > 0 ? '#333' : '#ddd',
+                      }}
+                      onClick={() => setIsFilterUserOpen(!isFilterUserOpen)}
+                    >
+                      담당자
+                      {filters.users.length > 0 && (
+                        <Circle>{filters.users.length}</Circle>
+                      )}
+                      <SvgIcon
+                        iconName="icon-arrowButton"
+                        style={{ fill: '#333' }}
+                      />
+                    </Button>
+                    {isFilterUserOpen && (
+                      <FilterUser
+                        handleApply={handleSetFilterUser}
+                      ></FilterUser>
                     )}
-                    <SvgIcon
-                      iconName="icon-arrowButton"
-                      style={{ fill: '#333' }}
-                    />
-                  </Button>
-                  {isFilterUserOpen && (
-                    <FilterUser handleApply={handleSetFilterUser}></FilterUser>
-                  )}
-                </FilterContent>
+                  </FilterContent>
+                )}
                 <div className="verticalLine"></div>
                 <DateWrapper>
                   {!filters?.startContractAtYearMonth && (
@@ -201,14 +208,16 @@ const ContractList = () => {
               </FilterWrapper>
             </SearchBoxWrapper>
             <FunctionWrapper>
-              <Button
-                onClick={() =>
-                  setIsOpenWatchOptionModal(!isOpenWatchOptionModal)
-                }
-              >
-                <SvgIcon iconName="icon-eye-show" />
-                <p>보기옵션</p>
-              </Button>
+              {my?.role?.name === PermissionType.Admin && (
+                <Button
+                  onClick={() =>
+                    setIsOpenWatchOptionModal(!isOpenWatchOptionModal)
+                  }
+                >
+                  <SvgIcon iconName="icon-eye-show" />
+                  <p>보기옵션</p>
+                </Button>
+              )}
               <Button onClick={() => navigate('regist')}>
                 <SvgIcon iconName="icon-plus" />
                 <p>계약등록</p>

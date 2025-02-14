@@ -20,6 +20,7 @@ import {
   Customer,
   Division,
   FinancialCompany,
+  PermissionType,
   ShippingMethod,
   User,
 } from '@/types/graphql';
@@ -168,7 +169,7 @@ const ContractRegist = () => {
                   trackBy="id"
                   valueBy="name"
                   placeholder="담당자를 선택해주세요"
-                  disabled
+                  disabled={my?.role?.name === PermissionType.User}
                   isError={submit && !user}
                 />
               </InputWrapper>
@@ -190,7 +191,7 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>계약날짜</span>
+              <span>계약일</span>
               <InputWrapper>
                 <Input
                   type="date"
@@ -271,7 +272,7 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>총차량가</span>
+              <span>차량가</span>
               <InputWrapper>
                 <Input
                   value={
@@ -605,271 +606,273 @@ const ContractRegist = () => {
             </InputLine>
           </InfoBox>
         </InfoBoxWrapper>
-        <InfoBoxWrapper>
-          <h5>계약내용 추가 입력 (관리자 전용)</h5>
-          <InfoBox>
-            <InputLine>
-              <span>출고 일</span>
-              <InputWrapper>
-                <Input
-                  type="date"
-                  style={{ cursor: 'pointer' }}
-                  onTextChange={(text) =>
-                    handleValueChange(text, 'shippingDate')
-                  }
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>부가세 지원 여부</span>
-              <InputWrapper>
-                <Checkbox
-                  value={createContract?.isVATSupport ?? false}
-                  onCheckedChange={(val) => {
-                    handleValueChange(val, 'isVATSupport');
-                  }}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>출고여부</span>
-              <InputWrapper>
-                <Checkbox
-                  value={createContract?.isOrdering ?? false}
-                  onCheckedChange={(val) => {
-                    handleValueChange(val, 'isOrdering');
-                  }}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>품의내용 1</span>
-              <InputWrapper>
-                <Input
-                  value={createContract?.serviceBody1 ?? ''}
-                  onTextChange={(text) =>
-                    handleValueChange(text, 'serviceBody1')
-                  }
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>품의내용 2</span>
-              <InputWrapper>
-                <Input
-                  value={createContract?.serviceBody2 ?? ''}
-                  onTextChange={(text) =>
-                    handleValueChange(text, 'serviceBody2')
-                  }
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>품의내용 3</span>
-              <InputWrapper>
-                <Input
-                  value={createContract?.serviceBody3 ?? ''}
-                  onTextChange={(text) =>
-                    handleValueChange(text, 'serviceBody3')
-                  }
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>품의금액 1</span>
-              <InputWrapper>
-                <Input
-                  value={
-                    createContract?.service1
-                      ? numberFormat(createContract.service1)
-                      : 0
-                  }
-                  onTextChange={(text) =>
-                    handleValueChange(
-                      Number(text.replace(/,/g, '')),
-                      'service1',
-                    )
-                  }
-                  isNumber
-                  postfixNode={'원'}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>품의금액 2</span>
-              <InputWrapper>
-                <Input
-                  value={
-                    createContract?.service2
-                      ? numberFormat(createContract.service2)
-                      : 0
-                  }
-                  onTextChange={(text) =>
-                    handleValueChange(
-                      Number(text.replace(/,/g, '')),
-                      'service2',
-                    )
-                  }
-                  isNumber
-                  postfixNode={'원'}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>품의금액 3</span>
-              <InputWrapper>
-                <Input
-                  value={
-                    createContract?.service3
-                      ? numberFormat(createContract.service3)
-                      : 0
-                  }
-                  onTextChange={(text) =>
-                    handleValueChange(
-                      Number(text.replace(/,/g, '')),
-                      'service3',
-                    )
-                  }
-                  isNumber
-                  postfixNode={'원'}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>현금 지원</span>
-              <InputWrapper>
-                <Input
-                  value={
-                    createContract?.cashAssistance
-                      ? numberFormat(createContract.cashAssistance)
-                      : 0
-                  }
-                  onTextChange={(text) =>
-                    handleValueChange(
-                      Number(text.replace(/,/g, '')),
-                      'cashAssistance',
-                    )
-                  }
-                  isNumber
-                  postfixNode={'원'}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>소득자</span>
-              <InputWrapper>
-                <Input
-                  value={createContract?.incomeEarner ?? ''}
-                  onTextChange={(text) =>
-                    handleValueChange(text, 'incomeEarner')
-                  }
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>지원 내용</span>
-              <InputWrapper>
-                <Input
-                  value={createContract?.supportDetails ?? ''}
-                  onTextChange={(text) =>
-                    handleValueChange(text, 'supportDetails')
-                  }
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>경비</span>
-              <InputWrapper>
-                <Input
-                  value={
-                    createContract?.businessExpenses
-                      ? numberFormat(createContract.businessExpenses)
-                      : 0
-                  }
-                  onTextChange={(text) =>
-                    handleValueChange(
-                      Number(text.replace(/,/g, '')),
-                      'businessExpenses',
-                    )
-                  }
-                  isNumber
-                  postfixNode={'원'}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>경비내용</span>
-              <InputWrapper>
-                <Input
-                  value={createContract?.businessExpensesDetail ?? ''}
-                  onTextChange={(text) =>
-                    handleValueChange(text, 'businessExpensesDetail')
-                  }
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>매출합계</span>
-              <InputWrapper>
-                <Input
-                  value={
-                    createContract?.totalFee
-                      ? numberFormat(createContract.totalFee)
-                      : 0
-                  }
-                  onTextChange={(text) =>
-                    handleValueChange(
-                      Number(text.replace(/,/g, '')),
-                      'totalFee',
-                    )
-                  }
-                  isNumber
-                  postfixNode={'원'}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>지출합계</span>
-              <InputWrapper>
-                <Input
-                  value={
-                    createContract?.totalExpenditure
-                      ? numberFormat(createContract.totalExpenditure)
-                      : 0
-                  }
-                  onTextChange={(text) =>
-                    handleValueChange(
-                      Number(text.replace(/,/g, '')),
-                      'totalExpenditure',
-                    )
-                  }
-                  isNumber
-                  postfixNode={'원'}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>순익합계</span>
-              <InputWrapper>
-                <Input
-                  value={
-                    createContract?.netIncome
-                      ? numberFormat(createContract.netIncome)
-                      : 0
-                  }
-                  onTextChange={(text) =>
-                    handleValueChange(
-                      Number(text.replace(/,/g, '')),
-                      'netIncome',
-                    )
-                  }
-                  isNumber
-                  postfixNode={'원'}
-                />
-              </InputWrapper>
-            </InputLine>
-          </InfoBox>
-        </InfoBoxWrapper>
+        {my?.role?.name === PermissionType.Admin && (
+          <InfoBoxWrapper>
+            <h5>계약내용 추가 입력 (관리자 전용)</h5>
+            <InfoBox>
+              <InputLine>
+                <span>출고 일</span>
+                <InputWrapper>
+                  <Input
+                    type="date"
+                    style={{ cursor: 'pointer' }}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'shippingDate')
+                    }
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>부가세 지원 여부</span>
+                <InputWrapper>
+                  <Checkbox
+                    value={createContract?.isVATSupport ?? false}
+                    onCheckedChange={(val) => {
+                      handleValueChange(val, 'isVATSupport');
+                    }}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>출고여부</span>
+                <InputWrapper>
+                  <Checkbox
+                    value={createContract?.isOrdering ?? false}
+                    onCheckedChange={(val) => {
+                      handleValueChange(val, 'isOrdering');
+                    }}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>품의내용 1</span>
+                <InputWrapper>
+                  <Input
+                    value={createContract?.serviceBody1 ?? ''}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'serviceBody1')
+                    }
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>품의내용 2</span>
+                <InputWrapper>
+                  <Input
+                    value={createContract?.serviceBody2 ?? ''}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'serviceBody2')
+                    }
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>품의내용 3</span>
+                <InputWrapper>
+                  <Input
+                    value={createContract?.serviceBody3 ?? ''}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'serviceBody3')
+                    }
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>품의금액 1</span>
+                <InputWrapper>
+                  <Input
+                    value={
+                      createContract?.service1
+                        ? numberFormat(createContract.service1)
+                        : 0
+                    }
+                    onTextChange={(text) =>
+                      handleValueChange(
+                        Number(text.replace(/,/g, '')),
+                        'service1',
+                      )
+                    }
+                    isNumber
+                    postfixNode={'원'}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>품의금액 2</span>
+                <InputWrapper>
+                  <Input
+                    value={
+                      createContract?.service2
+                        ? numberFormat(createContract.service2)
+                        : 0
+                    }
+                    onTextChange={(text) =>
+                      handleValueChange(
+                        Number(text.replace(/,/g, '')),
+                        'service2',
+                      )
+                    }
+                    isNumber
+                    postfixNode={'원'}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>품의금액 3</span>
+                <InputWrapper>
+                  <Input
+                    value={
+                      createContract?.service3
+                        ? numberFormat(createContract.service3)
+                        : 0
+                    }
+                    onTextChange={(text) =>
+                      handleValueChange(
+                        Number(text.replace(/,/g, '')),
+                        'service3',
+                      )
+                    }
+                    isNumber
+                    postfixNode={'원'}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>현금 지원</span>
+                <InputWrapper>
+                  <Input
+                    value={
+                      createContract?.cashAssistance
+                        ? numberFormat(createContract.cashAssistance)
+                        : 0
+                    }
+                    onTextChange={(text) =>
+                      handleValueChange(
+                        Number(text.replace(/,/g, '')),
+                        'cashAssistance',
+                      )
+                    }
+                    isNumber
+                    postfixNode={'원'}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>소득자</span>
+                <InputWrapper>
+                  <Input
+                    value={createContract?.incomeEarner ?? ''}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'incomeEarner')
+                    }
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>지원 내용</span>
+                <InputWrapper>
+                  <Input
+                    value={createContract?.supportDetails ?? ''}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'supportDetails')
+                    }
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>경비</span>
+                <InputWrapper>
+                  <Input
+                    value={
+                      createContract?.businessExpenses
+                        ? numberFormat(createContract.businessExpenses)
+                        : 0
+                    }
+                    onTextChange={(text) =>
+                      handleValueChange(
+                        Number(text.replace(/,/g, '')),
+                        'businessExpenses',
+                      )
+                    }
+                    isNumber
+                    postfixNode={'원'}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>경비내용</span>
+                <InputWrapper>
+                  <Input
+                    value={createContract?.businessExpensesDetail ?? ''}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'businessExpensesDetail')
+                    }
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>매출합계</span>
+                <InputWrapper>
+                  <Input
+                    value={
+                      createContract?.totalFee
+                        ? numberFormat(createContract.totalFee)
+                        : 0
+                    }
+                    onTextChange={(text) =>
+                      handleValueChange(
+                        Number(text.replace(/,/g, '')),
+                        'totalFee',
+                      )
+                    }
+                    isNumber
+                    postfixNode={'원'}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>지출합계</span>
+                <InputWrapper>
+                  <Input
+                    value={
+                      createContract?.totalExpenditure
+                        ? numberFormat(createContract.totalExpenditure)
+                        : 0
+                    }
+                    onTextChange={(text) =>
+                      handleValueChange(
+                        Number(text.replace(/,/g, '')),
+                        'totalExpenditure',
+                      )
+                    }
+                    isNumber
+                    postfixNode={'원'}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>순익합계</span>
+                <InputWrapper>
+                  <Input
+                    value={
+                      createContract?.netIncome
+                        ? numberFormat(createContract.netIncome)
+                        : 0
+                    }
+                    onTextChange={(text) =>
+                      handleValueChange(
+                        Number(text.replace(/,/g, '')),
+                        'netIncome',
+                      )
+                    }
+                    isNumber
+                    postfixNode={'원'}
+                  />
+                </InputWrapper>
+              </InputLine>
+            </InfoBox>
+          </InfoBoxWrapper>
+        )}
       </InfoWrapper>
     </DetailWrapper>
   );
