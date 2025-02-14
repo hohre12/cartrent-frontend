@@ -66,7 +66,7 @@ export type Contract = {
   /** 약정 기간 시작일 */
   contractPeriodStartAt?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['DateTime']['output']>;
-  customer?: Maybe<Customer>;
+  customer: Customer;
   customer_id?: Maybe<Scalars['Int']['output']>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
   division?: Maybe<Division>;
@@ -445,6 +445,8 @@ export type FirstContractCountUser = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   password: Scalars['String']['output'];
+  position: Position;
+  role: Role;
   totalRevenue: Scalars['Int']['output'];
   updated_at?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -461,6 +463,8 @@ export type FirstRevenueUser = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   password: Scalars['String']['output'];
+  position: Position;
+  role: Role;
   totalRevenue: Scalars['Int']['output'];
   updated_at?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -798,6 +802,33 @@ export type PayStub = {
   year: Scalars['String']['output'];
 };
 
+/** 권한 Enum Type */
+export enum PermissionType {
+  /** ADMIN */
+  Admin = 'ADMIN',
+  /** USER */
+  User = 'USER'
+}
+
+/** 직책 */
+export type Position = {
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  deleted_at?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['Int']['output'];
+  name: PositionType;
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
+};
+
+/** 직책 EnumType */
+export enum PositionType {
+  /** 관리자 */
+  Manager = 'MANAGER',
+  /** 팀장 */
+  TeamLeader = 'TEAM_LEADER',
+  /** 사원 */
+  TeamMember = 'TEAM_MEMBER'
+}
+
 export type Query = {
   /** 도시 리스트 조회 */
   getCities: Array<City>;
@@ -934,6 +965,14 @@ export type QueryGetSupportAmountsArgs = {
 
 export type QueryGetTeamArgs = {
   teamId: Scalars['Float']['input'];
+};
+
+export type Role = {
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  deleted_at?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['Int']['output'];
+  name: PermissionType;
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /** 출고방식 */
@@ -1174,6 +1213,8 @@ export type User = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   password: Scalars['String']['output'];
+  position: Position;
+  role: Role;
   totalRevenue: Scalars['Int']['output'];
   updated_at?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -1188,7 +1229,7 @@ export type SignInMutationVariables = Exact<{
 }>;
 
 
-export type SignInMutation = { signIn: { accessToken: string, refreshToken?: string | null, user?: { name: string, id: number } | null } };
+export type SignInMutation = { signIn: { accessToken: string, refreshToken?: string | null, user?: { name: string, id: number, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType } } | null } };
 
 export type SignUpMutationVariables = Exact<{
   signUpDto: SignUpDto;
@@ -1207,7 +1248,7 @@ export type RefreshMutationVariables = Exact<{
 }>;
 
 
-export type RefreshMutation = { refresh: { accessToken: string, refreshToken?: string | null, user?: { name: string, id: number } | null } };
+export type RefreshMutation = { refresh: { accessToken: string, refreshToken?: string | null, user?: { id: number, name: string, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType } } | null } };
 
 export type UpdateMyInfoMutationVariables = Exact<{
   updateUserDto: UpdateUserDto;
@@ -1265,6 +1306,13 @@ export type CreateCounselMutationVariables = Exact<{
 
 export type CreateCounselMutation = { createCounsel: { id: number } };
 
+export type UpdateCounselMutationVariables = Exact<{
+  updateCounselDto: UpdateCounselDto;
+}>;
+
+
+export type UpdateCounselMutation = { updateCounsel: { id: number } };
+
 export type DeleteCounselMutationVariables = Exact<{
   counselIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
 }>;
@@ -1307,19 +1355,12 @@ export type CreateCustomerGroupMutationVariables = Exact<{
 
 export type CreateCustomerGroupMutation = { createCustomerGroup: { id: number } };
 
-export type UpdateCustomerGroupMutationVariables = Exact<{
-  updateCustomerGroupDto: UpdateCustomerGroupDto;
+export type CreateCustomerGradeMutationVariables = Exact<{
+  createCustomerGradeDto: CreateCustomerGradeDto;
 }>;
 
 
-export type UpdateCustomerGroupMutation = { updateCustomerGroup: { id: number } };
-
-export type DeleteCustomerGroupMutationVariables = Exact<{
-  customerGroupId: Scalars['Float']['input'];
-}>;
-
-
-export type DeleteCustomerGroupMutation = { deleteCustomerGroup: string };
+export type CreateCustomerGradeMutation = { createCustomerGrade: { id: number } };
 
 export type CreateTeamMutationVariables = Exact<{
   createTeamDto: CreateTeamDto;
@@ -1361,14 +1402,14 @@ export type GetContractsQueryVariables = Exact<{
 }>;
 
 
-export type GetContractsQuery = { getContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriodStartAt?: string | null, contractPeriodEndAt?: string | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: string | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, user: { name: string }, city?: { name: string } | null, customer?: { name: string, phone: string } | null, financialCompany?: { name: string } | null, shippingMethod?: { name: string } | null, division?: { name: string } | null }> };
+export type GetContractsQuery = { getContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: boolean | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriodStartAt?: string | null, contractPeriodEndAt?: string | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: string | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, security?: number | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string }, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> };
 
 export type GetContractQueryVariables = Exact<{
   contractId: Scalars['Float']['input'];
 }>;
 
 
-export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriodEndAt?: string | null, contractPeriodStartAt?: string | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: string | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, user: { name: string }, city?: { name: string } | null, customer?: { name: string, phone: string } | null, financialCompany?: { name: string } | null, shippingMethod?: { name: string } | null, division?: { name: string } | null } };
+export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: boolean | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriodEndAt?: string | null, contractPeriodStartAt?: string | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: string | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, security?: number | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string }, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null } };
 
 export type GetFinancialCompaniesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1390,14 +1431,14 @@ export type GetCounselsQueryVariables = Exact<{
 }>;
 
 
-export type GetCounselsQuery = { getCounsels: Array<{ id: number, status?: Status | null, counselAt: string, context: string, customer: { name: string, phone: string, customerGroup?: { name: string } | null, customerGrade?: { name: string } | null }, contract?: { carName?: string | null, division?: { name: string } | null } | null, user: { name: string } }> };
+export type GetCounselsQuery = { getCounsels: Array<{ id: number, status?: Status | null, counselAt: string, context: string, customer: { id: number, name: string, phone: string, customerGroup?: { id: number, name: string } | null, customerGrade?: { id: number, name: string } | null }, contract?: { id: number, carName?: string | null, division?: { id: number, name: string } | null } | null, user: { id: number, name: string } }> };
 
 export type GetCounselQueryVariables = Exact<{
   counselId: Scalars['Float']['input'];
 }>;
 
 
-export type GetCounselQuery = { getCounsel: { id: number, status?: Status | null, counselAt: string, context: string, customer: { name: string, phone: string, customerGroup?: { name: string } | null, customerGrade?: { name: string } | null }, contract?: { carName?: string | null, division?: { name: string } | null } | null, user: { name: string } } };
+export type GetCounselQuery = { getCounsel: { id: number, status?: Status | null, counselAt: string, context: string, customer: { id: number, name: string, phone: string, customerGroup?: { id: number, name: string } | null, customerGrade?: { id: number, name: string } | null }, contract?: { id: number, carName?: string | null, division?: { id: number, name: string } | null } | null, user: { id: number, name: string } } };
 
 export type GetCustomersQueryVariables = Exact<{
   getCustomersDto: GetCustomersDto;
@@ -1454,6 +1495,14 @@ export const SignInDocument = gql`
     user {
       name
       id
+      position {
+        id
+        name
+      }
+      role {
+        id
+        name
+      }
     }
   }
 }
@@ -1559,8 +1608,16 @@ export const RefreshDocument = gql`
     accessToken
     refreshToken
     user {
-      name
       id
+      name
+      position {
+        id
+        name
+      }
+      role {
+        id
+        name
+      }
     }
   }
 }
@@ -1856,6 +1913,39 @@ export function useCreateCounselMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateCounselMutationHookResult = ReturnType<typeof useCreateCounselMutation>;
 export type CreateCounselMutationResult = Apollo.MutationResult<CreateCounselMutation>;
 export type CreateCounselMutationOptions = Apollo.BaseMutationOptions<CreateCounselMutation, CreateCounselMutationVariables>;
+export const UpdateCounselDocument = gql`
+    mutation UpdateCounsel($updateCounselDto: UpdateCounselDto!) {
+  updateCounsel(updateCounselDto: $updateCounselDto) {
+    id
+  }
+}
+    `;
+export type UpdateCounselMutationFn = Apollo.MutationFunction<UpdateCounselMutation, UpdateCounselMutationVariables>;
+
+/**
+ * __useUpdateCounselMutation__
+ *
+ * To run a mutation, you first call `useUpdateCounselMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCounselMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCounselMutation, { data, loading, error }] = useUpdateCounselMutation({
+ *   variables: {
+ *      updateCounselDto: // value for 'updateCounselDto'
+ *   },
+ * });
+ */
+export function useUpdateCounselMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCounselMutation, UpdateCounselMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCounselMutation, UpdateCounselMutationVariables>(UpdateCounselDocument, options);
+      }
+export type UpdateCounselMutationHookResult = ReturnType<typeof useUpdateCounselMutation>;
+export type UpdateCounselMutationResult = Apollo.MutationResult<UpdateCounselMutation>;
+export type UpdateCounselMutationOptions = Apollo.BaseMutationOptions<UpdateCounselMutation, UpdateCounselMutationVariables>;
 export const DeleteCounselDocument = gql`
     mutation DeleteCounsel($counselIds: [Int!]!) {
   deleteCounsel(counselIds: $counselIds)
@@ -2050,70 +2140,39 @@ export function useCreateCustomerGroupMutation(baseOptions?: Apollo.MutationHook
 export type CreateCustomerGroupMutationHookResult = ReturnType<typeof useCreateCustomerGroupMutation>;
 export type CreateCustomerGroupMutationResult = Apollo.MutationResult<CreateCustomerGroupMutation>;
 export type CreateCustomerGroupMutationOptions = Apollo.BaseMutationOptions<CreateCustomerGroupMutation, CreateCustomerGroupMutationVariables>;
-export const UpdateCustomerGroupDocument = gql`
-    mutation UpdateCustomerGroup($updateCustomerGroupDto: UpdateCustomerGroupDto!) {
-  updateCustomerGroup(UpdateCustomerGroupDto: $updateCustomerGroupDto) {
+export const CreateCustomerGradeDocument = gql`
+    mutation CreateCustomerGrade($createCustomerGradeDto: CreateCustomerGradeDto!) {
+  createCustomerGrade(CreateCustomerGradeDto: $createCustomerGradeDto) {
     id
   }
 }
     `;
-export type UpdateCustomerGroupMutationFn = Apollo.MutationFunction<UpdateCustomerGroupMutation, UpdateCustomerGroupMutationVariables>;
+export type CreateCustomerGradeMutationFn = Apollo.MutationFunction<CreateCustomerGradeMutation, CreateCustomerGradeMutationVariables>;
 
 /**
- * __useUpdateCustomerGroupMutation__
+ * __useCreateCustomerGradeMutation__
  *
- * To run a mutation, you first call `useUpdateCustomerGroupMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateCustomerGroupMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateCustomerGradeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCustomerGradeMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateCustomerGroupMutation, { data, loading, error }] = useUpdateCustomerGroupMutation({
+ * const [createCustomerGradeMutation, { data, loading, error }] = useCreateCustomerGradeMutation({
  *   variables: {
- *      updateCustomerGroupDto: // value for 'updateCustomerGroupDto'
+ *      createCustomerGradeDto: // value for 'createCustomerGradeDto'
  *   },
  * });
  */
-export function useUpdateCustomerGroupMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCustomerGroupMutation, UpdateCustomerGroupMutationVariables>) {
+export function useCreateCustomerGradeMutation(baseOptions?: Apollo.MutationHookOptions<CreateCustomerGradeMutation, CreateCustomerGradeMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateCustomerGroupMutation, UpdateCustomerGroupMutationVariables>(UpdateCustomerGroupDocument, options);
+        return Apollo.useMutation<CreateCustomerGradeMutation, CreateCustomerGradeMutationVariables>(CreateCustomerGradeDocument, options);
       }
-export type UpdateCustomerGroupMutationHookResult = ReturnType<typeof useUpdateCustomerGroupMutation>;
-export type UpdateCustomerGroupMutationResult = Apollo.MutationResult<UpdateCustomerGroupMutation>;
-export type UpdateCustomerGroupMutationOptions = Apollo.BaseMutationOptions<UpdateCustomerGroupMutation, UpdateCustomerGroupMutationVariables>;
-export const DeleteCustomerGroupDocument = gql`
-    mutation DeleteCustomerGroup($customerGroupId: Float!) {
-  deleteCustomerGroup(customerGroupId: $customerGroupId)
-}
-    `;
-export type DeleteCustomerGroupMutationFn = Apollo.MutationFunction<DeleteCustomerGroupMutation, DeleteCustomerGroupMutationVariables>;
-
-/**
- * __useDeleteCustomerGroupMutation__
- *
- * To run a mutation, you first call `useDeleteCustomerGroupMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteCustomerGroupMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteCustomerGroupMutation, { data, loading, error }] = useDeleteCustomerGroupMutation({
- *   variables: {
- *      customerGroupId: // value for 'customerGroupId'
- *   },
- * });
- */
-export function useDeleteCustomerGroupMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCustomerGroupMutation, DeleteCustomerGroupMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteCustomerGroupMutation, DeleteCustomerGroupMutationVariables>(DeleteCustomerGroupDocument, options);
-      }
-export type DeleteCustomerGroupMutationHookResult = ReturnType<typeof useDeleteCustomerGroupMutation>;
-export type DeleteCustomerGroupMutationResult = Apollo.MutationResult<DeleteCustomerGroupMutation>;
-export type DeleteCustomerGroupMutationOptions = Apollo.BaseMutationOptions<DeleteCustomerGroupMutation, DeleteCustomerGroupMutationVariables>;
+export type CreateCustomerGradeMutationHookResult = ReturnType<typeof useCreateCustomerGradeMutation>;
+export type CreateCustomerGradeMutationResult = Apollo.MutationResult<CreateCustomerGradeMutation>;
+export type CreateCustomerGradeMutationOptions = Apollo.BaseMutationOptions<CreateCustomerGradeMutation, CreateCustomerGradeMutationVariables>;
 export const CreateTeamDocument = gql`
     mutation CreateTeam($createTeamDto: CreateTeamDto!) {
   createTeam(createTeamDto: $createTeamDto) {
@@ -2299,14 +2358,17 @@ export const GetContractsDocument = gql`
     id
     status
     user {
+      id
       name
     }
     city {
+      id
       name
     }
     contractAt
     shippingDate
     customer {
+      id
       name
       phone
     }
@@ -2316,6 +2378,7 @@ export const GetContractsDocument = gql`
     outerColor
     carPrice
     financialCompany {
+      id
       name
     }
     feeRate
@@ -2323,9 +2386,11 @@ export const GetContractsDocument = gql`
     promotion
     monthlyPayment
     shippingMethod {
+      id
       name
     }
     isOrdering
+    isVATSupport
     branch
     branchFee
     collateralRate
@@ -2350,8 +2415,11 @@ export const GetContractsDocument = gql`
     netIncome
     company_name_nominee
     division {
+      id
       name
     }
+    advancePayment
+    security
   }
 }
     `;
@@ -2394,14 +2462,17 @@ export const GetContractDocument = gql`
     id
     status
     user {
+      id
       name
     }
     city {
+      id
       name
     }
     contractAt
     shippingDate
     customer {
+      id
       name
       phone
     }
@@ -2411,6 +2482,7 @@ export const GetContractDocument = gql`
     outerColor
     carPrice
     financialCompany {
+      id
       name
     }
     feeRate
@@ -2418,9 +2490,11 @@ export const GetContractDocument = gql`
     promotion
     monthlyPayment
     shippingMethod {
+      id
       name
     }
     isOrdering
+    isVATSupport
     branch
     branchFee
     collateralRate
@@ -2445,8 +2519,11 @@ export const GetContractDocument = gql`
     netIncome
     company_name_nominee
     division {
+      id
       name
     }
+    advancePayment
+    security
   }
 }
     `;
@@ -2611,22 +2688,28 @@ export const GetCounselsDocument = gql`
     counselAt
     context
     customer {
+      id
       name
       phone
       customerGroup {
+        id
         name
       }
       customerGrade {
+        id
         name
       }
     }
     contract {
+      id
       carName
       division {
+        id
         name
       }
     }
     user {
+      id
       name
     }
   }
@@ -2673,22 +2756,28 @@ export const GetCounselDocument = gql`
     counselAt
     context
     customer {
+      id
       name
       phone
       customerGroup {
+        id
         name
       }
       customerGrade {
+        id
         name
       }
     }
     contract {
+      id
       carName
       division {
+        id
         name
       }
     }
     user {
+      id
       name
     }
   }

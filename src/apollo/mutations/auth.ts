@@ -8,11 +8,18 @@ export const SIGNIN_MUTATION = gql`
   mutation SignIn($signInDto: SignInDto!) {
     signIn(signInDto: $signInDto) {
       accessToken
-      permission
       refreshToken
       user {
         name
         id
+        position {
+          id
+          name
+        }
+        role {
+          id
+          name
+        }
       }
     }
   }
@@ -39,11 +46,18 @@ export const REFRESH_MUTATION = gql`
   mutation Refresh($refreshToken: String!) {
     refresh(refreshToken: $refreshToken) {
       accessToken
-      permission
       refreshToken
       user {
         id
         name
+        position {
+          id
+          name
+        }
+        role {
+          id
+          name
+        }
       }
     }
   }
