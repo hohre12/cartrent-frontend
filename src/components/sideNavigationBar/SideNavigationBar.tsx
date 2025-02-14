@@ -24,10 +24,21 @@ const SideNavigationBar = () => {
           {SIDE_MENU.map(
             (it, idx) =>
               (my?.role?.name === PermissionType.Admin ||
-                it.path !== '/auth') && (
+                it.engTitle !== 'auth') && (
                 <li
                   key={idx}
-                  onClick={() => navigate(it.path)}
+                  onClick={() => {
+                    if (
+                      it.engTitle === 'specification' ||
+                      it.engTitle === 'adjustment' ||
+                      it.engTitle === 'delivery' ||
+                      it.engTitle === 'auth'
+                    ) {
+                      alert('페이지 준비중입니다.');
+                    } else {
+                      navigate(it.path);
+                    }
+                  }}
                 >
                   <div
                     className={`title ${location.pathname.includes(it.path) ? 'active' : ''}`}
