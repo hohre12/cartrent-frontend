@@ -1,5 +1,5 @@
 export const COUNSEL_LIST_WATCH_OPTIONS = {
-  status: '상태',
+  customerStatus: '고객상태',
   counselAt: '상담일시',
   customerName: '고객명',
   customerPhone: '연락처',
@@ -7,13 +7,16 @@ export const COUNSEL_LIST_WATCH_OPTIONS = {
   userName: '상담자',
   customerGroup: '고객그룹',
   customerGrade: '고객등급',
-  division: '구분',
+  customerDivision: '구분',
 };
 
 export const COUNSEL_LIST_WATCH_REQUIRED_OPTIONS = [
-  'status',
+  'customerStatus',
   'counselAt',
   'customerName',
+  'customerPhone',
   'context',
-  'userName',
+  'customerGroup',
+  'customerGrade',
+  'customerDivision',
 ];

@@ -4,10 +4,14 @@ import { useLocation } from 'react-router-dom';
 import { SvgIcon } from '../common/SvgIcon';
 import styled from 'styled-components';
 import { titleL18Bold, titleM16Semibold } from '@/styles/typography';
+import { userState } from '@/state/auth';
+import { useRecoilValue } from 'recoil';
+import { PermissionType } from '@/types/graphql';
 
 const SideNavigationBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const my = useRecoilValue(userState);
 
   return (
     <>
@@ -17,23 +21,27 @@ const SideNavigationBar = () => {
           <div className="instituteName">카트렌트카</div>
         </InstituteWrapper>
         <SideBarMenu>
-          {SIDE_MENU.map((it, idx) => (
-            <li
-              key={idx}
-              onClick={() => navigate(it.path)}
-            >
-              <div
-                className={`title ${location.pathname.includes(it.path) ? 'active' : ''}`}
-              >
-                <SvgIcon
-                  iconName={it.icon}
-                  style={{ fill: '#000' }}
-                  alt={it.icon}
-                />
-                <p>{it.title}</p>
-              </div>
-            </li>
-          ))}
+          {SIDE_MENU.map(
+            (it, idx) =>
+              (my?.role?.name === PermissionType.Admin ||
+                it.path !== '/auth') && (
+                <li
+                  key={idx}
+                  onClick={() => navigate(it.path)}
+                >
+                  <div
+                    className={`title ${location.pathname.includes(it.path) ? 'active' : ''}`}
+                  >
+                    <SvgIcon
+                      iconName={it.icon}
+                      style={{ fill: '#000' }}
+                      alt={it.icon}
+                    />
+                    <p>{it.title}</p>
+                  </div>
+                </li>
+              ),
+          )}
         </SideBarMenu>
       </SideNavigationBarWrapper>
     </>

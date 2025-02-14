@@ -4,7 +4,7 @@ import { useToast } from '@/hooks/useToast';
 import { useDeleteCounsel, useGetCounsel } from '@/services/counsel';
 import { textS14Medium, textS14Regular } from '@/styles/typography';
 import { formatDate } from '@/utils/dateUtils';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import EditModal from '../List/components/editModal';
@@ -78,7 +78,7 @@ const CounselDetail = () => {
             </div>
             <div>
               <p>상담상태</p>
-              <div>{detail.status ?? '-'}</div>
+              <div>{detail.customer?.customerStatus?.status ?? '-'}</div>
             </div>
             <div>
               <p>차종</p>

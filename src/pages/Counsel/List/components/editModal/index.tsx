@@ -6,17 +6,26 @@ import { useToast } from '@/hooks/useToast';
 import { useGetContracts } from '@/services/contract';
 import { useGetCounsel, useUpdateCounsel } from '@/services/counsel';
 import { useGetCustomers } from '@/services/customer';
+import { useGetUsers } from '@/services/user';
+import { userState } from '@/state/auth';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
-import { Contract, Customer, UpdateCounselDto, User } from '@/types/graphql';
+import {
+  Contract,
+  Customer,
+  PermissionType,
+  UpdateCounselDto,
+  User,
+} from '@/types/graphql';
 import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const EditModal = (props: TModal & { idx: number }) => {
   const { idx, ...modalProps } = props;
 
   const { data } = useGetCounsel(idx);
-
+  const my = useRecoilValue(userState);
   const [customer, setCustomer] = useState<Customer>();
   const [user, setUser] = useState<User>();
   const [contract, setContract] = useState<Contract>();
@@ -25,6 +34,7 @@ const EditModal = (props: TModal & { idx: number }) => {
   const [context, setContext] = useState<UpdateCounselDto['context']>();
 
   const { data: customers } = useGetCustomers({});
+  const { data: users } = useGetUsers();
   const { data: contracts } = useGetContracts({
     customerId: customer?.id ? [customer?.id] : [],
   });
@@ -125,10 +135,16 @@ const EditModal = (props: TModal & { idx: number }) => {
             </div>
             <div>
               <span>상담자</span>
-              <Input
-                value={user?.name}
+              <Select
                 size="medium"
-                disabled
+                value={{
+                  ...user,
+                }}
+                onChange={(value) => setUser(value)}
+                list={users?.getUsers ?? []}
+                trackBy="id"
+                valueBy="name"
+                disabled={my?.role?.name === PermissionType.User}
               />
             </div>
             <div>

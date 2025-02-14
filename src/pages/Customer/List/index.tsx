@@ -4,7 +4,7 @@ import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular } from '@/styles/typography';
 import { useCallback, useEffect, useState } from 'react';
 import SearchBox from '@/components/searchBox/SearchBox';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import {
   customerFiltersState,
   selectedCustomerIdxState,
@@ -13,11 +13,16 @@ import Button from '@/components/button/Button';
 import RegistModal from '../components/registModal';
 import WatchOptionModal from '../components/watchOptionModal';
 import { useGetCustomers } from '@/services/customer';
+import { userState } from '@/state/auth';
+import { PermissionType } from '@/types/graphql';
 
 const CustomerList = () => {
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
-  const [selectedCustomer, setSelectedCustomer] = useRecoilState(
+  const [selectedCustomerIdx, setSelectedCustomerIdx] = useRecoilState(
+    selectedCustomerIdxState,
+  );
+  const resetSelectedCustomerIdx = useResetRecoilState(
     selectedCustomerIdxState,
   );
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
@@ -25,6 +30,7 @@ const CustomerList = () => {
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
 
   const filters = useRecoilValue(customerFiltersState);
+  const user = useRecoilValue(userState);
 
   const { data, loading, error } = useGetCustomers({
     search: searchText ? searchText : null,
@@ -48,7 +54,9 @@ const CustomerList = () => {
   );
   useEffect(() => {
     if (data?.getCustomers && data?.getCustomers?.length > 0) {
-      setSelectedCustomer(data.getCustomers[0].id);
+      setSelectedCustomerIdx(data.getCustomers[0].id);
+    } else {
+      resetSelectedCustomerIdx();
     }
   }, [data]);
 
@@ -69,12 +77,16 @@ const CustomerList = () => {
             keyword="고객명, 연락처, 상태, 메모, 차종, 구분, 고객등급, 고객유형, 비고"
           ></SearchBox>
           <FunctionWrapper>
-            {/* <Button
-              onClick={() => setIsOpenWatchOptionModal(!isOpenWatchOptionModal)}
-            >
-              <SvgIcon iconName="icon-eye-show" />
-              <p>보기옵션</p>
-            </Button> */}
+            {user?.role.name === PermissionType.Admin && (
+              <Button
+                onClick={() =>
+                  setIsOpenWatchOptionModal(!isOpenWatchOptionModal)
+                }
+              >
+                <SvgIcon iconName="icon-eye-show" />
+                <p>보기옵션</p>
+              </Button>
+            )}
             <Button onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}>
               <SvgIcon iconName="icon-plus" />
               <p>고객등록</p>
@@ -92,9 +104,6 @@ const CustomerList = () => {
               />
               <p>고객목록</p>
             </div>
-            {/* <div>
-            <SvgIcon iconName="icon-setting" />
-          </div> */}
           </div>
           {data && (
             <CustomerListTable data={data.getCustomers}></CustomerListTable>

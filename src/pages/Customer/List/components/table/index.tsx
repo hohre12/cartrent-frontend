@@ -1,10 +1,14 @@
-import { CUSTOMER_LIST_WATCH_OPTIONS } from '@/constants/customer';
+import {
+  CUSTOMER_LIST_WATCH_OPTIONS,
+  CUSTOMER_LIST_WATCH_REQUIRED_OPTIONS,
+} from '@/constants/customer';
+import { userState } from '@/state/auth';
 import {
   selectedCustomerHideWatchOptionsState,
   selectedCustomerIdxState,
 } from '@/state/customer';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
-import { Customer } from '@/types/graphql';
+import { Customer, PermissionType } from '@/types/graphql';
 import { isColumnsViewHide } from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -18,6 +22,12 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
   const selectedCustomerHideWatchOptions = useRecoilValue(
     selectedCustomerHideWatchOptionsState,
   );
+  const my = useRecoilValue(userState);
+  const isHideColumn = (columeKey: string) => {
+    return my?.role.name === PermissionType.Admin
+      ? false
+      : !CUSTOMER_LIST_WATCH_REQUIRED_OPTIONS.includes(columeKey);
+  };
   const setSelectedCustomer = useSetRecoilState(selectedCustomerIdxState);
 
   return (
@@ -27,9 +37,11 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
           <th>번호</th>
           {Object.entries(CUSTOMER_LIST_WATCH_OPTIONS).map(([key, value]) => {
             return (
-              !isColumnsViewHide(selectedCustomerHideWatchOptions, key) && (
-                <th key={key}>{value}</th>
-              )
+              !isColumnsViewHide(
+                selectedCustomerHideWatchOptions,
+                key,
+                isHideColumn(key),
+              ) && <th key={key}>{value}</th>
             );
           })}
         </tr>
@@ -41,34 +53,87 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
             onClick={() => setSelectedCustomer(it.id)}
           >
             <td>{idx}</td>
-            {/* <td>{CustomerStatusEnum[it.status]}</td> */}
-            <td>{it.customerStatus?.status ?? '-'}</td>
-            <td>{formatDate(it.created_at) ?? '-'}</td>
-            <td>{it.name ?? '-'}</td>
-            <td>{it.phone ?? '-'}</td>
-            <td>{it.memo ?? '-'}</td>
-            <td>
-              {it.contractList.length > 0
-                ? it.contractList.map((it) => it.carName).join(' / ')
-                : '-'}
-            </td>
-            <td>{it.note ?? '-'}</td>
-            <td>
-              {it.counselList.length > 0
-                ? formatDate(
-                    it.counselList[it.counselList.length - 1].counselAt,
-                    'YYYY-MM-DD HH:mm',
-                  )
-                : '-'}
-            </td>
-            <td>{it.customerGrade?.name ?? '-'}</td>
-            <td>{it.userList?.name ?? '-'}</td>
-            <td>
-              {it.contractList.length > 0
-                ? it.contractList.map((it) => it.division?.name).join(' / ')
-                : '-'}
-            </td>
-            <td>{it.type ?? '-'}</td>
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'customerStatus',
+              isHideColumn('customerStatus'),
+            ) && <td>{it.customerStatus?.status ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'created_at',
+              isHideColumn('created_at'),
+            ) && <td>{formatDate(it.created_at) ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'name',
+              isHideColumn('name'),
+            ) && <td>{it.name ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'phone',
+              isHideColumn('phone'),
+            ) && <td>{it.phone ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'memo',
+              isHideColumn('memo'),
+            ) && <td>{it.memo ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'carName',
+              isHideColumn('carName'),
+            ) && (
+              <td>
+                {it.contractList.length > 0
+                  ? it.contractList.map((it) => it.carName).join(' / ')
+                  : '-'}
+              </td>
+            )}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'note',
+              isHideColumn('note'),
+            ) && <td>{it.note ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'counselAt',
+              isHideColumn('counselAt'),
+            ) && (
+              <td>
+                {it.counselList.length > 0
+                  ? formatDate(
+                      it.counselList[it.counselList.length - 1].counselAt,
+                      'YYYY-MM-DD HH:mm',
+                    )
+                  : '-'}
+              </td>
+            )}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'gradeName',
+              isHideColumn('gradeName'),
+            ) && <td>{it.customerGrade?.name ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'userName',
+              isHideColumn('userName'),
+            ) && <td>{it.userList?.name ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'divisionName',
+              isHideColumn('divisionName'),
+            ) && (
+              <td>
+                {it.contractList.length > 0
+                  ? it.contractList.map((it) => it.division?.name).join(' / ')
+                  : '-'}
+              </td>
+            )}
+            {!isColumnsViewHide(
+              selectedCustomerHideWatchOptions,
+              'type',
+              isHideColumn('type'),
+            ) && <td>{it.type ?? '-'}</td>}
           </tr>
         ))}
       </tbody>

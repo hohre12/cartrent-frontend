@@ -137,7 +137,7 @@ const Root = styled.div<{ $size?: string | number }>`
 
     margin: 0 100px 0 100px;
     min-height: 110px;
-    max-height: 900px;
+    max-height: 700px;
     /* padding: 20px; */
 
     border-radius: 16px;

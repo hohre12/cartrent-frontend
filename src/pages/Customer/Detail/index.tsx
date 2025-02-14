@@ -13,6 +13,8 @@ import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import EditModal from '../components/editModal';
 import { useNavigate } from 'react-router-dom';
+import { userState } from '@/state/auth';
+import { PermissionType } from '@/types/graphql';
 
 const CustomerDetail = () => {
   const navigate = useNavigate();
@@ -22,6 +24,7 @@ const CustomerDetail = () => {
   const { addToast } = useToast();
   const { data, loading, error } = useGetCustomer(selectedCustomerIdx);
   const { deleteCustomer } = useDeleteCustomer();
+  const user = useRecoilValue(userState);
 
   const handleDeleteCustomer = useCallback(async () => {
     try {
@@ -56,23 +59,25 @@ const CustomerDetail = () => {
               <Button onClick={() => setIsOpenEditModal(true)}>
                 고객 수정
               </Button>
-              <Button
-                onClick={() =>
-                  showConfirm({
-                    isOpen: true,
-                    title: '고객 삭제',
-                    content: `${detail?.name} 고객을 삭제하시겠습니까?`,
-                    cancelText: '취소',
-                    confirmText: '삭제',
-                    confirmVariant: 'primaryDanger',
-                    onClose: hideConfirm,
-                    onCancel: hideConfirm,
-                    onConfirm: handleDeleteCustomer,
-                  })
-                }
-              >
-                고객 삭제
-              </Button>
+              {user?.role.name === PermissionType.Admin && (
+                <Button
+                  onClick={() =>
+                    showConfirm({
+                      isOpen: true,
+                      title: '고객 삭제',
+                      content: `${detail?.name} 고객을 삭제하시겠습니까?`,
+                      cancelText: '취소',
+                      confirmText: '삭제',
+                      confirmVariant: 'primaryDanger',
+                      onClose: hideConfirm,
+                      onCancel: hideConfirm,
+                      onConfirm: handleDeleteCustomer,
+                    })
+                  }
+                >
+                  고객 삭제
+                </Button>
+              )}
               <Button onClick={() => navigate(`/contract/regist/${detail.id}`)}>
                 계약 등록
               </Button>

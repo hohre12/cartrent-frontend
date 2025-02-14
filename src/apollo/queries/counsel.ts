@@ -24,6 +24,10 @@ export const GET_COUNSELS_QUERY = gql`
           id
           name
         }
+        customerStatus {
+          id
+          status
+        }
       }
       contract {
         id
@@ -63,6 +67,10 @@ export const GET_COUNSEL_QUERY = gql`
         customerGrade {
           id
           name
+        }
+        customerStatus {
+          id
+          status
         }
       }
       contract {
