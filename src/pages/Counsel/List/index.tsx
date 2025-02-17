@@ -3,7 +3,7 @@ import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import Button from '@/components/button/Button';
 import Pagination from '@/components/pagination/Pagination';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import WatchOptionModal from './components/watchOptionModal';
 import SearchBox from '@/components/searchBox/SearchBox';
 import FilterGroup from './components/filter/group';
@@ -21,8 +21,10 @@ import FilterStatus from './components/filter/status';
 import FilterUser from './components/filter/user';
 import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
+import { useNavigationType } from 'react-router-dom';
 
 const CounselList = () => {
+  const navigationType = useNavigationType();
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const selectedCounsel = useRecoilValue(selectedCounselState);
@@ -93,6 +95,12 @@ const CounselList = () => {
     },
     [filters, setFilters, setIsFilterUserOpen],
   );
+
+  useEffect(() => {
+    if (navigationType !== 'POP') {
+      resetFilters();
+    }
+  }, [navigationType, resetFilters]);
 
   return (
     <>
