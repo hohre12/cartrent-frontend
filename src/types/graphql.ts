@@ -303,6 +303,7 @@ export type CreateCustomerDto = {
   phone: Scalars['String']['input'];
   /** 고객 유형 */
   type?: InputMaybe<Scalars['String']['input']>;
+  userId: Scalars['Int']['input'];
 };
 
 export type CreateCustomerGradeDto = {
@@ -1153,6 +1154,7 @@ export type UpdateCustomerDto = {
   status?: InputMaybe<Scalars['String']['input']>;
   /** 고객 유형 */
   type?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type UpdateCustomerGradeDto = {
@@ -1402,7 +1404,7 @@ export type GetContractsQueryVariables = Exact<{
 }>;
 
 
-export type GetContractsQuery = { getContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: boolean | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriodStartAt?: string | null, contractPeriodEndAt?: string | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: string | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, security?: number | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string }, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> };
+export type GetContractsQuery = { getContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: boolean | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriodStartAt?: string | null, contractPeriodEndAt?: string | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: string | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, security?: number | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string, customerStatus?: { id: number, status: string } | null }, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> };
 
 export type GetContractQueryVariables = Exact<{
   contractId: Scalars['Float']['input'];
@@ -1431,14 +1433,14 @@ export type GetCounselsQueryVariables = Exact<{
 }>;
 
 
-export type GetCounselsQuery = { getCounsels: Array<{ id: number, status?: Status | null, counselAt: string, context: string, customer: { id: number, name: string, phone: string, customerGroup?: { id: number, name: string } | null, customerGrade?: { id: number, name: string } | null }, contract?: { id: number, carName?: string | null, division?: { id: number, name: string } | null } | null, user: { id: number, name: string } }> };
+export type GetCounselsQuery = { getCounsels: Array<{ id: number, status?: Status | null, counselAt: string, context: string, customer: { id: number, name: string, phone: string, customerGroup?: { id: number, name: string } | null, customerGrade?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null }, contract?: { id: number, carName?: string | null, division?: { id: number, name: string } | null } | null, user: { id: number, name: string } }> };
 
 export type GetCounselQueryVariables = Exact<{
   counselId: Scalars['Float']['input'];
 }>;
 
 
-export type GetCounselQuery = { getCounsel: { id: number, status?: Status | null, counselAt: string, context: string, customer: { id: number, name: string, phone: string, customerGroup?: { id: number, name: string } | null, customerGrade?: { id: number, name: string } | null }, contract?: { id: number, carName?: string | null, division?: { id: number, name: string } | null } | null, user: { id: number, name: string } } };
+export type GetCounselQuery = { getCounsel: { id: number, status?: Status | null, counselAt: string, context: string, customer: { id: number, name: string, phone: string, customerGroup?: { id: number, name: string } | null, customerGrade?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null }, contract?: { id: number, carName?: string | null, division?: { id: number, name: string } | null } | null, user: { id: number, name: string } } };
 
 export type GetCustomersQueryVariables = Exact<{
   getCustomersDto: GetCustomersDto;
@@ -2371,6 +2373,10 @@ export const GetContractsDocument = gql`
       id
       name
       phone
+      customerStatus {
+        id
+        status
+      }
     }
     carName
     carOption
@@ -2699,6 +2705,10 @@ export const GetCounselsDocument = gql`
         id
         name
       }
+      customerStatus {
+        id
+        status
+      }
     }
     contract {
       id
@@ -2766,6 +2776,10 @@ export const GetCounselDocument = gql`
       customerGrade {
         id
         name
+      }
+      customerStatus {
+        id
+        status
       }
     }
     contract {

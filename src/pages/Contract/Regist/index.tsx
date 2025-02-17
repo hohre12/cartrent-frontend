@@ -138,7 +138,7 @@ const ContractRegist = () => {
         }));
       }
     }
-  }, [my, customerIdx, setCustomer, customers]);
+  }, [my, setUser, customerIdx, setCustomer, customers]);
 
   return (
     <DetailWrapper>
