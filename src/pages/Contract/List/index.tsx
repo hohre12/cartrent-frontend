@@ -3,7 +3,7 @@ import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import Button from '@/components/button/Button';
 import Pagination from '@/components/pagination/Pagination';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import WatchOptionModal from './components/watchOptionModal';
 import SearchBox from '@/components/searchBox/SearchBox';
 import useClickOutside from '@/hooks/useClickOutside';
@@ -15,7 +15,7 @@ import RegistModal from './components/registModal';
 import FloatingMenu from './components/floatingMenu';
 import ContractListTable from './components/table';
 import { useGetContracts } from '@/services/contract';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useNavigationType } from 'react-router-dom';
 import FilterUser from './components/filter/user';
 import FilterShippingMethod from './components/filter/shippingMethod';
 import Input from '@/components/input/Input';
@@ -24,6 +24,7 @@ import { PermissionType } from '@/types/graphql';
 
 const ContractList = () => {
   const navigate = useNavigate();
+  const navigationType = useNavigationType();
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const selectedContract = useRecoilValue(selectedContractState);
@@ -63,14 +64,6 @@ const ContractList = () => {
   const [isFilterUserOpen, setIsFilterUserOpen] = useState<boolean>(false);
   const filterUserRef = useClickOutside(() => setIsFilterUserOpen(false));
 
-  //   // filter - startContractAtYearMonth
-  //   const [isFilterStatusOpen, setIsFilterStatusOpen] = useState<boolean>(false);
-  //   const filterStatusRef = useClickOutside(() => setIsFilterStatusOpen(false));
-
-  //   // filter - startContractAtYearMonth
-  //   const [isFilterStatusOpen, setIsFilterStatusOpen] = useState<boolean>(false);
-  //   const filterStatusRef = useClickOutside(() => setIsFilterStatusOpen(false));
-
   const handleSearchTextDelete = useCallback(() => {
     setSearchText('');
   }, [setSearchText]);
@@ -97,6 +90,12 @@ const ContractList = () => {
     },
     [filters, setFilters, setIsFilterShippingMethodOpen],
   );
+
+  useEffect(() => {
+    if (navigationType !== 'POP') {
+      resetFilters();
+    }
+  }, [navigationType, resetFilters]);
 
   return (
     <>

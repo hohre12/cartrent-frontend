@@ -30,6 +30,7 @@ const CustomerList = () => {
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
 
   const filters = useRecoilValue(customerFiltersState);
+  const resetFilters = useResetRecoilState(customerFiltersState);
   const user = useRecoilValue(userState);
 
   const { data, loading, error } = useGetCustomers({
@@ -60,6 +61,10 @@ const CustomerList = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    resetFilters();
+  }, [resetFilters]);
+
   if (error) return <></>;
 
   return (
@@ -78,19 +83,23 @@ const CustomerList = () => {
           ></SearchBox>
           <FunctionWrapper>
             {user?.role.name === PermissionType.Admin && (
-              <Button
-                onClick={() =>
-                  setIsOpenWatchOptionModal(!isOpenWatchOptionModal)
-                }
-              >
-                <SvgIcon iconName="icon-eye-show" />
-                <p>보기옵션</p>
-              </Button>
+              <>
+                <Button
+                  onClick={() =>
+                    setIsOpenWatchOptionModal(!isOpenWatchOptionModal)
+                  }
+                >
+                  <SvgIcon iconName="icon-eye-show" />
+                  <p>보기옵션</p>
+                </Button>
+                <Button
+                  onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}
+                >
+                  <SvgIcon iconName="icon-plus" />
+                  <p>고객등록</p>
+                </Button>
+              </>
             )}
-            <Button onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}>
-              <SvgIcon iconName="icon-plus" />
-              <p>고객등록</p>
-            </Button>
           </FunctionWrapper>
         </SearchBoxWrapper>
         <TableWrapper>
