@@ -157,11 +157,11 @@ const ContractDetail = () => {
   const handleInit = () => {
     if (detail) {
       setUser(detail.user);
-      setCustomer(detail.customer ?? undefined);
       setCity(detail.city ?? undefined);
+      setCustomer(detail.customer ?? undefined);
       setFinancialCompany(detail.financialCompany ?? undefined);
-      setDivision(detail.financialCompany ?? undefined);
       setShippingMethod(detail.shippingMethod ?? undefined);
+      setDivision(detail.financialCompany ?? undefined);
       const newDetail = _.omit(detail, [
         'id',
         'user',
@@ -187,7 +187,7 @@ const ContractDetail = () => {
     if (detail) {
       handleInit();
     }
-  }, [detail, handleInit]);
+  }, [detail]);
 
   if (!detail) return <></>;
 

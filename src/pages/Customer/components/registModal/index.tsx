@@ -8,29 +8,37 @@ import {
   useGetCustomerGroups,
   useGetCustomerStatuses,
 } from '@/services/customer';
+import { useGetUsers } from '@/services/user';
+import { userState } from '@/state/auth';
 import { TModal } from '@/types/common';
 import {
   CreateCustomerDto,
   CustomerGrade,
   CustomerGroup,
   CustomerStatus,
+  PermissionType,
+  User,
 } from '@/types/graphql';
 import { autoHypenTel } from '@/utils/common';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const RegistModal = (props: TModal) => {
   const { ...modalProps } = props;
+  const my = useRecoilValue(userState);
 
   const [customerGrade, setCustomerGrade] = useState<CustomerGrade>();
   const [customerGroup, setCustomerGroup] = useState<CustomerGroup>();
   const [customerStatus, setCustomerStatus] = useState<CustomerStatus>();
+  const [user, setUser] = useState<User>();
   const [memo, setMemo] = useState<CreateCustomerDto['memo']>();
   const [name, setName] = useState<CreateCustomerDto['name']>();
   const [note, setNote] = useState<CreateCustomerDto['note']>();
   const [phone, setPhone] = useState<CreateCustomerDto['phone']>();
   const [type, setType] = useState<CreateCustomerDto['type']>();
 
+  const { data: users } = useGetUsers();
   const { data: statuses } = useGetCustomerStatuses();
   const { data: grades } = useGetCustomerGrades();
   const { data: groups } = useGetCustomerGroups();
@@ -44,8 +52,10 @@ const RegistModal = (props: TModal) => {
     setSubmit(true);
     if (!name) return;
     if (!phone) return;
+    if (!user) return;
     try {
       const response = await createCustomer({
+        userId: user.id,
         customerGradeId: customerGrade?.id,
         customerGroupId: customerGroup?.id,
         customerStatusId: customerStatus?.id,
@@ -71,6 +81,12 @@ const RegistModal = (props: TModal) => {
     }
   };
 
+  useEffect(() => {
+    if (my) {
+      setUser(my);
+    }
+  }, [my, setUser]);
+
   return (
     <>
       <SModal
@@ -80,7 +96,25 @@ const RegistModal = (props: TModal) => {
         onConfirm={handleCustomerRegist}
       >
         <RegistCustomerWrapper>
-          {/* 이름, 전화번호, 메모, 고객유형, 구분, 회사명/명의자, 상태, 등급, 그룹, 비고 */}
+          {/* 담당자, 이름, 전화번호, 메모, 고객유형, 구분, 회사명/명의자, 상태, 등급, 그룹, 비고 */}
+          <div>
+            <span>
+              담당자 <p className="required">*</p>
+            </span>
+            <Select
+              size="medium"
+              value={{
+                ...user,
+              }}
+              onChange={(value) => setUser(value)}
+              list={users?.getUsers ?? []}
+              trackBy="id"
+              valueBy="name"
+              placeholder="담당자를 선택해주세요"
+              disabled={my?.role?.name === PermissionType.User}
+              isError={submit && !user}
+            />
+          </div>
           <div>
             <span>
               고객명 <p className="required">*</p>

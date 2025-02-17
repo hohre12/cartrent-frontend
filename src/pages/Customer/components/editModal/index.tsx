@@ -10,6 +10,8 @@ import {
   useGetCustomerStatuses,
   useUpdateCustomer,
 } from '@/services/customer';
+import { useGetUsers } from '@/services/user';
+import { userState } from '@/state/auth';
 import { selectedCustomerIdxState } from '@/state/customer';
 import { TModal } from '@/types/common';
 import {
@@ -17,7 +19,9 @@ import {
   CustomerGrade,
   CustomerGroup,
   CustomerStatus,
+  PermissionType,
   UpdateCustomerDto,
+  User,
 } from '@/types/graphql';
 import { autoHypenTel } from '@/utils/common';
 import { useEffect, useState } from 'react';
@@ -28,7 +32,9 @@ const EditModal = (props: TModal) => {
   const { ...modalProps } = props;
   const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
   const { data, loading, error } = useGetCustomer(selectedCustomerIdx);
+  const my = useRecoilValue(userState);
 
+  const [user, setUser] = useState<User>();
   const [customerGrade, setCustomerGrade] = useState<CustomerGrade>();
   const [customerGroup, setCustomerGroup] = useState<CustomerGroup>();
   const [customerStatus, setCustomerStatus] = useState<CustomerStatus>();
@@ -38,6 +44,7 @@ const EditModal = (props: TModal) => {
   const [phone, setPhone] = useState<UpdateCustomerDto['phone']>();
   const [type, setType] = useState<UpdateCustomerDto['type']>();
 
+  const { data: users } = useGetUsers();
   const { data: statuses } = useGetCustomerStatuses();
   const { data: grades } = useGetCustomerGrades();
   const { data: groups } = useGetCustomerGroups();
@@ -51,9 +58,11 @@ const EditModal = (props: TModal) => {
     setSubmit(true);
     if (!name) return;
     if (!phone) return;
+    if (!user) return;
     try {
       const response = await updateCustomer({
         customerId: selectedCustomerIdx,
+        userId: user.id,
         customerGradeId: customerGrade?.id,
         customerGroupId: customerGroup?.id,
         customerStatusId: customerStatus?.id,
@@ -82,6 +91,7 @@ const EditModal = (props: TModal) => {
   useEffect(() => {
     const detail = data?.getCustomer;
     if (detail) {
+      setUser(detail.userList);
       setName(detail.name);
       setPhone(detail.phone);
       setMemo(detail.memo);
@@ -112,7 +122,25 @@ const EditModal = (props: TModal) => {
         onConfirm={handleCustomerEdit}
       >
         <RegistCustomerWrapper>
-          {/* 이름, 전화번호, 메모, 고객유형, 상태, 등급, 그룹, 비고 */}
+          {/* 담당자, 이름, 전화번호, 메모, 고객유형, 상태, 등급, 그룹, 비고 */}
+          <div>
+            <span>
+              담당자 <p className="required">*</p>
+            </span>
+            <Select
+              size="medium"
+              value={{
+                ...user,
+              }}
+              onChange={(value) => setUser(value)}
+              list={users?.getUsers ?? []}
+              trackBy="id"
+              valueBy="name"
+              placeholder="담당자를 선택해주세요"
+              disabled={my?.role?.name === PermissionType.User}
+              isError={submit && !user}
+            />
+          </div>
           <div>
             <span>
               고객명 <p className="required">*</p>
