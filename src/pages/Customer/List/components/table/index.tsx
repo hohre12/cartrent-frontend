@@ -171,7 +171,7 @@ export const CustomerListTableWrapper = styled.table`
         height: 40px;
         overflow: hidden;
         padding: 0px 25px;
-        max-width: 180px;
+        max-width: 140px;
         white-space: nowrap;
         text-overflow: ellipsis;
         word-break: break-all;

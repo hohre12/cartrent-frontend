@@ -201,7 +201,7 @@ export default CustomerFilter;
 
 export const FilterWrapper = styled.div`
   background: #fff;
-  min-width: 200px;
+  width: 120px;
   padding: 5px;
   border-radius: 5px;
   // 드래그 방지
@@ -244,6 +244,13 @@ export const Filter = styled.div`
       display: flex;
       align-items: center;
       gap: 5px;
+      & > p {
+        width: 70px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        word-break: break-all;
+      }
     }
   }
 `;
