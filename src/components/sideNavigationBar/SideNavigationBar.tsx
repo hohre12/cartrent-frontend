@@ -7,6 +7,7 @@ import { titleL18Bold, titleM16Semibold } from '@/styles/typography';
 import { userState } from '@/state/auth';
 import { useRecoilValue } from 'recoil';
 import { PermissionType } from '@/types/graphql';
+import Logo from '@/assets/pngs/logo.png';
 
 const SideNavigationBar = () => {
   const navigate = useNavigate();
@@ -17,8 +18,7 @@ const SideNavigationBar = () => {
     <>
       <SideNavigationBarWrapper>
         <InstituteWrapper onClick={() => navigate('/dashboard')}>
-          <div className="logo">카</div>
-          <div className="instituteName">카트렌트카</div>
+          <img src={Logo} />
         </InstituteWrapper>
         <SideBarMenu>
           {SIDE_MENU.map(
@@ -62,7 +62,7 @@ const SideNavigationBar = () => {
 export default SideNavigationBar;
 
 export const SideNavigationBarWrapper = styled.div`
-  width: 150px;
+  width: 100px;
   height: 100vh;
   background: #f7f6f3;
   color: #000;
