@@ -25,6 +25,7 @@ import {
   User,
 } from '@/types/graphql';
 import { numberFormat } from '@/utils/common';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -37,6 +38,7 @@ const ContractRegist = () => {
   const my = useRecoilValue(userState);
   const { addToast } = useToast();
   const [submit, setSubmit] = useState<boolean>(false);
+  const currentDate = moment().format('YYYY-MM-DD');
 
   const { data: users } = useGetUsers();
   const { data: customers } = useGetCustomers({});
@@ -49,6 +51,7 @@ const ContractRegist = () => {
     customerId: 0,
     carName: '',
     userId: my ? my.id : 0,
+    contractAt: currentDate,
   });
 
   const [customer, setCustomer] = useState<Customer>();
@@ -94,6 +97,7 @@ const ContractRegist = () => {
 
   const handleContractRegist = async () => {
     setSubmit(true);
+    console.log(createContract);
     if (!my) return;
     if (!customer) return;
     if (!createContract?.carName) return;
@@ -196,6 +200,7 @@ const ContractRegist = () => {
                 <Input
                   type="date"
                   style={{ cursor: 'pointer' }}
+                  value={createContract.contractAt ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'contractAt')}
                 />
               </InputWrapper>
@@ -329,22 +334,6 @@ const ContractRegist = () => {
                 <Input
                   disabled={!createContract?.carPrice}
                   value={
-                    createContract?.fee ? numberFormat(createContract.fee) : 0
-                  }
-                  onTextChange={(text) =>
-                    handleValueChange(Number(text.replace(/,/g, '')), 'fee')
-                  }
-                  isNumber
-                  postfixNode={'원'}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>수수료 비율</span>
-              <InputWrapper>
-                <Input
-                  disabled={!createContract?.carPrice}
-                  value={
                     createContract?.feeRate
                       ? numberFormat(createContract.feeRate)
                       : 0
@@ -357,8 +346,25 @@ const ContractRegist = () => {
                   isNumber
                   postfixNode={'%'}
                 />
+                <Input
+                  disabled={!createContract?.carPrice}
+                  value={
+                    createContract?.fee ? numberFormat(createContract.fee) : 0
+                  }
+                  onTextChange={(text) =>
+                    handleValueChange(Number(text.replace(/,/g, '')), 'fee')
+                  }
+                  isNumber
+                  postfixNode={'원'}
+                />
               </InputWrapper>
             </InputLine>
+            {/* <InputLine>
+              <span>수수료 비율</span>
+              <InputWrapper>
+                
+              </InputWrapper>
+            </InputLine> */}
             <InputLine>
               <span>프로모션</span>
               <InputWrapper>
@@ -601,6 +607,7 @@ const ContractRegist = () => {
                 <Input
                   value={createContract?.object ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'object')}
+                  postfixNode={'억원'}
                 />
               </InputWrapper>
             </InputLine>
@@ -656,28 +663,6 @@ const ContractRegist = () => {
                 </InputWrapper>
               </InputLine>
               <InputLine>
-                <span>품의내용 2</span>
-                <InputWrapper>
-                  <Input
-                    value={createContract?.serviceBody2 ?? ''}
-                    onTextChange={(text) =>
-                      handleValueChange(text, 'serviceBody2')
-                    }
-                  />
-                </InputWrapper>
-              </InputLine>
-              <InputLine>
-                <span>품의내용 3</span>
-                <InputWrapper>
-                  <Input
-                    value={createContract?.serviceBody3 ?? ''}
-                    onTextChange={(text) =>
-                      handleValueChange(text, 'serviceBody3')
-                    }
-                  />
-                </InputWrapper>
-              </InputLine>
-              <InputLine>
                 <span>품의금액 1</span>
                 <InputWrapper>
                   <Input
@@ -698,6 +683,17 @@ const ContractRegist = () => {
                 </InputWrapper>
               </InputLine>
               <InputLine>
+                <span>품의내용 2</span>
+                <InputWrapper>
+                  <Input
+                    value={createContract?.serviceBody2 ?? ''}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'serviceBody2')
+                    }
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
                 <span>품의금액 2</span>
                 <InputWrapper>
                   <Input
@@ -714,6 +710,17 @@ const ContractRegist = () => {
                     }
                     isNumber
                     postfixNode={'원'}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>품의내용 3</span>
+                <InputWrapper>
+                  <Input
+                    value={createContract?.serviceBody3 ?? ''}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'serviceBody3')
+                    }
                   />
                 </InputWrapper>
               </InputLine>
