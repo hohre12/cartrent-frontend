@@ -143,7 +143,7 @@ export default CustomerList;
 
 export const ListWrapper = styled.div`
   background: #fff;
-  width: calc(100% - 825px);
+  width: calc(100% - 675px);
   padding: 15px;
   display: flex;
   flex-direction: column;
