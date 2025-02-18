@@ -14,10 +14,7 @@ import SideNavigationBar from './components/sideNavigationBar/SideNavigationBar'
 import GlobalNavigationBar from './components/globalNavigationBar/GlobalNavigationBar';
 import { textXs12Medium } from './styles/typography';
 import Adjustment from './pages/Adjustment';
-import Inquiry from './pages/Inquiry';
 import Dashboard from './pages/Dashboard';
-import CustomerList from './pages/Customer3/List';
-import CustomerDetail from './pages/Customer3/Detail';
 import Toast from './components/toast/Toast';
 import Confirm from './components/confirm/Confirm';
 import CounselDetail from './pages/Counsel/Detail';
@@ -121,7 +118,7 @@ function App() {
         >
           <Route
             index
-            element={<CustomerList></CustomerList>}
+            element={<CounselList></CounselList>}
           />
         </Route>
         <Route
@@ -139,7 +136,7 @@ function App() {
         >
           <Route
             index
-            element={<CustomerList></CustomerList>}
+            element={<CounselList></CounselList>}
           />
         </Route>
         <Route
@@ -148,7 +145,7 @@ function App() {
         >
           <Route
             index
-            element={<CustomerList></CustomerList>}
+            element={<CounselList></CounselList>}
           />
         </Route>
         <Route
