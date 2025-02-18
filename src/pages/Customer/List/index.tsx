@@ -15,8 +15,10 @@ import WatchOptionModal from '../components/watchOptionModal';
 import { useGetCustomers } from '@/services/customer';
 import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
+import { useNavigationType } from 'react-router-dom';
 
 const CustomerList = () => {
+  const navigationType = useNavigationType();
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const [selectedCustomerIdx, setSelectedCustomerIdx] = useRecoilState(
@@ -54,10 +56,16 @@ const CustomerList = () => {
     [setSearchText],
   );
   useEffect(() => {
-    if (data?.getCustomers && data?.getCustomers?.length > 0) {
+    if (
+      !selectedCustomerIdx &&
+      data?.getCustomers &&
+      data?.getCustomers?.length > 0
+    ) {
       setSelectedCustomerIdx(data.getCustomers[0].id);
     } else {
-      resetSelectedCustomerIdx();
+      if (navigationType !== 'POP') {
+        resetSelectedCustomerIdx();
+      }
     }
   }, [data]);
 

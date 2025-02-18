@@ -717,6 +717,7 @@ const ContractDetail = () => {
                 <Input
                   value={updateContract?.object ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'object')}
+                  postfixNode={'억원'}
                   disabled={!isEdit}
                 />
               </InputWrapper>
@@ -782,30 +783,6 @@ const ContractDetail = () => {
                 </InputWrapper>
               </InputLine>
               <InputLine>
-                <span>품의내용 2</span>
-                <InputWrapper>
-                  <Input
-                    value={updateContract?.serviceBody2 ?? ''}
-                    onTextChange={(text) =>
-                      handleValueChange(text, 'serviceBody2')
-                    }
-                    disabled={!isEdit}
-                  />
-                </InputWrapper>
-              </InputLine>
-              <InputLine>
-                <span>품의내용 3</span>
-                <InputWrapper>
-                  <Input
-                    value={updateContract?.serviceBody3 ?? ''}
-                    onTextChange={(text) =>
-                      handleValueChange(text, 'serviceBody3')
-                    }
-                    disabled={!isEdit}
-                  />
-                </InputWrapper>
-              </InputLine>
-              <InputLine>
                 <span>품의금액 1</span>
                 <InputWrapper>
                   <Input
@@ -827,6 +804,18 @@ const ContractDetail = () => {
                 </InputWrapper>
               </InputLine>
               <InputLine>
+                <span>품의내용 2</span>
+                <InputWrapper>
+                  <Input
+                    value={updateContract?.serviceBody2 ?? ''}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'serviceBody2')
+                    }
+                    disabled={!isEdit}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
                 <span>품의금액 2</span>
                 <InputWrapper>
                   <Input
@@ -843,6 +832,18 @@ const ContractDetail = () => {
                     }
                     isNumber
                     postfixNode={'원'}
+                    disabled={!isEdit}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>품의내용 3</span>
+                <InputWrapper>
+                  <Input
+                    value={updateContract?.serviceBody3 ?? ''}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'serviceBody3')
+                    }
                     disabled={!isEdit}
                   />
                 </InputWrapper>

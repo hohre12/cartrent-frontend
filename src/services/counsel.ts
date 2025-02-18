@@ -7,6 +7,7 @@ import {
   GET_COUNSEL_QUERY,
   GET_COUNSELS_QUERY,
 } from '@/apollo/queries/counsel';
+import { GET_CUSTOMER_QUERY } from '@/apollo/queries/customer';
 import {
   Counsel,
   CreateCounselDto,
@@ -38,7 +39,7 @@ export const useGetCounsel = (params: Counsel['id']) => {
 
 export const useCreateCounsel = () => {
   const [createCounselMutate] = useMutation(CREATE_COUNSEL_MUTATION, {
-    refetchQueries: [GET_COUNSELS_QUERY, 'GetCounsels'],
+    refetchQueries: [GET_CUSTOMER_QUERY, 'GetCustomer'],
   });
 
   const createCounsel = async (params: CreateCounselDto) => {

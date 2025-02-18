@@ -101,10 +101,7 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
             ) && (
               <td>
                 {it.counselList.length > 0
-                  ? formatDate(
-                      it.counselList[it.counselList.length - 1].counselAt,
-                      'YYYY-MM-DD HH:mm',
-                    )
+                  ? formatDate(it.counselList[0].counselAt, 'YYYY-MM-DD HH:mm')
                   : '-'}
               </td>
             )}
