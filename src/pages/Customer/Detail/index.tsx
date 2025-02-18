@@ -325,6 +325,7 @@ const CustomerDetail = () => {
       )}
       {isOpenCounselRegistModal && (
         <RegistModal
+          propsCustomer={detail}
           isOpen={isOpenCounselRegistModal}
           onCancel={() => setIsOpenCounselRegistModal(false)}
           onConfirm={() => setIsOpenCounselRegistModal(false)}

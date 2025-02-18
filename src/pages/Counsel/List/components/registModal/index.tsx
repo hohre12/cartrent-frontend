@@ -21,8 +21,8 @@ import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-const RegistModal = (props: TModal) => {
-  const { ...modalProps } = props;
+const RegistModal = (props: TModal & { propsCustomer: Customer }) => {
+  const { propsCustomer, ...modalProps } = props;
   const [customer, setCustomer] = useState<Customer>();
   const [user, setUser] = useState<User>();
   const my = useRecoilValue(userState);
@@ -74,10 +74,10 @@ const RegistModal = (props: TModal) => {
   };
 
   useEffect(() => {
-    if (customers && customers?.getCustomers?.length > 0) {
-      setCustomer(customers?.getCustomers[0]);
+    if (propsCustomer) {
+      setCustomer(propsCustomer);
     }
-  }, [customers, setCustomer]);
+  }, [propsCustomer, setCustomer]);
 
   useEffect(() => {
     setContract(undefined);
