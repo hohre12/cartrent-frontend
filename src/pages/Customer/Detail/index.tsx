@@ -15,11 +15,14 @@ import EditModal from '../components/editModal';
 import { useNavigate } from 'react-router-dom';
 import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
+import RegistModal from '@/pages/Counsel/List/components/registModal';
 
 const CustomerDetail = () => {
   const navigate = useNavigate();
   const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
   const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
+  const [isOpenCounselRegistModal, setIsOpenCounselRegistModal] =
+    useState<boolean>(false);
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
   const { data, loading, error } = useGetCustomer(selectedCustomerIdx);
@@ -78,8 +81,19 @@ const CustomerDetail = () => {
                   고객 삭제
                 </Button>
               )}
-              <Button onClick={() => navigate(`/contract/regist/${detail.id}`)}>
-                계약 등록
+              {detail.customerStatus?.status === '계약완료' && (
+                <Button
+                  onClick={() => navigate(`/contract/regist/${detail.id}`)}
+                >
+                  계약 등록
+                </Button>
+              )}
+              <Button
+                onClick={() =>
+                  setIsOpenCounselRegistModal(!isOpenCounselRegistModal)
+                }
+              >
+                <p>상담등록</p>
               </Button>
             </div>
           </div>
@@ -276,28 +290,6 @@ const CustomerDetail = () => {
             </div>
           </div>
         </InfoWrapper>
-        {/* <BoxWrapper>
-        <div className="Box">
-          <p>고객요청</p>
-          <span>고객1</span>
-        </div>
-        <div className="Box">
-          <p>예약</p>
-          <span>9건</span>
-        </div>
-        <div className="Box">
-          <p>상담</p>
-          <span>2건</span>
-        </div>
-        <div className="Box">
-          <p>판매</p>
-          <span>160,000원</span>
-        </div>
-        <div className="Box">
-          <p>정액/쿠폰</p>
-          <span>10회</span>
-        </div>
-      </BoxWrapper> */}
         <HistoryWrapper>
           {detail.counselList.length > 0 ? (
             <>
@@ -330,6 +322,13 @@ const CustomerDetail = () => {
           onCancel={() => setIsOpenEditModal(false)}
           onConfirm={() => setIsOpenEditModal(false)}
         ></EditModal>
+      )}
+      {isOpenCounselRegistModal && (
+        <RegistModal
+          isOpen={isOpenCounselRegistModal}
+          onCancel={() => setIsOpenCounselRegistModal(false)}
+          onConfirm={() => setIsOpenCounselRegistModal(false)}
+        ></RegistModal>
       )}
     </>
   );

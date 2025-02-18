@@ -123,13 +123,14 @@ const ContractDetail = () => {
       console.log(updateContractPayload);
 
       const response = await updateContractMutation(updateContractPayload);
-      if (response && response.data.createContract.id) {
+      if (response && response.data.updateContract.id) {
         addToast({
           id: Date.now(),
           isImage: true,
-          content: `${customer.name} 고객님의 계약이 수정되었습니다.`,
+          content: `계약이 수정되었습니다.`,
           type: 'success',
         });
+        setIsEdit(false);
       }
     } catch (e) {
       console.warn(e);
@@ -213,25 +214,27 @@ const ContractDetail = () => {
           ) : (
             <>
               {my?.role.name === PermissionType.Admin && (
-                <Button
-                  onClick={() =>
-                    showConfirm({
-                      isOpen: true,
-                      title: '계약 삭제',
-                      content: `${detail?.customer?.name} 고객의 계약을 삭제하시겠습니까?`,
-                      cancelText: '취소',
-                      confirmText: '삭제',
-                      confirmVariant: 'primaryDanger',
-                      onClose: hideConfirm,
-                      onCancel: hideConfirm,
-                      onConfirm: handleDeleteContract,
-                    })
-                  }
-                >
-                  삭제
-                </Button>
+                <>
+                  <Button
+                    onClick={() =>
+                      showConfirm({
+                        isOpen: true,
+                        title: '계약 삭제',
+                        content: `${detail?.customer?.name} 고객의 계약을 삭제하시겠습니까?`,
+                        cancelText: '취소',
+                        confirmText: '삭제',
+                        confirmVariant: 'primaryDanger',
+                        onClose: hideConfirm,
+                        onCancel: hideConfirm,
+                        onConfirm: handleDeleteContract,
+                      })
+                    }
+                  >
+                    삭제
+                  </Button>
+                  <Button onClick={() => setIsEdit(!isEdit)}>수정</Button>
+                </>
               )}
-              <Button onClick={() => setIsEdit(!isEdit)}>수정</Button>
             </>
           )}
         </div>
@@ -304,7 +307,7 @@ const ContractDetail = () => {
                   trackBy="id"
                   valueBy="name"
                   placeholder="고객을 선택해주세요"
-                  disabled
+                  disabled={!isEdit}
                   isError={submit && !customer}
                 />
               </InputWrapper>

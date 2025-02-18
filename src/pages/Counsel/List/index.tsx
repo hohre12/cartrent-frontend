@@ -30,7 +30,7 @@ const CounselList = () => {
   const selectedCounsel = useRecoilValue(selectedCounselState);
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
-  const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
+  //   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
   const user = useRecoilValue(userState);
 
   // filters
@@ -208,10 +208,10 @@ const CounselList = () => {
                   <p>보기옵션</p>
                 </Button>
               )}
-              <Button onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}>
+              {/* <Button onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}>
                 <SvgIcon iconName="icon-plus" />
                 <p>상담등록</p>
-              </Button>
+              </Button> */}
             </FunctionWrapper>
           </ControlWrapper>
         </Header>
@@ -249,13 +249,13 @@ const CounselList = () => {
           }}
         />
       )}
-      {isOpenRegistModal && (
+      {/* {isOpenRegistModal && (
         <RegistModal
           isOpen={isOpenRegistModal}
           onCancel={() => setIsOpenRegistModal(false)}
           onConfirm={() => setIsOpenRegistModal(false)}
         ></RegistModal>
-      )}
+      )} */}
     </>
   );
 };
