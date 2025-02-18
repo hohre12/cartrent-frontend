@@ -271,7 +271,7 @@ const ContractListTable = ({ data }: TTableProps) => {
               selectedContractHideWatchOptions,
               'object',
               isHideColumn('object'),
-            ) && <td>{it.object ?? '-'}</td>}
+            ) && <td>{it.object ? `${it.object}억원` : '-'}</td>}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'service1',

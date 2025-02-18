@@ -359,12 +359,6 @@ const ContractRegist = () => {
                 />
               </InputWrapper>
             </InputLine>
-            {/* <InputLine>
-              <span>수수료 비율</span>
-              <InputWrapper>
-                
-              </InputWrapper>
-            </InputLine> */}
             <InputLine>
               <span>프로모션</span>
               <InputWrapper>
