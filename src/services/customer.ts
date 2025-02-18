@@ -25,14 +25,6 @@ import {
 } from '@/types/graphql';
 import { useMutation, useQuery } from '@apollo/client';
 
-// type GetCustomersResponse = {
-//   getCustomers: Customer[];
-// };
-
-// type GetCustomerResponse = {
-//   getCustomer: Customer;
-// };
-
 export const useGetCustomers = (params: GetCustomersDto) => {
   return useQuery<
     { getCustomers: Customer[] },
@@ -98,7 +90,7 @@ export const useDeleteCustomer = () => {
 
 export const useUpdateCustomer = () => {
   const [updateCustomerMutate] = useMutation(UPDATE_CUSTOMER_MUTATION, {
-    refetchQueries: [GET_CUSTOMERS_QUERY, 'GetCustomers'],
+    refetchQueries: [GET_CUSTOMERS_QUERY, GET_CUSTOMER_QUERY],
   });
 
   const updateCustomer = async (params: UpdateCustomerDto) => {
