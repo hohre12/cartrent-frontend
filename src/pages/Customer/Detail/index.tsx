@@ -53,50 +53,6 @@ const CustomerDetail = () => {
     <>
       <DetailWrapper>
         <InfoWrapper>
-          <div className="ProfileWrapper">
-            <SvgIcon
-              iconName="icon-member"
-              style={{ background: '#eee' }}
-            />
-            <div className="ControlWrapper">
-              <Button onClick={() => setIsOpenEditModal(true)}>
-                고객 수정
-              </Button>
-              {user?.role.name === PermissionType.Admin && (
-                <Button
-                  onClick={() =>
-                    showConfirm({
-                      isOpen: true,
-                      title: '고객 삭제',
-                      content: `${detail?.name} 고객을 삭제하시겠습니까?`,
-                      cancelText: '취소',
-                      confirmText: '삭제',
-                      confirmVariant: 'primaryDanger',
-                      onClose: hideConfirm,
-                      onCancel: hideConfirm,
-                      onConfirm: handleDeleteCustomer,
-                    })
-                  }
-                >
-                  고객 삭제
-                </Button>
-              )}
-              {detail.customerStatus?.status === '계약완료' && (
-                <Button
-                  onClick={() => navigate(`/contract/regist/${detail.id}`)}
-                >
-                  계약 등록
-                </Button>
-              )}
-              <Button
-                onClick={() =>
-                  setIsOpenCounselRegistModal(!isOpenCounselRegistModal)
-                }
-              >
-                <p>상담등록</p>
-              </Button>
-            </div>
-          </div>
           <div className="Info">
             <div>
               <span>담당자</span>
@@ -145,7 +101,7 @@ const CustomerDetail = () => {
               ></Input>
             </div>
             <div>
-              <span>회사명/명의자</span>
+              <span>회사/명의</span>
               <Input
                 className="inputWrapper"
                 disabled
@@ -261,7 +217,7 @@ const CustomerDetail = () => {
                 placeholder="정보없음"
               ></Input>
             </div>
-            <div style={{ width: '100%', height: 'auto', marginLeft: '45px' }}>
+            <div style={{ width: '100%', height: 'auto', marginLeft: '30px' }}>
               <span>메모</span>
               <TextArea
                 value={detail.memo ?? ''}
@@ -288,6 +244,54 @@ const CustomerDetail = () => {
                 placeholder="정보없음"
               ></Input>
             </div>
+          </div>
+          <div className="ControlWrapper">
+            <Button
+              variant="white"
+              configuration="stroke"
+              onClick={() =>
+                setIsOpenCounselRegistModal(!isOpenCounselRegistModal)
+              }
+            >
+              <p>상담등록</p>
+            </Button>
+            <Button
+              variant="white"
+              configuration="stroke"
+              onClick={() => setIsOpenEditModal(true)}
+            >
+              고객 수정
+            </Button>
+            {detail.customerStatus?.status === '계약완료' && (
+              <Button
+                variant="white"
+                configuration="stroke"
+                onClick={() => navigate(`/contract/regist/${detail.id}`)}
+              >
+                계약 등록
+              </Button>
+            )}
+            {user?.role.name === PermissionType.Admin && (
+              <Button
+                variant="white"
+                configuration="stroke"
+                onClick={() =>
+                  showConfirm({
+                    isOpen: true,
+                    title: '고객 삭제',
+                    content: `${detail?.name} 고객을 삭제하시겠습니까?`,
+                    cancelText: '취소',
+                    confirmText: '삭제',
+                    confirmVariant: 'primaryDanger',
+                    onClose: hideConfirm,
+                    onCancel: hideConfirm,
+                    onConfirm: handleDeleteCustomer,
+                  })
+                }
+              >
+                고객 삭제
+              </Button>
+            )}
           </div>
         </InfoWrapper>
         <HistoryWrapper>
@@ -342,7 +346,7 @@ export const DetailWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 600px;
+  width: 450px;
   border-radius: 5px;
 `;
 
@@ -351,26 +355,14 @@ export const InfoWrapper = styled.div`
   border-radius: 5px;
   padding: 15px;
   display: flex;
+  flex-direction: column;
   gap: 20px;
-  /* height: 500px; */
   .ControlWrapper {
     display: flex;
-    flex-direction: column;
     gap: 20px;
     & > div {
       border: 1px solid #eee;
       border-radius: 5px;
-    }
-  }
-  .ProfileWrapper {
-    width: 100px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    /* height: 150px; */
-    svg {
-      width: 100px;
-      height: 100px;
     }
   }
   .Info {
@@ -378,7 +370,7 @@ export const InfoWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
-    width: 700px;
+    /* width: 700px; */
     & > div {
       ${textS14Regular}
       display: flex;
@@ -466,7 +458,7 @@ export const HistoryWrapper = styled.div`
       background: #fff;
       border: 1px solid #ddd;
       border-radius: 5px;
-      min-width: 430px;
+      min-width: 280px;
       padding: 10px;
       text-align: left;
       p {

@@ -18,7 +18,7 @@ export const SIDE_MENU = [
     path: '/contract',
   },
   {
-    title: '급여명세서',
+    title: '급여',
     engTitle: 'specification',
     icon: 'icon-draft',
     path: '/specification',
@@ -36,7 +36,7 @@ export const SIDE_MENU = [
     path: '/delivery',
   },
   {
-    title: '관리자 전용',
+    title: '관리자',
     engTitle: 'auth',
     icon: 'icon-draft',
     path: '/auth',
