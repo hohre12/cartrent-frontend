@@ -17,6 +17,7 @@ import {
   PermissionType,
   User,
 } from '@/types/graphql';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -28,7 +29,9 @@ const RegistModal = (props: TModal & { propsCustomer: Customer }) => {
   const my = useRecoilValue(userState);
   const [contract, setContract] = useState<Contract>();
 
-  const [counselAt, setCounselAt] = useState<CreateCounselDto['counselAt']>();
+  const currentTime = moment().format('YYYY-MM-DDTHH:mm');
+  const [counselAt, setCounselAt] =
+    useState<CreateCounselDto['counselAt']>(currentTime);
   const [context, setContext] = useState<CreateCounselDto['context']>();
 
   const [submit, setSubmit] = useState<boolean>(false);
@@ -126,6 +129,7 @@ const RegistModal = (props: TModal & { propsCustomer: Customer }) => {
               </span>
               <Input
                 type="datetime-local"
+                value={counselAt}
                 style={{ cursor: 'pointer' }}
                 onTextChange={(text) => setCounselAt(text)}
                 isError={submit && !counselAt}
