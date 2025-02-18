@@ -144,12 +144,12 @@ const ContractListTable = ({ data }: TTableProps) => {
               selectedContractHideWatchOptions,
               'carName',
               isHideColumn('carName'),
-            ) && <td>{it.carName ?? '-'}</td>}
+            ) && <td className="textHidden">{it.carName ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'carOption',
               isHideColumn('carOption'),
-            ) && <td>{it.carOption ?? '-'}</td>}
+            ) && <td className="textHidden">{it.carOption ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'innerColor',
@@ -431,6 +431,12 @@ export const TableItem = styled.tr`
     border-bottom: 1px solid #eee;
     &.name {
       font-weight: 600;
+    }
+    &.textHidden {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      word-break: break-all;
     }
   }
 `;
