@@ -780,6 +780,7 @@ const ContractRegist = () => {
                     }
                     isNumber
                     postfixNode={'원'}
+                    disabled
                   />
                 </InputWrapper>
               </InputLine>
@@ -800,6 +801,7 @@ const ContractRegist = () => {
                     }
                     isNumber
                     postfixNode={'원'}
+                    disabled
                   />
                 </InputWrapper>
               </InputLine>
@@ -820,6 +822,7 @@ const ContractRegist = () => {
                     }
                     isNumber
                     postfixNode={'원'}
+                    disabled
                   />
                 </InputWrapper>
               </InputLine>
