@@ -209,7 +209,7 @@ const ContractListTable = ({ data }: TTableProps) => {
               selectedContractHideWatchOptions,
               'isOrdering',
               isHideColumn('isOrdering'),
-            ) && <td>{it.isOrdering ? '출고' : '미출고'}</td>}
+            ) && <td>{it.isOrdering ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'branch',
@@ -235,21 +235,10 @@ const ContractListTable = ({ data }: TTableProps) => {
             )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
-              'security',
-              isHideColumn('security'),
-            ) && (
-              <td>{it.security ? `${numberFormat(it.security)}원` : '-'}</td>
-            )}
-            {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
               'contractPeriod',
               isHideColumn('contractPeriod'),
             ) && (
-              <td>
-                {it.contractPeriodStartAt && it.contractPeriodEndAt
-                  ? `${it.contractPeriodStartAt} ~ ${it.contractPeriodEndAt}`
-                  : '-'}
-              </td>
+              <td>{it.contractPeriod ? `${it.contractPeriod}개월` : '-'}</td>
             )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,

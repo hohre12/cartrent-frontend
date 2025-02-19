@@ -162,7 +162,7 @@ const ContractDetail = () => {
       setCustomer(detail.customer ?? undefined);
       setFinancialCompany(detail.financialCompany ?? undefined);
       setShippingMethod(detail.shippingMethod ?? undefined);
-      setDivision(detail.financialCompany ?? undefined);
+      setDivision(detail.division ?? undefined);
       const newDetail = _.omit(detail, [
         'id',
         'user',
@@ -171,6 +171,7 @@ const ContractDetail = () => {
         'financialCompany',
         'shippingMethod',
         'division',
+        'isVATSupport',
       ]);
 
       setUpdateContract({
@@ -429,22 +430,6 @@ const ContractDetail = () => {
                 <Input
                   disabled={!updateContract?.carPrice || !isEdit}
                   value={
-                    updateContract?.fee ? numberFormat(updateContract.fee) : 0
-                  }
-                  onTextChange={(text) =>
-                    handleValueChange(Number(text.replace(/,/g, '')), 'fee')
-                  }
-                  isNumber
-                  postfixNode={'원'}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>수수료 비율</span>
-              <InputWrapper>
-                <Input
-                  disabled={!updateContract?.carPrice || !isEdit}
-                  value={
                     updateContract?.feeRate
                       ? numberFormat(updateContract.feeRate)
                       : 0
@@ -456,6 +441,17 @@ const ContractDetail = () => {
                   type="number"
                   isNumber
                   postfixNode={'%'}
+                />
+                <Input
+                  disabled={!updateContract?.carPrice || !isEdit}
+                  value={
+                    updateContract?.fee ? numberFormat(updateContract.fee) : 0
+                  }
+                  onTextChange={(text) =>
+                    handleValueChange(Number(text.replace(/,/g, '')), 'fee')
+                  }
+                  isNumber
+                  postfixNode={'원'}
                 />
               </InputWrapper>
             </InputLine>
@@ -562,14 +558,10 @@ const ContractDetail = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>선납금</span>
+              <span>선수금</span>
               <InputWrapper>
                 <Input
-                  disabled={
-                    !!updateContract?.security ||
-                    !updateContract?.carPrice ||
-                    !isEdit
-                  }
+                  disabled={!updateContract?.carPrice || !isEdit}
                   onTextChange={(text) => {
                     if (updateContract?.carPrice) {
                       handleValueChange(
@@ -582,11 +574,7 @@ const ContractDetail = () => {
                   postfixNode={'%'}
                 />
                 <Input
-                  disabled={
-                    !!updateContract?.security ||
-                    !updateContract?.carPrice ||
-                    !isEdit
-                  }
+                  disabled={!updateContract?.carPrice || !isEdit}
                   value={
                     updateContract?.advancePayment
                       ? numberFormat(updateContract.advancePayment)
@@ -604,67 +592,22 @@ const ContractDetail = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>보증금</span>
+              <span>약정 기간</span>
               <InputWrapper>
                 <Input
-                  disabled={
-                    !!updateContract?.advancePayment ||
-                    !updateContract?.carPrice ||
-                    !isEdit
-                  }
-                  onTextChange={(text) => {
-                    if (updateContract?.carPrice) {
-                      handleValueChange(
-                        (Number(text) * updateContract.carPrice) / 100,
-                        'security',
-                      );
-                    }
-                  }}
-                  isNumber
-                  postfixNode={'%'}
-                />
-                <Input
-                  disabled={
-                    !!updateContract?.advancePayment ||
-                    !updateContract?.carPrice ||
-                    !isEdit
-                  }
+                  postfixNode={'개월'}
                   value={
-                    updateContract?.security
-                      ? numberFormat(updateContract.security)
+                    updateContract?.contractPeriod
+                      ? numberFormat(updateContract.contractPeriod)
                       : 0
                   }
                   onTextChange={(text) =>
                     handleValueChange(
                       Number(text.replace(/,/g, '')),
-                      'security',
+                      'contractPeriod',
                     )
                   }
                   isNumber
-                  postfixNode={'원'}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>약정 기간</span>
-              <InputWrapper>
-                <Input
-                  type="date"
-                  value={updateContract?.contractPeriodStartAt ?? ''}
-                  style={{ cursor: 'pointer' }}
-                  onTextChange={(text) =>
-                    handleValueChange(text, 'contractPeriodStartAt')
-                  }
-                  disabled={!isEdit}
-                />
-                <span>~</span>
-                <Input
-                  type="date"
-                  value={updateContract?.contractPeriodEndAt ?? ''}
-                  style={{ cursor: 'pointer' }}
-                  onTextChange={(text) =>
-                    handleValueChange(text, 'contractPeriodEndAt')
-                  }
                   disabled={!isEdit}
                 />
               </InputWrapper>
@@ -715,9 +658,16 @@ const ContractDetail = () => {
               <span>대물</span>
               <InputWrapper>
                 <Input
-                  value={updateContract?.object ?? ''}
-                  onTextChange={(text) => handleValueChange(text, 'object')}
                   postfixNode={'억원'}
+                  value={
+                    updateContract?.object
+                      ? numberFormat(updateContract.object)
+                      : 0
+                  }
+                  onTextChange={(text) =>
+                    handleValueChange(Number(text.replace(/,/g, '')), 'object')
+                  }
+                  isNumber
                   disabled={!isEdit}
                 />
               </InputWrapper>
@@ -743,29 +693,13 @@ const ContractDetail = () => {
                 </InputWrapper>
               </InputLine>
               <InputLine>
-                <span>부가세 지원 여부</span>
-                <InputWrapper>
-                  <Checkbox
-                    value={updateContract?.isVATSupport ?? false}
-                    onCheckedChange={(val) => {
-                      if (isEdit) {
-                        handleValueChange(val, 'isVATSupport');
-                      }
-                    }}
-                    disabled={!isEdit}
-                  />
-                </InputWrapper>
-              </InputLine>
-              <InputLine>
                 <span>출고여부</span>
                 <InputWrapper>
-                  <Checkbox
-                    value={updateContract?.isOrdering ?? false}
-                    onCheckedChange={(val) => {
-                      if (isEdit) {
-                        handleValueChange(val, 'isOrdering');
-                      }
-                    }}
+                  <Input
+                    value={updateContract?.isOrdering ?? ''}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'isOrdering')
+                    }
                     disabled={!isEdit}
                   />
                 </InputWrapper>

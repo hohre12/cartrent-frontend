@@ -458,12 +458,10 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>선납금</span>
+              <span>선수금</span>
               <InputWrapper>
                 <Input
-                  disabled={
-                    !!createContract?.security || !createContract?.carPrice
-                  }
+                  disabled={!createContract?.carPrice}
                   onTextChange={(text) => {
                     if (createContract?.carPrice) {
                       handleValueChange(
@@ -476,9 +474,7 @@ const ContractRegist = () => {
                   postfixNode={'%'}
                 />
                 <Input
-                  disabled={
-                    !!createContract?.security || !createContract?.carPrice
-                  }
+                  disabled={!createContract?.carPrice}
                   value={
                     createContract?.advancePayment
                       ? numberFormat(createContract.advancePayment)
@@ -496,62 +492,22 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>보증금</span>
+              <span>약정 기간</span>
               <InputWrapper>
                 <Input
-                  disabled={
-                    !!createContract?.advancePayment ||
-                    !createContract?.carPrice
-                  }
-                  onTextChange={(text) => {
-                    if (createContract?.carPrice) {
-                      handleValueChange(
-                        (Number(text) * createContract.carPrice) / 100,
-                        'security',
-                      );
-                    }
-                  }}
-                  isNumber
-                  postfixNode={'%'}
-                />
-                <Input
-                  disabled={
-                    !!createContract?.advancePayment ||
-                    !createContract?.carPrice
-                  }
+                  postfixNode={'개월'}
                   value={
-                    createContract?.security
-                      ? numberFormat(createContract.security)
+                    createContract?.contractPeriod
+                      ? numberFormat(createContract.contractPeriod)
                       : 0
                   }
                   onTextChange={(text) =>
                     handleValueChange(
                       Number(text.replace(/,/g, '')),
-                      'security',
+                      'contractPeriod',
                     )
                   }
                   isNumber
-                  postfixNode={'원'}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>약정 기간</span>
-              <InputWrapper>
-                <Input
-                  type="date"
-                  style={{ cursor: 'pointer' }}
-                  onTextChange={(text) =>
-                    handleValueChange(text, 'contractPeriodStartAt')
-                  }
-                />
-                <span>~</span>
-                <Input
-                  type="date"
-                  style={{ cursor: 'pointer' }}
-                  onTextChange={(text) =>
-                    handleValueChange(text, 'contractPeriodEndAt')
-                  }
                 />
               </InputWrapper>
             </InputLine>
@@ -599,9 +555,16 @@ const ContractRegist = () => {
               <span>대물</span>
               <InputWrapper>
                 <Input
-                  value={createContract?.object ?? ''}
-                  onTextChange={(text) => handleValueChange(text, 'object')}
                   postfixNode={'억원'}
+                  value={
+                    createContract?.object
+                      ? numberFormat(createContract.object)
+                      : 0
+                  }
+                  onTextChange={(text) =>
+                    handleValueChange(Number(text.replace(/,/g, '')), 'object')
+                  }
+                  isNumber
                 />
               </InputWrapper>
             </InputLine>
@@ -624,24 +587,13 @@ const ContractRegist = () => {
                 </InputWrapper>
               </InputLine>
               <InputLine>
-                <span>부가세 지원 여부</span>
-                <InputWrapper>
-                  <Checkbox
-                    value={createContract?.isVATSupport ?? false}
-                    onCheckedChange={(val) => {
-                      handleValueChange(val, 'isVATSupport');
-                    }}
-                  />
-                </InputWrapper>
-              </InputLine>
-              <InputLine>
                 <span>출고여부</span>
                 <InputWrapper>
-                  <Checkbox
-                    value={createContract?.isOrdering ?? false}
-                    onCheckedChange={(val) => {
-                      handleValueChange(val, 'isOrdering');
-                    }}
+                  <Input
+                    value={createContract?.isOrdering ?? ''}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'isOrdering')
+                    }
                   />
                 </InputWrapper>
               </InputLine>

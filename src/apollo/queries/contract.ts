@@ -51,8 +51,7 @@ export const GET_CONTRACTS_QUERY = gql`
       branch
       branchFee
       collateralRate
-      contractPeriodStartAt
-      contractPeriodEndAt
+      contractPeriod
       agreedMileage
       insuranceAge
       object
@@ -76,7 +75,6 @@ export const GET_CONTRACTS_QUERY = gql`
         name
       }
       advancePayment
-      security
     }
   }
 `;
@@ -127,8 +125,7 @@ export const GET_CONTRACT_QUERY = gql`
       branch
       branchFee
       collateralRate
-      contractPeriodEndAt
-      contractPeriodStartAt
+      contractPeriod
       agreedMileage
       insuranceAge
       object
@@ -152,7 +149,6 @@ export const GET_CONTRACT_QUERY = gql`
         name
       }
       advancePayment
-      security
     }
   }
 `;
