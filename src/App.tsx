@@ -127,7 +127,7 @@ function App() {
         >
           <Route
             index
-            element={<Adjustment></Adjustment>}
+            element={<CounselList></CounselList>}
           />
         </Route>
         <Route

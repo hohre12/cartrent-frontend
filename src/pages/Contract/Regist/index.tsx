@@ -551,7 +551,7 @@ const ContractRegist = () => {
             <h5>계약내용 추가 입력 (관리자 전용)</h5>
             <InfoBox>
               <InputLine>
-                <span>출고 일</span>
+                <span>출고일</span>
                 <InputWrapper>
                   <Input
                     type="date"
