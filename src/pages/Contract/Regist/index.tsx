@@ -728,13 +728,6 @@ const ContractRegist = () => {
                         (createContract?.promotion ?? 0) +
                         (createContract?.branchFee ?? 0),
                     )}
-                    // onTextChange={(text) =>
-                    //   handleValueChange(
-                    //     Number(text.replace(/,/g, '')),
-                    //     'totalFee',
-                    //   )
-                    // }
-                    // isNumber
                     postfixNode={'원'}
                     disabled
                   />
@@ -751,13 +744,6 @@ const ContractRegist = () => {
                         (createContract?.cashAssistance ?? 0) +
                         (createContract?.businessExpenses ?? 0),
                     )}
-                    // onTextChange={(text) =>
-                    //   handleValueChange(
-                    //     Number(text.replace(/,/g, '')),
-                    //     'totalExpenditure',
-                    //   )
-                    // }
-                    // isNumber
                     postfixNode={'원'}
                     disabled
                   />
@@ -777,13 +763,6 @@ const ContractRegist = () => {
                           (createContract?.cashAssistance ?? 0) +
                           (createContract?.businessExpenses ?? 0)),
                     )}
-                    // onTextChange={(text) =>
-                    //   handleValueChange(
-                    //     Number(text.replace(/,/g, '')),
-                    //     'netIncome',
-                    //   )
-                    // }
-                    // isNumber
                     postfixNode={'원'}
                     disabled
                   />

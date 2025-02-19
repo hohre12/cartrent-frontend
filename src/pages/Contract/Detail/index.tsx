@@ -118,6 +118,25 @@ const ContractDetail = () => {
         financialCompanyId: financialCompany?.id,
         divisionId: division?.id,
         shippingMethodId: shippingMethod?.id,
+        totalFee:
+          (updateContract?.fee ?? 0) +
+          (updateContract?.promotion ?? 0) +
+          (updateContract?.branchFee ?? 0),
+        totalExpenditure:
+          (updateContract?.service1 ?? 0) +
+          (updateContract?.service2 ?? 0) +
+          (updateContract?.service3 ?? 0) +
+          (updateContract?.cashAssistance ?? 0) +
+          (updateContract?.businessExpenses ?? 0),
+        netIncome:
+          (updateContract?.fee ?? 0) +
+          (updateContract?.promotion ?? 0) +
+          (updateContract?.branchFee ?? 0) -
+          ((updateContract?.service1 ?? 0) +
+            (updateContract?.service2 ?? 0) +
+            (updateContract?.service3 ?? 0) +
+            (updateContract?.cashAssistance ?? 0) +
+            (updateContract?.businessExpenses ?? 0)),
       };
 
       console.log(updateContractPayload);
@@ -679,7 +698,7 @@ const ContractDetail = () => {
             <h5>{`계약내용 추가 입력 ${isEdit ? '수정' : '상세'}(관리자 전용)`}</h5>
             <InfoBox>
               <InputLine>
-                <span>출고 일</span>
+                <span>출고일</span>
                 <InputWrapper>
                   <Input
                     type="date"
@@ -692,6 +711,17 @@ const ContractDetail = () => {
                   />
                 </InputWrapper>
               </InputLine>
+              {!isEdit && (
+                <InputLine>
+                  <span>부가세 지원 여부</span>
+                  <InputWrapper>
+                    <Checkbox
+                      value={detail?.isVATSupport ?? false}
+                      disabled
+                    />
+                  </InputWrapper>
+                </InputLine>
+              )}
               <InputLine>
                 <span>출고여부</span>
                 <InputWrapper>
@@ -885,20 +915,13 @@ const ContractDetail = () => {
                 <span>매출합계</span>
                 <InputWrapper>
                   <Input
-                    value={
-                      updateContract?.totalFee
-                        ? numberFormat(updateContract.totalFee)
-                        : 0
-                    }
-                    onTextChange={(text) =>
-                      handleValueChange(
-                        Number(text.replace(/,/g, '')),
-                        'totalFee',
-                      )
-                    }
-                    isNumber
+                    value={numberFormat(
+                      (updateContract?.fee ?? 0) +
+                        (updateContract?.promotion ?? 0) +
+                        (updateContract?.branchFee ?? 0),
+                    )}
                     postfixNode={'원'}
-                    disabled={!isEdit}
+                    disabled
                   />
                 </InputWrapper>
               </InputLine>
@@ -906,20 +929,15 @@ const ContractDetail = () => {
                 <span>지출합계</span>
                 <InputWrapper>
                   <Input
-                    value={
-                      updateContract?.totalExpenditure
-                        ? numberFormat(updateContract.totalExpenditure)
-                        : 0
-                    }
-                    onTextChange={(text) =>
-                      handleValueChange(
-                        Number(text.replace(/,/g, '')),
-                        'totalExpenditure',
-                      )
-                    }
-                    isNumber
+                    value={numberFormat(
+                      (updateContract?.service1 ?? 0) +
+                        (updateContract?.service2 ?? 0) +
+                        (updateContract?.service3 ?? 0) +
+                        (updateContract?.cashAssistance ?? 0) +
+                        (updateContract?.businessExpenses ?? 0),
+                    )}
                     postfixNode={'원'}
-                    disabled={!isEdit}
+                    disabled
                   />
                 </InputWrapper>
               </InputLine>
@@ -927,20 +945,18 @@ const ContractDetail = () => {
                 <span>순익합계</span>
                 <InputWrapper>
                   <Input
-                    value={
-                      updateContract?.netIncome
-                        ? numberFormat(updateContract.netIncome)
-                        : 0
-                    }
-                    onTextChange={(text) =>
-                      handleValueChange(
-                        Number(text.replace(/,/g, '')),
-                        'netIncome',
-                      )
-                    }
-                    isNumber
+                    value={numberFormat(
+                      (updateContract?.fee ?? 0) +
+                        (updateContract?.promotion ?? 0) +
+                        (updateContract?.branchFee ?? 0) -
+                        ((updateContract?.service1 ?? 0) +
+                          (updateContract?.service2 ?? 0) +
+                          (updateContract?.service3 ?? 0) +
+                          (updateContract?.cashAssistance ?? 0) +
+                          (updateContract?.businessExpenses ?? 0)),
+                    )}
                     postfixNode={'원'}
-                    disabled={!isEdit}
+                    disabled
                   />
                 </InputWrapper>
               </InputLine>
