@@ -97,7 +97,6 @@ const ContractRegist = () => {
 
   const handleContractRegist = async () => {
     setSubmit(true);
-    console.log(createContract);
     if (!my) return;
     if (!customer) return;
     if (!createContract?.carName) return;
@@ -111,6 +110,25 @@ const ContractRegist = () => {
         financialCompanyId: financialCompany?.id,
         divisionId: division?.id,
         shippingMethodId: shippingMethod?.id,
+        totalFee:
+          (createContract?.fee ?? 0) +
+          (createContract?.promotion ?? 0) +
+          (createContract?.branchFee ?? 0),
+        totalExpenditure:
+          (createContract?.service1 ?? 0) +
+          (createContract?.service2 ?? 0) +
+          (createContract?.service3 ?? 0) +
+          (createContract?.cashAssistance ?? 0) +
+          (createContract?.businessExpenses ?? 0),
+        netIncome:
+          (createContract?.fee ?? 0) +
+          (createContract?.promotion ?? 0) +
+          (createContract?.branchFee ?? 0) -
+          ((createContract?.service1 ?? 0) +
+            (createContract?.service2 ?? 0) +
+            (createContract?.service3 ?? 0) +
+            (createContract?.cashAssistance ?? 0) +
+            (createContract?.businessExpenses ?? 0)),
       };
 
       console.log(createContractPayload);
@@ -280,11 +298,7 @@ const ContractRegist = () => {
               <span>차량가</span>
               <InputWrapper>
                 <Input
-                  value={
-                    createContract?.carPrice
-                      ? numberFormat(createContract.carPrice)
-                      : 0
-                  }
+                  value={numberFormat(createContract.carPrice)}
                   onTextChange={(text) =>
                     handleValueChange(
                       Number(text.replace(/,/g, '')),
@@ -333,11 +347,7 @@ const ContractRegist = () => {
               <InputWrapper>
                 <Input
                   disabled={!createContract?.carPrice}
-                  value={
-                    createContract?.feeRate
-                      ? numberFormat(createContract.feeRate)
-                      : 0
-                  }
+                  value={numberFormat(createContract.feeRate)}
                   onTextChange={(text) =>
                     handleValueChange(Number(text.replace(/,/g, '')), 'feeRate')
                   }
@@ -348,9 +358,7 @@ const ContractRegist = () => {
                 />
                 <Input
                   disabled={!createContract?.carPrice}
-                  value={
-                    createContract?.fee ? numberFormat(createContract.fee) : 0
-                  }
+                  value={numberFormat(createContract.fee)}
                   onTextChange={(text) =>
                     handleValueChange(Number(text.replace(/,/g, '')), 'fee')
                   }
@@ -377,11 +385,7 @@ const ContractRegist = () => {
                 />
                 <Input
                   disabled={!createContract?.carPrice}
-                  value={
-                    createContract?.promotion
-                      ? numberFormat(createContract.promotion)
-                      : 0
-                  }
+                  value={numberFormat(createContract.promotion)}
                   onTextChange={(text) =>
                     handleValueChange(
                       Number(text.replace(/,/g, '')),
@@ -397,11 +401,7 @@ const ContractRegist = () => {
               <span>월 납입료</span>
               <InputWrapper>
                 <Input
-                  value={
-                    createContract?.monthlyPayment
-                      ? numberFormat(createContract.monthlyPayment)
-                      : 0
-                  }
+                  value={numberFormat(createContract.monthlyPayment)}
                   isNumber
                   onTextChange={(text) =>
                     handleValueChange(
@@ -442,11 +442,7 @@ const ContractRegist = () => {
               <span>지점 수수료</span>
               <InputWrapper>
                 <Input
-                  value={
-                    createContract?.branchFee
-                      ? numberFormat(createContract.branchFee)
-                      : 0
-                  }
+                  value={numberFormat(createContract.branchFee)}
                   onTextChange={(text) =>
                     handleValueChange(
                       Number(text.replace(/,/g, '')),
@@ -475,11 +471,7 @@ const ContractRegist = () => {
                 />
                 <Input
                   disabled={!createContract?.carPrice}
-                  value={
-                    createContract?.advancePayment
-                      ? numberFormat(createContract.advancePayment)
-                      : 0
-                  }
+                  value={numberFormat(createContract.advancePayment)}
                   onTextChange={(text) =>
                     handleValueChange(
                       Number(text.replace(/,/g, '')),
@@ -496,11 +488,7 @@ const ContractRegist = () => {
               <InputWrapper>
                 <Input
                   postfixNode={'개월'}
-                  value={
-                    createContract?.contractPeriod
-                      ? numberFormat(createContract.contractPeriod)
-                      : 0
-                  }
+                  value={numberFormat(createContract.contractPeriod)}
                   onTextChange={(text) =>
                     handleValueChange(
                       Number(text.replace(/,/g, '')),
@@ -516,11 +504,7 @@ const ContractRegist = () => {
               <InputWrapper>
                 <Input
                   postfixNode={'km'}
-                  value={
-                    createContract?.agreedMileage
-                      ? numberFormat(createContract.agreedMileage)
-                      : 0
-                  }
+                  value={numberFormat(createContract.agreedMileage)}
                   onTextChange={(text) =>
                     handleValueChange(
                       Number(text.replace(/,/g, '')),
@@ -536,11 +520,7 @@ const ContractRegist = () => {
               <InputWrapper>
                 <Input
                   postfixNode={'세'}
-                  value={
-                    createContract?.insuranceAge
-                      ? numberFormat(createContract.insuranceAge)
-                      : 0
-                  }
+                  value={numberFormat(createContract.insuranceAge)}
                   onTextChange={(text) =>
                     handleValueChange(
                       Number(text.replace(/,/g, '')),
@@ -556,11 +536,7 @@ const ContractRegist = () => {
               <InputWrapper>
                 <Input
                   postfixNode={'억원'}
-                  value={
-                    createContract?.object
-                      ? numberFormat(createContract.object)
-                      : 0
-                  }
+                  value={numberFormat(createContract.object)}
                   onTextChange={(text) =>
                     handleValueChange(Number(text.replace(/,/g, '')), 'object')
                   }
@@ -612,11 +588,7 @@ const ContractRegist = () => {
                 <span>품의금액 1</span>
                 <InputWrapper>
                   <Input
-                    value={
-                      createContract?.service1
-                        ? numberFormat(createContract.service1)
-                        : 0
-                    }
+                    value={numberFormat(createContract.service1)}
                     onTextChange={(text) =>
                       handleValueChange(
                         Number(text.replace(/,/g, '')),
@@ -643,11 +615,7 @@ const ContractRegist = () => {
                 <span>품의금액 2</span>
                 <InputWrapper>
                   <Input
-                    value={
-                      createContract?.service2
-                        ? numberFormat(createContract.service2)
-                        : 0
-                    }
+                    value={numberFormat(createContract.service2)}
                     onTextChange={(text) =>
                       handleValueChange(
                         Number(text.replace(/,/g, '')),
@@ -674,11 +642,7 @@ const ContractRegist = () => {
                 <span>품의금액 3</span>
                 <InputWrapper>
                   <Input
-                    value={
-                      createContract?.service3
-                        ? numberFormat(createContract.service3)
-                        : 0
-                    }
+                    value={numberFormat(createContract.service3)}
                     onTextChange={(text) =>
                       handleValueChange(
                         Number(text.replace(/,/g, '')),
@@ -694,11 +658,7 @@ const ContractRegist = () => {
                 <span>현금 지원</span>
                 <InputWrapper>
                   <Input
-                    value={
-                      createContract?.cashAssistance
-                        ? numberFormat(createContract.cashAssistance)
-                        : 0
-                    }
+                    value={numberFormat(createContract.cashAssistance)}
                     onTextChange={(text) =>
                       handleValueChange(
                         Number(text.replace(/,/g, '')),
@@ -736,11 +696,7 @@ const ContractRegist = () => {
                 <span>경비</span>
                 <InputWrapper>
                   <Input
-                    value={
-                      createContract?.businessExpenses
-                        ? numberFormat(createContract.businessExpenses)
-                        : 0
-                    }
+                    value={numberFormat(createContract.businessExpenses)}
                     onTextChange={(text) =>
                       handleValueChange(
                         Number(text.replace(/,/g, '')),
@@ -767,18 +723,18 @@ const ContractRegist = () => {
                 <span>매출합계</span>
                 <InputWrapper>
                   <Input
-                    value={
-                      createContract?.totalFee
-                        ? numberFormat(createContract.totalFee)
-                        : 0
-                    }
-                    onTextChange={(text) =>
-                      handleValueChange(
-                        Number(text.replace(/,/g, '')),
-                        'totalFee',
-                      )
-                    }
-                    isNumber
+                    value={numberFormat(
+                      (createContract?.fee ?? 0) +
+                        (createContract?.promotion ?? 0) +
+                        (createContract?.branchFee ?? 0),
+                    )}
+                    // onTextChange={(text) =>
+                    //   handleValueChange(
+                    //     Number(text.replace(/,/g, '')),
+                    //     'totalFee',
+                    //   )
+                    // }
+                    // isNumber
                     postfixNode={'원'}
                     disabled
                   />
@@ -788,18 +744,20 @@ const ContractRegist = () => {
                 <span>지출합계</span>
                 <InputWrapper>
                   <Input
-                    value={
-                      createContract?.totalExpenditure
-                        ? numberFormat(createContract.totalExpenditure)
-                        : 0
-                    }
-                    onTextChange={(text) =>
-                      handleValueChange(
-                        Number(text.replace(/,/g, '')),
-                        'totalExpenditure',
-                      )
-                    }
-                    isNumber
+                    value={numberFormat(
+                      (createContract?.service1 ?? 0) +
+                        (createContract?.service2 ?? 0) +
+                        (createContract?.service3 ?? 0) +
+                        (createContract?.cashAssistance ?? 0) +
+                        (createContract?.businessExpenses ?? 0),
+                    )}
+                    // onTextChange={(text) =>
+                    //   handleValueChange(
+                    //     Number(text.replace(/,/g, '')),
+                    //     'totalExpenditure',
+                    //   )
+                    // }
+                    // isNumber
                     postfixNode={'원'}
                     disabled
                   />
@@ -809,18 +767,23 @@ const ContractRegist = () => {
                 <span>순익합계</span>
                 <InputWrapper>
                   <Input
-                    value={
-                      createContract?.netIncome
-                        ? numberFormat(createContract.netIncome)
-                        : 0
-                    }
-                    onTextChange={(text) =>
-                      handleValueChange(
-                        Number(text.replace(/,/g, '')),
-                        'netIncome',
-                      )
-                    }
-                    isNumber
+                    value={numberFormat(
+                      (createContract?.fee ?? 0) +
+                        (createContract?.promotion ?? 0) +
+                        (createContract?.branchFee ?? 0) -
+                        ((createContract?.service1 ?? 0) +
+                          (createContract?.service2 ?? 0) +
+                          (createContract?.service3 ?? 0) +
+                          (createContract?.cashAssistance ?? 0) +
+                          (createContract?.businessExpenses ?? 0)),
+                    )}
+                    // onTextChange={(text) =>
+                    //   handleValueChange(
+                    //     Number(text.replace(/,/g, '')),
+                    //     'netIncome',
+                    //   )
+                    // }
+                    // isNumber
                     postfixNode={'원'}
                     disabled
                   />
