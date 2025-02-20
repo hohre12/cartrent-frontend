@@ -72,8 +72,7 @@ export const GET_CUSTOMER_QUERY = gql`
         }
         carName
         carOption
-        contractPeriodStartAt
-        contractPeriodEndAt
+        contractPeriod
         agreedMileage
       }
       customerGrade {

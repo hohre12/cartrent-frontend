@@ -157,11 +157,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.contractList
-                  .map((it) =>
-                    it.contractPeriodStartAt && it.contractPeriodEndAt
-                      ? `${it.contractPeriodStartAt} ~ ${it.contractPeriodEndAt}`
-                      : '-',
-                  )
+                  .map((it) => it.contractPeriod ?? '-')
                   .join(' / ')}
                 placeholder="정보없음"
               ></Input>
@@ -178,23 +174,12 @@ const CustomerDetail = () => {
               ></Input>
             </div>
             <div>
-              <span>선납금</span>
+              <span>선수금</span>
               <Input
                 className="inputWrapper"
                 disabled
                 value={detail.contractList
                   .map((it) => it.advancePayment ?? '-')
-                  .join(' / ')}
-                placeholder="정보없음"
-              ></Input>
-            </div>
-            <div>
-              <span>보증금</span>
-              <Input
-                className="inputWrapper"
-                disabled
-                value={detail.contractList
-                  .map((it) => it.security ?? '-')
                   .join(' / ')}
                 placeholder="정보없음"
               ></Input>

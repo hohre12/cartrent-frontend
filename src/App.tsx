@@ -13,7 +13,6 @@ import Login from './pages/Auth/Login';
 import SideNavigationBar from './components/sideNavigationBar/SideNavigationBar';
 import GlobalNavigationBar from './components/globalNavigationBar/GlobalNavigationBar';
 import { textXs12Medium } from './styles/typography';
-import Adjustment from './pages/Adjustment';
 import Dashboard from './pages/Dashboard';
 import Toast from './components/toast/Toast';
 import Confirm from './components/confirm/Confirm';
@@ -113,7 +112,7 @@ function App() {
           />
         </Route>
         <Route
-          path="/specification"
+          path="/payStub"
           element={<PrivateLayout />}
         >
           <Route
@@ -127,7 +126,7 @@ function App() {
         >
           <Route
             index
-            element={<Adjustment></Adjustment>}
+            element={<CounselList></CounselList>}
           />
         </Route>
         <Route

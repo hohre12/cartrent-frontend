@@ -15,8 +15,10 @@ export const isEmpty = (object: any[] | any): boolean => {
   return Array.isArray(object) ? !object.length : !Object.keys(object).length;
 };
 
-export const numberFormat = (num: number | undefined | null): string => {
-  if (!num) return '-';
+export const numberFormat = (
+  num: number | undefined | null,
+): string | number => {
+  if (!num) return 0;
   return num.toLocaleString('ko-KR');
 };
 

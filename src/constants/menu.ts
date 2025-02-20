@@ -19,9 +19,9 @@ export const SIDE_MENU = [
   },
   {
     title: '급여',
-    engTitle: 'specification',
+    engTitle: 'payStub',
     icon: 'icon-draft',
-    path: '/specification',
+    path: '/payStub',
   },
   {
     title: '정산',
