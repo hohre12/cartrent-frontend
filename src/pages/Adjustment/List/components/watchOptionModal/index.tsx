@@ -2,10 +2,10 @@ import Button from '@/components/button/Button';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { Modal } from '@/components/modal/Modal';
 import {
-  COUNSEL_LIST_WATCH_OPTIONS,
-  COUNSEL_LIST_WATCH_REQUIRED_OPTIONS,
-} from '@/constants/counsel';
-import { selectedCounselHideWatchOptionsState } from '@/state/counsel';
+  ADJUSTMENT_LIST_WATCH_OPTIONS,
+  ADJUSTMENT_LIST_WATCH_REQUIRED_OPTIONS,
+} from '@/constants/adjustment';
+import { selectedAdjustmentHideWatchOptionsState } from '@/state/adjustment';
 import { textS14Medium, textS14Regular } from '@/styles/typography';
 import { TModal } from '@/types/common';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -18,17 +18,17 @@ const WatchOptionModal = (props: TModal) => {
     string[]
   >([]);
   const [selectedHideWatchOptions, setSelectedHideWatchOptions] =
-    useRecoilState(selectedCounselHideWatchOptionsState);
+    useRecoilState(selectedAdjustmentHideWatchOptionsState);
 
   const hideWatchOptionKeys = useMemo(() => {
     return Object.keys(
-      COUNSEL_LIST_WATCH_OPTIONS,
-    ) as (keyof typeof COUNSEL_LIST_WATCH_OPTIONS)[];
+      ADJUSTMENT_LIST_WATCH_OPTIONS,
+    ) as (keyof typeof ADJUSTMENT_LIST_WATCH_OPTIONS)[];
   }, []);
 
   const handleSetWatchOptions = useCallback(
     (key: string) => {
-      if (!COUNSEL_LIST_WATCH_REQUIRED_OPTIONS.includes(key)) {
+      if (!ADJUSTMENT_LIST_WATCH_REQUIRED_OPTIONS.includes(key)) {
         if (selectedHideOptionsList.includes(key)) {
           const newList = selectedHideOptionsList.filter((it) => it !== key);
           setSelectedHideOptionsList(newList);
@@ -44,14 +44,14 @@ const WatchOptionModal = (props: TModal) => {
     if (
       selectedHideOptionsList.length ===
       hideWatchOptionKeys.filter(
-        (it) => !COUNSEL_LIST_WATCH_REQUIRED_OPTIONS.includes(it),
+        (it) => !ADJUSTMENT_LIST_WATCH_REQUIRED_OPTIONS.includes(it),
       ).length
     ) {
       setSelectedHideOptionsList([]);
     } else {
       setSelectedHideOptionsList([
         ...hideWatchOptionKeys.filter(
-          (it) => !COUNSEL_LIST_WATCH_REQUIRED_OPTIONS.includes(it),
+          (it) => !ADJUSTMENT_LIST_WATCH_REQUIRED_OPTIONS.includes(it),
         ),
       ]);
     }
@@ -103,12 +103,12 @@ const WatchOptionModal = (props: TModal) => {
               key={idx}
               size="large"
               className={[
-                `${selectedHideOptionsList.includes(it) ? '' : 'active'} ${COUNSEL_LIST_WATCH_REQUIRED_OPTIONS.includes(it) ? 'required' : ''}`,
+                `${selectedHideOptionsList.includes(it) ? '' : 'active'} ${ADJUSTMENT_LIST_WATCH_REQUIRED_OPTIONS.includes(it) ? 'required' : ''}`,
               ].join(' ')}
               onClick={() => handleSetWatchOptions(it)}
             >
-              <div>{COUNSEL_LIST_WATCH_OPTIONS[it]}</div>
-              {COUNSEL_LIST_WATCH_REQUIRED_OPTIONS.includes(it) ? (
+              <div>{ADJUSTMENT_LIST_WATCH_OPTIONS[it]}</div>
+              {ADJUSTMENT_LIST_WATCH_REQUIRED_OPTIONS.includes(it) ? (
                 <SvgIcon iconName="icon-lock" />
               ) : !selectedHideOptionsList.includes(it) ? (
                 <SvgIcon iconName="icon-check" />

@@ -6,21 +6,14 @@ import Pagination from '@/components/pagination/Pagination';
 import { useCallback, useEffect, useState } from 'react';
 import WatchOptionModal from './components/watchOptionModal';
 import SearchBox from '@/components/searchBox/SearchBox';
-import FilterGroup from './components/filter/group';
 import useClickOutside from '@/hooks/useClickOutside';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import { customerFiltersState } from '@/state/customer';
 import { TFilterList } from '@/types/common';
 import { Circle, FilterContent, FilterWrapper } from '@/styles/common';
 import RegistModal from './components/registModal';
 import AdjustmentListTable from './components/table';
-import {
-  adjustmentFiltersState,
-  selectedAdjustmentState,
-} from '@/state/adjustment';
-import FloatingMenu from './components/floatingMenu';
+import { adjustmentFiltersState } from '@/state/adjustment';
 import { useGetAdjustments } from '@/services/adjustment';
-import FilterStatus from './components/filter/status';
 import FilterUser from './components/filter/user';
 import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
@@ -30,7 +23,6 @@ const AdjustmentList = () => {
   const navigationType = useNavigationType();
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
-  const selectedAdjustment = useRecoilValue(selectedAdjustmentState);
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
   //   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
@@ -90,7 +82,7 @@ const AdjustmentList = () => {
                 onRemoveClick={handleSearchTextDelete}
                 onKeyDown={handleSearch}
                 onRecentClick={handleSearch}
-                keyword="고객명, 상담자, 연락처, 차종, 상담내용, 고객등급, 비고"
+                keyword="담당자"
               ></SearchBox>
               <FilterWrapper>
                 {user?.role.name === PermissionType.Admin && (
@@ -132,10 +124,6 @@ const AdjustmentList = () => {
                   <p>보기옵션</p>
                 </Button>
               )}
-              {/* <Button onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}>
-                <SvgIcon iconName="icon-plus" />
-                <p>상담등록</p>
-              </Button> */}
             </FunctionWrapper>
           </ControlWrapper>
         </Header>
@@ -145,7 +133,6 @@ const AdjustmentList = () => {
               <AdjustmentListTable
                 data={data.getAdjustments}
               ></AdjustmentListTable>
-              {selectedAdjustment.length > 0 && <FloatingMenu></FloatingMenu>}
             </>
           ) : searchText ? (
             <div className="noList">
