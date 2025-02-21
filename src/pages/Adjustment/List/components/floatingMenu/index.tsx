@@ -2,72 +2,68 @@ import Button from '@/components/button/Button';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
-import { useDeleteContract } from '@/services/contract';
-import { selectedContractState } from '@/state/contract';
-import { TConfirm, TToast } from '@/types/common';
+import { useDeleteCounsel } from '@/services/counsel';
+import { selectedCounselState } from '@/state/counsel';
 import { useCallback, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 const FloatingMenu = () => {
-  const [selectedContract, setSelectedContract] = useRecoilState(
-    selectedContractState,
-  );
+  const [selectedCounsel, setSelectedCounsel] =
+    useRecoilState(selectedCounselState);
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
 
-  const { deleteContractMutation } = useDeleteContract();
+  const { deleteCounsel } = useDeleteCounsel();
 
-  const handleContractDelete = async () => {
+  const handleCounselDelete = async () => {
     try {
-      const response = await deleteContractMutation(
-        selectedContract.map((it) => it.id),
-      );
-      if (response && response.data.deleteContract === 'success') {
+      const response = await deleteCounsel(selectedCounsel.map((it) => it.id));
+      if (response && response.data.deleteCounsel === 'success') {
         addToast({
           id: Date.now(),
           isImage: true,
-          content: `${selectedContract.length}개의 계약이 삭제되었습니다.`,
+          content: `${selectedCounsel.length}개의 상담이 삭제되었습니다.`,
           type: 'success',
         });
         hideConfirm();
-        setSelectedContract([]);
+        setSelectedCounsel([]);
       }
     } catch (e) {
       console.warn(e);
     }
   };
 
-  const handleContractDeleteConfirm = useCallback(() => {
+  const handleCounselDeleteConfirm = useCallback(() => {
     showConfirm({
       isOpen: true,
-      title: '계약 삭제',
-      content: `${selectedContract.length}개의 계약을 삭제하시겠습니까?`,
+      title: '상담 삭제',
+      content: `${selectedCounsel.length}개의 상담을 삭제하시겠습니까?`,
       cancelText: '취소',
       confirmText: '삭제',
       confirmVariant: 'primaryDanger',
       onClose: () => hideConfirm(),
       onCancel: () => hideConfirm(),
-      onConfirm: handleContractDelete,
+      onConfirm: handleCounselDelete,
     });
-  }, [showConfirm, hideConfirm, selectedContract, handleContractDelete]);
+  }, [showConfirm, hideConfirm, selectedCounsel, handleCounselDelete]);
 
   return (
     <FloatingWrapper>
       <h4>
-        <span>{selectedContract.length}개</span>
+        <span>{selectedCounsel.length}개</span>
         선택
       </h4>
       <div>
         <Button
           variant="transparent"
-          onClick={handleContractDeleteConfirm}
+          onClick={handleCounselDeleteConfirm}
         >
           <SvgIcon
             iconName="icon-trash"
             alt="trash"
           />
-          <p>계약삭제</p>
+          <p>상담삭제</p>
         </Button>
       </div>
     </FloatingWrapper>
