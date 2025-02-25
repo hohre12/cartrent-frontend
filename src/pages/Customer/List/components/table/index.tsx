@@ -9,7 +9,7 @@ import {
 } from '@/state/customer';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import { Customer, PermissionType } from '@/types/graphql';
-import { isColumnsViewHide } from '@/utils/common';
+import { customerStatusColor, isColumnsViewHide } from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -57,7 +57,16 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
               selectedCustomerHideWatchOptions,
               'customerStatus',
               isHideColumn('customerStatus'),
-            ) && <td>{it.customerStatus?.status ?? '-'}</td>}
+            ) && (
+              <td
+                style={{
+                  color: `#${customerStatusColor(it.customerStatus?.status)}`,
+                  fontWeight: 700,
+                }}
+              >
+                {it.customerStatus?.status ?? '-'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedCustomerHideWatchOptions,
               'created_at',
@@ -168,7 +177,7 @@ export const CustomerListTableWrapper = styled.table`
         height: 40px;
         overflow: hidden;
         padding: 0px 25px;
-        max-width: 140px;
+        max-width: 150px;
         white-space: nowrap;
         text-overflow: ellipsis;
         word-break: break-all;
