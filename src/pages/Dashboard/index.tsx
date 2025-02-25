@@ -19,6 +19,20 @@ const data = [
   { name: '하하', sales: 3200 },
   { name: '하동훈', sales: 5200 },
 ];
+const data2 = [
+  { name: '김홍철', sales: 5200 },
+  { name: '정명수', sales: 1200 },
+  { name: '박재석', sales: 3200 },
+  { name: '홍준하', sales: 200 },
+  { name: '최성준', sales: 10200 },
+  { name: '김형돈', sales: 3300 },
+  { name: '이호동', sales: 7200 },
+  { name: '박수근', sales: 2200 },
+  { name: '하승기', sales: 3600 },
+  { name: '최종민', sales: 1800 },
+  { name: '촤하하', sales: 500 },
+  { name: '감동훈', sales: 1200 },
+];
 const keys = ['sales'];
 const indexBy = 'name';
 
@@ -40,6 +54,15 @@ const Dashboard = () => {
                 <h3>영업사원별 이번달 매출현황</h3>
               </div>
               <div className="content">
+                <span
+                  style={{
+                    marginRight: 'auto',
+                    marginTop: '50px',
+                    fontSize: '14px',
+                  }}
+                >
+                  단위(만원)
+                </span>
                 <Barchart
                   data={data}
                   keys={keys}
@@ -52,8 +75,17 @@ const Dashboard = () => {
                 <h3>영업사원별 지난달 매출현황</h3>
               </div>
               <div className="content">
+                <span
+                  style={{
+                    marginRight: 'auto',
+                    marginTop: '50px',
+                    fontSize: '14px',
+                  }}
+                >
+                  단위(만원)
+                </span>
                 <Barchart
-                  data={data}
+                  data={data2}
                   keys={keys}
                   indexBy={indexBy}
                 ></Barchart>
@@ -206,8 +238,8 @@ const Box = styled.div`
   }
   .header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     h3 {
       font-size: 20px;
       font-weight: 700;
