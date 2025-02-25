@@ -1,53 +1,98 @@
 import styled from 'styled-components';
 import Barchart from '@/components/barchart/Barchart';
+import Trophy from '@/assets/pngs/trophy.png';
+import { userState } from '@/state/auth';
+import { useRecoilValue } from 'recoil';
+import { PermissionType } from '@/types/graphql';
+
+const data = [
+  { name: '노홍철', sales: 1200 },
+  { name: '박명수', sales: 2200 },
+  { name: '유재석', sales: 3200 },
+  { name: '정준하', sales: 3200 },
+  { name: '길성준', sales: 3200 },
+  { name: '정형돈', sales: 5200 },
+  { name: '강호동', sales: 1200 },
+  { name: '이수근', sales: 2200 },
+  { name: '이승기', sales: 3200 },
+  { name: '김종민', sales: 3200 },
+  { name: '하하', sales: 3200 },
+  { name: '하동훈', sales: 5200 },
+];
+const keys = ['sales'];
+const indexBy = 'name';
 
 const Dashboard = () => {
   //   const [activeGraphTab, setActiveGraphTab] = useState<
   //     'customer' | 'counsel' | 'adjustment'
   //   >('customer');
+  const my = useRecoilValue(userState);
   return (
     <DashboardWrapper>
       <DashboardHeader>
         <h2>대시보드</h2>
       </DashboardHeader>
       <DashboardContent>
-        <Box>
-          <div className="header">
-            <h3>이번달 매출현황</h3>
-          </div>
-          <div className="content">
-            <Barchart></Barchart>
-          </div>
-        </Box>
-        <Box className="green">
-          <div className="header">
-            <h3>지난달 매출현황</h3>
-          </div>
-          <div className="content"></div>
-        </Box>
+        {my?.role?.name === PermissionType.Admin && (
+          <>
+            <Box>
+              <div className="header">
+                <h3>영업사원별 이번달 매출현황</h3>
+              </div>
+              <div className="content">
+                <Barchart
+                  data={data}
+                  keys={keys}
+                  indexBy={indexBy}
+                ></Barchart>
+              </div>
+            </Box>
+            <Box className="green">
+              <div className="header">
+                <h3>영업사원별 지난달 매출현황</h3>
+              </div>
+              <div className="content">
+                <Barchart
+                  data={data}
+                  keys={keys}
+                  indexBy={indexBy}
+                ></Barchart>
+              </div>
+            </Box>
+          </>
+        )}
         <Box>
           <div className="header">
             <h3>이번달 매출 1위</h3>
           </div>
-          <div className="content"></div>
+          <div className="content">
+            {/* <img src={Trophy} /> */}
+            <h2>테스트님</h2>
+          </div>
         </Box>
         <Box className="green">
           <div className="header">
             <h3>지난달 매출 1위</h3>
           </div>
-          <div className="content"></div>
+          <div className="content">
+            <h2>테스트님</h2>
+          </div>
         </Box>
         <Box>
           <div className="header">
             <h3>이번달 계약1위</h3>
           </div>
-          <div className="content"></div>
+          <div className="content">
+            <h2>테스트님</h2>
+          </div>
         </Box>
         <Box className="green">
           <div className="header">
             <h3>지난달 계약 1위</h3>
           </div>
-          <div className="content"></div>
+          <div className="content">
+            <h2>테스트님</h2>
+          </div>
         </Box>
       </DashboardContent>
       {/* <InfoWrapper>
@@ -126,7 +171,7 @@ const Dashboard = () => {
 export default Dashboard;
 
 const DashboardWrapper = styled.div`
-  background: #fff;
+  background: #f9f9f9;
   height: 100%;
   padding: 30px;
   display: flex;
@@ -149,12 +194,13 @@ const DashboardContent = styled.div`
 const Box = styled.div`
   width: 49%;
   border-radius: 10px;
-  background-color: #f9f9f9;
+  background-color: #fff;
   padding: 20px;
-  border: 1px solid #eee;
+  border: 1px solid #ddd;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
   &.green {
     background-color: #e7faf2;
   }
@@ -168,6 +214,19 @@ const Box = styled.div`
     }
   }
   .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    & > h2 {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    & > img {
+      width: 300px;
+      height: 300px;
+    }
   }
 `;
 // const InfoWrapper = styled.div`

@@ -1,6 +1,12 @@
-import { ResponsiveBar } from '@nivo/bar';
+import { ComputedDatum, ResponsiveBar } from '@nivo/bar';
 
-const Barchart = () => {
+type TBarchartProps = {
+  data: any[];
+  keys: string[];
+  indexBy: string;
+};
+
+const Barchart = ({ data, keys, indexBy }: TBarchartProps) => {
   const handle = {
     barClick: (data: any) => {
       console.log(data);
@@ -13,27 +19,20 @@ const Barchart = () => {
 
   return (
     // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
-    <div style={{ width: '800px', height: '500px', margin: '0 auto' }}>
+    <div style={{ width: '100%', height: '500px', margin: '0 auto' }}>
       <ResponsiveBar
         /**
          * chart에 사용될 데이터
          */
-        data={[
-          { name: '노홍철', sales: 1200 },
-          { name: '박명수', sales: 2200 },
-          { name: '유재석', sales: 3200 },
-          { name: '정준하', sales: 3200 },
-          { name: '길성준', sales: 3200 },
-          { name: '정형돈', sales: 3200 },
-        ]}
+        data={data}
         /**
          * chart에 보여질 데이터 key (측정되는 값)
          */
-        keys={['sales']}
+        keys={keys}
         /**
          * keys들을 그룹화하는 index key (분류하는 값)
          */
-        indexBy="name"
+        indexBy={indexBy}
         /**
          * chart margin
          */
@@ -45,7 +44,7 @@ const Barchart = () => {
         /**
          * chart 색상
          */
-        colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
+        colors={{ scheme: 'paired' }} // nivo에서 제공해주는 색상 조합 사용할 때
         /**
          * color 적용 방식
          */
@@ -74,18 +73,18 @@ const Barchart = () => {
             /**
              * axis legend style (bottom, left에 있는 글씨)
              */
-            legend: {
-              text: {
-                fontSize: 20,
-                fill: '#000000',
-              },
-            },
+            // legend: {
+            //   text: {
+            //     fontSize: 16,
+            //     fill: '#000000',
+            //   },
+            // },
             /**
              * axis ticks style (bottom, left에 있는 값)
              */
             ticks: {
               text: {
-                fontSize: 16,
+                fontSize: 12,
                 fill: '#000000',
               },
             },
@@ -94,25 +93,25 @@ const Barchart = () => {
         /**
          * axis bottom 설정
          */
-        axisBottom={{
-          tickSize: 5, // 값 설명하기 위해 튀어나오는 점 크기
-          tickPadding: 5, // tick padding
-          tickRotation: 0, // tick 기울기
-          legend: '영업사원별 이번달 매출 현황', // bottom 글씨
-          legendPosition: 'middle', // 글씨 위치
-          legendOffset: 40, // 글씨와 chart간 간격
-        }}
+        // axisBottom={{
+        //   tickSize: 5, // 값 설명하기 위해 튀어나오는 점 크기
+        //   tickPadding: 5, // tick padding
+        //   tickRotation: 0, // tick 기울기
+        //   legend: '영업사원별 이번달 매출 현황', // bottom 글씨
+        //   legendPosition: 'middle', // 글씨 위치
+        //   legendOffset: 40, // 글씨와 chart간 간격
+        // }}
         /**
          * axis left 설정
          */
-        axisLeft={{
-          tickSize: 5, // 값 설명하기 위해 튀어나오는 점 크기
-          tickPadding: 5, // tick padding
-          tickRotation: 0, // tick 기울기
-          //   legend: 'price', // left 글씨
-          legendPosition: 'middle', // 글씨 위치
-          legendOffset: -60, // 글씨와 chart간 간격
-        }}
+        // axisLeft={{
+        //   tickSize: 5, // 값 설명하기 위해 튀어나오는 점 크기
+        //   tickPadding: 5, // tick padding
+        //   tickRotation: 0, // tick 기울기
+        //   legend: '단위(만원)', // left 글씨
+        //   legendPosition: 'middle', // 글씨 위치
+        //   legendOffset: -50, // 글씨와 chart간 간격
+        // }}
         /**
          * label 안보이게 할 기준 width
          */
