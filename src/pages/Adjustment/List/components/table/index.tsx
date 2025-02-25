@@ -1,17 +1,14 @@
 import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
 import {
-  COUNSEL_LIST_WATCH_OPTIONS,
-  COUNSEL_LIST_WATCH_REQUIRED_OPTIONS,
-} from '@/constants/counsel';
+  ADJUSTMENT_LIST_WATCH_OPTIONS,
+  ADJUSTMENT_LIST_WATCH_REQUIRED_OPTIONS,
+} from '@/constants/adjustment';
 import { userState } from '@/state/auth';
-import {
-  selectedCounselHideWatchOptionsState,
-  selectedCounselState,
-} from '@/state/counsel';
+import { selectedAdjustmentHideWatchOptionsState } from '@/state/adjustment';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { Counsel, PermissionType } from '@/types/graphql';
-import { customerStatusColor, isColumnsViewHide } from '@/utils/common';
+import { Adjustment, PermissionType } from '@/types/graphql';
+import { isColumnsViewHide } from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -19,63 +16,30 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 type TTableProps = {
-  data: Counsel[];
+  data: Adjustment[];
 };
 
-const CounselListTable = ({ data }: TTableProps) => {
+const AdjustmentListTable = ({ data }: TTableProps) => {
   const navigate = useNavigate();
-  const [selectedCounsel, setSelectedCounsel] =
-    useRecoilState(selectedCounselState);
-  const selectedCounselHideWatchOptions = useRecoilValue(
-    selectedCounselHideWatchOptionsState,
+  const selectedAdjustmentHideWatchOptions = useRecoilValue(
+    selectedAdjustmentHideWatchOptionsState,
   );
 
   const user = useRecoilValue(userState);
   const isHideColumn = (columeKey: string) => {
     return user?.role.name === PermissionType.Admin
       ? false
-      : !COUNSEL_LIST_WATCH_REQUIRED_OPTIONS.includes(columeKey);
+      : !ADJUSTMENT_LIST_WATCH_REQUIRED_OPTIONS.includes(columeKey);
   };
 
-  const isAllChecked = useMemo(() => {
-    return (
-      data.every((it) => selectedCounsel.includes(it)) && data.length !== 0
-    );
-  }, [selectedCounsel, data]);
-
-  const handleAllChecked = useCallback(() => {
-    if (selectedCounsel.length > 0) {
-      setSelectedCounsel([]);
-    } else {
-      setSelectedCounsel(data);
-    }
-  }, [selectedCounsel, data]);
-
-  const handleChecked = useCallback(
-    (val: TCheckBoxValue, counsel: Counsel) => {
-      if (val) {
-        setSelectedCounsel([...selectedCounsel, counsel]);
-      } else {
-        const newList = selectedCounsel.filter((it) => it.id !== counsel.id);
-        setSelectedCounsel(newList);
-      }
-    },
-    [selectedCounsel],
-  );
   return (
     <TableWrapper>
       <thead>
         <TableHeader>
-          <th style={{ width: '60px' }}>
-            <Checkbox
-              value={isAllChecked}
-              onCheckedChange={handleAllChecked}
-            />
-          </th>
-          {Object.entries(COUNSEL_LIST_WATCH_OPTIONS).map(([key, value]) => {
+          {Object.entries(ADJUSTMENT_LIST_WATCH_OPTIONS).map(([key, value]) => {
             return (
               !isColumnsViewHide(
-                selectedCounselHideWatchOptions,
+                selectedAdjustmentHideWatchOptions,
                 key,
                 isHideColumn(key),
               ) && <th key={key}>{value}</th>
@@ -89,65 +53,50 @@ const CounselListTable = ({ data }: TTableProps) => {
             key={idx}
             onClick={() => navigate(`${it.id}`)}
           >
-            <td>
-              <div onClick={(e) => e.stopPropagation()}>
-                <Checkbox
-                  value={selectedCounsel.some((cl) => cl.id === it.id)}
-                  onCheckedChange={(val) => handleChecked(val, it)}
-                />
-              </div>
-            </td>
             {!isColumnsViewHide(
-              selectedCounselHideWatchOptions,
+              selectedAdjustmentHideWatchOptions,
               'customerStatus',
               isHideColumn('customerStatus'),
+            ) && <td>{it.customer?.customerStatus?.status ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedAdjustmentHideWatchOptions,
+              'adjustmentAt',
+              isHideColumn('adjustmentAt'),
             ) && (
-              <td
-                style={{
-                  color: `#${customerStatusColor(it.customer?.customerStatus?.status)}`,
-                  fontWeight: 700,
-                }}
-              >
-                {it.customer?.customerStatus?.status ?? '-'}
-              </td>
+              <td>{formatDate(it.adjustmentAt, 'YYYY-MM-DD HH:mm') ?? '-'}</td>
             )}
             {!isColumnsViewHide(
-              selectedCounselHideWatchOptions,
-              'counselAt',
-              isHideColumn('counselAt'),
-            ) && <td>{formatDate(it.counselAt, 'YYYY-MM-DD HH:mm') ?? '-'}</td>}
-            {!isColumnsViewHide(
-              selectedCounselHideWatchOptions,
+              selectedAdjustmentHideWatchOptions,
               'customerName',
               isHideColumn('customerName'),
             ) && <td>{it.customer?.name ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedCounselHideWatchOptions,
+              selectedAdjustmentHideWatchOptions,
               'customerPhone',
               isHideColumn('customerPhone'),
             ) && <td>{it.customer?.phone ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedCounselHideWatchOptions,
+              selectedAdjustmentHideWatchOptions,
               'context',
               isHideColumn('context'),
             ) && <td className="textHidden">{it.context ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedCounselHideWatchOptions,
+              selectedAdjustmentHideWatchOptions,
               'userName',
               isHideColumn('userName'),
             ) && <td>{it.user.name ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedCounselHideWatchOptions,
+              selectedAdjustmentHideWatchOptions,
               'customerGroup',
               isHideColumn('customerGroup'),
             ) && <td>{it.customer.customerGroup?.name ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedCounselHideWatchOptions,
+              selectedAdjustmentHideWatchOptions,
               'customerGrade',
               isHideColumn('customerGrade'),
             ) && <td>{it.customer.customerGrade?.name ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedCounselHideWatchOptions,
+              selectedAdjustmentHideWatchOptions,
               'customerDivision',
               isHideColumn('customerDivision'),
             ) && <td className="name">{it.contract?.division?.name ?? '-'}</td>}
@@ -158,7 +107,7 @@ const CounselListTable = ({ data }: TTableProps) => {
   );
 };
 
-export default CounselListTable;
+export default AdjustmentListTable;
 
 export const TableWrapper = styled.table`
   position: relative;

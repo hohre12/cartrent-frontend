@@ -1,0 +1,30 @@
+export const ADJUSTMENT_LIST_WATCH_OPTIONS = {
+  no: 'NO',
+  year: '년도',
+  month: '월',
+  userName: '담당자',
+  contractCount: '계약 건수합계',
+  contractTotalFee: '계약 매출합계',
+  contractTotalExpenditure: '계약 지출합계',
+  contractNetIncome: '계약 순익합계',
+  contractAllowance: '계약 수당합계',
+  deliveryCount: '출고 건수합계',
+  deliveryTotalFee: '출고 매출합계',
+  deliveryTotalExpenditure: '출고 지출합계',
+  deliveryNetIncome: '출고 순익합계',
+  deliveryAllowance: '출고 수당합계',
+  additionalAllowance: '추가 수당합계',
+  otherAllowances: '기타 수당합계',
+};
+
+export const ADJUSTMENT_LIST_WATCH_REQUIRED_OPTIONS = [
+  'year',
+  'month',
+  'userName',
+  'contractCount',
+  'contractNetIncome',
+  'contractAllowance',
+  'deliveryCount',
+  'deliveryNetIncome',
+  'deliveryAllowance',
+];

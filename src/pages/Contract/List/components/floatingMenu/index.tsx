@@ -55,7 +55,7 @@ const FloatingMenu = () => {
   return (
     <FloatingWrapper>
       <h4>
-        <span>{selectedContract.length}명</span>
+        <span>{selectedContract.length}개</span>
         선택
       </h4>
       <div>

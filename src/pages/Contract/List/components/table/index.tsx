@@ -15,7 +15,11 @@ import {
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
 import { Contract, PermissionType } from '@/types/graphql';
-import { isColumnsViewHide, numberFormat } from '@/utils/common';
+import {
+  customerStatusColor,
+  isColumnsViewHide,
+  numberFormat,
+} from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -109,7 +113,16 @@ const ContractListTable = ({ data }: TTableProps) => {
               selectedContractHideWatchOptions,
               'customerStatus',
               isHideColumn('customerStatus'),
-            ) && <td>{it.customer?.customerStatus?.status ?? '-'}</td>}
+            ) && (
+              <td
+                style={{
+                  color: `#${customerStatusColor(it.customer?.customerStatus?.status)}`,
+                  fontWeight: 700,
+                }}
+              >
+                {it.customer?.customerStatus?.status ?? '-'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'userName',

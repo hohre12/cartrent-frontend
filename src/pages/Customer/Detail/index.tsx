@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
 import RegistModal from '@/pages/Counsel/List/components/registModal';
+import { numberFormat } from '@/utils/common';
 
 const CustomerDetail = () => {
   const navigate = useNavigate();
@@ -157,7 +158,11 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.contractList
-                  .map((it) => it.contractPeriod ?? '-')
+                  .map((it) =>
+                    it.contractPeriod
+                      ? `${numberFormat(it.contractPeriod)} 개월`
+                      : '-',
+                  )
                   .join(' / ')}
                 placeholder="정보없음"
               ></Input>
@@ -168,7 +173,11 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.contractList
-                  .map((it) => it.agreedMileage ?? '-')
+                  .map((it) =>
+                    it.agreedMileage
+                      ? `${numberFormat(it.agreedMileage)} km`
+                      : '-',
+                  )
                   .join(' / ')}
                 placeholder="정보없음"
               ></Input>
@@ -179,7 +188,11 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.contractList
-                  .map((it) => it.advancePayment ?? '-')
+                  .map((it) =>
+                    it.advancePayment
+                      ? `${numberFormat(it.advancePayment)}원`
+                      : '-',
+                  )
                   .join(' / ')}
                 placeholder="정보없음"
               ></Input>
