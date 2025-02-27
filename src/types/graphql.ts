@@ -1472,6 +1472,20 @@ export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetUsersQuery = { getUsers: Array<{ id: number, name: string, email: string, created_at?: string | null, updated_at?: string | null }> };
 
+export type GetFirstContractUserByMonthQueryVariables = Exact<{
+  getFirstContractUserByMonthDto: GetRevenuesByUsersDto;
+}>;
+
+
+export type GetFirstContractUserByMonthQuery = { getFirstContractUserByMonth: { id: number, name: string } };
+
+export type GetFirstRevenueUserByMonthQueryVariables = Exact<{
+  getFirstRevenueUserByMonthDto: GetRevenuesByUsersDto;
+}>;
+
+
+export type GetFirstRevenueUserByMonthQuery = { getFirstRevenueUserByMonth: { id: number, name: string } };
+
 
 export const SignInDocument = gql`
     mutation SignIn($signInDto: SignInDto!) {
@@ -3223,3 +3237,89 @@ export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
 export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
 export type GetUsersSuspenseQueryHookResult = ReturnType<typeof useGetUsersSuspenseQuery>;
 export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
+export const GetFirstContractUserByMonthDocument = gql`
+    query GetFirstContractUserByMonth($getFirstContractUserByMonthDto: GetRevenuesByUsersDto!) {
+  getFirstContractUserByMonth(
+    getFirstContractUserByMonthDto: $getFirstContractUserByMonthDto
+  ) {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetFirstContractUserByMonthQuery__
+ *
+ * To run a query within a React component, call `useGetFirstContractUserByMonthQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFirstContractUserByMonthQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFirstContractUserByMonthQuery({
+ *   variables: {
+ *      getFirstContractUserByMonthDto: // value for 'getFirstContractUserByMonthDto'
+ *   },
+ * });
+ */
+export function useGetFirstContractUserByMonthQuery(baseOptions: Apollo.QueryHookOptions<GetFirstContractUserByMonthQuery, GetFirstContractUserByMonthQueryVariables> & ({ variables: GetFirstContractUserByMonthQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFirstContractUserByMonthQuery, GetFirstContractUserByMonthQueryVariables>(GetFirstContractUserByMonthDocument, options);
+      }
+export function useGetFirstContractUserByMonthLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFirstContractUserByMonthQuery, GetFirstContractUserByMonthQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFirstContractUserByMonthQuery, GetFirstContractUserByMonthQueryVariables>(GetFirstContractUserByMonthDocument, options);
+        }
+export function useGetFirstContractUserByMonthSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetFirstContractUserByMonthQuery, GetFirstContractUserByMonthQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetFirstContractUserByMonthQuery, GetFirstContractUserByMonthQueryVariables>(GetFirstContractUserByMonthDocument, options);
+        }
+export type GetFirstContractUserByMonthQueryHookResult = ReturnType<typeof useGetFirstContractUserByMonthQuery>;
+export type GetFirstContractUserByMonthLazyQueryHookResult = ReturnType<typeof useGetFirstContractUserByMonthLazyQuery>;
+export type GetFirstContractUserByMonthSuspenseQueryHookResult = ReturnType<typeof useGetFirstContractUserByMonthSuspenseQuery>;
+export type GetFirstContractUserByMonthQueryResult = Apollo.QueryResult<GetFirstContractUserByMonthQuery, GetFirstContractUserByMonthQueryVariables>;
+export const GetFirstRevenueUserByMonthDocument = gql`
+    query GetFirstRevenueUserByMonth($getFirstRevenueUserByMonthDto: GetRevenuesByUsersDto!) {
+  getFirstRevenueUserByMonth(
+    getFirstRevenueUserByMonthDto: $getFirstRevenueUserByMonthDto
+  ) {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetFirstRevenueUserByMonthQuery__
+ *
+ * To run a query within a React component, call `useGetFirstRevenueUserByMonthQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFirstRevenueUserByMonthQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFirstRevenueUserByMonthQuery({
+ *   variables: {
+ *      getFirstRevenueUserByMonthDto: // value for 'getFirstRevenueUserByMonthDto'
+ *   },
+ * });
+ */
+export function useGetFirstRevenueUserByMonthQuery(baseOptions: Apollo.QueryHookOptions<GetFirstRevenueUserByMonthQuery, GetFirstRevenueUserByMonthQueryVariables> & ({ variables: GetFirstRevenueUserByMonthQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFirstRevenueUserByMonthQuery, GetFirstRevenueUserByMonthQueryVariables>(GetFirstRevenueUserByMonthDocument, options);
+      }
+export function useGetFirstRevenueUserByMonthLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFirstRevenueUserByMonthQuery, GetFirstRevenueUserByMonthQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFirstRevenueUserByMonthQuery, GetFirstRevenueUserByMonthQueryVariables>(GetFirstRevenueUserByMonthDocument, options);
+        }
+export function useGetFirstRevenueUserByMonthSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetFirstRevenueUserByMonthQuery, GetFirstRevenueUserByMonthQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetFirstRevenueUserByMonthQuery, GetFirstRevenueUserByMonthQueryVariables>(GetFirstRevenueUserByMonthDocument, options);
+        }
+export type GetFirstRevenueUserByMonthQueryHookResult = ReturnType<typeof useGetFirstRevenueUserByMonthQuery>;
+export type GetFirstRevenueUserByMonthLazyQueryHookResult = ReturnType<typeof useGetFirstRevenueUserByMonthLazyQuery>;
+export type GetFirstRevenueUserByMonthSuspenseQueryHookResult = ReturnType<typeof useGetFirstRevenueUserByMonthSuspenseQuery>;
+export type GetFirstRevenueUserByMonthQueryResult = Apollo.QueryResult<GetFirstRevenueUserByMonthQuery, GetFirstRevenueUserByMonthQueryVariables>;
