@@ -8,7 +8,7 @@ export const SIDE_MENU = [
   {
     title: '상담',
     engTitle: 'counsel',
-    icon: 'icon-draft',
+    icon: 'icon-board',
     path: '/counsel',
   },
   {
@@ -20,25 +20,25 @@ export const SIDE_MENU = [
   {
     title: '급여',
     engTitle: 'payStub',
-    icon: 'icon-draft',
+    icon: 'icon-expense',
     path: '/payStub',
   },
   {
     title: '정산',
     engTitle: 'adjustment',
-    icon: 'icon-expense',
+    icon: 'icon-time',
     path: '/adjustment',
   },
   {
     title: '출고',
     engTitle: 'delivery',
-    icon: 'icon-draft',
+    icon: 'icon-shipOutDirect',
     path: '/delivery',
   },
   {
     title: '관리자',
     engTitle: 'auth',
-    icon: 'icon-draft',
+    icon: 'icon-harmfulNspecial',
     path: '/auth',
   },
 ];
