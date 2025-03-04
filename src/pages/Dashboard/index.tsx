@@ -4,6 +4,11 @@ import Trophy from '@/assets/pngs/trophy.png';
 import { userState } from '@/state/auth';
 import { useRecoilValue } from 'recoil';
 import { PermissionType } from '@/types/graphql';
+import {
+  useGetFirstContractUserByMonth,
+  useGetFirstRevenueUserByMonth,
+} from '@/services/user';
+import moment from 'moment';
 
 const data = [
   { name: '노홍철', sales: 1200 },
@@ -41,6 +46,23 @@ const Dashboard = () => {
   //     'customer' | 'counsel' | 'adjustment'
   //   >('customer');
   const my = useRecoilValue(userState);
+  const { data: thisMonthContractUser } = useGetFirstContractUserByMonth({
+    year: moment().format('YYYY'),
+    month: moment().format('MM'),
+  });
+  const { data: lastMonthContractUser } = useGetFirstContractUserByMonth({
+    year: moment().subtract(1, 'months').format('YYYY'),
+    month: moment().subtract(1, 'months').format('MM'),
+  });
+  const { data: thisMonthRevenueUser } = useGetFirstRevenueUserByMonth({
+    year: moment().format('YYYY'),
+    month: moment().format('MM'),
+  });
+  const { data: lastMonthRevenueUser } = useGetFirstRevenueUserByMonth({
+    year: moment().subtract(1, 'months').format('YYYY'),
+    month: moment().subtract(1, 'months').format('MM'),
+  });
+
   return (
     <DashboardWrapper>
       <DashboardHeader>
@@ -99,7 +121,11 @@ const Dashboard = () => {
           </div>
           <div className="content">
             {/* <img src={Trophy} /> */}
-            <h2>테스트님</h2>
+            <h2>
+              {thisMonthRevenueUser?.getFirstRevenueUserByMonth
+                ? `${thisMonthRevenueUser?.getFirstRevenueUserByMonth.name}님`
+                : '데이터 없음'}
+            </h2>
           </div>
         </Box>
         <Box className="green">
@@ -107,7 +133,11 @@ const Dashboard = () => {
             <h3>지난달 매출 1위</h3>
           </div>
           <div className="content">
-            <h2>테스트님</h2>
+            <h2>
+              {lastMonthRevenueUser?.getFirstRevenueUserByMonth
+                ? `${lastMonthRevenueUser?.getFirstRevenueUserByMonth.name}님`
+                : '데이터 없음'}
+            </h2>
           </div>
         </Box>
         <Box>
@@ -115,7 +145,11 @@ const Dashboard = () => {
             <h3>이번달 계약1위</h3>
           </div>
           <div className="content">
-            <h2>테스트님</h2>
+            <h2>
+              {thisMonthContractUser?.getFirstContractUserByMonth
+                ? `${thisMonthContractUser?.getFirstContractUserByMonth.name}님`
+                : '데이터 없음'}
+            </h2>
           </div>
         </Box>
         <Box className="green">
@@ -123,7 +157,11 @@ const Dashboard = () => {
             <h3>지난달 계약 1위</h3>
           </div>
           <div className="content">
-            <h2>테스트님</h2>
+            <h2>
+              {lastMonthContractUser?.getFirstContractUserByMonth
+                ? `${lastMonthContractUser?.getFirstContractUserByMonth.name}님`
+                : '데이터 없음'}
+            </h2>
           </div>
         </Box>
       </DashboardContent>
