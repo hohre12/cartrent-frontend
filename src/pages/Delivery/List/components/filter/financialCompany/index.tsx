@@ -1,8 +1,8 @@
 import Button from '@/components/button/Button';
 import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
-import { useGetUsers } from '@/services/user';
-import { TFilterList } from '@/types/common';
+import { useGetFinancialCompanies } from '@/services/contract';
 import { deliveryFiltersState } from '@/state/delivery';
+import { TFilterList } from '@/types/common';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -11,12 +11,12 @@ type TFilterProps = {
   handleApply: (selectedList: TFilterList<number>[]) => void;
 };
 
-const FilterUser = ({ handleApply }: TFilterProps) => {
+const FilterFinancialCompany = ({ handleApply }: TFilterProps) => {
   const [selectedFilters, setSelectedFilters] = useState<TFilterList<number>[]>(
     [],
   );
   const filters = useRecoilValue(deliveryFiltersState);
-  const { data: users } = useGetUsers();
+  const { data: financialCompanies } = useGetFinancialCompanies();
 
   const [list, setList] = useState([] as TFilterList<number>[]);
 
@@ -51,14 +51,14 @@ const FilterUser = ({ handleApply }: TFilterProps) => {
   );
 
   useEffect(() => {
-    if (filters.users.length > 0) {
-      setSelectedFilters(filters.users);
+    if (filters.financialCompanies.length > 0) {
+      setSelectedFilters(filters.financialCompanies);
     }
   }, [filters, setSelectedFilters]);
 
   useEffect(() => {
-    if (users?.getUsers) {
-      const newList = users.getUsers.map((it) => ({
+    if (financialCompanies?.getFinancialCompanies) {
+      const newList = financialCompanies.getFinancialCompanies.map((it) => ({
         name: it.name,
         value: it.id,
       }));
@@ -66,7 +66,7 @@ const FilterUser = ({ handleApply }: TFilterProps) => {
     } else {
       setList([]);
     }
-  }, [users, setList]);
+  }, [financialCompanies, setList]);
   return (
     <Filter>
       <FilterList>
@@ -103,7 +103,7 @@ const FilterUser = ({ handleApply }: TFilterProps) => {
   );
 };
 
-export default FilterUser;
+export default FilterFinancialCompany;
 
 export const Filter = styled.div`
   top: 40px;

@@ -16,6 +16,8 @@ import Input from '@/components/input/Input';
 import { userState } from '@/state/auth';
 import { deliveryFiltersState } from '@/state/delivery';
 import { useGetDeliveries } from '@/services/delivery';
+import FilterFinancialCompany from './components/filter/financialCompany';
+import FilterDivision from './components/filter/division';
 
 const DeliveryList = () => {
   const navigate = useNavigate();
@@ -151,9 +153,9 @@ const DeliveryList = () => {
                     />
                   </Button>
                   {isFilterFinancialCompanyOpen && (
-                    <FilterUser
+                    <FilterFinancialCompany
                       handleApply={handleSetFilterFinancialCompany}
-                    ></FilterUser>
+                    ></FilterFinancialCompany>
                   )}
                 </FilterContent>
                 <FilterContent ref={filterDivisionRef}>
@@ -178,9 +180,9 @@ const DeliveryList = () => {
                     />
                   </Button>
                   {isFilterDivisionOpen && (
-                    <FilterUser
+                    <FilterDivision
                       handleApply={handleSetFilterDivision}
-                    ></FilterUser>
+                    ></FilterDivision>
                   )}
                 </FilterContent>
                 <FilterContent ref={filterUserRef}>
