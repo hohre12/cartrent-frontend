@@ -501,11 +501,18 @@ export type GetCustomersDto = {
   userId?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
-export type GetDeliveryDetailsDto = {
-  /** 해당 월 */
-  month?: InputMaybe<Scalars['String']['input']>;
-  /** 해당 연도 */
-  year?: InputMaybe<Scalars['String']['input']>;
+export type GetDeliveriesDto = {
+  /** 구분 Ids */
+  divisionIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+  /** 출고일 마지막일 */
+  endDeliveryAtYearMonth?: InputMaybe<Scalars['String']['input']>;
+  /** 금융사 Ids */
+  financialCompanyIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** 출고일 시작일 */
+  startDeliveryAtYearMonth?: InputMaybe<Scalars['String']['input']>;
+  /** 유저 Ids */
+  userIds?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 export type GetPayStubDto = {
@@ -844,7 +851,7 @@ export type Query = {
   /** 고객 리스트 조회 */
   getCustomers: Array<Customer>;
   /** 출고 내역 리스트 조회 */
-  getDeliverDetails: Array<Contract>;
+  getDeliveries: Array<Contract>;
   /** 구분 리스트 */
   getDivisions: Array<Division>;
   /** 금융사 리스트 */
@@ -919,8 +926,8 @@ export type QueryGetCustomersArgs = {
 };
 
 
-export type QueryGetDeliverDetailsArgs = {
-  getDeliveryDetailsDto: GetDeliveryDetailsDto;
+export type QueryGetDeliveriesArgs = {
+  getDeliveriesDto: GetDeliveriesDto;
 };
 
 
@@ -1454,6 +1461,13 @@ export type GetCustomerStatusesQueryVariables = Exact<{ [key: string]: never; }>
 
 
 export type GetCustomerStatusesQuery = { getCustomerStatuses: Array<{ id: number, status: string }> };
+
+export type GetDeliveriesQueryVariables = Exact<{
+  getDeliveriesDto: GetDeliveriesDto;
+}>;
+
+
+export type GetDeliveriesQuery = { getDeliveries: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string, customerStatus?: { id: number, status: string } | null }, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> };
 
 export type GetTeamQueryVariables = Exact<{
   teamId: Scalars['Float']['input'];
@@ -3099,6 +3113,112 @@ export type GetCustomerStatusesQueryHookResult = ReturnType<typeof useGetCustome
 export type GetCustomerStatusesLazyQueryHookResult = ReturnType<typeof useGetCustomerStatusesLazyQuery>;
 export type GetCustomerStatusesSuspenseQueryHookResult = ReturnType<typeof useGetCustomerStatusesSuspenseQuery>;
 export type GetCustomerStatusesQueryResult = Apollo.QueryResult<GetCustomerStatusesQuery, GetCustomerStatusesQueryVariables>;
+export const GetDeliveriesDocument = gql`
+    query GetDeliveries($getDeliveriesDto: GetDeliveriesDto!) {
+  getDeliveries(getDeliveriesDto: $getDeliveriesDto) {
+    id
+    status
+    user {
+      id
+      name
+    }
+    city {
+      id
+      name
+    }
+    contractAt
+    shippingDate
+    customer {
+      id
+      name
+      phone
+      customerStatus {
+        id
+        status
+      }
+    }
+    carName
+    carOption
+    innerColor
+    outerColor
+    carPrice
+    financialCompany {
+      id
+      name
+    }
+    feeRate
+    fee
+    promotion
+    monthlyPayment
+    shippingMethod {
+      id
+      name
+    }
+    isOrdering
+    isVATSupport
+    branch
+    branchFee
+    collateralRate
+    contractPeriod
+    agreedMileage
+    insuranceAge
+    object
+    service1
+    serviceBody1
+    service2
+    serviceBody2
+    service3
+    serviceBody3
+    incomeEarner
+    cashAssistance
+    supportDetails
+    businessExpenses
+    businessExpensesDetail
+    totalExpenditure
+    totalFee
+    netIncome
+    company_name_nominee
+    division {
+      id
+      name
+    }
+    advancePayment
+  }
+}
+    `;
+
+/**
+ * __useGetDeliveriesQuery__
+ *
+ * To run a query within a React component, call `useGetDeliveriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDeliveriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDeliveriesQuery({
+ *   variables: {
+ *      getDeliveriesDto: // value for 'getDeliveriesDto'
+ *   },
+ * });
+ */
+export function useGetDeliveriesQuery(baseOptions: Apollo.QueryHookOptions<GetDeliveriesQuery, GetDeliveriesQueryVariables> & ({ variables: GetDeliveriesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetDeliveriesQuery, GetDeliveriesQueryVariables>(GetDeliveriesDocument, options);
+      }
+export function useGetDeliveriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDeliveriesQuery, GetDeliveriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetDeliveriesQuery, GetDeliveriesQueryVariables>(GetDeliveriesDocument, options);
+        }
+export function useGetDeliveriesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetDeliveriesQuery, GetDeliveriesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetDeliveriesQuery, GetDeliveriesQueryVariables>(GetDeliveriesDocument, options);
+        }
+export type GetDeliveriesQueryHookResult = ReturnType<typeof useGetDeliveriesQuery>;
+export type GetDeliveriesLazyQueryHookResult = ReturnType<typeof useGetDeliveriesLazyQuery>;
+export type GetDeliveriesSuspenseQueryHookResult = ReturnType<typeof useGetDeliveriesSuspenseQuery>;
+export type GetDeliveriesQueryResult = Apollo.QueryResult<GetDeliveriesQuery, GetDeliveriesQueryVariables>;
 export const GetTeamDocument = gql`
     query GetTeam($teamId: Float!) {
   getTeam(teamId: $teamId) {
