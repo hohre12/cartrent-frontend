@@ -85,15 +85,18 @@ export const isNumber = (value?: string | number): boolean => {
 };
 
 export const customerStatusColor = (value?: string): string => {
-    if(!value) return '111';
-    switch (value) {
-        case '가망고객':
-        return '0DC577';
-        case '계약완료':
-        return '0B6CFF';
-        case '계약완료':
-        return 'FF3B31';
-        default:
-        return '111';
-    }
+  if (!value) return '111';
+  switch (value) {
+    case '서류심사':
+    case '심사승인':
+    case '가망고객':
+      return 'ff3126';
+    case '계약완료':
+      return '0B6CFF';
+    case '상담완료':
+    case '파기':
+      return 'ff8a00';
+    default:
+      return '111';
+  }
 };
