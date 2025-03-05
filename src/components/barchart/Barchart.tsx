@@ -36,7 +36,7 @@ const Barchart = ({ data, keys, indexBy }: TBarchartProps) => {
         /**
          * chart margin
          */
-        margin={{ top: 0, right: 60, bottom: 50, left: 60 }}
+        margin={{ top: 30, right: 60, bottom: 50, left: 60 }}
         /**
          * chart padding (bar간 간격)
          */
