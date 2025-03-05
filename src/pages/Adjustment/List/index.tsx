@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import Button from '@/components/button/Button';
-import Pagination from '@/components/pagination/Pagination';
 import { useCallback, useEffect, useState } from 'react';
 import WatchOptionModal from './components/watchOptionModal';
 import SearchBox from '@/components/searchBox/SearchBox';
@@ -10,7 +9,6 @@ import useClickOutside from '@/hooks/useClickOutside';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { TFilterList } from '@/types/common';
 import { Circle, FilterContent, FilterWrapper } from '@/styles/common';
-import RegistModal from './components/registModal';
 import AdjustmentListTable from './components/table';
 import { adjustmentFiltersState } from '@/state/adjustment';
 import { useGetAdjustments } from '@/services/adjustment';
@@ -25,7 +23,6 @@ const AdjustmentList = () => {
   const [searchText, setSearchText] = useState<string>('');
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
-  //   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
   const user = useRecoilValue(userState);
 
   // filters
@@ -146,12 +143,6 @@ const AdjustmentList = () => {
             </div>
           )}
         </ListContent>
-        {/* {dummyCustomerList.length > 0 && (
-          <Pagination
-            totalCount={dummyAdjustmentList.length}
-            length={dummyAdjustmentList.length}
-          ></Pagination>
-        )} */}
       </ListWrapper>
       {isOpenWatchOptionModal && (
         <WatchOptionModal
@@ -162,13 +153,6 @@ const AdjustmentList = () => {
           }}
         />
       )}
-      {/* {isOpenRegistModal && (
-        <RegistModal
-          isOpen={isOpenRegistModal}
-          onCancel={() => setIsOpenRegistModal(false)}
-          onConfirm={() => setIsOpenRegistModal(false)}
-        ></RegistModal>
-      )} */}
     </>
   );
 };
