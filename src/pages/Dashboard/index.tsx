@@ -11,34 +11,21 @@ import {
 import moment from 'moment';
 
 const data = [
-  { name: '노홍철', sales: 1200 },
-  { name: '박명수', sales: 2200 },
-  { name: '유재석', sales: 3200 },
-  { name: '정준하', sales: 3200 },
-  { name: '길성준', sales: 3200 },
-  { name: '정형돈', sales: 5200 },
-  { name: '강호동', sales: 1200 },
-  { name: '이수근', sales: 2200 },
-  { name: '이승기', sales: 3200 },
-  { name: '김종민', sales: 3200 },
-  { name: '하하', sales: 3200 },
-  { name: '하동훈', sales: 5200 },
+  { name: '노홍철', 매출: 1200 },
+  { name: '박명수', 매출: 2200 },
+  { name: '유재석', 매출: 3200 },
+  { name: '정형돈', 매출: 5200 },
+  { name: '강호동', 매출: 1200 },
 ];
 const data2 = [
-  { name: '김홍철', sales: 5200 },
-  { name: '정명수', sales: 1200 },
-  { name: '박재석', sales: 3200 },
-  { name: '홍준하', sales: 200 },
-  { name: '최성준', sales: 10200 },
-  { name: '김형돈', sales: 3300 },
-  { name: '이호동', sales: 7200 },
-  { name: '박수근', sales: 2200 },
-  { name: '하승기', sales: 3600 },
-  { name: '최종민', sales: 1800 },
-  { name: '촤하하', sales: 500 },
-  { name: '감동훈', sales: 1200 },
+  { name: '김홍철', 출고건수: 5 },
+  { name: '정명수', 출고건수: 1 },
+  { name: '박재석', 출고건수: 3 },
+  { name: '홍준하', 출고건수: 0 },
+  { name: '최성준', 출고건수: 10 },
 ];
-const keys = ['sales'];
+const keys = ['매출'];
+const keys2 = ['출고건수'];
 const indexBy = 'name';
 
 const Dashboard = () => {
@@ -73,7 +60,7 @@ const Dashboard = () => {
           <>
             <Box>
               <div className="header">
-                <h3>영업사원별 이번달 매출현황</h3>
+                <h3>영업사원별 이번달 매출현황 TOP 5</h3>
               </div>
               <div className="content">
                 <span
@@ -94,7 +81,7 @@ const Dashboard = () => {
             </Box>
             <Box className="green">
               <div className="header">
-                <h3>영업사원별 지난달 매출현황</h3>
+                <h3>영업사원별 지난달 매출현황 TOP 5</h3>
               </div>
               <div className="content">
                 <span
@@ -107,20 +94,61 @@ const Dashboard = () => {
                   단위(만원)
                 </span>
                 <Barchart
-                  data={data2}
+                  data={data}
                   keys={keys}
+                  indexBy={indexBy}
+                ></Barchart>
+              </div>
+            </Box>
+            <Box>
+              <div className="header">
+                <h3>영업사원별 이번달 출고건수 TOP 5</h3>
+              </div>
+              <div className="content">
+                <span
+                  style={{
+                    marginRight: 'auto',
+                    marginTop: '50px',
+                    fontSize: '14px',
+                  }}
+                >
+                  단위(건)
+                </span>
+                <Barchart
+                  data={data2}
+                  keys={keys2}
+                  indexBy={indexBy}
+                ></Barchart>
+              </div>
+            </Box>
+            <Box className="green">
+              <div className="header">
+                <h3>영업사원별 지난달 출고건수 TOP 5</h3>
+              </div>
+              <div className="content">
+                <span
+                  style={{
+                    marginRight: 'auto',
+                    marginTop: '50px',
+                    fontSize: '14px',
+                  }}
+                >
+                  단위(건)
+                </span>
+                <Barchart
+                  data={data2}
+                  keys={keys2}
                   indexBy={indexBy}
                 ></Barchart>
               </div>
             </Box>
           </>
         )}
-        <Box>
+        {/* <Box>
           <div className="header">
             <h3>이번달 매출 1위</h3>
           </div>
           <div className="content">
-            {/* <img src={Trophy} /> */}
             <h2>
               {thisMonthRevenueUser?.getFirstRevenueUserByMonth
                 ? `${thisMonthRevenueUser?.getFirstRevenueUserByMonth.name}님`
@@ -163,7 +191,7 @@ const Dashboard = () => {
                 : '데이터 없음'}
             </h2>
           </div>
-        </Box>
+        </Box> */}
       </DashboardContent>
       {/* <InfoWrapper>
         <LeftWrapper>
