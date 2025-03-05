@@ -30,8 +30,11 @@ const GlobalNavigationBar = () => {
       console.warn('로그아웃 에러', e);
     }
   };
-  const pageName =
-    SIDE_MENU.find((it) => it.path === location.pathname)?.title ?? '대시보드';
+  const pageName = SIDE_MENU.find((it) => it.path === location.pathname)?.title
+    ? SIDE_MENU.find((it) => it.path === location.pathname)?.title
+    : SIDE_MENU.find((it) => location.pathname.includes(it.path))?.title
+      ? `${SIDE_MENU.find((it) => location.pathname.includes(it.path))?.title} 상세`
+      : '대시보드';
 
   return (
     <>
