@@ -8,7 +8,7 @@ import { selectedAdjustmentHideWatchOptionsState } from '@/state/adjustment';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
 import { Adjustment, PermissionType } from '@/types/graphql';
-import { isColumnsViewHide } from '@/utils/common';
+import { isColumnsViewHide, numberFormat } from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -56,12 +56,12 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
               selectedAdjustmentHideWatchOptions,
               'year',
               isHideColumn('year'),
-            ) && <td>{it.year ? `${it.year}년` : '-'}</td>}
+            ) && <td className="name">{it.year ? `${it.year}년` : '-'}</td>}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
               'month',
               isHideColumn('month'),
-            ) && <td>{it.month ? `${it.month}월` : '-'}</td>}
+            ) && <td className="name">{it.month ? `${it.month}월` : '-'}</td>}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
               'userName',
@@ -71,52 +71,108 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
               selectedAdjustmentHideWatchOptions,
               'totalCountContract',
               isHideColumn('totalCountContract'),
-            ) && <td>{it.totalCountContract ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.totalCountContract ? `${it.totalCountContract}건` : '0건'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
               'totalFeeContract',
               isHideColumn('totalFeeContract'),
-            ) && <td className="textHidden">{it.totalFeeContract ?? '-'}</td>}
+            ) && (
+              <td className="textHidden">
+                {it.totalFeeContract
+                  ? `${numberFormat(it.totalFeeContract)}원`
+                  : '0원'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
               'totalExpenditureContract',
               isHideColumn('totalExpenditureContract'),
-            ) && <td>{it.totalExpenditureContract ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.totalExpenditureContract
+                  ? `${numberFormat(it.totalExpenditureContract)}원`
+                  : '0원'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
               'totalNetIncomeContract',
               isHideColumn('totalNetIncomeContract'),
-            ) && <td>{it.totalNetIncomeContract ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.totalNetIncomeContract
+                  ? `${numberFormat(it.totalNetIncomeContract)}원`
+                  : '0원'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
               'totalIncentiveContract',
               isHideColumn('totalIncentiveContract'),
-            ) && <td>{it.totalIncentiveContract ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.totalIncentiveContract
+                  ? `${numberFormat(it.totalIncentiveContract)}원`
+                  : '0원'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
               'totalCountDelivery',
               isHideColumn('totalCountDelivery'),
-            ) && <td className="name">{it.totalCountDelivery ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.totalCountDelivery ? `${it.totalCountDelivery}건` : '0건'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
               'totalFeeDelivery',
               isHideColumn('totalFeeDelivery'),
-            ) && <td>{it.totalFeeDelivery ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.totalFeeDelivery
+                  ? `${numberFormat(it.totalFeeDelivery)}원`
+                  : '0원'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
               'totalExpenditureDelivery',
               isHideColumn('totalExpenditureDelivery'),
-            ) && <td>{it.totalExpenditureDelivery ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.totalExpenditureDelivery
+                  ? `${numberFormat(it.totalExpenditureDelivery)}원`
+                  : '0원'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
               'totalNetIncomeDelivery',
               isHideColumn('totalNetIncomeDelivery'),
-            ) && <td>{it.totalNetIncomeDelivery ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.totalNetIncomeDelivery
+                  ? `${numberFormat(it.totalNetIncomeDelivery)}원`
+                  : '0원'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
               'totalIncentiveDelivery',
               isHideColumn('totalIncentiveDelivery'),
-            ) && <td>{it.totalIncentiveDelivery ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.totalIncentiveDelivery
+                  ? `${numberFormat(it.totalIncentiveDelivery)}원`
+                  : '0원'}
+              </td>
+            )}
             {/* {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
               'additionalIncentive',
@@ -126,7 +182,11 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
               selectedAdjustmentHideWatchOptions,
               'etcIncentive',
               isHideColumn('etcIncentive'),
-            ) && <td>{it.etcIncentive ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.etcIncentive ? `${numberFormat(it.etcIncentive)}원` : '0원'}
+              </td>
+            )}
           </TableItem>
         ))}
       </tbody>

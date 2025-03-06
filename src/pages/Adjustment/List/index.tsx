@@ -17,6 +17,7 @@ import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
 import { useNavigationType } from 'react-router-dom';
 import Select from '@/components/select/Select';
+import moment from 'moment';
 
 const AdjustmentList = () => {
   const navigationType = useNavigationType();
@@ -25,6 +26,9 @@ const AdjustmentList = () => {
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
   const user = useRecoilValue(userState);
+  const currentYear = moment().format('YYYY');
+  const currentMonth = moment().format('MM');
+  const [months, setMonths] = useState<string[]>([]);
 
   // filters
   const [filters, setFilters] = useRecoilState(adjustmentFiltersState);
@@ -66,6 +70,15 @@ const AdjustmentList = () => {
       resetFilters();
     }
   }, [navigationType, resetFilters]);
+
+  useEffect(() => {
+    const allMonths = Array.from({ length: 12 }, (_, i) => `${i + 1}월`);
+    if (filters.year === currentYear) {
+      setMonths(allMonths.slice(0, Number(currentMonth)).reverse());
+    } else {
+      setMonths(allMonths.reverse());
+    }
+  }, [filters, setMonths, currentYear, currentMonth]);
 
   return (
     <>
@@ -121,7 +134,11 @@ const AdjustmentList = () => {
                         year: value.value.replace('년', ''),
                       });
                     }}
-                    list={['2025년', '2024년', '2023년']}
+                    list={[
+                      `${currentYear}년`,
+                      `${Number(currentYear) - 1}년`,
+                      `${Number(currentYear) - 2}년`,
+                    ]}
                     placeholder="정산년도를 선택해주세요"
                   />
                 </FilterContent>
@@ -135,20 +152,7 @@ const AdjustmentList = () => {
                         month: value.value.replace('월', ''),
                       });
                     }}
-                    list={[
-                      '12월',
-                      '11월',
-                      '10월',
-                      '9월',
-                      '8월',
-                      '7월',
-                      '6월',
-                      '5월',
-                      '4월',
-                      '3월',
-                      '2월',
-                      '1월',
-                    ]}
+                    list={months}
                     placeholder="정산년도를 선택해주세요"
                   />
                 </FilterContent>
