@@ -213,12 +213,12 @@ const Root = styled.div`
     cursor: pointer;
 
     &.medium {
-      padding: 5px 12px;
+      padding: 5px 13px;
       border-radius: ${palette['$radius-s']};
       max-height: 36px;
     }
     &.large {
-      padding: 13px 12px;
+      padding: 13px 13px;
       border-radius: ${palette['$radius-l']};
       max-height: 50px;
     }

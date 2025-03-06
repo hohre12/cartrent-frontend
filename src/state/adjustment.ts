@@ -3,7 +3,7 @@ import moment from 'moment';
 import { atom } from 'recoil';
 
 const currentYear = moment().format('YYYY');
-const currentMonth = moment().subtract(1, 'months').format('MM');
+const currentMonth = moment().format('MM');
 
 export const selectedAdjustmentHideWatchOptionsState = atom<string[]>({
   key: 'selectedAdjustmentHideWatchOptionsState',
