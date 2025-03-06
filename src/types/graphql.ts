@@ -1424,6 +1424,13 @@ export type DeleteTeamMutationVariables = Exact<{
 
 export type DeleteTeamMutation = { deleteTeam: boolean };
 
+export type GetAdjustmentsQueryVariables = Exact<{
+  getAdjustmentsDto: GetAdjustmentsDto;
+}>;
+
+
+export type GetAdjustmentsQuery = { getAdjustments: Array<{ year: string, month: string, totalCountContract: number, totalFeeContract: number, totalExpenditureContract: number, totalNetIncomeContract: number, totalIncentiveContract: number, totalCountDelivery: number, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalIncentiveDelivery: number, etcIncentive: number, user: { id: number, name: string } }> };
+
 export type GetCitiesQueryVariables = Exact<{
   getCitiesDto: GetCitiesDto;
 }>;
@@ -2332,6 +2339,62 @@ export function useDeleteTeamMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteTeamMutationHookResult = ReturnType<typeof useDeleteTeamMutation>;
 export type DeleteTeamMutationResult = Apollo.MutationResult<DeleteTeamMutation>;
 export type DeleteTeamMutationOptions = Apollo.BaseMutationOptions<DeleteTeamMutation, DeleteTeamMutationVariables>;
+export const GetAdjustmentsDocument = gql`
+    query GetAdjustments($getAdjustmentsDto: GetAdjustmentsDto!) {
+  getAdjustments(getAdjustmentsDto: $getAdjustmentsDto) {
+    year
+    month
+    user {
+      id
+      name
+    }
+    totalCountContract
+    totalFeeContract
+    totalExpenditureContract
+    totalNetIncomeContract
+    totalIncentiveContract
+    totalCountDelivery
+    totalFeeDelivery
+    totalExpenditureDelivery
+    totalNetIncomeDelivery
+    totalIncentiveDelivery
+    etcIncentive
+  }
+}
+    `;
+
+/**
+ * __useGetAdjustmentsQuery__
+ *
+ * To run a query within a React component, call `useGetAdjustmentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAdjustmentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAdjustmentsQuery({
+ *   variables: {
+ *      getAdjustmentsDto: // value for 'getAdjustmentsDto'
+ *   },
+ * });
+ */
+export function useGetAdjustmentsQuery(baseOptions: Apollo.QueryHookOptions<GetAdjustmentsQuery, GetAdjustmentsQueryVariables> & ({ variables: GetAdjustmentsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAdjustmentsQuery, GetAdjustmentsQueryVariables>(GetAdjustmentsDocument, options);
+      }
+export function useGetAdjustmentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAdjustmentsQuery, GetAdjustmentsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAdjustmentsQuery, GetAdjustmentsQueryVariables>(GetAdjustmentsDocument, options);
+        }
+export function useGetAdjustmentsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAdjustmentsQuery, GetAdjustmentsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAdjustmentsQuery, GetAdjustmentsQueryVariables>(GetAdjustmentsDocument, options);
+        }
+export type GetAdjustmentsQueryHookResult = ReturnType<typeof useGetAdjustmentsQuery>;
+export type GetAdjustmentsLazyQueryHookResult = ReturnType<typeof useGetAdjustmentsLazyQuery>;
+export type GetAdjustmentsSuspenseQueryHookResult = ReturnType<typeof useGetAdjustmentsSuspenseQuery>;
+export type GetAdjustmentsQueryResult = Apollo.QueryResult<GetAdjustmentsQuery, GetAdjustmentsQueryVariables>;
 export const GetCitiesDocument = gql`
     query GetCities($getCitiesDto: GetCitiesDto!) {
   getCities(getCitiesDto: $getCitiesDto) {
