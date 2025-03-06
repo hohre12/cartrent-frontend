@@ -1,5 +1,4 @@
 import Button from '@/components/button/Button';
-import Checkbox from '@/components/checkbox/Checkbox';
 import Input from '@/components/input/Input';
 import Select from '@/components/select/Select';
 import { useToast } from '@/hooks/useToast';

@@ -302,7 +302,7 @@ const Root = styled.div`
   .dropdown {
     position: absolute;
     width: 100%;
-    min-height: 130px;
+    min-height: 100px;
     overflow: auto;
 
     margin-top: 2px;
@@ -311,7 +311,7 @@ const Root = styled.div`
     border-radius: 5px;
     background: white;
     border: 1px solid ${palette['$border-inputfield-enable']};
-    z-index: 1;
+    z-index: 11;
 
     ul {
       li {

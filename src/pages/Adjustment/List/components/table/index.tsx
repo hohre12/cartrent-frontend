@@ -10,9 +10,8 @@ import palette from '@/styles/variables';
 import { Adjustment, PermissionType } from '@/types/graphql';
 import { isColumnsViewHide } from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
-import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 type TTableProps = {
@@ -51,55 +50,83 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
         {data.map((it, idx) => (
           <TableItem
             key={idx}
-            onClick={() => navigate(`${it.id}`)}
+            // onClick={() => navigate(`${it.id}`)}
           >
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
-              'customerStatus',
-              isHideColumn('customerStatus'),
-            ) && <td>{it.customer?.customerStatus?.status ?? '-'}</td>}
+              'year',
+              isHideColumn('year'),
+            ) && <td>{it.year ? `${it.year}년` : '-'}</td>}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
-              'adjustmentAt',
-              isHideColumn('adjustmentAt'),
-            ) && (
-              <td>{formatDate(it.adjustmentAt, 'YYYY-MM-DD HH:mm') ?? '-'}</td>
-            )}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'customerName',
-              isHideColumn('customerName'),
-            ) && <td>{it.customer?.name ?? '-'}</td>}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'customerPhone',
-              isHideColumn('customerPhone'),
-            ) && <td>{it.customer?.phone ?? '-'}</td>}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'context',
-              isHideColumn('context'),
-            ) && <td className="textHidden">{it.context ?? '-'}</td>}
+              'month',
+              isHideColumn('month'),
+            ) && <td>{it.month ? `${it.month}월` : '-'}</td>}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
               'userName',
               isHideColumn('userName'),
-            ) && <td>{it.user.name ?? '-'}</td>}
+            ) && <td>{it.user?.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
-              'customerGroup',
-              isHideColumn('customerGroup'),
-            ) && <td>{it.customer.customerGroup?.name ?? '-'}</td>}
+              'totalCountContract',
+              isHideColumn('totalCountContract'),
+            ) && <td>{it.totalCountContract ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
-              'customerGrade',
-              isHideColumn('customerGrade'),
-            ) && <td>{it.customer.customerGrade?.name ?? '-'}</td>}
+              'totalFeeContract',
+              isHideColumn('totalFeeContract'),
+            ) && <td className="textHidden">{it.totalFeeContract ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedAdjustmentHideWatchOptions,
-              'customerDivision',
-              isHideColumn('customerDivision'),
-            ) && <td className="name">{it.contract?.division?.name ?? '-'}</td>}
+              'totalExpenditureContract',
+              isHideColumn('totalExpenditureContract'),
+            ) && <td>{it.totalExpenditureContract ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedAdjustmentHideWatchOptions,
+              'totalNetIncomeContract',
+              isHideColumn('totalNetIncomeContract'),
+            ) && <td>{it.totalNetIncomeContract ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedAdjustmentHideWatchOptions,
+              'totalIncentiveContract',
+              isHideColumn('totalIncentiveContract'),
+            ) && <td>{it.totalIncentiveContract ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedAdjustmentHideWatchOptions,
+              'totalCountDelivery',
+              isHideColumn('totalCountDelivery'),
+            ) && <td className="name">{it.totalCountDelivery ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedAdjustmentHideWatchOptions,
+              'totalFeeDelivery',
+              isHideColumn('totalFeeDelivery'),
+            ) && <td>{it.totalFeeDelivery ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedAdjustmentHideWatchOptions,
+              'totalExpenditureDelivery',
+              isHideColumn('totalExpenditureDelivery'),
+            ) && <td>{it.totalExpenditureDelivery ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedAdjustmentHideWatchOptions,
+              'totalNetIncomeDelivery',
+              isHideColumn('totalNetIncomeDelivery'),
+            ) && <td>{it.totalNetIncomeDelivery ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedAdjustmentHideWatchOptions,
+              'totalIncentiveDelivery',
+              isHideColumn('totalIncentiveDelivery'),
+            ) && <td>{it.totalIncentiveDelivery ?? '-'}</td>}
+            {/* {!isColumnsViewHide(
+              selectedAdjustmentHideWatchOptions,
+              'additionalIncentive',
+              isHideColumn('additionalIncentive'),
+            ) && <td>{it.additionalIncentive ?? '-'}</td>} */}
+            {!isColumnsViewHide(
+              selectedAdjustmentHideWatchOptions,
+              'etcIncentive',
+              isHideColumn('etcIncentive'),
+            ) && <td>{it.etcIncentive ?? '-'}</td>}
           </TableItem>
         ))}
       </tbody>

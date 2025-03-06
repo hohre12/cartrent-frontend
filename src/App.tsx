@@ -25,6 +25,7 @@ import ContractRegist from './pages/Contract/Regist';
 import DeliveryList from './pages/Delivery/List';
 import PayStubList from './pages/PayStub/List';
 import PayStubDetail from './pages/PayStub/Detail';
+import AdjustmentList from './pages/Adjustment/List';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -133,7 +134,7 @@ function App() {
         >
           <Route
             index
-            element={<CounselList></CounselList>}
+            element={<AdjustmentList></AdjustmentList>}
           />
         </Route>
         <Route

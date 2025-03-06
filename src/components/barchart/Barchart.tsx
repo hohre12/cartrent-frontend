@@ -36,7 +36,7 @@ const Barchart = ({ data, keys, indexBy }: TBarchartProps) => {
         /**
          * chart margin
          */
-        margin={{ top: 0, right: 60, bottom: 50, left: 60 }}
+        margin={{ top: 30, right: 60, bottom: 50, left: 60 }}
         /**
          * chart padding (bar간 간격)
          */
@@ -50,6 +50,7 @@ const Barchart = ({ data, keys, indexBy }: TBarchartProps) => {
          */
         colorBy="id" // 색상을 keys 요소들에 각각 적용
         // colorBy="indexValue" // indexBy로 묵인 인덱스별로 각각 적용
+        enableLabel={false}
         theme={{
           /**
            * label style (bar에 표현되는 글씨)

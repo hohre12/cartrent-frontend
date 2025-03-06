@@ -1,3 +1,5 @@
+import { GET_ADJUSTMENTS_QUERY } from '@/apollo/queries/adjustment';
+import { Adjustment, GetAdjustmentsDto } from '@/types/graphql';
 import { useQuery } from '@apollo/client';
 
 export const useGetAdjustments = (params: GetAdjustmentsDto) => {

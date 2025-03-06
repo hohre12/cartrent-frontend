@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import Button from '@/components/button/Button';
-import Pagination from '@/components/pagination/Pagination';
 import { useCallback, useEffect, useState } from 'react';
 import WatchOptionModal from './components/watchOptionModal';
 import SearchBox from '@/components/searchBox/SearchBox';
@@ -10,7 +9,6 @@ import useClickOutside from '@/hooks/useClickOutside';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { TFilterList } from '@/types/common';
 import { Circle, FilterContent, FilterWrapper } from '@/styles/common';
-import RegistModal from './components/registModal';
 import AdjustmentListTable from './components/table';
 import { adjustmentFiltersState } from '@/state/adjustment';
 import { useGetAdjustments } from '@/services/adjustment';
@@ -18,6 +16,7 @@ import FilterUser from './components/filter/user';
 import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
 import { useNavigationType } from 'react-router-dom';
+import Select from '@/components/select/Select';
 
 const AdjustmentList = () => {
   const navigationType = useNavigationType();
@@ -25,7 +24,6 @@ const AdjustmentList = () => {
   const [searchText, setSearchText] = useState<string>('');
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
-  //   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
   const user = useRecoilValue(userState);
 
   // filters
@@ -33,9 +31,11 @@ const AdjustmentList = () => {
   const resetFilters = useResetRecoilState(adjustmentFiltersState);
 
   const { data, loading, error } = useGetAdjustments({
-    search: searchText ? searchText : null,
-    userId:
-      filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
+    // search: searchText ? searchText : null,
+    // userId:
+    //   filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
+    year: filters.year,
+    month: filters.month,
   });
 
   // filter - user
@@ -77,7 +77,7 @@ const AdjustmentList = () => {
               <SearchBox
                 value={text}
                 placeholder="검색"
-                recentKey="customerRecent"
+                recentKey="adjustmentRecent"
                 onTextChange={(text) => setText(text)}
                 onRemoveClick={handleSearchTextDelete}
                 onKeyDown={handleSearch}
@@ -111,6 +111,47 @@ const AdjustmentList = () => {
                     )}
                   </FilterContent>
                 )}
+                <FilterContent>
+                  <Select
+                    size="medium"
+                    value={`${filters.year}년`}
+                    onChange={(value) => {
+                      setFilters({
+                        ...filters,
+                        year: value.value.replace('년', ''),
+                      });
+                    }}
+                    list={['2025년', '2024년', '2023년']}
+                    placeholder="정산년도를 선택해주세요"
+                  />
+                </FilterContent>
+                <FilterContent>
+                  <Select
+                    size="medium"
+                    value={`${filters.month}월`}
+                    onChange={(value) => {
+                      setFilters({
+                        ...filters,
+                        month: value.value.replace('월', ''),
+                      });
+                    }}
+                    list={[
+                      '12월',
+                      '11월',
+                      '10월',
+                      '9월',
+                      '8월',
+                      '7월',
+                      '6월',
+                      '5월',
+                      '4월',
+                      '3월',
+                      '2월',
+                      '1월',
+                    ]}
+                    placeholder="정산년도를 선택해주세요"
+                  />
+                </FilterContent>
               </FilterWrapper>
             </SearchBoxWrapper>
             <FunctionWrapper>
@@ -137,21 +178,15 @@ const AdjustmentList = () => {
           ) : searchText ? (
             <div className="noList">
               <h2>검색결과 없음</h2>
-              <p>상담내용, 상담자로 검색해주세요.</p>
+              <p>담당자로 검색해주세요.</p>
             </div>
           ) : (
             <div className="noList">
-              <h2>상담 없음</h2>
-              <p>등록된 상담이 없습니다.</p>
+              <h2>정산내용 없음</h2>
+              <p>해당년월에 정산된 내용이 없습니다.</p>
             </div>
           )}
         </ListContent>
-        {/* {dummyCustomerList.length > 0 && (
-          <Pagination
-            totalCount={dummyAdjustmentList.length}
-            length={dummyAdjustmentList.length}
-          ></Pagination>
-        )} */}
       </ListWrapper>
       {isOpenWatchOptionModal && (
         <WatchOptionModal
@@ -162,13 +197,6 @@ const AdjustmentList = () => {
           }}
         />
       )}
-      {/* {isOpenRegistModal && (
-        <RegistModal
-          isOpen={isOpenRegistModal}
-          onCancel={() => setIsOpenRegistModal(false)}
-          onConfirm={() => setIsOpenRegistModal(false)}
-        ></RegistModal>
-      )} */}
     </>
   );
 };
