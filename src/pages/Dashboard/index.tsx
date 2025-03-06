@@ -33,22 +33,22 @@ const Dashboard = () => {
   //     'customer' | 'counsel' | 'adjustment'
   //   >('customer');
   const my = useRecoilValue(userState);
-  const { data: thisMonthContractUser } = useGetFirstContractUserByMonth({
-    year: moment().format('YYYY'),
-    month: moment().format('MM'),
-  });
-  const { data: lastMonthContractUser } = useGetFirstContractUserByMonth({
-    year: moment().subtract(1, 'months').format('YYYY'),
-    month: moment().subtract(1, 'months').format('MM'),
-  });
-  const { data: thisMonthRevenueUser } = useGetFirstRevenueUserByMonth({
-    year: moment().format('YYYY'),
-    month: moment().format('MM'),
-  });
-  const { data: lastMonthRevenueUser } = useGetFirstRevenueUserByMonth({
-    year: moment().subtract(1, 'months').format('YYYY'),
-    month: moment().subtract(1, 'months').format('MM'),
-  });
+  //   const { data: thisMonthContractUser } = useGetFirstContractUserByMonth({
+  //     year: moment().format('YYYY'),
+  //     month: moment().format('MM'),
+  //   });
+  //   const { data: lastMonthContractUser } = useGetFirstContractUserByMonth({
+  //     year: moment().subtract(1, 'months').format('YYYY'),
+  //     month: moment().subtract(1, 'months').format('MM'),
+  //   });
+  //   const { data: thisMonthRevenueUser } = useGetFirstRevenueUserByMonth({
+  //     year: moment().format('YYYY'),
+  //     month: moment().format('MM'),
+  //   });
+  //   const { data: lastMonthRevenueUser } = useGetFirstRevenueUserByMonth({
+  //     year: moment().subtract(1, 'months').format('YYYY'),
+  //     month: moment().subtract(1, 'months').format('MM'),
+  //   });
 
   return (
     <DashboardWrapper>
