@@ -18,6 +18,36 @@ export type Scalars = {
   DateTime: { input: string; output: string; }
 };
 
+export type Adjustment = {
+  /** 기타 수당 / 팀장급 이상 팀 전체 매출의 인센티브 */
+  etcIncentive: Scalars['Int']['output'];
+  /** 달 */
+  month: Scalars['String']['output'];
+  /** 계약 총 건수 */
+  totalCountContract: Scalars['Int']['output'];
+  /** 출고 총 건수 */
+  totalCountDelivery: Scalars['Int']['output'];
+  /** 계약 총 지출 */
+  totalExpenditureContract: Scalars['Int']['output'];
+  /** 출고 총 지출 */
+  totalExpenditureDelivery: Scalars['Int']['output'];
+  /** 계약 총 매출 */
+  totalFeeContract: Scalars['Int']['output'];
+  /** 출고 총 매출 */
+  totalFeeDelivery: Scalars['Int']['output'];
+  /** 계약 수당 / 직급별 인센티브 */
+  totalIncentiveContract: Scalars['Float']['output'];
+  /** 출고 수당 / 직급별 인센티브 */
+  totalIncentiveDelivery: Scalars['Float']['output'];
+  /** 계약 총 순매출 */
+  totalNetIncomeContract: Scalars['Int']['output'];
+  /** 출고 총 순매출 */
+  totalNetIncomeDelivery: Scalars['Int']['output'];
+  user: User;
+  /** 년 */
+  year: Scalars['String']['output'];
+};
+
 export type AuthPayload = {
   accessToken: Scalars['String']['output'];
   refreshToken?: Maybe<Scalars['String']['output']>;
@@ -460,6 +490,11 @@ export type FirstRevenueUser = {
   updated_at?: Maybe<Scalars['DateTime']['output']>;
 };
 
+export type GetAdjustmentsDto = {
+  month: Scalars['String']['input'];
+  year: Scalars['String']['input'];
+};
+
 export type GetCitiesDto = {
   search?: InputMaybe<Scalars['String']['input']>;
 };
@@ -820,14 +855,22 @@ export type Position = {
 /** 직책 EnumType */
 export enum PositionType {
   /** 관리자 */
+  Admin = 'ADMIN',
+  /** 대리 */
+  AssistantManager = 'ASSISTANT_MANAGER',
+  /** 과장 */
   Manager = 'MANAGER',
-  /** 팀장 */
-  TeamLeader = 'TEAM_LEADER',
+  /** 차장 */
+  SeniorManager = 'SENIOR_MANAGER',
   /** 사원 */
-  TeamMember = 'TEAM_MEMBER'
+  Staff = 'STAFF',
+  /** 팀장 */
+  TeamLeader = 'TEAM_LEADER'
 }
 
 export type Query = {
+  /** 정산 리스트 조회 */
+  getAdjustments: Array<Adjustment>;
   /** 도시 리스트 조회 */
   getCities: Array<City>;
   /** 도시 상세 조회 */
@@ -883,6 +926,11 @@ export type Query = {
   /** 담당자 리스트 */
   getUsers: Array<User>;
   userInfo: Scalars['String']['output'];
+};
+
+
+export type QueryGetAdjustmentsArgs = {
+  getAdjustmentsDto: GetAdjustmentsDto;
 };
 
 
@@ -1467,7 +1515,7 @@ export type GetDeliveriesQueryVariables = Exact<{
 }>;
 
 
-export type GetDeliveriesQuery = { getDeliveries: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string, customerStatus?: { id: number, status: string } | null }, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> };
+export type GetDeliveriesQuery = { getDeliveries: Array<{ id: number, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, customer: { id: number, name: string }, user: { id: number, name: string }, financialCompany?: { id: number, name: string } | null, division?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null }> };
 
 export type GetTeamQueryVariables = Exact<{
   teamId: Scalars['Float']['input'];
@@ -3117,72 +3165,32 @@ export const GetDeliveriesDocument = gql`
     query GetDeliveries($getDeliveriesDto: GetDeliveriesDto!) {
   getDeliveries(getDeliveriesDto: $getDeliveriesDto) {
     id
-    status
-    user {
-      id
-      name
-    }
-    city {
-      id
-      name
-    }
     contractAt
     shippingDate
     customer {
       id
       name
-      phone
-      customerStatus {
-        id
-        status
-      }
     }
-    carName
-    carOption
-    innerColor
-    outerColor
-    carPrice
+    user {
+      id
+      name
+    }
     financialCompany {
       id
       name
     }
-    feeRate
-    fee
-    promotion
-    monthlyPayment
-    shippingMethod {
-      id
-      name
-    }
-    isOrdering
-    isVATSupport
-    branch
-    branchFee
-    collateralRate
-    contractPeriod
-    agreedMileage
-    insuranceAge
-    object
-    service1
-    serviceBody1
-    service2
-    serviceBody2
-    service3
-    serviceBody3
-    incomeEarner
-    cashAssistance
-    supportDetails
-    businessExpenses
-    businessExpensesDetail
-    totalExpenditure
-    totalFee
-    netIncome
-    company_name_nominee
     division {
       id
       name
     }
-    advancePayment
+    carName
+    carPrice
+    fee
+    promotion
+    shippingMethod {
+      id
+      name
+    }
   }
 }
     `;

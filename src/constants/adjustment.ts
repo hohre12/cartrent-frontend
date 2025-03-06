@@ -1,5 +1,4 @@
 export const ADJUSTMENT_LIST_WATCH_OPTIONS = {
-  no: 'NO',
   year: '년도',
   month: '월',
   userName: '담당자',
@@ -13,7 +12,7 @@ export const ADJUSTMENT_LIST_WATCH_OPTIONS = {
   totalExpenditureDelivery: '출고 지출합계',
   totalNetIncomeDelivery: '출고 순익합계',
   totalIncentiveDelivery: '출고 수당합계',
-  additionalIncentive: '추가 수당합계',
+  //   additionalIncentive: '추가 수당합계',
   etcIncentive: '기타 수당합계',
 };
 
