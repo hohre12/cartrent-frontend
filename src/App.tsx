@@ -26,6 +26,10 @@ import DeliveryList from './pages/Delivery/List';
 import PayStubList from './pages/PayStub/List';
 import PayStubDetail from './pages/PayStub/Detail';
 import AdjustmentList from './pages/Adjustment/List';
+import AdminPage from './pages/Admin';
+import AdminUserList from './pages/Admin/User/List';
+import AdminTeamList from './pages/Admin/Team/List';
+import AdminCityList from './pages/Admin/City/List';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -147,13 +151,26 @@ function App() {
           />
         </Route>
         <Route
-          path="/auth"
+          path="/admin"
           element={<PrivateLayout />}
         >
           <Route
-            index
-            element={<CounselList></CounselList>}
-          />
+            path=""
+            element={<AdminPage></AdminPage>}
+          >
+            <Route
+              path="user"
+              element={<AdminUserList />}
+            />
+            <Route
+              path="team"
+              element={<AdminTeamList />}
+            />
+            <Route
+              path="city"
+              element={<AdminCityList />}
+            />
+          </Route>
         </Route>
         <Route
           path="*"

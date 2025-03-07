@@ -207,7 +207,7 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
               <td>
                 <Button
                   variant="black"
-                  //   disabled={it.user.position?.name !== PositionType.TeamLeader}
+                  disabled={it.user.position?.name !== PositionType.TeamLeader}
                   onClick={() => setSelectedAdjustment(it)}
                 >
                   추가수당{' '}
