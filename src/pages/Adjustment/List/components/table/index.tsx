@@ -7,12 +7,16 @@ import { userState } from '@/state/auth';
 import { selectedAdjustmentHideWatchOptionsState } from '@/state/adjustment';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { Adjustment, PermissionType } from '@/types/graphql';
+import { Adjustment, PermissionType, PositionType } from '@/types/graphql';
 import { isColumnsViewHide, numberFormat } from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import Button from '@/components/button/Button';
+import { useState } from 'react';
+import RegistAddIncentiveModal from '../registAddIncentiveModal';
+import EditAddIncentiveModal from '../editAddIncentiveModal';
 
 type TTableProps = {
   data: Adjustment[];
@@ -23,6 +27,7 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
   const selectedAdjustmentHideWatchOptions = useRecoilValue(
     selectedAdjustmentHideWatchOptionsState,
   );
+  const [selectedAdjustment, setSelectedAdjustment] = useState<Adjustment>();
 
   const user = useRecoilValue(userState);
   const isHideColumn = (columeKey: string) => {
@@ -32,165 +37,218 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
   };
 
   return (
-    <TableWrapper>
-      <thead>
-        <TableHeader>
-          {Object.entries(ADJUSTMENT_LIST_WATCH_OPTIONS).map(([key, value]) => {
-            return (
-              !isColumnsViewHide(
+    <>
+      <TableWrapper>
+        <thead>
+          <TableHeader>
+            {Object.entries(ADJUSTMENT_LIST_WATCH_OPTIONS).map(
+              ([key, value]) => {
+                return (
+                  !isColumnsViewHide(
+                    selectedAdjustmentHideWatchOptions,
+                    key,
+                    isHideColumn(key),
+                  ) && <th key={key}>{value}</th>
+                );
+              },
+            )}
+            <th>추가수당 입력</th>
+          </TableHeader>
+        </thead>
+        <tbody>
+          {data.map((it, idx) => (
+            <TableItem
+              key={idx}
+              // onClick={() => navigate(`${it.id}`)}
+            >
+              {!isColumnsViewHide(
                 selectedAdjustmentHideWatchOptions,
-                key,
-                isHideColumn(key),
-              ) && <th key={key}>{value}</th>
-            );
-          })}
-        </TableHeader>
-      </thead>
-      <tbody>
-        {data.map((it, idx) => (
-          <TableItem
-            key={idx}
-            // onClick={() => navigate(`${it.id}`)}
-          >
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'year',
-              isHideColumn('year'),
-            ) && <td className="name">{it.year ? `${it.year}년` : '-'}</td>}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'month',
-              isHideColumn('month'),
-            ) && <td className="name">{it.month ? `${it.month}월` : '-'}</td>}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'userName',
-              isHideColumn('userName'),
-            ) && <td>{it.user?.name ?? '-'}</td>}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'totalCountContract',
-              isHideColumn('totalCountContract'),
-            ) && (
+                'year',
+                isHideColumn('year'),
+              ) && <td className="name">{it.year ? `${it.year}년` : '-'}</td>}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'month',
+                isHideColumn('month'),
+              ) && <td className="name">{it.month ? `${it.month}월` : '-'}</td>}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'userName',
+                isHideColumn('userName'),
+              ) && <td>{it.user?.name ?? '-'}</td>}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'totalCountContract',
+                isHideColumn('totalCountContract'),
+              ) && (
+                <td>
+                  {it.totalCountContract ? `${it.totalCountContract}건` : '0건'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'totalFeeContract',
+                isHideColumn('totalFeeContract'),
+              ) && (
+                <td className="textHidden">
+                  {it.totalFeeContract
+                    ? `${numberFormat(it.totalFeeContract)}원`
+                    : '0원'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'totalExpenditureContract',
+                isHideColumn('totalExpenditureContract'),
+              ) && (
+                <td>
+                  {it.totalExpenditureContract
+                    ? `${numberFormat(it.totalExpenditureContract)}원`
+                    : '0원'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'totalNetIncomeContract',
+                isHideColumn('totalNetIncomeContract'),
+              ) && (
+                <td>
+                  {it.totalNetIncomeContract
+                    ? `${numberFormat(it.totalNetIncomeContract)}원`
+                    : '0원'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'totalIncentiveContract',
+                isHideColumn('totalIncentiveContract'),
+              ) && (
+                <td>
+                  {it.totalIncentiveContract
+                    ? `${numberFormat(it.totalIncentiveContract)}원`
+                    : '0원'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'totalCountDelivery',
+                isHideColumn('totalCountDelivery'),
+              ) && (
+                <td>
+                  {it.totalCountDelivery ? `${it.totalCountDelivery}건` : '0건'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'totalFeeDelivery',
+                isHideColumn('totalFeeDelivery'),
+              ) && (
+                <td>
+                  {it.totalFeeDelivery
+                    ? `${numberFormat(it.totalFeeDelivery)}원`
+                    : '0원'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'totalExpenditureDelivery',
+                isHideColumn('totalExpenditureDelivery'),
+              ) && (
+                <td>
+                  {it.totalExpenditureDelivery
+                    ? `${numberFormat(it.totalExpenditureDelivery)}원`
+                    : '0원'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'totalNetIncomeDelivery',
+                isHideColumn('totalNetIncomeDelivery'),
+              ) && (
+                <td>
+                  {it.totalNetIncomeDelivery
+                    ? `${numberFormat(it.totalNetIncomeDelivery)}원`
+                    : '0원'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'totalIncentiveDelivery',
+                isHideColumn('totalIncentiveDelivery'),
+              ) && (
+                <td>
+                  {it.totalIncentiveDelivery
+                    ? `${numberFormat(it.totalIncentiveDelivery)}원`
+                    : '0원'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'additionalIncentive',
+                isHideColumn('additionalIncentive'),
+              ) && (
+                <td>
+                  {it.additionalIncentive?.additionalIncentive
+                    ? `${numberFormat(it.additionalIncentive.additionalIncentive)}원`
+                    : '0원'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'etcIncentive',
+                isHideColumn('etcIncentive'),
+              ) && (
+                <td>
+                  {it.etcIncentive
+                    ? `${numberFormat(it.etcIncentive)}원`
+                    : '0원'}
+                </td>
+              )}
               <td>
-                {it.totalCountContract ? `${it.totalCountContract}건` : '0건'}
+                <Button
+                  variant="black"
+                  //   disabled={it.user.position?.name !== PositionType.TeamLeader}
+                  onClick={() => setSelectedAdjustment(it)}
+                >
+                  추가수당{' '}
+                  {it.additionalIncentive?.additionalIncentive
+                    ? '수정'
+                    : '입력'}
+                </Button>
               </td>
-            )}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'totalFeeContract',
-              isHideColumn('totalFeeContract'),
-            ) && (
-              <td className="textHidden">
-                {it.totalFeeContract
-                  ? `${numberFormat(it.totalFeeContract)}원`
-                  : '0원'}
-              </td>
-            )}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'totalExpenditureContract',
-              isHideColumn('totalExpenditureContract'),
-            ) && (
-              <td>
-                {it.totalExpenditureContract
-                  ? `${numberFormat(it.totalExpenditureContract)}원`
-                  : '0원'}
-              </td>
-            )}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'totalNetIncomeContract',
-              isHideColumn('totalNetIncomeContract'),
-            ) && (
-              <td>
-                {it.totalNetIncomeContract
-                  ? `${numberFormat(it.totalNetIncomeContract)}원`
-                  : '0원'}
-              </td>
-            )}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'totalIncentiveContract',
-              isHideColumn('totalIncentiveContract'),
-            ) && (
-              <td>
-                {it.totalIncentiveContract
-                  ? `${numberFormat(it.totalIncentiveContract)}원`
-                  : '0원'}
-              </td>
-            )}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'totalCountDelivery',
-              isHideColumn('totalCountDelivery'),
-            ) && (
-              <td>
-                {it.totalCountDelivery ? `${it.totalCountDelivery}건` : '0건'}
-              </td>
-            )}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'totalFeeDelivery',
-              isHideColumn('totalFeeDelivery'),
-            ) && (
-              <td>
-                {it.totalFeeDelivery
-                  ? `${numberFormat(it.totalFeeDelivery)}원`
-                  : '0원'}
-              </td>
-            )}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'totalExpenditureDelivery',
-              isHideColumn('totalExpenditureDelivery'),
-            ) && (
-              <td>
-                {it.totalExpenditureDelivery
-                  ? `${numberFormat(it.totalExpenditureDelivery)}원`
-                  : '0원'}
-              </td>
-            )}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'totalNetIncomeDelivery',
-              isHideColumn('totalNetIncomeDelivery'),
-            ) && (
-              <td>
-                {it.totalNetIncomeDelivery
-                  ? `${numberFormat(it.totalNetIncomeDelivery)}원`
-                  : '0원'}
-              </td>
-            )}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'totalIncentiveDelivery',
-              isHideColumn('totalIncentiveDelivery'),
-            ) && (
-              <td>
-                {it.totalIncentiveDelivery
-                  ? `${numberFormat(it.totalIncentiveDelivery)}원`
-                  : '0원'}
-              </td>
-            )}
-            {/* {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'additionalIncentive',
-              isHideColumn('additionalIncentive'),
-            ) && <td>{it.additionalIncentive ?? '-'}</td>} */}
-            {!isColumnsViewHide(
-              selectedAdjustmentHideWatchOptions,
-              'etcIncentive',
-              isHideColumn('etcIncentive'),
-            ) && (
-              <td>
-                {it.etcIncentive ? `${numberFormat(it.etcIncentive)}원` : '0원'}
-              </td>
-            )}
-          </TableItem>
-        ))}
-      </tbody>
-    </TableWrapper>
+            </TableItem>
+          ))}
+        </tbody>
+      </TableWrapper>
+      {selectedAdjustment && (
+        <>
+          {selectedAdjustment.additionalIncentive?.additionalIncentive ? (
+            <EditAddIncentiveModal
+              id={selectedAdjustment.additionalIncentive.id}
+              addIncentive={
+                selectedAdjustment.additionalIncentive.additionalIncentive
+              }
+              isOpen={!!selectedAdjustment}
+              onCancel={() => setSelectedAdjustment(undefined)}
+              onConfirm={() => {
+                setSelectedAdjustment(undefined);
+              }}
+            />
+          ) : (
+            <RegistAddIncentiveModal
+              userId={selectedAdjustment.user.id}
+              year={selectedAdjustment.year}
+              month={selectedAdjustment.month}
+              isOpen={!!selectedAdjustment}
+              onCancel={() => setSelectedAdjustment(undefined)}
+              onConfirm={() => {
+                setSelectedAdjustment(undefined);
+              }}
+            />
+          )}
+        </>
+      )}
+    </>
   );
 };
 
@@ -224,7 +282,7 @@ export const TableHeader = styled.tr`
 `;
 
 export const TableItem = styled.tr`
-  cursor: pointer;
+  /* cursor: pointer; */
   &:hover {
     background: #f5f5f5;
   }

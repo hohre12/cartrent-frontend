@@ -18,7 +18,23 @@ export type Scalars = {
   DateTime: { input: string; output: string; }
 };
 
+export type AdditionalIncentive = {
+  /** 추가 수당 */
+  additionalIncentive: Scalars['Int']['output'];
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  deleted_at?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['Int']['output'];
+  /** 추가 수당 받은 월 */
+  month: Scalars['String']['output'];
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['Int']['output']>;
+  /** 추가 수당 받은 년도 */
+  year: Scalars['String']['output'];
+};
+
 export type Adjustment = {
+  /** 추가 수당 */
+  additionalIncentive?: Maybe<AdditionalIncentive>;
   /** 기타 수당 / 팀장급 이상 팀 전체 매출의 인센티브 */
   etcIncentive: Scalars['Int']['output'];
   /** 달 */
@@ -212,6 +228,16 @@ export enum CounselSearchType {
   /** 상담자 이름 */
   UserName = 'USER_NAME'
 }
+
+export type CreateAdditionalIncentiveDto = {
+  /** 추가 수당 */
+  additionalIncentive: Scalars['Int']['input'];
+  /** 월 */
+  month: Scalars['String']['input'];
+  userId: Scalars['Int']['input'];
+  /** 년도 */
+  year: Scalars['String']['input'];
+};
 
 export type CreateCityDto = {
   name: Scalars['String']['input'];
@@ -492,6 +518,8 @@ export type FirstRevenueUser = {
 
 export type GetAdjustmentsDto = {
   month: Scalars['String']['input'];
+  /** 담당자 Ids */
+  userIds?: InputMaybe<Array<Scalars['Int']['input']>>;
   year: Scalars['String']['input'];
 };
 
@@ -564,6 +592,8 @@ export type GetRevenuesByUsersDto = {
 };
 
 export type Mutation = {
+  /** 추가 수당 생성 */
+  createAdditionalIncentive: AdditionalIncentive;
   /** 도시 생성 */
   createCity: City;
   /** 계약 생성 */
@@ -584,6 +614,8 @@ export type Mutation = {
   createSupportAmount: SupportAmount;
   /** 팀 생성 */
   createTeam: Team;
+  /** 추가 수당 삭제 */
+  deleteAdditionalIncentive: Scalars['Boolean']['output'];
   /** 도시 삭제 */
   deleteCity: Scalars['String']['output'];
   /** 계약 삭제 */
@@ -612,6 +644,8 @@ export type Mutation = {
   signUp: User;
   /** 테스트 계정 생성 */
   testSignUp: User;
+  /** 추가 수당 수정 */
+  updateAdditionalIncentive: AdditionalIncentive;
   /** 도시 수정 */
   updateCity: City;
   /** 계약 수정 */
@@ -634,6 +668,11 @@ export type Mutation = {
   updateSupportAmount: SupportAmount;
   /** 팀 수정 */
   updateTeam: Team;
+};
+
+
+export type MutationCreateAdditionalIncentiveArgs = {
+  createAdditionalIncentiveDto: CreateAdditionalIncentiveDto;
 };
 
 
@@ -684,6 +723,11 @@ export type MutationCreateSupportAmountArgs = {
 
 export type MutationCreateTeamArgs = {
   createTeamDto: CreateTeamDto;
+};
+
+
+export type MutationDeleteAdditionalIncentiveArgs = {
+  additionalIncentiveId: Scalars['Float']['input'];
 };
 
 
@@ -749,6 +793,11 @@ export type MutationSignUpArgs = {
 
 export type MutationTestSignUpArgs = {
   signUpDto: SignUpDto;
+};
+
+
+export type MutationUpdateAdditionalIncentiveArgs = {
+  updateAdditionalIncentiveDto: UpdateAdditionalIncentiveDto;
 };
 
 
@@ -1072,6 +1121,13 @@ export type Team = {
   userList: Array<User>;
 };
 
+export type UpdateAdditionalIncentiveDto = {
+  /** 추가 수당 */
+  additionalIncentive?: InputMaybe<Scalars['Int']['input']>;
+  /** 추가 수당 Id */
+  additionalIncentiveId: Scalars['Int']['input'];
+};
+
 export type UpdateCityDto = {
   cityId: Scalars['Int']['input'];
   name: Scalars['String']['input'];
@@ -1265,6 +1321,27 @@ export type UserTotalRevenueArgs = {
   getRevenuesByUsersDto: GetRevenuesByUsersDto;
 };
 
+export type CreateAdditionalIncentiveMutationVariables = Exact<{
+  createAdditionalIncentiveDto: CreateAdditionalIncentiveDto;
+}>;
+
+
+export type CreateAdditionalIncentiveMutation = { createAdditionalIncentive: { id: number } };
+
+export type UpdateAdditionalIncentiveMutationVariables = Exact<{
+  updateAdditionalIncentiveDto: UpdateAdditionalIncentiveDto;
+}>;
+
+
+export type UpdateAdditionalIncentiveMutation = { updateAdditionalIncentive: { id: number } };
+
+export type DeleteAdditionalIncentiveMutationVariables = Exact<{
+  additionalIncentiveId: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteAdditionalIncentiveMutation = { deleteAdditionalIncentive: boolean };
+
 export type SignInMutationVariables = Exact<{
   signInDto: SignInDto;
 }>;
@@ -1429,7 +1506,7 @@ export type GetAdjustmentsQueryVariables = Exact<{
 }>;
 
 
-export type GetAdjustmentsQuery = { getAdjustments: Array<{ year: string, month: string, totalCountContract: number, totalFeeContract: number, totalExpenditureContract: number, totalNetIncomeContract: number, totalIncentiveContract: number, totalCountDelivery: number, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalIncentiveDelivery: number, etcIncentive: number, user: { id: number, name: string } }> };
+export type GetAdjustmentsQuery = { getAdjustments: Array<{ year: string, month: string, totalCountContract: number, totalFeeContract: number, totalExpenditureContract: number, totalNetIncomeContract: number, totalIncentiveContract: number, totalCountDelivery: number, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalIncentiveDelivery: number, etcIncentive: number, user: { id: number, name: string, position: { id: number, name: PositionType } }, additionalIncentive?: { id: number, additionalIncentive: number } | null }> };
 
 export type GetCitiesQueryVariables = Exact<{
   getCitiesDto: GetCitiesDto;
@@ -1539,7 +1616,7 @@ export type GetTeamsQuery = { getTeams: Array<{ id: number, name: string, create
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUsersQuery = { getUsers: Array<{ id: number, name: string, email: string, created_at?: string | null, updated_at?: string | null }> };
+export type GetUsersQuery = { getUsers: Array<{ id: number, name: string, email: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType } }> };
 
 export type GetFirstContractUserByMonthQueryVariables = Exact<{
   getFirstContractUserByMonthDto: GetRevenuesByUsersDto;
@@ -1556,6 +1633,107 @@ export type GetFirstRevenueUserByMonthQueryVariables = Exact<{
 export type GetFirstRevenueUserByMonthQuery = { getFirstRevenueUserByMonth: { id: number, name: string } };
 
 
+export const CreateAdditionalIncentiveDocument = gql`
+    mutation CreateAdditionalIncentive($createAdditionalIncentiveDto: CreateAdditionalIncentiveDto!) {
+  createAdditionalIncentive(
+    createAdditionalIncentiveDto: $createAdditionalIncentiveDto
+  ) {
+    id
+  }
+}
+    `;
+export type CreateAdditionalIncentiveMutationFn = Apollo.MutationFunction<CreateAdditionalIncentiveMutation, CreateAdditionalIncentiveMutationVariables>;
+
+/**
+ * __useCreateAdditionalIncentiveMutation__
+ *
+ * To run a mutation, you first call `useCreateAdditionalIncentiveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAdditionalIncentiveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAdditionalIncentiveMutation, { data, loading, error }] = useCreateAdditionalIncentiveMutation({
+ *   variables: {
+ *      createAdditionalIncentiveDto: // value for 'createAdditionalIncentiveDto'
+ *   },
+ * });
+ */
+export function useCreateAdditionalIncentiveMutation(baseOptions?: Apollo.MutationHookOptions<CreateAdditionalIncentiveMutation, CreateAdditionalIncentiveMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateAdditionalIncentiveMutation, CreateAdditionalIncentiveMutationVariables>(CreateAdditionalIncentiveDocument, options);
+      }
+export type CreateAdditionalIncentiveMutationHookResult = ReturnType<typeof useCreateAdditionalIncentiveMutation>;
+export type CreateAdditionalIncentiveMutationResult = Apollo.MutationResult<CreateAdditionalIncentiveMutation>;
+export type CreateAdditionalIncentiveMutationOptions = Apollo.BaseMutationOptions<CreateAdditionalIncentiveMutation, CreateAdditionalIncentiveMutationVariables>;
+export const UpdateAdditionalIncentiveDocument = gql`
+    mutation UpdateAdditionalIncentive($updateAdditionalIncentiveDto: UpdateAdditionalIncentiveDto!) {
+  updateAdditionalIncentive(
+    updateAdditionalIncentiveDto: $updateAdditionalIncentiveDto
+  ) {
+    id
+  }
+}
+    `;
+export type UpdateAdditionalIncentiveMutationFn = Apollo.MutationFunction<UpdateAdditionalIncentiveMutation, UpdateAdditionalIncentiveMutationVariables>;
+
+/**
+ * __useUpdateAdditionalIncentiveMutation__
+ *
+ * To run a mutation, you first call `useUpdateAdditionalIncentiveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAdditionalIncentiveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAdditionalIncentiveMutation, { data, loading, error }] = useUpdateAdditionalIncentiveMutation({
+ *   variables: {
+ *      updateAdditionalIncentiveDto: // value for 'updateAdditionalIncentiveDto'
+ *   },
+ * });
+ */
+export function useUpdateAdditionalIncentiveMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAdditionalIncentiveMutation, UpdateAdditionalIncentiveMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateAdditionalIncentiveMutation, UpdateAdditionalIncentiveMutationVariables>(UpdateAdditionalIncentiveDocument, options);
+      }
+export type UpdateAdditionalIncentiveMutationHookResult = ReturnType<typeof useUpdateAdditionalIncentiveMutation>;
+export type UpdateAdditionalIncentiveMutationResult = Apollo.MutationResult<UpdateAdditionalIncentiveMutation>;
+export type UpdateAdditionalIncentiveMutationOptions = Apollo.BaseMutationOptions<UpdateAdditionalIncentiveMutation, UpdateAdditionalIncentiveMutationVariables>;
+export const DeleteAdditionalIncentiveDocument = gql`
+    mutation DeleteAdditionalIncentive($additionalIncentiveId: Float!) {
+  deleteAdditionalIncentive(additionalIncentiveId: $additionalIncentiveId)
+}
+    `;
+export type DeleteAdditionalIncentiveMutationFn = Apollo.MutationFunction<DeleteAdditionalIncentiveMutation, DeleteAdditionalIncentiveMutationVariables>;
+
+/**
+ * __useDeleteAdditionalIncentiveMutation__
+ *
+ * To run a mutation, you first call `useDeleteAdditionalIncentiveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAdditionalIncentiveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAdditionalIncentiveMutation, { data, loading, error }] = useDeleteAdditionalIncentiveMutation({
+ *   variables: {
+ *      additionalIncentiveId: // value for 'additionalIncentiveId'
+ *   },
+ * });
+ */
+export function useDeleteAdditionalIncentiveMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAdditionalIncentiveMutation, DeleteAdditionalIncentiveMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteAdditionalIncentiveMutation, DeleteAdditionalIncentiveMutationVariables>(DeleteAdditionalIncentiveDocument, options);
+      }
+export type DeleteAdditionalIncentiveMutationHookResult = ReturnType<typeof useDeleteAdditionalIncentiveMutation>;
+export type DeleteAdditionalIncentiveMutationResult = Apollo.MutationResult<DeleteAdditionalIncentiveMutation>;
+export type DeleteAdditionalIncentiveMutationOptions = Apollo.BaseMutationOptions<DeleteAdditionalIncentiveMutation, DeleteAdditionalIncentiveMutationVariables>;
 export const SignInDocument = gql`
     mutation SignIn($signInDto: SignInDto!) {
   signIn(signInDto: $signInDto) {
@@ -2347,6 +2525,10 @@ export const GetAdjustmentsDocument = gql`
     user {
       id
       name
+      position {
+        id
+        name
+      }
     }
     totalCountContract
     totalFeeContract
@@ -2359,6 +2541,10 @@ export const GetAdjustmentsDocument = gql`
     totalNetIncomeDelivery
     totalIncentiveDelivery
     etcIncentive
+    additionalIncentive {
+      id
+      additionalIncentive
+    }
   }
 }
     `;
@@ -3391,6 +3577,10 @@ export const GetUsersDocument = gql`
     id
     name
     email
+    position {
+      id
+      name
+    }
     created_at
     updated_at
   }

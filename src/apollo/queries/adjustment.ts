@@ -14,6 +14,10 @@ export const GET_ADJUSTMENTS_QUERY = gql`
       user {
         id
         name
+        position {
+          id
+          name
+        }
       }
       totalCountContract
       totalFeeContract
@@ -26,6 +30,10 @@ export const GET_ADJUSTMENTS_QUERY = gql`
       totalNetIncomeDelivery
       totalIncentiveDelivery
       etcIncentive
+      additionalIncentive {
+        id
+        additionalIncentive
+      }
     }
   }
 `;

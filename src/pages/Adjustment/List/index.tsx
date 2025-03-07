@@ -36,8 +36,8 @@ const AdjustmentList = () => {
 
   const { data, loading, error } = useGetAdjustments({
     // search: searchText ? searchText : null,
-    // userId:
-    //   filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
+    userIds:
+      filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
     year: filters.year,
     month: filters.month,
   });
@@ -218,7 +218,7 @@ const ListWrapper = styled.div`
 const Header = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 15px 20px;
+  padding: 17px 20px;
   border-bottom: 1px solid #eee;
   & > h2 {
     text-align: left;

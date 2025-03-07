@@ -37,8 +37,8 @@ export const SIDE_MENU = [
   },
   {
     title: '관리자',
-    engTitle: 'auth',
+    engTitle: 'admin',
     icon: 'icon-harmfulNspecial',
-    path: '/auth',
+    path: '/admin',
   },
 ];
