@@ -36,8 +36,8 @@ const AdjustmentList = () => {
 
   const { data, loading, error } = useGetAdjustments({
     // search: searchText ? searchText : null,
-    // userId:
-    //   filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
+    userIds:
+      filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
     year: filters.year,
     month: filters.month,
   });
