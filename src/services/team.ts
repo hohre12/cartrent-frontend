@@ -11,6 +11,14 @@ export const useGetTeams = () => {
   return useQuery<{ getTeams: Team[] }>(GET_TEAMS_QUERY);
 };
 
+export const useGetTeam = (params: Team['id']) => {
+  return useQuery<{ getTeam: Team }, { teamId: Team['id'] }>(GET_TEAM_QUERY, {
+    variables: { teamId: params },
+    skip: !params,
+    fetchPolicy: 'network-only',
+  });
+};
+
 export const useCreateTeam = () => {
   const [createTeamMutate] = useMutation(CREATE_TEAM_MUTATION, {
     refetchQueries: [GET_TEAMS_QUERY, 'GetTeams'],
