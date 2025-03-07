@@ -15,10 +15,10 @@ export const CREATE_ADDITIONAL_INCENTIVE_MUTATION = gql`
 
 export const UPDATE_ADDITIONAL_INCENTIVE_MUTATION = gql`
   mutation UpdateAdditionalIncentive(
-    $updateAdditionalIncentive: UpdateAdditionalIncentiveDto!
+    $updateAdditionalIncentiveDto: UpdateAdditionalIncentiveDto!
   ) {
     updateAdditionalIncentive(
-      updateAdditionalIncentive: $updateAdditionalIncentive
+      updateAdditionalIncentiveDto: $updateAdditionalIncentiveDto
     ) {
       id
     }
