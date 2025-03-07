@@ -18,7 +18,23 @@ export type Scalars = {
   DateTime: { input: string; output: string; }
 };
 
+export type AdditionalAllowance = {
+  /** 추가 수당 */
+  additionalAllowance: Scalars['Int']['output'];
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  deleted_at?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['Int']['output'];
+  /** 추가 수당 받은 월 */
+  month: Scalars['String']['output'];
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
+  userId?: Maybe<Scalars['Int']['output']>;
+  /** 추가 수당 받은 년도 */
+  year: Scalars['String']['output'];
+};
+
 export type Adjustment = {
+  /** 추가 수당 */
+  additionalAllowance?: Maybe<AdditionalAllowance>;
   /** 기타 수당 / 팀장급 이상 팀 전체 매출의 인센티브 */
   etcIncentive: Scalars['Int']['output'];
   /** 달 */
@@ -212,6 +228,16 @@ export enum CounselSearchType {
   /** 상담자 이름 */
   UserName = 'USER_NAME'
 }
+
+export type CreateAdditionalAllowanceDto = {
+  /** 추가 수당 */
+  additionalAllowance: Scalars['Int']['input'];
+  /** 월 */
+  month: Scalars['String']['input'];
+  userId: Scalars['Int']['input'];
+  /** 년도 */
+  year: Scalars['String']['input'];
+};
 
 export type CreateCityDto = {
   name: Scalars['String']['input'];
@@ -564,6 +590,8 @@ export type GetRevenuesByUsersDto = {
 };
 
 export type Mutation = {
+  /** 추가 수당 생성 */
+  createAdditionalAllowance: AdditionalAllowance;
   /** 도시 생성 */
   createCity: City;
   /** 계약 생성 */
@@ -584,6 +612,8 @@ export type Mutation = {
   createSupportAmount: SupportAmount;
   /** 팀 생성 */
   createTeam: Team;
+  /** 추가 수당 삭제 */
+  deleteAdditionalAllowance: Scalars['Boolean']['output'];
   /** 도시 삭제 */
   deleteCity: Scalars['String']['output'];
   /** 계약 삭제 */
@@ -612,6 +642,8 @@ export type Mutation = {
   signUp: User;
   /** 테스트 계정 생성 */
   testSignUp: User;
+  /** 추가 수당 수정 */
+  updateAdditionalAllowance: AdditionalAllowance;
   /** 도시 수정 */
   updateCity: City;
   /** 계약 수정 */
@@ -634,6 +666,11 @@ export type Mutation = {
   updateSupportAmount: SupportAmount;
   /** 팀 수정 */
   updateTeam: Team;
+};
+
+
+export type MutationCreateAdditionalAllowanceArgs = {
+  createAdditionalAllowanceDto: CreateAdditionalAllowanceDto;
 };
 
 
@@ -684,6 +721,11 @@ export type MutationCreateSupportAmountArgs = {
 
 export type MutationCreateTeamArgs = {
   createTeamDto: CreateTeamDto;
+};
+
+
+export type MutationDeleteAdditionalAllowanceArgs = {
+  additionalAllowanceId: Scalars['Float']['input'];
 };
 
 
@@ -749,6 +791,11 @@ export type MutationSignUpArgs = {
 
 export type MutationTestSignUpArgs = {
   signUpDto: SignUpDto;
+};
+
+
+export type MutationUpdateAdditionalAllowanceArgs = {
+  updateAdditionalAllowance: UpdateAdditionalAllowanceDto;
 };
 
 
@@ -1070,6 +1117,18 @@ export type Team = {
   name: Scalars['String']['output'];
   updated_at?: Maybe<Scalars['DateTime']['output']>;
   userList: Array<User>;
+};
+
+export type UpdateAdditionalAllowanceDto = {
+  /** 추가 수당 */
+  additionalAllowance?: InputMaybe<Scalars['Int']['input']>;
+  /** 추가 수당 Id */
+  additionalAllowanceId: Scalars['Int']['input'];
+  /** 월 */
+  month?: InputMaybe<Scalars['String']['input']>;
+  userId: Scalars['Int']['input'];
+  /** 년도 */
+  year?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateCityDto = {
@@ -1429,7 +1488,7 @@ export type GetAdjustmentsQueryVariables = Exact<{
 }>;
 
 
-export type GetAdjustmentsQuery = { getAdjustments: Array<{ year: string, month: string, totalCountContract: number, totalFeeContract: number, totalExpenditureContract: number, totalNetIncomeContract: number, totalIncentiveContract: number, totalCountDelivery: number, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalIncentiveDelivery: number, etcIncentive: number, user: { id: number, name: string } }> };
+export type GetAdjustmentsQuery = { getAdjustments: Array<{ year: string, month: string, totalCountContract: number, totalFeeContract: number, totalExpenditureContract: number, totalNetIncomeContract: number, totalIncentiveContract: number, totalCountDelivery: number, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalIncentiveDelivery: number, etcIncentive: number, user: { id: number, name: string, position: { id: number, name: PositionType } } }> };
 
 export type GetCitiesQueryVariables = Exact<{
   getCitiesDto: GetCitiesDto;
@@ -2347,6 +2406,10 @@ export const GetAdjustmentsDocument = gql`
     user {
       id
       name
+      position {
+        id
+        name
+      }
     }
     totalCountContract
     totalFeeContract
