@@ -1,10 +1,37 @@
+import Button from '@/components/button/Button';
+import { useGetUsers } from '@/services/user';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import styled from 'styled-components';
+import UserListTable from './components/table';
 
 const AdminUserList = () => {
+  const { data, loading, error } = useGetUsers();
   return (
     <>
-      <ListWrapper>유저</ListWrapper>
+      <ListWrapper>
+        <Header>
+          <h2>직원목록</h2>
+          <ControlWrapper>
+            <FunctionWrapper>
+              <Button>
+                <p>직원생성</p>
+              </Button>
+            </FunctionWrapper>
+          </ControlWrapper>
+        </Header>
+        <ListContent>
+          {data && data.getUsers?.length > 0 ? (
+            <>
+              <UserListTable data={data.getUsers}></UserListTable>
+            </>
+          ) : (
+            <div className="noList">
+              <h2>직원 없음</h2>
+              <p>생성된 직원이 없습니다.</p>
+            </div>
+          )}
+        </ListContent>
+      </ListWrapper>
     </>
   );
 };

@@ -6,6 +6,10 @@ export const GET_USERS_QUERY = gql`
       id
       name
       email
+      position {
+        id
+        name
+      }
       created_at
       updated_at
     }
