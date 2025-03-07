@@ -3,9 +3,13 @@ import { useGetTeams } from '@/services/team';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import styled from 'styled-components';
 import TeamListTable from './components/table';
+import { useState } from 'react';
+import RegistTeamModal from './components/registTeamModal';
 
 const AdminTeamList = () => {
   const { data, loading, error } = useGetTeams();
+  const [isOpenRegistTeamModal, setIsOpenRegistTeamModal] =
+    useState<boolean>(false);
   return (
     <>
       <ListWrapper>
@@ -13,23 +17,34 @@ const AdminTeamList = () => {
           <h2>팀목록</h2>
           <ControlWrapper>
             <FunctionWrapper>
-              <Button>
+              <Button
+                onClick={() => setIsOpenRegistTeamModal(!isOpenRegistTeamModal)}
+              >
                 <p>팀생성</p>
               </Button>
             </FunctionWrapper>
           </ControlWrapper>
         </Header>
         <ListContent>
-            {data && data.getTeams?.length > 0 ? (
-                <>
-                <TeamListTable data={data.getTeams}></TeamListTable>
-                </>
-            ) : (<div className="noList">
-                <h2>팀 없음</h2>
-                <p>생성된 팀이 없습니다.</p>
-              </div>)}
+          {data && data.getTeams?.length > 0 ? (
+            <>
+              <TeamListTable data={data.getTeams}></TeamListTable>
+            </>
+          ) : (
+            <div className="noList">
+              <h2>팀 없음</h2>
+              <p>생성된 팀이 없습니다.</p>
+            </div>
+          )}
         </ListContent>
       </ListWrapper>
+      {isOpenRegistTeamModal && (
+        <RegistTeamModal
+          isOpen={isOpenRegistTeamModal}
+          onCancel={() => setIsOpenRegistTeamModal(false)}
+          onConfirm={() => setIsOpenRegistTeamModal(false)}
+        ></RegistTeamModal>
+      )}
     </>
   );
 };
