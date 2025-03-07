@@ -218,7 +218,7 @@ const ListWrapper = styled.div`
 const Header = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 15px 20px;
+  padding: 17px 20px;
   border-bottom: 1px solid #eee;
   & > h2 {
     text-align: left;

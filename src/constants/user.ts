@@ -1,0 +1,17 @@
+export const USER_LIST_WATCH_OPTIONS = {
+  year: '년도',
+  month: '월',
+  userName: '담당자',
+  totalCountContract: '계약건수 합계',
+  totalFeeContract: '계약매출 합계',
+  totalExpenditureContract: '계약지출 합계',
+  totalNetIncomeContract: '계약순익 합계',
+  totalIncentiveContract: '계약수당 합계',
+  totalCountDelivery: '출고건수 합계',
+  totalFeeDelivery: '출고매출 합계',
+  totalExpenditureDelivery: '출고지출 합계',
+  totalNetIncomeDelivery: '출고순익 합계',
+  totalIncentiveDelivery: '출고수당 합계',
+  additionalIncentive: '추가수당 합계',
+  etcIncentive: '기타수당 합계',
+};
