@@ -14,6 +14,9 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import Button from '@/components/button/Button';
+import { useState } from 'react';
+import RegistAddIncentiveModal from '../registAddIncentiveModal';
+import EditAddIncentiveModal from '../editAddIncentiveModal';
 
 type TTableProps = {
   data: Adjustment[];
@@ -24,6 +27,7 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
   const selectedAdjustmentHideWatchOptions = useRecoilValue(
     selectedAdjustmentHideWatchOptionsState,
   );
+  const [selectedAdjustment, setSelectedAdjustment] = useState<Adjustment>();
 
   const user = useRecoilValue(userState);
   const isHideColumn = (columeKey: string) => {
@@ -31,8 +35,6 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
       ? false
       : !ADJUSTMENT_LIST_WATCH_REQUIRED_OPTIONS.includes(columeKey);
   };
-
-  const handleOpenAddIncentiveModal = () => {};
 
   return (
     <>
@@ -205,16 +207,47 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
               <td>
                 <Button
                   variant="black"
-                  disabled={it.user.position?.name !== PositionType.TeamLeader}
-                  onClick={handleOpenAddIncentiveModal}
+                  //   disabled={it.user.position?.name !== PositionType.TeamLeader}
+                  onClick={() => setSelectedAdjustment(it)}
                 >
-                  추가수당 입력
+                  추가수당{' '}
+                  {it.additionalIncentive?.additionalIncentive
+                    ? '수정'
+                    : '입력'}
                 </Button>
               </td>
             </TableItem>
           ))}
         </tbody>
       </TableWrapper>
+      {selectedAdjustment && (
+        <>
+          {selectedAdjustment.additionalIncentive?.additionalIncentive ? (
+            <EditAddIncentiveModal
+              id={selectedAdjustment.additionalIncentive.id}
+              addIncentive={
+                selectedAdjustment.additionalIncentive.additionalIncentive
+              }
+              isOpen={!!selectedAdjustment}
+              onCancel={() => setSelectedAdjustment(undefined)}
+              onConfirm={() => {
+                setSelectedAdjustment(undefined);
+              }}
+            />
+          ) : (
+            <RegistAddIncentiveModal
+              userId={selectedAdjustment.user.id}
+              year={selectedAdjustment.year}
+              month={selectedAdjustment.month}
+              isOpen={!!selectedAdjustment}
+              onCancel={() => setSelectedAdjustment(undefined)}
+              onConfirm={() => {
+                setSelectedAdjustment(undefined);
+              }}
+            />
+          )}
+        </>
+      )}
     </>
   );
 };
@@ -249,7 +282,7 @@ export const TableHeader = styled.tr`
 `;
 
 export const TableItem = styled.tr`
-  cursor: pointer;
+  /* cursor: pointer; */
   &:hover {
     background: #f5f5f5;
   }

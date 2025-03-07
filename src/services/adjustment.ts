@@ -1,6 +1,17 @@
+import {
+  CREATE_ADDITIONAL_INCENTIVE_MUTATION,
+  DELETE_ADDITIONAL_INCENTIVE_MUTATION,
+  UPDATE_ADDITIONAL_INCENTIVE_MUTATION,
+} from '@/apollo/mutations/adjustment';
 import { GET_ADJUSTMENTS_QUERY } from '@/apollo/queries/adjustment';
-import { Adjustment, GetAdjustmentsDto } from '@/types/graphql';
-import { useQuery } from '@apollo/client';
+import {
+  AdditionalIncentive,
+  Adjustment,
+  CreateAdditionalIncentiveDto,
+  GetAdjustmentsDto,
+  UpdateAdditionalIncentiveDto,
+} from '@/types/graphql';
+import { useMutation, useQuery } from '@apollo/client';
 
 export const useGetAdjustments = (params: GetAdjustmentsDto) => {
   return useQuery<
@@ -10,4 +21,61 @@ export const useGetAdjustments = (params: GetAdjustmentsDto) => {
     variables: { getAdjustmentsDto: params },
     fetchPolicy: 'network-only',
   });
+};
+
+export const useCreateAdditionalIncentive = () => {
+  const [createAdditionalIncentiveMutate] = useMutation(
+    CREATE_ADDITIONAL_INCENTIVE_MUTATION,
+    {
+      refetchQueries: [GET_ADJUSTMENTS_QUERY, 'GetAdjustments'],
+    },
+  );
+
+  const createAdditionalIncentive = async (
+    params: CreateAdditionalIncentiveDto,
+  ) => {
+    if (!params) return;
+    return createAdditionalIncentiveMutate({
+      variables: { createAdditionalIncentiveDto: params },
+    });
+  };
+  return { createAdditionalIncentive };
+};
+
+export const useUpdateAdditionalIncentive = () => {
+  const [updateAdditionalIncentiveMutate] = useMutation(
+    UPDATE_ADDITIONAL_INCENTIVE_MUTATION,
+    {
+      refetchQueries: [GET_ADJUSTMENTS_QUERY, 'GetAdjustments'],
+    },
+  );
+
+  const updateAdditionalIncentive = async (
+    params: UpdateAdditionalIncentiveDto,
+  ) => {
+    if (!params) return;
+    return updateAdditionalIncentiveMutate({
+      variables: { updateAdditionalIncentiveDto: params },
+    });
+  };
+  return { updateAdditionalIncentive };
+};
+
+export const useDeleteAdditionalIncentive = () => {
+  const [deleteAdditionalIncentiveMutate] = useMutation(
+    DELETE_ADDITIONAL_INCENTIVE_MUTATION,
+    {
+      refetchQueries: [GET_ADJUSTMENTS_QUERY, 'GetAdjustments'],
+    },
+  );
+
+  const deleteAdditionalIncentive = async (
+    params: AdditionalIncentive['id'],
+  ) => {
+    if (!params) return;
+    return deleteAdditionalIncentiveMutate({
+      variables: { additionalIncentiveId: params },
+    });
+  };
+  return { deleteAdditionalIncentive };
 };
