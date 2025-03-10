@@ -1,15 +1,7 @@
 import Button from '@/components/button/Button';
 import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
-import { SvgIcon } from '@/components/common/SvgIcon';
-import SearchBox from '@/components/searchBox/SearchBox';
-import {
-  useGetCustomerGroups,
-  useGetCustomerStatuses,
-} from '@/services/customer';
 import { useGetUsers } from '@/services/user';
-import { counselFiltersState } from '@/state/counsel';
-// import { useGetFilterList } from '@/services/common';
-import { customerFiltersState } from '@/state/customer';
+import { payStubFiltersState } from '@/state/payStub';
 import { TFilterList } from '@/types/common';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -23,7 +15,7 @@ const FilterUser = ({ handleApply }: TFilterProps) => {
   const [selectedFilters, setSelectedFilters] = useState<TFilterList<number>[]>(
     [],
   );
-  const filters = useRecoilValue(counselFiltersState);
+  const filters = useRecoilValue(payStubFiltersState);
   const { data: users } = useGetUsers();
 
   const [list, setList] = useState([] as TFilterList<number>[]);
@@ -59,8 +51,8 @@ const FilterUser = ({ handleApply }: TFilterProps) => {
   );
 
   useEffect(() => {
-    if (filters.users.length > 0) {
-      setSelectedFilters(filters.users);
+    if (filters.userIds.length > 0) {
+      setSelectedFilters(filters.userIds);
     }
   }, [filters, setSelectedFilters]);
 

@@ -1,15 +1,10 @@
 import Button from '@/components/button/Button';
 import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
-import { SvgIcon } from '@/components/common/SvgIcon';
-import SearchBox from '@/components/searchBox/SearchBox';
-import {
-  useGetCustomerGroups,
-  useGetCustomerStatuses,
-} from '@/services/customer';
-import { counselFiltersState } from '@/state/counsel';
-// import { useGetFilterList } from '@/services/common';
-import { customerFiltersState } from '@/state/customer';
+import { UserPositionHangleEnum } from '@/constants/user';
+import { useGetPositions } from '@/services/user';
+import { payStubFiltersState } from '@/state/payStub';
 import { TFilterList } from '@/types/common';
+import { PositionType } from '@/types/graphql';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -18,12 +13,12 @@ type TFilterProps = {
   handleApply: (selectedList: TFilterList<number>[]) => void;
 };
 
-const FilterStatus = ({ handleApply }: TFilterProps) => {
+const FilterPosition = ({ handleApply }: TFilterProps) => {
   const [selectedFilters, setSelectedFilters] = useState<TFilterList<number>[]>(
     [],
   );
-  const filters = useRecoilValue(counselFiltersState);
-  const { data: statuses } = useGetCustomerStatuses();
+  const filters = useRecoilValue(payStubFiltersState);
+  const { data: positions } = useGetPositions();
 
   const [list, setList] = useState([] as TFilterList<number>[]);
 
@@ -58,22 +53,22 @@ const FilterStatus = ({ handleApply }: TFilterProps) => {
   );
 
   useEffect(() => {
-    if (filters.statuses.length > 0) {
-      setSelectedFilters(filters.statuses);
+    if (filters.positionIds.length > 0) {
+      setSelectedFilters(filters.positionIds);
     }
   }, [filters, setSelectedFilters]);
 
   useEffect(() => {
-    if (statuses?.getCustomerStatuses) {
-      const newList = statuses.getCustomerStatuses.map((it) => ({
-        name: it.status,
+    if (positions?.getPositions) {
+      const newList = positions.getPositions.map((it) => ({
+        name: it.name,
         value: it.id,
       }));
       setList(newList);
     } else {
       setList([]);
     }
-  }, [statuses, setList]);
+  }, [positions, setList]);
   return (
     <Filter>
       <FilterList>
@@ -86,7 +81,7 @@ const FilterStatus = ({ handleApply }: TFilterProps) => {
         </li>
         {list.map((it, idx) => (
           <li key={idx}>
-            <span>{it.name}</span>
+            <span>{UserPositionHangleEnum[it.name as PositionType]}</span>
             <Checkbox
               value={selectedFilters
                 .map((filter) => filter.value)
@@ -110,7 +105,7 @@ const FilterStatus = ({ handleApply }: TFilterProps) => {
   );
 };
 
-export default FilterStatus;
+export default FilterPosition;
 
 export const Filter = styled.div`
   top: 40px;

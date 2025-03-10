@@ -1,10 +1,11 @@
 import {
   GET_FIRST_CONTRACT_USER_BY_MONTH,
   GET_FIRST_REVENUE_USER_BY_MONTH,
+  GET_POSITIONS_QUERY,
   GET_USER_QUERY,
   GET_USERS_QUERY,
 } from '@/apollo/queries/user';
-import { GetRevenuesByUsersDto, User } from '@/types/graphql';
+import { GetRevenuesByUsersDto, Position, User } from '@/types/graphql';
 import { useMutation, useQuery } from '@apollo/client';
 
 export const useGetUsers = () => {
@@ -46,6 +47,10 @@ export const useGetUser = (params: User['id']) => {
 //   };
 //   return { deleteUser };
 // };
+
+export const useGetPositions = () => {
+  return useQuery<{ getPositions: Position[] }>(GET_POSITIONS_QUERY);
+};
 
 export const useGetFirstContractUserByMonth = (
   params: GetRevenuesByUsersDto,

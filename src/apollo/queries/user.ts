@@ -40,6 +40,18 @@ export const GET_USER_QUERY = gql`
   }
 `;
 
+export const GET_POSITIONS_QUERY = gql`
+  query GetPositions {
+    getPositions {
+      id
+      name
+      created_at
+      updated_at
+      deleted_at
+    }
+  }
+`;
+
 // 월별 계약 1위 직원
 export const GET_FIRST_CONTRACT_USER_BY_MONTH = gql`
   query GetFirstContractUserByMonth(
