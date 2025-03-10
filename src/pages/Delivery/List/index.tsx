@@ -121,7 +121,7 @@ const DeliveryList = () => {
               <SearchBox
                 value={text}
                 placeholder="검색"
-                recentKey="contractRecent"
+                recentKey="deliveryRecent"
                 onTextChange={(text) => setText(text)}
                 onRemoveClick={handleSearchTextDelete}
                 onKeyDown={handleSearch}

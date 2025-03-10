@@ -108,7 +108,7 @@ const PayStubList = () => {
               <SearchBox
                 value={text}
                 placeholder="검색"
-                recentKey="customerRecent"
+                recentKey="payStubRecent"
                 onTextChange={(text) => setText(text)}
                 onRemoveClick={handleSearchTextDelete}
                 onKeyDown={handleSearch}
