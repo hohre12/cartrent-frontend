@@ -1,4 +1,4 @@
-export enum UserHangleEnum {
+export enum UserPositionHangleEnum {
   ADMIN = '관리자',
   ASSISTANT_MANAGER = '대리',
   MANAGER = '과장',

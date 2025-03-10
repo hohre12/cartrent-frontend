@@ -12,6 +12,12 @@ export const GET_TEAM_QUERY = gql`
       userList {
         id
         name
+        email
+        created_at
+        position {
+          id
+          name
+        }
       }
     }
   }
