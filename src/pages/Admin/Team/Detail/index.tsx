@@ -83,39 +83,35 @@ const AdminTeamDetail = () => {
           <TeamBoxWrapper>
             <h3>팀원</h3>
             {detail.userList?.length > 0 ? (
-              <>
-                <UserBoxWrapper>
-                  {detail.userList.map((it, idx) => (
-                    <>
-                      <UserBox
-                        key={idx}
-                        onClick={() => navigate(`/admin/user/${it.id}`)}
-                      >
-                        <div>
-                          <h5>팀원명</h5>
-                          <span>{it.name ?? '-'}</span>
-                        </div>
-                        <div>
-                          <h5>직책</h5>
-                          <span>
-                            {it.position?.name
-                              ? UserPositionHangleEnum[it.position.name]
-                              : '직책없음'}
-                          </span>
-                        </div>
-                        <div>
-                          <h5>Email</h5>
-                          <span>{it.email ?? '-'}</span>
-                        </div>
-                        <div>
-                          <h5>직원생성일</h5>
-                          <span>{formatDate(it.created_at) ?? '-'}</span>
-                        </div>
-                      </UserBox>
-                    </>
-                  ))}
-                </UserBoxWrapper>
-              </>
+              <UserBoxWrapper>
+                {detail.userList.map((it, idx) => (
+                  <UserBox
+                    key={idx}
+                    onClick={() => navigate(`/admin/user/${it.id}`)}
+                  >
+                    <div>
+                      <h5>팀원명</h5>
+                      <span>{it.name ?? '-'}</span>
+                    </div>
+                    <div>
+                      <h5>직책</h5>
+                      <span>
+                        {it.position?.name
+                          ? UserPositionHangleEnum[it.position.name]
+                          : '직책없음'}
+                      </span>
+                    </div>
+                    <div>
+                      <h5>Email</h5>
+                      <span>{it.email ?? '-'}</span>
+                    </div>
+                    <div>
+                      <h5>직원생성일</h5>
+                      <span>{formatDate(it.created_at) ?? '-'}</span>
+                    </div>
+                  </UserBox>
+                ))}
+              </UserBoxWrapper>
             ) : (
               <div>소속된 팀원이 없습니다.</div>
             )}
