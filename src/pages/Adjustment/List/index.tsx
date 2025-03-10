@@ -18,6 +18,9 @@ import { PermissionType } from '@/types/graphql';
 import { useNavigationType } from 'react-router-dom';
 import Select from '@/components/select/Select';
 import moment from 'moment';
+import { useCreatePayStub } from '@/services/payStub';
+import { useConfirm } from '@/hooks/useConfirm';
+import { useToast } from '@/hooks/useToast';
 
 const AdjustmentList = () => {
   const navigationType = useNavigationType();
@@ -29,6 +32,11 @@ const AdjustmentList = () => {
   const currentYear = moment().format('YYYY');
   const currentMonth = moment().format('MM');
   const [months, setMonths] = useState<string[]>([]);
+  const [submit, setSubmit] = useState<boolean>(false);
+  const { addToast } = useToast();
+  const { showConfirm, hideConfirm } = useConfirm();
+
+  const { createPayStub } = useCreatePayStub();
 
   // filters
   const [filters, setFilters] = useRecoilState(adjustmentFiltersState);
@@ -64,6 +72,29 @@ const AdjustmentList = () => {
     },
     [filters, setFilters, setIsFilterUserOpen],
   );
+
+  const handlePayStubRegist = async () => {
+    setSubmit(true);
+    if (!filters.year) return;
+    if (!filters.month) return;
+    try {
+      const response = await createPayStub({
+        year: filters.year,
+        month: filters.month,
+      });
+      if (response && response.data.createPayStub) {
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `${filters.year}년 ${filters.month}월 급여명세서가 발행되었습니다.`,
+          type: 'success',
+        });
+        hideConfirm();
+      }
+    } catch (e) {
+      console.warn(e);
+    }
+  };
 
   useEffect(() => {
     if (navigationType !== 'POP') {
@@ -160,14 +191,34 @@ const AdjustmentList = () => {
             </SearchBoxWrapper>
             <FunctionWrapper>
               {user?.role.name === PermissionType.Admin && (
-                <Button
-                  onClick={() =>
-                    setIsOpenWatchOptionModal(!isOpenWatchOptionModal)
-                  }
-                >
-                  <SvgIcon iconName="icon-eye-show" />
-                  <p>보기옵션</p>
-                </Button>
+                <>
+                  <Button
+                    onClick={() =>
+                      showConfirm({
+                        isOpen: true,
+                        title: '급여명세서 발행',
+                        content: `정말로 급여명세서를 발행하시겠습니까?\n한번 발행한 급여명세서는 취소 또는 삭제가 불가능합니다.`,
+                        cancelText: '취소',
+                        confirmText: '발행',
+                        confirmVariant: 'primaryInfo',
+                        onClose: hideConfirm,
+                        onCancel: hideConfirm,
+                        onConfirm: handlePayStubRegist,
+                      })
+                    }
+                  >
+                    <SvgIcon iconName="icon-expense" />
+                    <p>급여명세서 발행</p>
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      setIsOpenWatchOptionModal(!isOpenWatchOptionModal)
+                    }
+                  >
+                    <SvgIcon iconName="icon-eye-show" />
+                    <p>보기옵션</p>
+                  </Button>
+                </>
               )}
             </FunctionWrapper>
           </ControlWrapper>
