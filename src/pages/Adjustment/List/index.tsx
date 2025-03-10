@@ -35,7 +35,7 @@ const AdjustmentList = () => {
   const resetFilters = useResetRecoilState(adjustmentFiltersState);
 
   const { data, loading, error } = useGetAdjustments({
-    // search: searchText ? searchText : null,
+    search: searchText ? searchText : null,
     userIds:
       filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
     year: filters.year,

@@ -33,8 +33,8 @@ export type AdditionalIncentive = {
 };
 
 export type Adjustment = {
-  /** 추가 수당 */
   additionalIncentive?: Maybe<AdditionalIncentive>;
+  additionalIncentiveId?: Maybe<Scalars['Int']['output']>;
   /** 기타 수당 / 팀장급 이상 팀 전체 매출의 인센티브 */
   etcIncentive: Scalars['Int']['output'];
   /** 달 */
@@ -60,6 +60,7 @@ export type Adjustment = {
   /** 출고 총 순매출 */
   totalNetIncomeDelivery: Scalars['Int']['output'];
   user: User;
+  userId: Scalars['Int']['output'];
   /** 년 */
   year: Scalars['String']['output'];
 };
@@ -518,6 +519,7 @@ export type FirstRevenueUser = {
 
 export type GetAdjustmentsDto = {
   month: Scalars['String']['input'];
+  search?: InputMaybe<Scalars['String']['input']>;
   /** 담당자 Ids */
   userIds?: InputMaybe<Array<Scalars['Int']['input']>>;
   year: Scalars['String']['input'];

@@ -112,7 +112,7 @@ const CounselList = () => {
               <SearchBox
                 value={text}
                 placeholder="검색"
-                recentKey="customerRecent"
+                recentKey="counselRecent"
                 onTextChange={(text) => setText(text)}
                 onRemoveClick={handleSearchTextDelete}
                 onKeyDown={handleSearch}
