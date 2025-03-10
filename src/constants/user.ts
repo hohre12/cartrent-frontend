@@ -6,3 +6,8 @@ export enum UserPositionHangleEnum {
   STAFF = '사원',
   TEAM_LEADER = '팀장',
 }
+
+export enum UserRoleHangleEnum {
+  ADMIN = '관리자 전용',
+  USER = '일반 직원',
+}

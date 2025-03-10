@@ -10,6 +10,10 @@ export const GET_USERS_QUERY = gql`
         id
         name
       }
+      role {
+        id
+        name
+      }
       created_at
       updated_at
     }

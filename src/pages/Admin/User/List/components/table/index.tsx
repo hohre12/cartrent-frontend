@@ -1,4 +1,4 @@
-import { UserPositionHangleEnum } from '@/constants/user';
+import { UserPositionHangleEnum, UserRoleHangleEnum } from '@/constants/user';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
 import { User } from '@/types/graphql';
@@ -37,7 +37,7 @@ const UserListTable = ({ data }: TTableProps) => {
                   ? UserPositionHangleEnum[it.position.name]
                   : '-'}
               </td>
-              <td>{it.role?.name ?? '-'}</td>
+              <td>{it.role?.name ? UserRoleHangleEnum[it.role.name] : '-'}</td>
               <td>{formatDate(it.created_at) ?? '-'}</td>
             </TableItem>
           ))}
