@@ -22,7 +22,7 @@ const CityListTable = ({ data }: TTableProps) => {
           {data.map((it, idx) => (
             <TableItem
               key={idx}
-              onClick={() => navigate(`${it.id}`)}
+              //   onClick={() => navigate(`${it.id}`)}
             >
               <td className="name">{it.name}</td>
             </TableItem>

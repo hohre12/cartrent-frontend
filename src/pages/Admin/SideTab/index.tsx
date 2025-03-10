@@ -6,8 +6,10 @@ const AdminSideTab = () => {
   const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
-    navigate('user');
-  }, []);
+    if (location.pathname === '/admin') {
+      navigate('user');
+    }
+  }, [location.pathname]);
   return (
     <>
       <AdminSideTabWrapper>

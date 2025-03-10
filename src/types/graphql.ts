@@ -367,8 +367,8 @@ export type CreateCustomerStatusDto = {
 };
 
 export type CreatePayStubDto = {
-  /** 실수령액 */
-  actualSalary: Scalars['Int']['input'];
+  month: Scalars['String']['input'];
+  year: Scalars['String']['input'];
 };
 
 /** 지원금 생성 */
@@ -388,6 +388,14 @@ export type CreateSupportAmountDto = {
 
 export type CreateTeamDto = {
   name: Scalars['String']['input'];
+};
+
+export type CreateUserDto = {
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  positionId: Scalars['Int']['input'];
+  teamId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** 고객 */
@@ -582,10 +590,13 @@ export type GetDeliveriesDto = {
 
 export type GetPayStubDto = {
   /** 월 */
-  month: Scalars['String']['input'];
-  userId: Scalars['Int']['input'];
+  month?: InputMaybe<Scalars['String']['input']>;
+  /** 직책 ids */
+  positionIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  userIds?: InputMaybe<Array<Scalars['Int']['input']>>;
   /** 년 */
-  year: Scalars['String']['input'];
+  year?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type GetRevenuesByUsersDto = {
@@ -611,11 +622,13 @@ export type Mutation = {
   /** 고객 상태 생성 */
   createCustomerStatus: CustomerStatus;
   /** 급여 명세서 생성 */
-  createPayStub: PayStub;
+  createPayStub: Scalars['Boolean']['output'];
   /** 지원금 생성 */
   createSupportAmount: SupportAmount;
   /** 팀 생성 */
   createTeam: Team;
+  /** 유저 생성 */
+  createUser: User;
   /** 추가 수당 삭제 */
   deleteAdditionalIncentive: Scalars['Boolean']['output'];
   /** 도시 삭제 */
@@ -636,6 +649,8 @@ export type Mutation = {
   deleteSupportAmount: Scalars['Boolean']['output'];
   /** 팀 삭제 */
   deleteTeam: Scalars['Boolean']['output'];
+  /** 유저 삭제 */
+  deleteUser: Scalars['Boolean']['output'];
   /** 토큰 재발급 */
   refresh: AuthPayload;
   /** 로그인 */
@@ -670,6 +685,8 @@ export type Mutation = {
   updateSupportAmount: SupportAmount;
   /** 팀 수정 */
   updateTeam: Team;
+  /** 유저 정보 수정 */
+  updateUser: User;
 };
 
 
@@ -728,6 +745,11 @@ export type MutationCreateTeamArgs = {
 };
 
 
+export type MutationCreateUserArgs = {
+  createUserDto: CreateUserDto;
+};
+
+
 export type MutationDeleteAdditionalIncentiveArgs = {
   additionalIncentiveId: Scalars['Float']['input'];
 };
@@ -775,6 +797,11 @@ export type MutationDeleteSupportAmountArgs = {
 
 export type MutationDeleteTeamArgs = {
   teamId: Scalars['Float']['input'];
+};
+
+
+export type MutationDeleteUserArgs = {
+  userId: Scalars['Float']['input'];
 };
 
 
@@ -857,6 +884,11 @@ export type MutationUpdateTeamArgs = {
   updateTeamDto: UpdateTeamDto;
 };
 
+
+export type MutationUpdateUserArgs = {
+  updateUserInfoDto: UpdateUserInfoDto;
+};
+
 /** 알림 */
 export type Notification = {
   /** 알림 내용 */
@@ -871,14 +903,26 @@ export type Notification = {
 export type PayStub = {
   /** 실수령액 */
   actualSalary: Scalars['Int']['output'];
-  contracts: Array<Contract>;
+  contracts?: Maybe<Array<Contract>>;
   created_at?: Maybe<Scalars['DateTime']['output']>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
+  /** 기타수당 */
+  etcIncentive?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   /** 소득세 */
   income_tax: Scalars['Int']['output'];
   /** 월 */
   month: Scalars['String']['output'];
+  /** 수당합계 */
+  totalAllowance?: Maybe<Scalars['Int']['output']>;
+  /** 출고 총 지출 */
+  totalExpenditureDelivery: Scalars['Int']['output'];
+  /** 출고 총 총매출 */
+  totalFeeDelivery: Scalars['Int']['output'];
+  /** 출고 수당 / 직급별 인센티브 */
+  totalIncentiveDelivery?: Maybe<Scalars['Int']['output']>;
+  /** 출고 총 순매출 */
+  totalNetIncomeDelivery: Scalars['Int']['output'];
   updated_at?: Maybe<Scalars['DateTime']['output']>;
   user: User;
   userId?: Maybe<Scalars['Int']['output']>;
@@ -960,8 +1004,10 @@ export type Query = {
   getNotifications: Array<Notification>;
   /** 급여 명세서 상세페이지 */
   getPayStub: PayStub;
-  /** 유저의 급여명세서 리스트 */
-  getPayStubsByUser: Array<PayStub>;
+  /** 급여명세서 리스트 */
+  getPayStubs: Array<PayStub>;
+  /** 직책 리스트 */
+  getPositions: Array<Position>;
   /** 월별 매출 현황 */
   getRevenuesByUsersMonth: Array<User>;
   /** 출고방식 리스트 */
@@ -974,6 +1020,8 @@ export type Query = {
   getTeam: Team;
   /** 팀 리스트 조회 */
   getTeams: Array<Team>;
+  /** 담당자 상세 페이지 조회 */
+  getUser: User;
   /** 담당자 리스트 */
   getUsers: Array<User>;
   userInfo: Scalars['String']['output'];
@@ -1045,7 +1093,7 @@ export type QueryGetPayStubArgs = {
 };
 
 
-export type QueryGetPayStubsByUserArgs = {
+export type QueryGetPayStubsArgs = {
   getPayStubDto: GetPayStubDto;
 };
 
@@ -1062,6 +1110,11 @@ export type QueryGetSupportAmountsArgs = {
 
 export type QueryGetTeamArgs = {
   teamId: Scalars['Float']['input'];
+};
+
+
+export type QueryGetUserArgs = {
+  userId: Scalars['Float']['input'];
 };
 
 export type Role = {
@@ -1303,6 +1356,15 @@ export type UpdateUserDto = {
   name: Scalars['String']['input'];
   /** 비밀번호 */
   password: Scalars['String']['input'];
+};
+
+export type UpdateUserInfoDto = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  positionId?: InputMaybe<Scalars['Int']['input']>;
+  teamId?: InputMaybe<Scalars['Int']['input']>;
+  userId: Scalars['Int']['input'];
 };
 
 export type User = {
@@ -1603,22 +1665,43 @@ export type GetDeliveriesQueryVariables = Exact<{
 
 export type GetDeliveriesQuery = { getDeliveries: Array<{ id: number, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, customer: { id: number, name: string }, user: { id: number, name: string }, financialCompany?: { id: number, name: string } | null, division?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null }> };
 
-export type GetTeamQueryVariables = Exact<{
-  teamId: Scalars['Float']['input'];
+export type GetPayStubsQueryVariables = Exact<{
+  getPayStubDto: GetPayStubDto;
 }>;
 
 
-export type GetTeamQuery = { getTeam: { id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, userList: Array<{ id: number, name: string }> } };
+export type GetPayStubsQuery = { getPayStubs: Array<{ id: number, year: string, month: string, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, income_tax: number, actualSalary: number, user: { position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, cashAssistance?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, customer: { id: number, name: string } }> | null }> };
+
+export type GetPayStubQueryVariables = Exact<{
+  payStubId: Scalars['Float']['input'];
+}>;
+
+
+export type GetPayStubQuery = { getPayStub: { id: number, year: string, month: string, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, income_tax: number, actualSalary: number, user: { position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, cashAssistance?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, customer: { id: number, name: string } }> | null } };
 
 export type GetTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetTeamsQuery = { getTeams: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, userList: Array<{ id: number, name: string }> }> };
 
+export type GetTeamQueryVariables = Exact<{
+  teamId: Scalars['Float']['input'];
+}>;
+
+
+export type GetTeamQuery = { getTeam: { id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, userList: Array<{ id: number, name: string, email: string, created_at?: string | null, position: { id: number, name: PositionType } }> } };
+
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUsersQuery = { getUsers: Array<{ id: number, name: string, email: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType } }> };
+export type GetUsersQuery = { getUsers: Array<{ id: number, name: string, email: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType } }> };
+
+export type GetUserQueryVariables = Exact<{
+  userId: Scalars['Float']['input'];
+}>;
+
+
+export type GetUserQuery = { getUser: { id: number, name: string, email: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType } } };
 
 export type GetFirstContractUserByMonthQueryVariables = Exact<{
   getFirstContractUserByMonthDto: GetRevenuesByUsersDto;
@@ -3478,54 +3561,152 @@ export type GetDeliveriesQueryHookResult = ReturnType<typeof useGetDeliveriesQue
 export type GetDeliveriesLazyQueryHookResult = ReturnType<typeof useGetDeliveriesLazyQuery>;
 export type GetDeliveriesSuspenseQueryHookResult = ReturnType<typeof useGetDeliveriesSuspenseQuery>;
 export type GetDeliveriesQueryResult = Apollo.QueryResult<GetDeliveriesQuery, GetDeliveriesQueryVariables>;
-export const GetTeamDocument = gql`
-    query GetTeam($teamId: Float!) {
-  getTeam(teamId: $teamId) {
+export const GetPayStubsDocument = gql`
+    query GetPayStubs($getPayStubDto: GetPayStubDto!) {
+  getPayStubs(getPayStubDto: $getPayStubDto) {
     id
-    name
-    created_at
-    updated_at
-    deleted_at
-    userList {
-      id
-      name
+    year
+    month
+    user {
+      position {
+        id
+        name
+      }
     }
+    contracts {
+      id
+      shippingDate
+      customer {
+        id
+        name
+      }
+      carName
+      carPrice
+      fee
+      cashAssistance
+      service1
+      service2
+      service3
+      serviceBody1
+      serviceBody2
+      serviceBody3
+    }
+    totalFeeDelivery
+    totalExpenditureDelivery
+    totalNetIncomeDelivery
+    totalAllowance
+    etcIncentive
+    income_tax
+    actualSalary
   }
 }
     `;
 
 /**
- * __useGetTeamQuery__
+ * __useGetPayStubsQuery__
  *
- * To run a query within a React component, call `useGetTeamQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTeamQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetPayStubsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPayStubsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetTeamQuery({
+ * const { data, loading, error } = useGetPayStubsQuery({
  *   variables: {
- *      teamId: // value for 'teamId'
+ *      getPayStubDto: // value for 'getPayStubDto'
  *   },
  * });
  */
-export function useGetTeamQuery(baseOptions: Apollo.QueryHookOptions<GetTeamQuery, GetTeamQueryVariables> & ({ variables: GetTeamQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetPayStubsQuery(baseOptions: Apollo.QueryHookOptions<GetPayStubsQuery, GetPayStubsQueryVariables> & ({ variables: GetPayStubsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
+        return Apollo.useQuery<GetPayStubsQuery, GetPayStubsQueryVariables>(GetPayStubsDocument, options);
       }
-export function useGetTeamLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamQuery, GetTeamQueryVariables>) {
+export function useGetPayStubsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPayStubsQuery, GetPayStubsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
+          return Apollo.useLazyQuery<GetPayStubsQuery, GetPayStubsQueryVariables>(GetPayStubsDocument, options);
         }
-export function useGetTeamSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTeamQuery, GetTeamQueryVariables>) {
+export function useGetPayStubsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPayStubsQuery, GetPayStubsQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
+          return Apollo.useSuspenseQuery<GetPayStubsQuery, GetPayStubsQueryVariables>(GetPayStubsDocument, options);
         }
-export type GetTeamQueryHookResult = ReturnType<typeof useGetTeamQuery>;
-export type GetTeamLazyQueryHookResult = ReturnType<typeof useGetTeamLazyQuery>;
-export type GetTeamSuspenseQueryHookResult = ReturnType<typeof useGetTeamSuspenseQuery>;
-export type GetTeamQueryResult = Apollo.QueryResult<GetTeamQuery, GetTeamQueryVariables>;
+export type GetPayStubsQueryHookResult = ReturnType<typeof useGetPayStubsQuery>;
+export type GetPayStubsLazyQueryHookResult = ReturnType<typeof useGetPayStubsLazyQuery>;
+export type GetPayStubsSuspenseQueryHookResult = ReturnType<typeof useGetPayStubsSuspenseQuery>;
+export type GetPayStubsQueryResult = Apollo.QueryResult<GetPayStubsQuery, GetPayStubsQueryVariables>;
+export const GetPayStubDocument = gql`
+    query GetPayStub($payStubId: Float!) {
+  getPayStub(payStubId: $payStubId) {
+    id
+    year
+    month
+    user {
+      position {
+        id
+        name
+      }
+    }
+    contracts {
+      id
+      shippingDate
+      customer {
+        id
+        name
+      }
+      carName
+      carPrice
+      fee
+      cashAssistance
+      service1
+      service2
+      service3
+      serviceBody1
+      serviceBody2
+      serviceBody3
+    }
+    totalFeeDelivery
+    totalExpenditureDelivery
+    totalNetIncomeDelivery
+    totalAllowance
+    etcIncentive
+    income_tax
+    actualSalary
+  }
+}
+    `;
+
+/**
+ * __useGetPayStubQuery__
+ *
+ * To run a query within a React component, call `useGetPayStubQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPayStubQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPayStubQuery({
+ *   variables: {
+ *      payStubId: // value for 'payStubId'
+ *   },
+ * });
+ */
+export function useGetPayStubQuery(baseOptions: Apollo.QueryHookOptions<GetPayStubQuery, GetPayStubQueryVariables> & ({ variables: GetPayStubQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPayStubQuery, GetPayStubQueryVariables>(GetPayStubDocument, options);
+      }
+export function useGetPayStubLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPayStubQuery, GetPayStubQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPayStubQuery, GetPayStubQueryVariables>(GetPayStubDocument, options);
+        }
+export function useGetPayStubSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPayStubQuery, GetPayStubQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetPayStubQuery, GetPayStubQueryVariables>(GetPayStubDocument, options);
+        }
+export type GetPayStubQueryHookResult = ReturnType<typeof useGetPayStubQuery>;
+export type GetPayStubLazyQueryHookResult = ReturnType<typeof useGetPayStubLazyQuery>;
+export type GetPayStubSuspenseQueryHookResult = ReturnType<typeof useGetPayStubSuspenseQuery>;
+export type GetPayStubQueryResult = Apollo.QueryResult<GetPayStubQuery, GetPayStubQueryVariables>;
 export const GetTeamsDocument = gql`
     query GetTeams {
   getTeams {
@@ -3573,6 +3754,60 @@ export type GetTeamsQueryHookResult = ReturnType<typeof useGetTeamsQuery>;
 export type GetTeamsLazyQueryHookResult = ReturnType<typeof useGetTeamsLazyQuery>;
 export type GetTeamsSuspenseQueryHookResult = ReturnType<typeof useGetTeamsSuspenseQuery>;
 export type GetTeamsQueryResult = Apollo.QueryResult<GetTeamsQuery, GetTeamsQueryVariables>;
+export const GetTeamDocument = gql`
+    query GetTeam($teamId: Float!) {
+  getTeam(teamId: $teamId) {
+    id
+    name
+    created_at
+    updated_at
+    deleted_at
+    userList {
+      id
+      name
+      email
+      created_at
+      position {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTeamQuery__
+ *
+ * To run a query within a React component, call `useGetTeamQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTeamQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTeamQuery({
+ *   variables: {
+ *      teamId: // value for 'teamId'
+ *   },
+ * });
+ */
+export function useGetTeamQuery(baseOptions: Apollo.QueryHookOptions<GetTeamQuery, GetTeamQueryVariables> & ({ variables: GetTeamQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
+      }
+export function useGetTeamLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamQuery, GetTeamQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
+        }
+export function useGetTeamSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTeamQuery, GetTeamQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetTeamQuery, GetTeamQueryVariables>(GetTeamDocument, options);
+        }
+export type GetTeamQueryHookResult = ReturnType<typeof useGetTeamQuery>;
+export type GetTeamLazyQueryHookResult = ReturnType<typeof useGetTeamLazyQuery>;
+export type GetTeamSuspenseQueryHookResult = ReturnType<typeof useGetTeamSuspenseQuery>;
+export type GetTeamQueryResult = Apollo.QueryResult<GetTeamQuery, GetTeamQueryVariables>;
 export const GetUsersDocument = gql`
     query GetUsers {
   getUsers {
@@ -3580,6 +3815,10 @@ export const GetUsersDocument = gql`
     name
     email
     position {
+      id
+      name
+    }
+    role {
       id
       name
     }
@@ -3620,6 +3859,58 @@ export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
 export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
 export type GetUsersSuspenseQueryHookResult = ReturnType<typeof useGetUsersSuspenseQuery>;
 export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
+export const GetUserDocument = gql`
+    query GetUser($userId: Float!) {
+  getUser(userId: $userId) {
+    id
+    name
+    email
+    position {
+      id
+      name
+    }
+    role {
+      id
+      name
+    }
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetUserQuery__
+ *
+ * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetUserQuery(baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables> & ({ variables: GetUserQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+      }
+export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+        }
+export function useGetUserSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+        }
+export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
+export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
+export type GetUserSuspenseQueryHookResult = ReturnType<typeof useGetUserSuspenseQuery>;
+export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
 export const GetFirstContractUserByMonthDocument = gql`
     query GetFirstContractUserByMonth($getFirstContractUserByMonthDto: GetRevenuesByUsersDto!) {
   getFirstContractUserByMonth(

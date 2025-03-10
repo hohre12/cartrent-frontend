@@ -1,4 +1,5 @@
 import Button from '@/components/button/Button';
+import { UserPositionHangleEnum } from '@/constants/user';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import { useDeleteTeam, useGetTeam } from '@/services/team';
@@ -71,18 +72,50 @@ const AdminTeamDetail = () => {
           </div>
         </DetailHeaderWrapper>
         <DetailContentWrapper>
-          <div>
-            <div>생성일</div>
+          <TeamBoxWrapper>
+            <h3>팀장</h3>
             <div>{formatDate(detail.created_at) ?? '-'}</div>
-          </div>
-          <div>
-            <div>팀원</div>
+          </TeamBoxWrapper>
+          <TeamBoxWrapper>
+            <h3>생성일</h3>
+            <div>{formatDate(detail.created_at) ?? '-'}</div>
+          </TeamBoxWrapper>
+          <TeamBoxWrapper>
+            <h3>팀원</h3>
             {detail.userList?.length > 0 ? (
-              detail.userList.map((it, idx) => <div key={idx}>{it.name}</div>)
+              <UserBoxWrapper>
+                {detail.userList.map((it, idx) => (
+                  <UserBox
+                    key={idx}
+                    onClick={() => navigate(`/admin/user/${it.id}`)}
+                  >
+                    <div>
+                      <h5>팀원명</h5>
+                      <span>{it.name ?? '-'}</span>
+                    </div>
+                    <div>
+                      <h5>직책</h5>
+                      <span>
+                        {it.position?.name
+                          ? UserPositionHangleEnum[it.position.name]
+                          : '직책없음'}
+                      </span>
+                    </div>
+                    <div>
+                      <h5>Email</h5>
+                      <span>{it.email ?? '-'}</span>
+                    </div>
+                    <div>
+                      <h5>직원생성일</h5>
+                      <span>{formatDate(it.created_at) ?? '-'}</span>
+                    </div>
+                  </UserBox>
+                ))}
+              </UserBoxWrapper>
             ) : (
               <div>소속된 팀원이 없습니다.</div>
             )}
-          </div>
+          </TeamBoxWrapper>
         </DetailContentWrapper>
       </DetailWrapper>
     </>
@@ -94,7 +127,7 @@ export default AdminTeamDetail;
 export const DetailWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  /* gap: 10px; */
   & > h6 {
     font-size: 20px;
   }
@@ -122,4 +155,49 @@ const DetailHeaderWrapper = styled.div`
   }
 `;
 
-const DetailContentWrapper = styled.div``;
+const DetailContentWrapper = styled.div`
+  padding: 20px 30px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  overflow-y: auto;
+  height: calc(100vh - 130px);
+`;
+
+const TeamBoxWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+`;
+
+const UserBoxWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  cursor: pointer;
+`;
+
+const UserBox = styled.div`
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid #ddd;
+  width: 32%;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    h5 {
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+`;

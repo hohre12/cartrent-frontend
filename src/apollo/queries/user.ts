@@ -10,8 +10,44 @@ export const GET_USERS_QUERY = gql`
         id
         name
       }
+      role {
+        id
+        name
+      }
       created_at
       updated_at
+    }
+  }
+`;
+
+export const GET_USER_QUERY = gql`
+  query GetUser($userId: Float!) {
+    getUser(userId: $userId) {
+      id
+      name
+      email
+      position {
+        id
+        name
+      }
+      role {
+        id
+        name
+      }
+      created_at
+      updated_at
+    }
+  }
+`;
+
+export const GET_POSITIONS_QUERY = gql`
+  query GetPositions {
+    getPositions {
+      id
+      name
+      created_at
+      updated_at
+      deleted_at
     }
   }
 `;

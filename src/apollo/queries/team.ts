@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
 /* Query */
-export const GET_TEAM_QUERY = gql`
-  query GetTeam($teamId: Float!) {
-    getTeam(teamId: $teamId) {
+export const GET_TEAMS_QUERY = gql`
+  query GetTeams {
+    getTeams {
       id
       name
       created_at
@@ -17,9 +17,9 @@ export const GET_TEAM_QUERY = gql`
   }
 `;
 
-export const GET_TEAMS_QUERY = gql`
-  query GetTeams {
-    getTeams {
+export const GET_TEAM_QUERY = gql`
+  query GetTeam($teamId: Float!) {
+    getTeam(teamId: $teamId) {
       id
       name
       created_at
@@ -28,6 +28,12 @@ export const GET_TEAMS_QUERY = gql`
       userList {
         id
         name
+        email
+        created_at
+        position {
+          id
+          name
+        }
       }
     }
   }

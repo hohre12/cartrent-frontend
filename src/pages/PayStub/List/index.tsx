@@ -5,57 +5,60 @@ import Button from '@/components/button/Button';
 import { useCallback, useEffect, useState } from 'react';
 import WatchOptionModal from './components/watchOptionModal';
 import SearchBox from '@/components/searchBox/SearchBox';
-import FilterGroup from './components/filter/group';
 import useClickOutside from '@/hooks/useClickOutside';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { TFilterList } from '@/types/common';
 import { Circle, FilterContent, FilterWrapper } from '@/styles/common';
-import { counselFiltersState, selectedCounselState } from '@/state/counsel';
-import { useGetCounsels } from '@/services/counsel';
-import FilterStatus from './components/filter/status';
 import FilterUser from './components/filter/user';
 import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
 import { useNavigationType } from 'react-router-dom';
 import PayStubListTable from './components/table';
+import { payStubFiltersState } from '@/state/payStub';
+import { useGetPayStubs } from '@/services/payStub';
+import FilterPosition from './components/filter/position';
+import Select from '@/components/select/Select';
+import moment from 'moment';
 
 const PayStubList = () => {
   const navigationType = useNavigationType();
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
-  const selectedCounsel = useRecoilValue(selectedCounselState);
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
-  //   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
   const user = useRecoilValue(userState);
+  const currentYear = moment().format('YYYY');
+  const currentMonth = moment().format('MM');
+  const [months, setMonths] = useState<string[]>([]);
 
   // filters
-  const [filters, setFilters] = useRecoilState(counselFiltersState);
-  const resetFilters = useResetRecoilState(counselFiltersState);
+  const [filters, setFilters] = useRecoilState(payStubFiltersState);
+  const resetFilters = useResetRecoilState(payStubFiltersState);
 
-  const { data, loading, error } = useGetCounsels({
+  const { data, loading, error } = useGetPayStubs({
     search: searchText ? searchText : null,
-    customerStatusId:
-      filters?.statuses?.length > 0
-        ? filters.statuses.map((it) => it.value)
+    year: filters.year,
+    month: filters.month,
+    userIds:
+      filters?.userIds?.length > 0
+        ? filters.userIds.map((it) => it.value)
         : null,
-    customerGroupId:
-      filters?.groups?.length > 0 ? filters.groups.map((it) => it.value) : null,
-    userId:
-      filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
+    positionIds:
+      filters?.positionIds?.length > 0
+        ? filters.positionIds.map((it) => it.value)
+        : null,
   });
-
-  // filter - group
-  const [isFilterGroupOpen, setIsFilterGroupOpen] = useState<boolean>(false);
-  const filterGroupRef = useClickOutside(() => setIsFilterGroupOpen(false));
-
-  // filter - status
-  const [isFilterStatusOpen, setIsFilterStatusOpen] = useState<boolean>(false);
-  const filterStatusRef = useClickOutside(() => setIsFilterStatusOpen(false));
 
   // filter - user
   const [isFilterUserOpen, setIsFilterUserOpen] = useState<boolean>(false);
   const filterUserRef = useClickOutside(() => setIsFilterUserOpen(false));
+
+  // filter - position
+  const [isFilterPositionOpen, setIsFilterPositionOpen] =
+    useState<boolean>(false);
+  const filterPositionRef = useClickOutside(() =>
+    setIsFilterPositionOpen(false),
+  );
 
   const handleSearchTextDelete = useCallback(() => {
     setSearchText('');
@@ -68,28 +71,20 @@ const PayStubList = () => {
     [setSearchText],
   );
 
-  const handleSetFilterGroup = useCallback(
-    (selectedFilters: TFilterList<number>[]) => {
-      setFilters({ ...filters, groups: selectedFilters });
-      setIsFilterGroupOpen(false);
-    },
-    [filters, setFilters, setIsFilterGroupOpen],
-  );
-
-  const handleSetFilterStatus = useCallback(
-    (selectedFilters: TFilterList<number>[]) => {
-      setFilters({ ...filters, statuses: selectedFilters });
-      setIsFilterStatusOpen(false);
-    },
-    [filters, setFilters, setIsFilterStatusOpen],
-  );
-
   const handleSetFilterUser = useCallback(
     (selectedFilters: TFilterList<number>[]) => {
-      setFilters({ ...filters, users: selectedFilters });
+      setFilters({ ...filters, userIds: selectedFilters });
       setIsFilterUserOpen(false);
     },
     [filters, setFilters, setIsFilterUserOpen],
+  );
+
+  const handleSetFilterPosition = useCallback(
+    (selectedFilters: TFilterList<number>[]) => {
+      setFilters({ ...filters, positionIds: selectedFilters });
+      setIsFilterPositionOpen(false);
+    },
+    [filters, setFilters, setIsFilterPositionOpen],
   );
 
   useEffect(() => {
@@ -97,6 +92,15 @@ const PayStubList = () => {
       resetFilters();
     }
   }, [navigationType, resetFilters]);
+
+  useEffect(() => {
+    const allMonths = Array.from({ length: 12 }, (_, i) => `${i + 1}월`);
+    if (filters.year === currentYear) {
+      setMonths(allMonths.slice(0, Number(currentMonth)).reverse());
+    } else {
+      setMonths(allMonths.reverse());
+    }
+  }, [filters, setMonths, currentYear, currentMonth]);
 
   return (
     <>
@@ -113,84 +117,97 @@ const PayStubList = () => {
                 onRemoveClick={handleSearchTextDelete}
                 onKeyDown={handleSearch}
                 onRecentClick={handleSearch}
-                keyword="고객명, 상담자, 연락처, 차종, 상담내용, 고객등급, 비고"
+                keyword="담당자, 소속, 직책"
               ></SearchBox>
               <FilterWrapper>
-                <FilterContent ref={filterStatusRef}>
-                  <Button
-                    variant="white"
-                    configuration="stroke"
-                    style={{
-                      borderColor:
-                        filters.statuses.length > 0 ? '#333' : '#ddd',
-                    }}
-                    onClick={() => setIsFilterStatusOpen(!isFilterStatusOpen)}
-                  >
-                    고객상태
-                    {filters.statuses.length > 0 && (
-                      <Circle>{filters.statuses.length}</Circle>
-                    )}
-                    <SvgIcon
-                      iconName="icon-arrowButton"
-                      style={{ fill: '#333' }}
-                    />
-                  </Button>
-                  {isFilterStatusOpen && (
-                    <FilterStatus
-                      handleApply={handleSetFilterStatus}
-                    ></FilterStatus>
-                  )}
-                </FilterContent>
-                <FilterContent ref={filterGroupRef}>
-                  <Button
-                    variant="white"
-                    configuration="stroke"
-                    style={{
-                      borderColor: filters.groups.length > 0 ? '#333' : '#ddd',
-                    }}
-                    onClick={() => setIsFilterGroupOpen(!isFilterGroupOpen)}
-                  >
-                    고객그룹
-                    {filters.groups.length > 0 && (
-                      <Circle>{filters.groups.length}</Circle>
-                    )}
-                    <SvgIcon
-                      iconName="icon-arrowButton"
-                      style={{ fill: '#333' }}
-                    />
-                  </Button>
-                  {isFilterGroupOpen && (
-                    <FilterGroup
-                      handleApply={handleSetFilterGroup}
-                    ></FilterGroup>
-                  )}
-                </FilterContent>
                 {user?.role.name === PermissionType.Admin && (
-                  <FilterContent ref={filterUserRef}>
-                    <Button
-                      variant="white"
-                      configuration="stroke"
-                      style={{
-                        borderColor: filters.users.length > 0 ? '#333' : '#ddd',
-                      }}
-                      onClick={() => setIsFilterUserOpen(!isFilterUserOpen)}
-                    >
-                      담당자
-                      {filters.users.length > 0 && (
-                        <Circle>{filters.users.length}</Circle>
+                  <>
+                    <FilterContent ref={filterUserRef}>
+                      <Button
+                        variant="white"
+                        configuration="stroke"
+                        style={{
+                          borderColor:
+                            filters.userIds.length > 0 ? '#333' : '#ddd',
+                        }}
+                        onClick={() => setIsFilterUserOpen(!isFilterUserOpen)}
+                      >
+                        담당자
+                        {filters.userIds.length > 0 && (
+                          <Circle>{filters.userIds.length}</Circle>
+                        )}
+                        <SvgIcon
+                          iconName="icon-arrowButton"
+                          style={{ fill: '#333' }}
+                        />
+                      </Button>
+                      {isFilterUserOpen && (
+                        <FilterUser
+                          handleApply={handleSetFilterUser}
+                        ></FilterUser>
                       )}
-                      <SvgIcon
-                        iconName="icon-arrowButton"
-                        style={{ fill: '#333' }}
-                      />
-                    </Button>
-                    {isFilterUserOpen && (
-                      <FilterUser
-                        handleApply={handleSetFilterUser}
-                      ></FilterUser>
-                    )}
-                  </FilterContent>
+                    </FilterContent>
+                    <FilterContent ref={filterPositionRef}>
+                      <Button
+                        variant="white"
+                        configuration="stroke"
+                        style={{
+                          borderColor:
+                            filters.positionIds.length > 0 ? '#333' : '#ddd',
+                        }}
+                        onClick={() =>
+                          setIsFilterPositionOpen(!isFilterPositionOpen)
+                        }
+                      >
+                        직책
+                        {filters.positionIds.length > 0 && (
+                          <Circle>{filters.positionIds.length}</Circle>
+                        )}
+                        <SvgIcon
+                          iconName="icon-arrowButton"
+                          style={{ fill: '#333' }}
+                        />
+                      </Button>
+                      {isFilterPositionOpen && (
+                        <FilterPosition
+                          handleApply={handleSetFilterPosition}
+                        ></FilterPosition>
+                      )}
+                    </FilterContent>
+                  </>
                 )}
+                <FilterContent>
+                  <Select
+                    size="medium"
+                    value={`${filters.year}년`}
+                    onChange={(value) => {
+                      setFilters({
+                        ...filters,
+                        year: value.value.replace('년', ''),
+                      });
+                    }}
+                    list={[
+                      `${currentYear}년`,
+                      `${Number(currentYear) - 1}년`,
+                      `${Number(currentYear) - 2}년`,
+                    ]}
+                    placeholder="급여명세서 년도를 선택해주세요"
+                  />
+                </FilterContent>
+                <FilterContent>
+                  <Select
+                    size="medium"
+                    value={`${filters.month}월`}
+                    onChange={(value) => {
+                      setFilters({
+                        ...filters,
+                        month: value.value.replace('월', ''),
+                      });
+                    }}
+                    list={months}
+                    placeholder="급여명세서 년도를 선택해주세요"
+                  />
+                </FilterContent>
               </FilterWrapper>
             </SearchBoxWrapper>
             <FunctionWrapper>
@@ -204,27 +221,23 @@ const PayStubList = () => {
                   <p>보기옵션</p>
                 </Button>
               )}
-              {/* <Button onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}>
-                <SvgIcon iconName="icon-plus" />
-                <p>상담등록</p>
-              </Button> */}
             </FunctionWrapper>
           </ControlWrapper>
         </Header>
         <ListContent>
-          {data && data.getCounsels?.length > 0 ? (
+          {data && data.getPayStubs?.length > 0 ? (
             <>
-              <PayStubListTable data={data.getCounsels}></PayStubListTable>
+              <PayStubListTable data={data.getPayStubs}></PayStubListTable>
             </>
           ) : searchText ? (
             <div className="noList">
               <h2>검색결과 없음</h2>
-              <p>상담내용, 상담자로 검색해주세요.</p>
+              <p>담당자, 소속, 직책으로 검색해주세요.</p>
             </div>
           ) : (
             <div className="noList">
-              <h2>상담 없음</h2>
-              <p>등록된 상담이 없습니다.</p>
+              <h2>급여명세서 없음</h2>
+              <p>해당 년월에 등록된 급여명세서가 없습니다.</p>
             </div>
           )}
         </ListContent>
