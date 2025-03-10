@@ -31,6 +31,7 @@ import AdminUserList from './pages/Admin/User/List';
 import AdminTeamList from './pages/Admin/Team/List';
 import AdminCityList from './pages/Admin/City/List';
 import AdminTeamDetail from './pages/Admin/Team/Detail';
+import AdminUserDetail from './pages/Admin/User/Detail';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -162,6 +163,10 @@ function App() {
             <Route
               path="user"
               element={<AdminUserList />}
+            />
+            <Route
+              path="user/:id"
+              element={<AdminUserDetail />}
             />
             <Route
               path="team"

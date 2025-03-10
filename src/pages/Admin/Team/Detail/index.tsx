@@ -87,7 +87,10 @@ const AdminTeamDetail = () => {
                 <UserBoxWrapper>
                   {detail.userList.map((it, idx) => (
                     <>
-                      <UserBox key={idx}>
+                      <UserBox
+                        key={idx}
+                        onClick={() => navigate(`/admin/user/${it.id}`)}
+                      >
                         <div>
                           <h5>팀원명</h5>
                           <span>{it.name ?? '-'}</span>
@@ -180,6 +183,7 @@ const UserBoxWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  cursor: pointer;
 `;
 
 const UserBox = styled.div`
