@@ -7,6 +7,7 @@ export const GET_PAYSTUBS_QUERY = gql`
       id
       year
       month
+      day
       user {
         id
         name
@@ -46,7 +47,7 @@ export const GET_PAYSTUBS_QUERY = gql`
       totalNetIncomeDelivery
       totalAllowance
       etcIncentive
-      income_tax
+      incomeTax
       actualSalary
     }
   }
@@ -58,6 +59,7 @@ export const GET_PAYSTUB_QUERY = gql`
       id
       year
       month
+      day
       user {
         id
         name
@@ -97,7 +99,7 @@ export const GET_PAYSTUB_QUERY = gql`
       totalNetIncomeDelivery
       totalAllowance
       etcIncentive
-      income_tax
+      incomeTax
       actualSalary
     }
   }

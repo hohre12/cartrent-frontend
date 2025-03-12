@@ -133,8 +133,8 @@ const PayStubDetail = () => {
                 <p
                   style={{ fontSize: '24px', width: '20%', lineHeight: '24px' }}
                 >
-                  {detail.income_tax
-                    ? `${numberFormat(detail.income_tax)}원`
+                  {detail.incomeTax
+                    ? `${numberFormat(detail.incomeTax)}원`
                     : '없음'}
                 </p>
               </AmountInfo>
