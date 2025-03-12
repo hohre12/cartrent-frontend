@@ -203,7 +203,7 @@ const PayStubDetail = () => {
                 위 금액을 지불하였음을 증명함.
               </p>
               <p style={{ fontSize: '36px', lineHeight: '36px' }}>
-                {`${detail.year}년 ${detail.month}월 ${'몇'}일`}
+                {`${detail.year}년 ${detail.month}월 ${detail.day}일`}
               </p>
             </div>
             <p style={{ fontSize: '36px', lineHeight: '36px' }}>

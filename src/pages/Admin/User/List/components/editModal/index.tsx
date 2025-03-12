@@ -37,12 +37,12 @@ const EditModal = (props: TModal & { idx: number }) => {
     if (!userPosition) return;
     try {
       const response = await updateUser({
-        // userId: idx,
+        userId: idx,
         name,
         email,
         // password,
-        // positionId: userPosition.id,
-        // teamId: userTeam?.id,
+        positionId: userPosition.id,
+        teamId: userTeam?.id,
       });
 
       if (response && response.data.updateUser.id) {
