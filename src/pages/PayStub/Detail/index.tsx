@@ -1,22 +1,40 @@
+import { UserPositionHangleEnum } from '@/constants/user';
+import { useGetPayStub } from '@/services/payStub';
+import { numberFormat } from '@/utils/common';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const PayStubDetail = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const payStubIdx = Number(id);
+  const { data, loading, error } = useGetPayStub(payStubIdx);
+  const detail = data?.getPayStub;
+  if (!detail) return <></>;
   return (
     <>
       <DetailWrapper>
         <DetailHeaderWrapper>
           <div className="left">
-            <h2>{`${'직원이름'} 님의 ${'몇월'} 급여명세서`}</h2>
+            <h2>{`${detail.user.name} 님의 ${detail.year}년 ${detail.month}월 급여명세서`}</h2>
           </div>
         </DetailHeaderWrapper>
         <PayStubForm>
           <Title>급여명세서</Title>
           <FlexContainer>
             <LeftSection>
-              <b style={{ fontSize: '48px', marginTop: '20px' }}>테스트</b>
+              <b style={{ fontSize: '48px', marginTop: '20px' }}>
+                {detail.user?.name ? `${detail.user.name}` : '-'}
+              </b>
               <div style={{ textAlign: 'right' }}>
-                <p style={{ fontSize: '24px', lineHeight: '24px' }}>영업팀</p>
-                <p style={{ fontSize: '24px', lineHeight: '24px' }}>과장</p>
+                <p style={{ fontSize: '24px', lineHeight: '24px' }}>
+                  {detail.user?.team?.name ?? '팀 없음'}
+                </p>
+                <p style={{ fontSize: '24px', lineHeight: '24px' }}>
+                  {detail.user?.position
+                    ? UserPositionHangleEnum[detail.user.position.name]
+                    : '-'}
+                </p>
               </div>
             </LeftSection>
             <RightSection>
@@ -24,7 +42,11 @@ const PayStubDetail = () => {
                 <span style={{ fontSize: '36px', lineHeight: '36px' }}>
                   실수령액
                 </span>
-                <p style={{ fontSize: '36px', lineHeight: '36px' }}>1000000</p>
+                <p style={{ fontSize: '36px', lineHeight: '36px' }}>
+                  {detail.actualSalary
+                    ? `${numberFormat(detail.actualSalary)}원`
+                    : '없음'}
+                </p>
               </AmountInfo>
               <AmountInfo>
                 <span
@@ -39,7 +61,9 @@ const PayStubDetail = () => {
                 <p
                   style={{ fontSize: '24px', width: '20%', lineHeight: '24px' }}
                 >
-                  1000000
+                  {detail.totalFeeDelivery
+                    ? `${numberFormat(detail.totalFeeDelivery)}원`
+                    : '없음'}
                 </p>
               </AmountInfo>
               <AmountInfo>
@@ -55,7 +79,63 @@ const PayStubDetail = () => {
                 <p
                   style={{ fontSize: '24px', width: '20%', lineHeight: '24px' }}
                 >
-                  1000000
+                  {detail.totalExpenditureDelivery
+                    ? `${numberFormat(detail.totalExpenditureDelivery)}원`
+                    : '없음'}
+                </p>
+              </AmountInfo>
+              <AmountInfo>
+                <span
+                  style={{
+                    color: '#999',
+                    fontSize: '24px',
+                    lineHeight: '24px',
+                  }}
+                >
+                  정산합계
+                </span>
+                <p
+                  style={{ fontSize: '24px', width: '20%', lineHeight: '24px' }}
+                >
+                  {detail.totalNetIncomeDelivery
+                    ? `${numberFormat(detail.totalNetIncomeDelivery)}원`
+                    : '없음'}
+                </p>
+              </AmountInfo>
+              <AmountInfo>
+                <span
+                  style={{
+                    color: '#999',
+                    fontSize: '24px',
+                    lineHeight: '24px',
+                  }}
+                >
+                  수당합계
+                </span>
+                <p
+                  style={{ fontSize: '24px', width: '20%', lineHeight: '24px' }}
+                >
+                  {detail.totalAllowance
+                    ? `${numberFormat(detail.totalAllowance)}원`
+                    : '없음'}
+                </p>
+              </AmountInfo>
+              <AmountInfo>
+                <span
+                  style={{
+                    color: '#999',
+                    fontSize: '24px',
+                    lineHeight: '24px',
+                  }}
+                >
+                  소득세
+                </span>
+                <p
+                  style={{ fontSize: '24px', width: '20%', lineHeight: '24px' }}
+                >
+                  {detail.income_tax
+                    ? `${numberFormat(detail.income_tax)}원`
+                    : '없음'}
                 </p>
               </AmountInfo>
             </RightSection>
@@ -75,14 +155,20 @@ const PayStubDetail = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <Td>2월 9일</Td>
-                <Td>테스트</Td>
-                <Td>테스트</Td>
-                <Td>100000</Td>
-                <Td>100000</Td>
-                <Td>100000</Td>
-              </tr>
+              {detail.contracts?.map((it, idx) => (
+                <tr key={idx}>
+                  <Td>{it.shippingDate}</Td>
+                  <Td>{it.customer?.name ?? '-'}</Td>
+                  <Td>{it.carName ?? '-'}</Td>
+                  <Td>{numberFormat(it.carPrice)}</Td>
+                  <Td>{numberFormat(it.totalFee)}</Td>
+                  <Td>
+                    {numberFormat(
+                      (it.cashAssistance ?? 0) + (it.businessExpenses ?? 0),
+                    )}
+                  </Td>
+                </tr>
+              ))}
             </tbody>
           </Table>
           <SectionTitle style={{ marginTop: '150px' }}>
@@ -94,25 +180,30 @@ const PayStubDetail = () => {
               <tr>
                 <Th>출고일</Th>
                 <Th>고객명</Th>
-                <Th>내용</Th>
+                <Th>내용1</Th>
+                <Th>내용2</Th>
+                <Th>내용3</Th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <Td>2월 9일</Td>
-                <Td>테스트</Td>
-                <Td>메모</Td>
-              </tr>
+              {detail.contracts?.map((it, idx) => (
+                <tr key={idx}>
+                  <Td>{it.shippingDate}</Td>
+                  <Td>{it.customer?.name ?? '-'}</Td>
+                  <Td>{it.serviceBody1 ?? '-'}</Td>
+                  <Td>{it.serviceBody2 ?? '-'}</Td>
+                  <Td>{it.serviceBody3 ?? '-'}</Td>
+                </tr>
+              ))}
             </tbody>
           </Table>
-
           <Footer>
             <div>
               <p style={{ fontSize: '36px', lineHeight: '36px' }}>
                 위 금액을 지불하였음을 증명함.
               </p>
               <p style={{ fontSize: '36px', lineHeight: '36px' }}>
-                2025년 2월 9일
+                {`${detail.year}년 ${detail.month}월 ${'몇'}일`}
               </p>
             </div>
             <p style={{ fontSize: '36px', lineHeight: '36px' }}>

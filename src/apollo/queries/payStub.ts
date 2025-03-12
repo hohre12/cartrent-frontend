@@ -8,6 +8,12 @@ export const GET_PAYSTUBS_QUERY = gql`
       year
       month
       user {
+        id
+        name
+        team {
+          id
+          name
+        }
         position {
           id
           name
@@ -23,13 +29,17 @@ export const GET_PAYSTUBS_QUERY = gql`
         carName
         carPrice
         fee
+        promotion
         cashAssistance
+        businessExpenses
         service1
         service2
         service3
         serviceBody1
         serviceBody2
         serviceBody3
+        netIncome
+        totalFee
       }
       totalFeeDelivery
       totalExpenditureDelivery
@@ -49,6 +59,12 @@ export const GET_PAYSTUB_QUERY = gql`
       year
       month
       user {
+        id
+        name
+        team {
+          id
+          name
+        }
         position {
           id
           name
@@ -64,13 +80,17 @@ export const GET_PAYSTUB_QUERY = gql`
         carName
         carPrice
         fee
+        promotion
         cashAssistance
+        businessExpenses
         service1
         service2
         service3
         serviceBody1
         serviceBody2
         serviceBody3
+        netIncome
+        totalFee
       }
       totalFeeDelivery
       totalExpenditureDelivery

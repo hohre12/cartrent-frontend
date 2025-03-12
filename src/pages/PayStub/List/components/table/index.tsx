@@ -2,6 +2,7 @@ import {
   PAYSTUB_LIST_WATCH_OPTIONS,
   PAYSTUB_LIST_WATCH_REQUIRED_OPTIONS,
 } from '@/constants/payStub';
+import { UserPositionHangleEnum } from '@/constants/user';
 import { userState } from '@/state/auth';
 import { selectedPayStubHideWatchOptionsState } from '@/state/payStub';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
@@ -69,12 +70,18 @@ const PayStubListTable = ({ data }: TTableProps) => {
               selectedPayStubHideWatchOptions,
               'teamName',
               isHideColumn('teamName'),
-            ) && <td>{it.user?.name ?? '-'}</td>}
+            ) && <td>{it.user?.team?.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedPayStubHideWatchOptions,
               'position',
               isHideColumn('position'),
-            ) && <td>{it.user?.position?.name ?? '-'}</td>}
+            ) && (
+              <td>
+                {it.user?.position?.name
+                  ? UserPositionHangleEnum[it.user.position.name]
+                  : '-'}
+              </td>
+            )}
           </TableItem>
         ))}
       </tbody>

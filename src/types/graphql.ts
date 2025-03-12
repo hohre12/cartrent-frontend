@@ -71,6 +71,12 @@ export type AuthPayload = {
   user?: Maybe<User>;
 };
 
+export type CheckSettleContractDto = {
+  contractId?: InputMaybe<Scalars['Int']['input']>;
+  month?: InputMaybe<Scalars['String']['input']>;
+  year?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** 도시 */
 export type City = {
   id: Scalars['Int']['output'];
@@ -503,6 +509,7 @@ export type FirstContractCountUser = {
   password: Scalars['String']['output'];
   position: Position;
   role: Role;
+  team?: Maybe<Team>;
   totalRevenue: Scalars['Int']['output'];
   updated_at?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -521,6 +528,7 @@ export type FirstRevenueUser = {
   password: Scalars['String']['output'];
   position: Position;
   role: Role;
+  team?: Maybe<Team>;
   totalRevenue: Scalars['Int']['output'];
   updated_at?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -901,7 +909,7 @@ export type Notification = {
 
 /** 급여명세서 */
 export type PayStub = {
-  /** 실수령액 */
+  /** 실수령액 - 수당합계 - 소득세 */
   actualSalary: Scalars['Int']['output'];
   contracts?: Maybe<Array<Contract>>;
   created_at?: Maybe<Scalars['DateTime']['output']>;
@@ -909,19 +917,19 @@ export type PayStub = {
   /** 기타수당 */
   etcIncentive?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
-  /** 소득세 */
+  /** 소득세 - 수당합계 * 0.033 */
   income_tax: Scalars['Int']['output'];
   /** 월 */
   month: Scalars['String']['output'];
-  /** 수당합계 */
+  /** 수당합계 - 출고수당 합계 + 추가수당 합계 + 기타수당 합계 */
   totalAllowance?: Maybe<Scalars['Int']['output']>;
-  /** 출고 총 지출 */
+  /** 지원합계 - 출고지출 합계 */
   totalExpenditureDelivery: Scalars['Int']['output'];
-  /** 출고 총 총매출 */
+  /** 매출합계 - 출고매출 합계 */
   totalFeeDelivery: Scalars['Int']['output'];
-  /** 출고 수당 / 직급별 인센티브 */
+  /** 출고 수당의 직급별 인센티브 */
   totalIncentiveDelivery?: Maybe<Scalars['Int']['output']>;
-  /** 출고 총 순매출 */
+  /** 정산합계 - 출고순익 합계 */
   totalNetIncomeDelivery: Scalars['Int']['output'];
   updated_at?: Maybe<Scalars['DateTime']['output']>;
   user: User;
@@ -964,6 +972,8 @@ export enum PositionType {
 }
 
 export type Query = {
+  /** 계약 정산 유무 */
+  checkSettleContract: Scalars['Boolean']['output'];
   /** 정산 리스트 조회 */
   getAdjustments: Array<Adjustment>;
   /** 도시 리스트 조회 */
@@ -1025,6 +1035,11 @@ export type Query = {
   /** 담당자 리스트 */
   getUsers: Array<User>;
   userInfo: Scalars['String']['output'];
+};
+
+
+export type QueryCheckSettleContractArgs = {
+  checkSettleContractDto: CheckSettleContractDto;
 };
 
 
@@ -1376,6 +1391,7 @@ export type User = {
   password: Scalars['String']['output'];
   position: Position;
   role: Role;
+  team?: Maybe<Team>;
   totalRevenue: Scalars['Int']['output'];
   updated_at?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -1544,6 +1560,13 @@ export type CreateCustomerGradeMutationVariables = Exact<{
 
 export type CreateCustomerGradeMutation = { createCustomerGrade: { id: number } };
 
+export type CreatePayStubMutationVariables = Exact<{
+  createPayStubDto: CreatePayStubDto;
+}>;
+
+
+export type CreatePayStubMutation = { createPayStub: boolean };
+
 export type CreateTeamMutationVariables = Exact<{
   createTeamDto: CreateTeamDto;
 }>;
@@ -1702,6 +1725,11 @@ export type GetUserQueryVariables = Exact<{
 
 
 export type GetUserQuery = { getUser: { id: number, name: string, email: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType } } };
+
+export type GetPositionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPositionsQuery = { getPositions: Array<{ id: number, name: PositionType, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null }> };
 
 export type GetFirstContractUserByMonthQueryVariables = Exact<{
   getFirstContractUserByMonthDto: GetRevenuesByUsersDto;
@@ -2505,6 +2533,37 @@ export function useCreateCustomerGradeMutation(baseOptions?: Apollo.MutationHook
 export type CreateCustomerGradeMutationHookResult = ReturnType<typeof useCreateCustomerGradeMutation>;
 export type CreateCustomerGradeMutationResult = Apollo.MutationResult<CreateCustomerGradeMutation>;
 export type CreateCustomerGradeMutationOptions = Apollo.BaseMutationOptions<CreateCustomerGradeMutation, CreateCustomerGradeMutationVariables>;
+export const CreatePayStubDocument = gql`
+    mutation CreatePayStub($createPayStubDto: CreatePayStubDto!) {
+  createPayStub(createPayStubDto: $createPayStubDto)
+}
+    `;
+export type CreatePayStubMutationFn = Apollo.MutationFunction<CreatePayStubMutation, CreatePayStubMutationVariables>;
+
+/**
+ * __useCreatePayStubMutation__
+ *
+ * To run a mutation, you first call `useCreatePayStubMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePayStubMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPayStubMutation, { data, loading, error }] = useCreatePayStubMutation({
+ *   variables: {
+ *      createPayStubDto: // value for 'createPayStubDto'
+ *   },
+ * });
+ */
+export function useCreatePayStubMutation(baseOptions?: Apollo.MutationHookOptions<CreatePayStubMutation, CreatePayStubMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreatePayStubMutation, CreatePayStubMutationVariables>(CreatePayStubDocument, options);
+      }
+export type CreatePayStubMutationHookResult = ReturnType<typeof useCreatePayStubMutation>;
+export type CreatePayStubMutationResult = Apollo.MutationResult<CreatePayStubMutation>;
+export type CreatePayStubMutationOptions = Apollo.BaseMutationOptions<CreatePayStubMutation, CreatePayStubMutationVariables>;
 export const CreateTeamDocument = gql`
     mutation CreateTeam($createTeamDto: CreateTeamDto!) {
   createTeam(createTeamDto: $createTeamDto) {
@@ -3911,6 +3970,49 @@ export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
 export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
 export type GetUserSuspenseQueryHookResult = ReturnType<typeof useGetUserSuspenseQuery>;
 export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
+export const GetPositionsDocument = gql`
+    query GetPositions {
+  getPositions {
+    id
+    name
+    created_at
+    updated_at
+    deleted_at
+  }
+}
+    `;
+
+/**
+ * __useGetPositionsQuery__
+ *
+ * To run a query within a React component, call `useGetPositionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPositionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPositionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPositionsQuery(baseOptions?: Apollo.QueryHookOptions<GetPositionsQuery, GetPositionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPositionsQuery, GetPositionsQueryVariables>(GetPositionsDocument, options);
+      }
+export function useGetPositionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPositionsQuery, GetPositionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPositionsQuery, GetPositionsQueryVariables>(GetPositionsDocument, options);
+        }
+export function useGetPositionsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPositionsQuery, GetPositionsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetPositionsQuery, GetPositionsQueryVariables>(GetPositionsDocument, options);
+        }
+export type GetPositionsQueryHookResult = ReturnType<typeof useGetPositionsQuery>;
+export type GetPositionsLazyQueryHookResult = ReturnType<typeof useGetPositionsLazyQuery>;
+export type GetPositionsSuspenseQueryHookResult = ReturnType<typeof useGetPositionsSuspenseQuery>;
+export type GetPositionsQueryResult = Apollo.QueryResult<GetPositionsQuery, GetPositionsQueryVariables>;
 export const GetFirstContractUserByMonthDocument = gql`
     query GetFirstContractUserByMonth($getFirstContractUserByMonthDto: GetRevenuesByUsersDto!) {
   getFirstContractUserByMonth(

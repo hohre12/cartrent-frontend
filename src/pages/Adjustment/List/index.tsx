@@ -30,7 +30,7 @@ const AdjustmentList = () => {
     useState<boolean>(false);
   const user = useRecoilValue(userState);
   const currentYear = moment().format('YYYY');
-  const currentMonth = moment().format('MM');
+  const currentMonth = moment().format('M');
   const [months, setMonths] = useState<string[]>([]);
   const [submit, setSubmit] = useState<boolean>(false);
   const { addToast } = useToast();

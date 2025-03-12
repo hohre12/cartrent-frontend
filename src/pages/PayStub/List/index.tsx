@@ -28,7 +28,7 @@ const PayStubList = () => {
     useState<boolean>(false);
   const user = useRecoilValue(userState);
   const currentYear = moment().format('YYYY');
-  const currentMonth = moment().format('MM');
+  const currentMonth = moment().format('M');
   const [months, setMonths] = useState<string[]>([]);
 
   // filters

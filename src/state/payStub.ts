@@ -3,7 +3,7 @@ import moment from 'moment';
 import { atom } from 'recoil';
 
 const currentYear = moment().format('YYYY');
-const currentMonth = moment().format('MM');
+const currentMonth = moment().format('M');
 
 export const selectedPayStubHideWatchOptionsState = atom<string[]>({
   key: 'selectedPayStubHideWatchOptionsState',
