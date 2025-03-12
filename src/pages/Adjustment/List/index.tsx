@@ -18,7 +18,7 @@ import { PermissionType } from '@/types/graphql';
 import { useNavigationType } from 'react-router-dom';
 import Select from '@/components/select/Select';
 import moment from 'moment';
-import { useCreatePayStub } from '@/services/payStub';
+import { useCheckSettleContract, useCreatePayStub } from '@/services/payStub';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 
@@ -41,6 +41,11 @@ const AdjustmentList = () => {
   // filters
   const [filters, setFilters] = useRecoilState(adjustmentFiltersState);
   const resetFilters = useResetRecoilState(adjustmentFiltersState);
+
+  const { data: isCheckSettleContract } = useCheckSettleContract({
+    year: filters.year,
+    month: filters.month,
+  });
 
   const { data, loading, error } = useGetAdjustments({
     search: searchText ? searchText : null,
@@ -206,8 +211,8 @@ const AdjustmentList = () => {
                         onConfirm: handlePayStubRegist,
                       })
                     }
+                    disabled={isCheckSettleContract?.checkSettleContract}
                   >
-                    <SvgIcon iconName="icon-expense" />
                     <p>급여명세서 발행</p>
                   </Button>
                   <Button

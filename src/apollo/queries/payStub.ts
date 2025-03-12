@@ -102,4 +102,10 @@ export const GET_PAYSTUB_QUERY = gql`
     }
   }
 `;
+
+export const CHECK_SETTLE_CONTRACT_QUERY = gql`
+  query CheckSettleContract($checkSettleContractDto: CheckSettleContractDto!) {
+    checkSettleContract(checkSettleContractDto: $checkSettleContractDto)
+  }
+`;
 /* Query */

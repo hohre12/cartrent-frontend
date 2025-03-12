@@ -1,9 +1,15 @@
 import { CREATE_PAY_STUB_MUTATION } from '@/apollo/mutations/payStub';
 import {
+  CHECK_SETTLE_CONTRACT_QUERY,
   GET_PAYSTUB_QUERY,
   GET_PAYSTUBS_QUERY,
 } from '@/apollo/queries/payStub';
-import { CreatePayStubDto, GetPayStubDto, PayStub } from '@/types/graphql';
+import {
+  CheckSettleContractDto,
+  CreatePayStubDto,
+  GetPayStubDto,
+  PayStub,
+} from '@/types/graphql';
 import { useMutation, useQuery } from '@apollo/client';
 
 export const useGetPayStubs = (params: GetPayStubDto) => {
@@ -39,4 +45,14 @@ export const useCreatePayStub = () => {
     });
   };
   return { createPayStub };
+};
+
+export const useCheckSettleContract = (params: CheckSettleContractDto) => {
+  return useQuery<
+    { checkSettleContract: boolean },
+    { checkSettleContractDto: CheckSettleContractDto }
+  >(CHECK_SETTLE_CONTRACT_QUERY, {
+    variables: { checkSettleContractDto: params },
+    fetchPolicy: 'network-only',
+  });
 };

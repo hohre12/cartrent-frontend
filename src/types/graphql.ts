@@ -693,7 +693,7 @@ export type Mutation = {
   updateSupportAmount: SupportAmount;
   /** 팀 수정 */
   updateTeam: Team;
-  /** 유저 정보 수정 */
+  /** 유저 정보 수정 / 관리자 */
   updateUser: User;
 };
 
@@ -879,7 +879,7 @@ export type MutationUpdateCustomerStatusArgs = {
 
 
 export type MutationUpdateMyInfoArgs = {
-  updateUserDto: UpdateUserDto;
+  updateUserMyInfoDto: UpdateUserMyInfoDto;
 };
 
 
@@ -894,7 +894,7 @@ export type MutationUpdateTeamArgs = {
 
 
 export type MutationUpdateUserArgs = {
-  updateUserInfoDto: UpdateUserInfoDto;
+  updateUserDto: UpdateUserDto;
 };
 
 /** 알림 */
@@ -913,6 +913,7 @@ export type PayStub = {
   actualSalary: Scalars['Int']['output'];
   contracts?: Maybe<Array<Contract>>;
   created_at?: Maybe<Scalars['DateTime']['output']>;
+  day?: Maybe<Scalars['String']['output']>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
   /** 기타수당 */
   etcIncentive?: Maybe<Scalars['Int']['output']>;
@@ -1369,17 +1370,14 @@ export type UpdateUserDto = {
   email: Scalars['String']['input'];
   /** 이름 */
   name: Scalars['String']['input'];
-  /** 비밀번호 */
-  password: Scalars['String']['input'];
-};
-
-export type UpdateUserInfoDto = {
-  email?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  password?: InputMaybe<Scalars['String']['input']>;
   positionId?: InputMaybe<Scalars['Int']['input']>;
   teamId?: InputMaybe<Scalars['Int']['input']>;
   userId: Scalars['Int']['input'];
+};
+
+export type UpdateUserMyInfoDto = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type User = {
@@ -1449,7 +1447,7 @@ export type RefreshMutationVariables = Exact<{
 export type RefreshMutation = { refresh: { accessToken: string, refreshToken?: string | null, user?: { id: number, name: string, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType } } | null } };
 
 export type UpdateMyInfoMutationVariables = Exact<{
-  updateUserDto: UpdateUserDto;
+  updateUserMyInfoDto: UpdateUserMyInfoDto;
 }>;
 
 
@@ -1588,6 +1586,27 @@ export type DeleteTeamMutationVariables = Exact<{
 
 export type DeleteTeamMutation = { deleteTeam: boolean };
 
+export type CreateUserMutationVariables = Exact<{
+  createUserDto: CreateUserDto;
+}>;
+
+
+export type CreateUserMutation = { createUser: { id: number } };
+
+export type UpdateUserMutationVariables = Exact<{
+  updateUserDto: UpdateUserDto;
+}>;
+
+
+export type UpdateUserMutation = { updateUser: { id: number } };
+
+export type DeleteUserMutationVariables = Exact<{
+  userId: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteUserMutation = { deleteUser: boolean };
+
 export type GetAdjustmentsQueryVariables = Exact<{
   getAdjustmentsDto: GetAdjustmentsDto;
 }>;
@@ -1693,14 +1712,21 @@ export type GetPayStubsQueryVariables = Exact<{
 }>;
 
 
-export type GetPayStubsQuery = { getPayStubs: Array<{ id: number, year: string, month: string, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, income_tax: number, actualSalary: number, user: { position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, cashAssistance?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, customer: { id: number, name: string } }> | null }> };
+export type GetPayStubsQuery = { getPayStubs: Array<{ id: number, year: string, month: string, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, income_tax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string } }> | null }> };
 
 export type GetPayStubQueryVariables = Exact<{
   payStubId: Scalars['Float']['input'];
 }>;
 
 
-export type GetPayStubQuery = { getPayStub: { id: number, year: string, month: string, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, income_tax: number, actualSalary: number, user: { position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, cashAssistance?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, customer: { id: number, name: string } }> | null } };
+export type GetPayStubQuery = { getPayStub: { id: number, year: string, month: string, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, income_tax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string } }> | null } };
+
+export type QueryQueryVariables = Exact<{
+  checkSettleContractDto: CheckSettleContractDto;
+}>;
+
+
+export type QueryQuery = { checkSettleContract: boolean };
 
 export type GetTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1717,14 +1743,14 @@ export type GetTeamQuery = { getTeam: { id: number, name: string, created_at?: s
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUsersQuery = { getUsers: Array<{ id: number, name: string, email: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType } }> };
+export type GetUsersQuery = { getUsers: Array<{ id: number, name: string, email: string, password: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType } }> };
 
 export type GetUserQueryVariables = Exact<{
   userId: Scalars['Float']['input'];
 }>;
 
 
-export type GetUserQuery = { getUser: { id: number, name: string, email: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType } } };
+export type GetUserQuery = { getUser: { id: number, name: string, email: string, password: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType }, team?: { id: number, name: string } | null } };
 
 export type GetPositionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2009,8 +2035,8 @@ export type RefreshMutationHookResult = ReturnType<typeof useRefreshMutation>;
 export type RefreshMutationResult = Apollo.MutationResult<RefreshMutation>;
 export type RefreshMutationOptions = Apollo.BaseMutationOptions<RefreshMutation, RefreshMutationVariables>;
 export const UpdateMyInfoDocument = gql`
-    mutation UpdateMyInfo($updateUserDto: UpdateUserDto!) {
-  updateMyInfo(updateUserDto: $updateUserDto) {
+    mutation UpdateMyInfo($updateUserMyInfoDto: UpdateUserMyInfoDto!) {
+  updateMyInfo(updateUserMyInfoDto: $updateUserMyInfoDto) {
     user {
       name
       id
@@ -2033,7 +2059,7 @@ export type UpdateMyInfoMutationFn = Apollo.MutationFunction<UpdateMyInfoMutatio
  * @example
  * const [updateMyInfoMutation, { data, loading, error }] = useUpdateMyInfoMutation({
  *   variables: {
- *      updateUserDto: // value for 'updateUserDto'
+ *      updateUserMyInfoDto: // value for 'updateUserMyInfoDto'
  *   },
  * });
  */
@@ -2661,6 +2687,103 @@ export function useDeleteTeamMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteTeamMutationHookResult = ReturnType<typeof useDeleteTeamMutation>;
 export type DeleteTeamMutationResult = Apollo.MutationResult<DeleteTeamMutation>;
 export type DeleteTeamMutationOptions = Apollo.BaseMutationOptions<DeleteTeamMutation, DeleteTeamMutationVariables>;
+export const CreateUserDocument = gql`
+    mutation CreateUser($createUserDto: CreateUserDto!) {
+  createUser(createUserDto: $createUserDto) {
+    id
+  }
+}
+    `;
+export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
+
+/**
+ * __useCreateUserMutation__
+ *
+ * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
+ *   variables: {
+ *      createUserDto: // value for 'createUserDto'
+ *   },
+ * });
+ */
+export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, options);
+      }
+export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
+export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
+export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($updateUserDto: UpdateUserDto!) {
+  updateUser(updateUserDto: $updateUserDto) {
+    id
+  }
+}
+    `;
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      updateUserDto: // value for 'updateUserDto'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const DeleteUserDocument = gql`
+    mutation DeleteUser($userId: Float!) {
+  deleteUser(userId: $userId)
+}
+    `;
+export type DeleteUserMutationFn = Apollo.MutationFunction<DeleteUserMutation, DeleteUserMutationVariables>;
+
+/**
+ * __useDeleteUserMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useDeleteUserMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserMutation, DeleteUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteUserMutation, DeleteUserMutationVariables>(DeleteUserDocument, options);
+      }
+export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
+export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
+export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
 export const GetAdjustmentsDocument = gql`
     query GetAdjustments($getAdjustmentsDto: GetAdjustmentsDto!) {
   getAdjustments(getAdjustmentsDto: $getAdjustmentsDto) {
@@ -3627,6 +3750,12 @@ export const GetPayStubsDocument = gql`
     year
     month
     user {
+      id
+      name
+      team {
+        id
+        name
+      }
       position {
         id
         name
@@ -3642,13 +3771,17 @@ export const GetPayStubsDocument = gql`
       carName
       carPrice
       fee
+      promotion
       cashAssistance
+      businessExpenses
       service1
       service2
       service3
       serviceBody1
       serviceBody2
       serviceBody3
+      netIncome
+      totalFee
     }
     totalFeeDelivery
     totalExpenditureDelivery
@@ -3700,6 +3833,12 @@ export const GetPayStubDocument = gql`
     year
     month
     user {
+      id
+      name
+      team {
+        id
+        name
+      }
       position {
         id
         name
@@ -3715,13 +3854,17 @@ export const GetPayStubDocument = gql`
       carName
       carPrice
       fee
+      promotion
       cashAssistance
+      businessExpenses
       service1
       service2
       service3
       serviceBody1
       serviceBody2
       serviceBody3
+      netIncome
+      totalFee
     }
     totalFeeDelivery
     totalExpenditureDelivery
@@ -3766,6 +3909,44 @@ export type GetPayStubQueryHookResult = ReturnType<typeof useGetPayStubQuery>;
 export type GetPayStubLazyQueryHookResult = ReturnType<typeof useGetPayStubLazyQuery>;
 export type GetPayStubSuspenseQueryHookResult = ReturnType<typeof useGetPayStubSuspenseQuery>;
 export type GetPayStubQueryResult = Apollo.QueryResult<GetPayStubQuery, GetPayStubQueryVariables>;
+export const QueryDocument = gql`
+    query Query($checkSettleContractDto: CheckSettleContractDto!) {
+  checkSettleContract(checkSettleContractDto: $checkSettleContractDto)
+}
+    `;
+
+/**
+ * __useQueryQuery__
+ *
+ * To run a query within a React component, call `useQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useQueryQuery({
+ *   variables: {
+ *      checkSettleContractDto: // value for 'checkSettleContractDto'
+ *   },
+ * });
+ */
+export function useQueryQuery(baseOptions: Apollo.QueryHookOptions<QueryQuery, QueryQueryVariables> & ({ variables: QueryQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<QueryQuery, QueryQueryVariables>(QueryDocument, options);
+      }
+export function useQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<QueryQuery, QueryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<QueryQuery, QueryQueryVariables>(QueryDocument, options);
+        }
+export function useQuerySuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<QueryQuery, QueryQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<QueryQuery, QueryQueryVariables>(QueryDocument, options);
+        }
+export type QueryQueryHookResult = ReturnType<typeof useQueryQuery>;
+export type QueryLazyQueryHookResult = ReturnType<typeof useQueryLazyQuery>;
+export type QuerySuspenseQueryHookResult = ReturnType<typeof useQuerySuspenseQuery>;
+export type QueryQueryResult = Apollo.QueryResult<QueryQuery, QueryQueryVariables>;
 export const GetTeamsDocument = gql`
     query GetTeams {
   getTeams {
@@ -3873,6 +4054,7 @@ export const GetUsersDocument = gql`
     id
     name
     email
+    password
     position {
       id
       name
@@ -3924,11 +4106,16 @@ export const GetUserDocument = gql`
     id
     name
     email
+    password
     position {
       id
       name
     }
     role {
+      id
+      name
+    }
+    team {
       id
       name
     }
