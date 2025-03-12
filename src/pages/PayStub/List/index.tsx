@@ -117,7 +117,7 @@ const PayStubList = () => {
                 onRemoveClick={handleSearchTextDelete}
                 onKeyDown={handleSearch}
                 onRecentClick={handleSearch}
-                keyword="담당자, 소속, 직책"
+                keyword="담당자, 소속"
               ></SearchBox>
               <FilterWrapper>
                 {user?.role.name === PermissionType.Admin && (
@@ -232,12 +232,15 @@ const PayStubList = () => {
           ) : searchText ? (
             <div className="noList">
               <h2>검색결과 없음</h2>
-              <p>담당자, 소속, 직책으로 검색해주세요.</p>
+              <p>담당자, 소속으로 검색해주세요.</p>
             </div>
           ) : (
             <div className="noList">
               <h2>급여명세서 없음</h2>
-              <p>해당 년월에 등록된 급여명세서가 없습니다.</p>
+              <p>
+                {`${filters.year}년 ${filters.month}월`}에 등록된 급여명세서가
+                없습니다.
+              </p>
             </div>
           )}
         </ListContent>

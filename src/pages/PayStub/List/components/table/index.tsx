@@ -60,7 +60,7 @@ const PayStubListTable = ({ data }: TTableProps) => {
               selectedPayStubHideWatchOptions,
               'month',
               isHideColumn('month'),
-            ) && <td className="name">{it.month ? `${it.month}년` : '-'}</td>}
+            ) && <td className="name">{it.month ? `${it.month}월` : '-'}</td>}
             {!isColumnsViewHide(
               selectedPayStubHideWatchOptions,
               'userName',
