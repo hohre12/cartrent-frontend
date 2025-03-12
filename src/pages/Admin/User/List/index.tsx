@@ -3,9 +3,13 @@ import { useGetUsers } from '@/services/user';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import styled from 'styled-components';
 import UserListTable from './components/table';
+import { useState } from 'react';
+import RegistModal from './components/registModal';
 
 const AdminUserList = () => {
   const { data, loading, error } = useGetUsers();
+  const [isOpenRegistUserModal, setIsOpenRegistUserModal] =
+    useState<boolean>(false);
   return (
     <>
       <ListWrapper>
@@ -13,7 +17,9 @@ const AdminUserList = () => {
           <h2>직원목록</h2>
           <ControlWrapper>
             <FunctionWrapper>
-              <Button>
+              <Button
+                onClick={() => setIsOpenRegistUserModal(!isOpenRegistUserModal)}
+              >
                 <p>직원생성</p>
               </Button>
             </FunctionWrapper>
@@ -32,6 +38,13 @@ const AdminUserList = () => {
           )}
         </ListContent>
       </ListWrapper>
+      {isOpenRegistUserModal && (
+        <RegistModal
+          isOpen={isOpenRegistUserModal}
+          onCancel={() => setIsOpenRegistUserModal(false)}
+          onConfirm={() => setIsOpenRegistUserModal(false)}
+        ></RegistModal>
+      )}
     </>
   );
 };
