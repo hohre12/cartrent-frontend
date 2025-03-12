@@ -1,3 +1,7 @@
+import Button from '@/components/button/Button';
+import { useConfirm } from '@/hooks/useConfirm';
+import { useToast } from '@/hooks/useToast';
+import { useDeleteCity } from '@/services/city';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
 import { City, Team } from '@/types/graphql';
@@ -10,12 +14,40 @@ type TTableProps = {
 
 const CityListTable = ({ data }: TTableProps) => {
   const navigate = useNavigate();
+  const { showConfirm, hideConfirm } = useConfirm();
+  const { addToast } = useToast();
+  const { deleteCity } = useDeleteCity();
+  const handleDeleteCity = async (idx: City['id']) => {
+    try {
+      const response = await deleteCity(idx);
+      if (response && response.data.deleteCity === 'success') {
+        hideConfirm();
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `지역이 삭제되었습니다.`,
+          type: 'success',
+        });
+      } else {
+        hideConfirm();
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `지역내 진행중인 계약건이 있어 삭제가 불가능합니다.`,
+          type: 'error',
+        });
+      }
+    } catch (e) {
+      console.warn(e);
+    }
+  };
   return (
     <>
       <TableWrapper>
         <thead>
           <TableHeader>
             <th>지역명</th>
+            <th>삭제</th>
           </TableHeader>
         </thead>
         <tbody>
@@ -25,6 +57,26 @@ const CityListTable = ({ data }: TTableProps) => {
               //   onClick={() => navigate(`${it.id}`)}
             >
               <td className="name">{it.name}</td>
+              <td>
+                <Button
+                  variant="black"
+                  onClick={() =>
+                    showConfirm({
+                      isOpen: true,
+                      title: '지역 삭제',
+                      content: `${it.name} 지역을 삭제하시겠습니까?`,
+                      cancelText: '취소',
+                      confirmText: '삭제',
+                      confirmVariant: 'primaryDanger',
+                      onClose: hideConfirm,
+                      onCancel: hideConfirm,
+                      onConfirm: () => handleDeleteCity(it.id),
+                    })
+                  }
+                >
+                  삭제
+                </Button>
+              </td>
             </TableItem>
           ))}
         </tbody>
