@@ -35,6 +35,7 @@ import styled from 'styled-components';
 import _ from 'lodash';
 import { userState } from '@/state/auth';
 import { useRecoilValue } from 'recoil';
+import { useCheckSettleContract } from '@/services/payStub';
 
 const ContractDetail = () => {
   const { id } = useParams();
@@ -70,6 +71,9 @@ const ContractDetail = () => {
 
   const { updateContractMutation } = useUpdateContract();
   const { deleteContractMutation } = useDeleteContract();
+  const { data: isCheckSettleContract } = useCheckSettleContract({
+    contractId: contractIdx,
+  });
 
   const handleValueChange = (value: string | number | boolean, key: string) => {
     if (
@@ -249,10 +253,16 @@ const ContractDetail = () => {
                         onConfirm: handleDeleteContract,
                       })
                     }
+                    disabled={isCheckSettleContract?.checkSettleContract}
                   >
                     삭제
                   </Button>
-                  <Button onClick={() => setIsEdit(!isEdit)}>수정</Button>
+                  <Button
+                    onClick={() => setIsEdit(!isEdit)}
+                    disabled={isCheckSettleContract?.checkSettleContract}
+                  >
+                    수정
+                  </Button>
                 </>
               )}
             </>

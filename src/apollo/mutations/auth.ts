@@ -63,8 +63,8 @@ export const REFRESH_MUTATION = gql`
   }
 `;
 export const UPDATE_MY_INFO_MUTATION = gql`
-  mutation UpdateMyInfo($updateUserDto: UpdateUserDto!) {
-    updateMyInfo(updateUserDto: $updateUserDto) {
+  mutation UpdateMyInfo($updateUserMyInfoDto: UpdateUserMyInfoDto!) {
+    updateMyInfo(updateUserMyInfoDto: $updateUserMyInfoDto) {
       user {
         name
         id

@@ -4,7 +4,10 @@ import {
   ADJUSTMENT_LIST_WATCH_REQUIRED_OPTIONS,
 } from '@/constants/adjustment';
 import { userState } from '@/state/auth';
-import { selectedAdjustmentHideWatchOptionsState } from '@/state/adjustment';
+import {
+  adjustmentFiltersState,
+  selectedAdjustmentHideWatchOptionsState,
+} from '@/state/adjustment';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
 import { Adjustment, PermissionType, PositionType } from '@/types/graphql';
@@ -17,6 +20,7 @@ import Button from '@/components/button/Button';
 import { useState } from 'react';
 import RegistAddIncentiveModal from '../registAddIncentiveModal';
 import EditAddIncentiveModal from '../editAddIncentiveModal';
+import { useCheckSettleContract } from '@/services/payStub';
 
 type TTableProps = {
   data: Adjustment[];
@@ -28,6 +32,13 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
     selectedAdjustmentHideWatchOptionsState,
   );
   const [selectedAdjustment, setSelectedAdjustment] = useState<Adjustment>();
+  // filters
+  const filters = useRecoilValue(adjustmentFiltersState);
+
+  const { data: isCheckSettleContract } = useCheckSettleContract({
+    year: filters.year,
+    month: filters.month,
+  });
 
   const user = useRecoilValue(userState);
   const isHideColumn = (columeKey: string) => {
@@ -207,7 +218,7 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
               <td>
                 <Button
                   variant="black"
-                  //   disabled={it.user.position?.name !== PositionType.TeamLeader}
+                  disabled={isCheckSettleContract?.checkSettleContract}
                   onClick={() => setSelectedAdjustment(it)}
                 >
                   추가수당{' '}
