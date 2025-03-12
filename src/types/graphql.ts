@@ -919,7 +919,7 @@ export type PayStub = {
   etcIncentive?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   /** 소득세 - 수당합계 * 0.033 */
-  income_tax: Scalars['Int']['output'];
+  incomeTax: Scalars['Int']['output'];
   /** 월 */
   month: Scalars['String']['output'];
   /** 수당합계 - 출고수당 합계 + 추가수당 합계 + 기타수당 합계 */
@@ -1712,14 +1712,14 @@ export type GetPayStubsQueryVariables = Exact<{
 }>;
 
 
-export type GetPayStubsQuery = { getPayStubs: Array<{ id: number, year: string, month: string, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, income_tax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string } }> | null }> };
+export type GetPayStubsQuery = { getPayStubs: Array<{ id: number, year: string, month: string, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, incomeTax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string } }> | null }> };
 
 export type GetPayStubQueryVariables = Exact<{
   payStubId: Scalars['Float']['input'];
 }>;
 
 
-export type GetPayStubQuery = { getPayStub: { id: number, year: string, month: string, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, income_tax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string } }> | null } };
+export type GetPayStubQuery = { getPayStub: { id: number, year: string, month: string, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, incomeTax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string } }> | null } };
 
 export type CheckSettleContractQueryVariables = Exact<{
   checkSettleContractDto: CheckSettleContractDto;
@@ -3788,7 +3788,7 @@ export const GetPayStubsDocument = gql`
     totalNetIncomeDelivery
     totalAllowance
     etcIncentive
-    income_tax
+    incomeTax
     actualSalary
   }
 }
@@ -3871,7 +3871,7 @@ export const GetPayStubDocument = gql`
     totalNetIncomeDelivery
     totalAllowance
     etcIncentive
-    income_tax
+    incomeTax
     actualSalary
   }
 }
