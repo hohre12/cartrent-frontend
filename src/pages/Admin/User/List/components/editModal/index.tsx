@@ -19,7 +19,7 @@ const EditModal = (props: TModal & { idx: number }) => {
 
   const [name, setName] = useState<UpdateUserDto['name']>();
   const [email, setEmail] = useState<UpdateUserDto['email']>();
-  const [password, setPassword] = useState<UpdateUserDto['password']>();
+  //   const [password, setPassword] = useState<UpdateUserDto['password']>();
 
   const { data: positions } = useGetPositions();
   const { data: teams } = useGetTeams();
@@ -33,14 +33,14 @@ const EditModal = (props: TModal & { idx: number }) => {
     setSubmit(true);
     if (!name) return;
     if (!email) return;
-    if (!password) return;
+    // if (!password) return;
     if (!userPosition) return;
     try {
       const response = await updateUser({
         // userId: idx,
         name,
         email,
-        password,
+        // password,
         // positionId: userPosition.id,
         // teamId: userTeam?.id,
       });
@@ -66,9 +66,9 @@ const EditModal = (props: TModal & { idx: number }) => {
       setUserTeam(detail.team ?? undefined);
       setName(detail.name);
       setEmail(detail.email);
-      setPassword(detail.password);
+      //   setPassword(detail.password);
     }
-  }, [data, setUserPosition, setUserTeam, setName, setEmail, setPassword]);
+  }, [data, setUserPosition, setUserTeam, setName, setEmail]);
 
   return (
     <>
@@ -79,7 +79,7 @@ const EditModal = (props: TModal & { idx: number }) => {
         onConfirm={handleUserEdit}
       >
         <RegistCustomerWrapper>
-          {/* 이름, email, 비밀번호, 직책, 팀 */}
+          {/* 이름, email, 직책, 팀 */}
           <div>
             <span>
               담당자명 <p className="required">*</p>
@@ -102,7 +102,7 @@ const EditModal = (props: TModal & { idx: number }) => {
               onTextChange={(text) => setEmail(text)}
             />
           </div>
-          <div>
+          {/* <div>
             <span>
               비밀번호 <p className="required">*</p>
             </span>
@@ -111,7 +111,7 @@ const EditModal = (props: TModal & { idx: number }) => {
               value={password ?? ''}
               onTextChange={(text) => setPassword(text)}
             />
-          </div>
+          </div> */}
           <div>
             <span>
               직책 <p className="required">*</p>
