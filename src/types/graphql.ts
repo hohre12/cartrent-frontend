@@ -1721,12 +1721,12 @@ export type GetPayStubQueryVariables = Exact<{
 
 export type GetPayStubQuery = { getPayStub: { id: number, year: string, month: string, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, income_tax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string } }> | null } };
 
-export type QueryQueryVariables = Exact<{
+export type CheckSettleContractQueryVariables = Exact<{
   checkSettleContractDto: CheckSettleContractDto;
 }>;
 
 
-export type QueryQuery = { checkSettleContract: boolean };
+export type CheckSettleContractQuery = { checkSettleContract: boolean };
 
 export type GetTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3909,44 +3909,44 @@ export type GetPayStubQueryHookResult = ReturnType<typeof useGetPayStubQuery>;
 export type GetPayStubLazyQueryHookResult = ReturnType<typeof useGetPayStubLazyQuery>;
 export type GetPayStubSuspenseQueryHookResult = ReturnType<typeof useGetPayStubSuspenseQuery>;
 export type GetPayStubQueryResult = Apollo.QueryResult<GetPayStubQuery, GetPayStubQueryVariables>;
-export const QueryDocument = gql`
-    query Query($checkSettleContractDto: CheckSettleContractDto!) {
+export const CheckSettleContractDocument = gql`
+    query CheckSettleContract($checkSettleContractDto: CheckSettleContractDto!) {
   checkSettleContract(checkSettleContractDto: $checkSettleContractDto)
 }
     `;
 
 /**
- * __useQueryQuery__
+ * __useCheckSettleContractQuery__
  *
- * To run a query within a React component, call `useQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useCheckSettleContractQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckSettleContractQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useQueryQuery({
+ * const { data, loading, error } = useCheckSettleContractQuery({
  *   variables: {
  *      checkSettleContractDto: // value for 'checkSettleContractDto'
  *   },
  * });
  */
-export function useQueryQuery(baseOptions: Apollo.QueryHookOptions<QueryQuery, QueryQueryVariables> & ({ variables: QueryQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useCheckSettleContractQuery(baseOptions: Apollo.QueryHookOptions<CheckSettleContractQuery, CheckSettleContractQueryVariables> & ({ variables: CheckSettleContractQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<QueryQuery, QueryQueryVariables>(QueryDocument, options);
+        return Apollo.useQuery<CheckSettleContractQuery, CheckSettleContractQueryVariables>(CheckSettleContractDocument, options);
       }
-export function useQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<QueryQuery, QueryQueryVariables>) {
+export function useCheckSettleContractLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckSettleContractQuery, CheckSettleContractQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<QueryQuery, QueryQueryVariables>(QueryDocument, options);
+          return Apollo.useLazyQuery<CheckSettleContractQuery, CheckSettleContractQueryVariables>(CheckSettleContractDocument, options);
         }
-export function useQuerySuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<QueryQuery, QueryQueryVariables>) {
+export function useCheckSettleContractSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<CheckSettleContractQuery, CheckSettleContractQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<QueryQuery, QueryQueryVariables>(QueryDocument, options);
+          return Apollo.useSuspenseQuery<CheckSettleContractQuery, CheckSettleContractQueryVariables>(CheckSettleContractDocument, options);
         }
-export type QueryQueryHookResult = ReturnType<typeof useQueryQuery>;
-export type QueryLazyQueryHookResult = ReturnType<typeof useQueryLazyQuery>;
-export type QuerySuspenseQueryHookResult = ReturnType<typeof useQuerySuspenseQuery>;
-export type QueryQueryResult = Apollo.QueryResult<QueryQuery, QueryQueryVariables>;
+export type CheckSettleContractQueryHookResult = ReturnType<typeof useCheckSettleContractQuery>;
+export type CheckSettleContractLazyQueryHookResult = ReturnType<typeof useCheckSettleContractLazyQuery>;
+export type CheckSettleContractSuspenseQueryHookResult = ReturnType<typeof useCheckSettleContractSuspenseQuery>;
+export type CheckSettleContractQueryResult = Apollo.QueryResult<CheckSettleContractQuery, CheckSettleContractQueryVariables>;
 export const GetTeamsDocument = gql`
     query GetTeams {
   getTeams {
