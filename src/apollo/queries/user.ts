@@ -34,6 +34,10 @@ export const GET_USER_QUERY = gql`
         id
         name
       }
+      team {
+        id
+        name
+      }
       created_at
       updated_at
     }

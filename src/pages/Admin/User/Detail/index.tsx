@@ -2,7 +2,7 @@ import Button from '@/components/button/Button';
 import { UserPositionHangleEnum, UserRoleHangleEnum } from '@/constants/user';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
-import { useGetUser } from '@/services/user';
+import { useDeleteUser, useGetUser } from '@/services/user';
 import { formatDate } from '@/utils/dateUtils';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -17,21 +17,21 @@ const AdminUserDetail = () => {
   const { data, loading, error } = useGetUser(userIdx);
   const [isOpenUserEditModal, setIsOpenUserEditModal] =
     useState<boolean>(false);
-  //   const { deleteUser } = useDeleteUser();
+  const { deleteUser } = useDeleteUser();
 
   const handleDeleteUser = async () => {
     try {
-      //   const response = await deleteUser(userIdx);
-      //   if (response && response.data.deleteUser) {
-      //     hideConfirm();
-      //     addToast({
-      //       id: Date.now(),
-      //       isImage: true,
-      //       content: `직원이 삭제되었습니다.`,
-      //       type: 'success',
-      //     });
-      //     navigate(-1);
-      //   }
+      const response = await deleteUser(userIdx);
+      if (response && response.data.deleteUser) {
+        hideConfirm();
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `직원이 삭제되었습니다.`,
+          type: 'success',
+        });
+        navigate(-1);
+      }
     } catch (e) {
       console.warn(e);
     }
@@ -83,6 +83,10 @@ const AdminUserDetail = () => {
           <UserBoxWrapper>
             <h3>이메일</h3>
             <div>{detail.email ?? '-'}</div>
+          </UserBoxWrapper>
+          <UserBoxWrapper>
+            <h3>팀</h3>
+            <div>{detail.team?.name ?? '-'}</div>
           </UserBoxWrapper>
           <UserBoxWrapper>
             <h3>직책</h3>

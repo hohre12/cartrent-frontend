@@ -1,11 +1,22 @@
 import {
+  CREATE_USER_MUTATION,
+  DELETE_USER_MUTATION,
+  UPDATE_USER_MUTATION,
+} from '@/apollo/mutations/user';
+import {
   GET_FIRST_CONTRACT_USER_BY_MONTH,
   GET_FIRST_REVENUE_USER_BY_MONTH,
   GET_POSITIONS_QUERY,
   GET_USER_QUERY,
   GET_USERS_QUERY,
 } from '@/apollo/queries/user';
-import { GetRevenuesByUsersDto, Position, User } from '@/types/graphql';
+import {
+  CreateUserDto,
+  GetRevenuesByUsersDto,
+  Position,
+  UpdateUserDto,
+  User,
+} from '@/types/graphql';
 import { useMutation, useQuery } from '@apollo/client';
 
 export const useGetUsers = () => {
@@ -20,33 +31,47 @@ export const useGetUser = (params: User['id']) => {
   });
 };
 
-// export const useUpdateUser = () => {
-//   const [updateUserMutate] = useMutation(UPDATE_USER_MUTATION, {
-//     refetchQueries: [GET_USERS_QUERY, GET_USER_QUERY],
-//   });
+export const useCreateUser = () => {
+  const [createUserMutate] = useMutation(CREATE_USER_MUTATION, {
+    refetchQueries: [GET_USERS_QUERY, GET_USER_QUERY],
+  });
 
-//   const updateUser = async (params: UpdateUserDto) => {
-//     if (!params) return;
-//     return updateUserMutate({
-//       variables: { updateUserDto: params },
-//     });
-//   };
-//   return { updateUser };
-// };
+  const createUser = async (params: CreateUserDto) => {
+    if (!params) return;
+    return createUserMutate({
+      variables: { createUserDto: params },
+    });
+  };
+  return { createUser };
+};
 
-// export const useDeleteUser = () => {
-//   const [deleteUserMutate] = useMutation(DELETE_USER_MUTATION, {
-//     refetchQueries: [GET_USERS_QUERY],
-//   });
+export const useUpdateUser = () => {
+  const [updateUserMutate] = useMutation(UPDATE_USER_MUTATION, {
+    refetchQueries: [GET_USERS_QUERY, GET_USER_QUERY],
+  });
 
-//   const deleteUser = async (params: User['id']) => {
-//     if (!params) return;
-//     return deleteUserMutate({
-//       variables: { userId: params },
-//     });
-//   };
-//   return { deleteUser };
-// };
+  const updateUser = async (params: UpdateUserDto) => {
+    if (!params) return;
+    return updateUserMutate({
+      variables: { updateUserDto: params },
+    });
+  };
+  return { updateUser };
+};
+
+export const useDeleteUser = () => {
+  const [deleteUserMutate] = useMutation(DELETE_USER_MUTATION, {
+    refetchQueries: [GET_USERS_QUERY],
+  });
+
+  const deleteUser = async (params: User['id']) => {
+    if (!params) return;
+    return deleteUserMutate({
+      variables: { userId: params },
+    });
+  };
+  return { deleteUser };
+};
 
 export const useGetPositions = () => {
   return useQuery<{ getPositions: Position[] }>(GET_POSITIONS_QUERY);
