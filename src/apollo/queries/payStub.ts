@@ -7,6 +7,7 @@ export const GET_PAYSTUBS_QUERY = gql`
       id
       year
       month
+      day
       user {
         id
         name
@@ -58,6 +59,7 @@ export const GET_PAYSTUB_QUERY = gql`
       id
       year
       month
+      day
       user {
         id
         name
