@@ -15,12 +15,15 @@ import {
   GetRevenuesByUsersDto,
   Position,
   UpdateUserDto,
+  UpdateUserInfoDto,
   User,
 } from '@/types/graphql';
 import { useMutation, useQuery } from '@apollo/client';
 
 export const useGetUsers = () => {
-  return useQuery<{ getUsers: User[] }>(GET_USERS_QUERY);
+  return useQuery<{ getUsers: User[] }>(GET_USERS_QUERY, {
+    fetchPolicy: 'network-only',
+  });
 };
 
 export const useGetUser = (params: User['id']) => {

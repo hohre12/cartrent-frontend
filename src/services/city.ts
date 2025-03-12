@@ -17,6 +17,7 @@ export const useGetCites = (params: GetCitiesDto) => {
     GET_CITIES_QUERY,
     {
       variables: { getCitiesDto: params },
+      fetchPolicy: 'network-only',
     },
   );
 };

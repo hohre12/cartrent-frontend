@@ -8,7 +8,9 @@ import { CreateTeamDto, Team, UpdateTeamDto } from '@/types/graphql';
 import { useMutation, useQuery } from '@apollo/client';
 
 export const useGetTeams = () => {
-  return useQuery<{ getTeams: Team[] }>(GET_TEAMS_QUERY);
+  return useQuery<{ getTeams: Team[] }>(GET_TEAMS_QUERY, {
+    fetchPolicy: 'network-only',
+  });
 };
 
 export const useGetTeam = (params: Team['id']) => {
@@ -35,7 +37,7 @@ export const useCreateTeam = () => {
 
 export const useUpdateTeam = () => {
   const [updateTeamMutate] = useMutation(UPDATE_TEAM_MUTATION, {
-    refetchQueries: [GET_TEAMS_QUERY, GET_TEAM_QUERY],
+    refetchQueries: [GET_TEAMS_QUERY, GET_TEAM_QUERY, 'GetTeams'],
   });
 
   const updateTeam = async (params: UpdateTeamDto) => {

@@ -7,6 +7,7 @@ import { formatDate } from '@/utils/dateUtils';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import EditModal from '../List/components/editModal';
 
 const AdminUserDetail = () => {
   const { id } = useParams();
@@ -104,6 +105,14 @@ const AdminUserDetail = () => {
           </UserBoxWrapper>
         </DetailContentWrapper>
       </DetailWrapper>
+      {isOpenUserEditModal && (
+        <EditModal
+          idx={userIdx}
+          isOpen={isOpenUserEditModal}
+          onCancel={() => setIsOpenUserEditModal(false)}
+          onConfirm={() => setIsOpenUserEditModal(false)}
+        ></EditModal>
+      )}
     </>
   );
 };

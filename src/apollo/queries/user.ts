@@ -6,6 +6,7 @@ export const GET_USERS_QUERY = gql`
       id
       name
       email
+      password
       position {
         id
         name
@@ -26,6 +27,7 @@ export const GET_USER_QUERY = gql`
       id
       name
       email
+      password
       position {
         id
         name

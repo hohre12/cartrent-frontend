@@ -7,6 +7,7 @@ import { formatDate } from '@/utils/dateUtils';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import EditTeamModal from '../List/components/editTeamModal';
 
 const AdminTeamDetail = () => {
   const { id } = useParams();
@@ -118,6 +119,14 @@ const AdminTeamDetail = () => {
           </TeamBoxWrapper>
         </DetailContentWrapper>
       </DetailWrapper>
+      {isOpenTeamEditModal && (
+        <EditTeamModal
+          idx={teamIdx}
+          isOpen={isOpenTeamEditModal}
+          onCancel={() => setIsOpenTeamEditModal(false)}
+          onConfirm={() => setIsOpenTeamEditModal(false)}
+        ></EditTeamModal>
+      )}
     </>
   );
 };
