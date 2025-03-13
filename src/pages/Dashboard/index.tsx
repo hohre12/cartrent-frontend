@@ -5,8 +5,8 @@ import { userState } from '@/state/auth';
 import { useRecoilValue } from 'recoil';
 import { PermissionType } from '@/types/graphql';
 import {
-  useGetFirstContractUserByMonth,
-  useGetFirstRevenueUserByMonth,
+  useGetTopFiveDeliveryUsersByMonth,
+  useGetTopFiveTotalFeeDeliveryUsersByMonth,
 } from '@/services/user';
 import moment from 'moment';
 
@@ -33,22 +33,26 @@ const Dashboard = () => {
   //     'customer' | 'counsel' | 'adjustment'
   //   >('customer');
   const my = useRecoilValue(userState);
-  //   const { data: thisMonthContractUser } = useGetFirstContractUserByMonth({
-  //     year: moment().format('YYYY'),
-  //     month: moment().format('MM'),
-  //   });
-  //   const { data: lastMonthContractUser } = useGetFirstContractUserByMonth({
-  //     year: moment().subtract(1, 'months').format('YYYY'),
-  //     month: moment().subtract(1, 'months').format('MM'),
-  //   });
-  //   const { data: thisMonthRevenueUser } = useGetFirstRevenueUserByMonth({
-  //     year: moment().format('YYYY'),
-  //     month: moment().format('MM'),
-  //   });
-  //   const { data: lastMonthRevenueUser } = useGetFirstRevenueUserByMonth({
-  //     year: moment().subtract(1, 'months').format('YYYY'),
-  //     month: moment().subtract(1, 'months').format('MM'),
-  //   });
+  const { data: thisMonthTopFiveDeliveryUsers } =
+    useGetTopFiveDeliveryUsersByMonth({
+      year: moment().format('YYYY'),
+      month: moment().format('MM'),
+    });
+  const { data: lastMonthTopFiveDeliveryUsers } =
+    useGetTopFiveDeliveryUsersByMonth({
+      year: moment().subtract(1, 'months').format('YYYY'),
+      month: moment().subtract(1, 'months').format('MM'),
+    });
+  const { data: thisMonthTopFiveTotalFeeDeliveryUsers } =
+    useGetTopFiveTotalFeeDeliveryUsersByMonth({
+      year: moment().format('YYYY'),
+      month: moment().format('MM'),
+    });
+  const { data: lastMonthTopFiveTotalFeeDeliveryUsers } =
+    useGetTopFiveTotalFeeDeliveryUsersByMonth({
+      year: moment().subtract(1, 'months').format('YYYY'),
+      month: moment().subtract(1, 'months').format('MM'),
+    });
 
   return (
     <DashboardWrapper>
@@ -73,9 +77,19 @@ const Dashboard = () => {
                   단위(만원)
                 </span>
                 <Barchart
-                  data={data}
+                  data={
+                    thisMonthTopFiveTotalFeeDeliveryUsers?.getTopFiveTotalFeeDeliveryUsersByMonth
+                      ? thisMonthTopFiveTotalFeeDeliveryUsers.getTopFiveTotalFeeDeliveryUsersByMonth.map(
+                          (it) => ({
+                            name: it.user.name,
+                            매출: it.totalFeeDelivery,
+                          }),
+                        )
+                      : []
+                  }
                   keys={keys}
                   indexBy={indexBy}
+                  formatText="원"
                 ></Barchart>
               </div>
             </Box>
@@ -94,9 +108,19 @@ const Dashboard = () => {
                   단위(만원)
                 </span>
                 <Barchart
-                  data={data}
+                  data={
+                    lastMonthTopFiveTotalFeeDeliveryUsers?.getTopFiveTotalFeeDeliveryUsersByMonth
+                      ? lastMonthTopFiveTotalFeeDeliveryUsers.getTopFiveTotalFeeDeliveryUsersByMonth.map(
+                          (it) => ({
+                            name: it.user.name,
+                            매출: it.totalFeeDelivery,
+                          }),
+                        )
+                      : []
+                  }
                   keys={keys}
                   indexBy={indexBy}
+                  formatText="원"
                 ></Barchart>
               </div>
             </Box>
@@ -115,9 +139,19 @@ const Dashboard = () => {
                   단위(건)
                 </span>
                 <Barchart
-                  data={data2}
+                  data={
+                    thisMonthTopFiveDeliveryUsers?.getTopFiveDeliveryUsersByMonth
+                      ? thisMonthTopFiveDeliveryUsers.getTopFiveDeliveryUsersByMonth.map(
+                          (it) => ({
+                            name: it.user.name,
+                            출고건수: it.totalCountDelivery,
+                          }),
+                        )
+                      : []
+                  }
                   keys={keys2}
                   indexBy={indexBy}
+                  formatText="건"
                 ></Barchart>
               </div>
             </Box>
@@ -136,9 +170,19 @@ const Dashboard = () => {
                   단위(건)
                 </span>
                 <Barchart
-                  data={data2}
+                  data={
+                    lastMonthTopFiveDeliveryUsers?.getTopFiveDeliveryUsersByMonth
+                      ? lastMonthTopFiveDeliveryUsers.getTopFiveDeliveryUsersByMonth.map(
+                          (it) => ({
+                            name: it.user.name,
+                            출고건수: it.totalCountDelivery,
+                          }),
+                        )
+                      : []
+                  }
                   keys={keys2}
                   indexBy={indexBy}
+                  formatText="건"
                 ></Barchart>
               </div>
             </Box>

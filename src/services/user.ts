@@ -4,18 +4,18 @@ import {
   UPDATE_USER_MUTATION,
 } from '@/apollo/mutations/user';
 import {
-  GET_FIRST_CONTRACT_USER_BY_MONTH,
-  GET_FIRST_REVENUE_USER_BY_MONTH,
   GET_POSITIONS_QUERY,
+  GET_TOP_FIVE_DELIVERY_USERS_BY_MONTH,
+  GET_TOP_FIVE_TOTAL_FEE_DELIVERY_USERS_BY_MONTH,
   GET_USER_QUERY,
   GET_USERS_QUERY,
 } from '@/apollo/queries/user';
 import {
   CreateUserDto,
-  GetRevenuesByUsersDto,
+  GetDashBoardByUsersDto,
+  MonthlyTopFiveUser,
   Position,
   UpdateUserDto,
-  UpdateUserInfoDto,
   User,
 } from '@/types/graphql';
 import { useMutation, useQuery } from '@apollo/client';
@@ -80,26 +80,26 @@ export const useGetPositions = () => {
   return useQuery<{ getPositions: Position[] }>(GET_POSITIONS_QUERY);
 };
 
-export const useGetFirstContractUserByMonth = (
-  params: GetRevenuesByUsersDto,
+export const useGetTopFiveDeliveryUsersByMonth = (
+  params: GetDashBoardByUsersDto,
 ) => {
   return useQuery<
-    { getFirstContractUserByMonth: User },
-    { getFirstContractUserByMonthDto: GetRevenuesByUsersDto }
-  >(GET_FIRST_CONTRACT_USER_BY_MONTH, {
-    variables: { getFirstContractUserByMonthDto: params },
+    { getTopFiveDeliveryUsersByMonth: MonthlyTopFiveUser[] },
+    { getTopFiveDeliveryUsersByMonthDto: GetDashBoardByUsersDto }
+  >(GET_TOP_FIVE_DELIVERY_USERS_BY_MONTH, {
+    variables: { getTopFiveDeliveryUsersByMonthDto: params },
     fetchPolicy: 'network-only',
   });
 };
 
-export const useGetFirstRevenueUserByMonth = (
-  params: GetRevenuesByUsersDto,
+export const useGetTopFiveTotalFeeDeliveryUsersByMonth = (
+  params: GetDashBoardByUsersDto,
 ) => {
   return useQuery<
-    { getFirstRevenueUserByMonth: User },
-    { getFirstRevenueUserByMonthDto: GetRevenuesByUsersDto }
-  >(GET_FIRST_REVENUE_USER_BY_MONTH, {
-    variables: { getFirstRevenueUserByMonthDto: params },
+    { getTopFiveTotalFeeDeliveryUsersByMonth: MonthlyTopFiveUser[] },
+    { getTopFiveTotalFeeDeliveryUsersByMonthDto: GetDashBoardByUsersDto }
+  >(GET_TOP_FIVE_TOTAL_FEE_DELIVERY_USERS_BY_MONTH, {
+    variables: { getTopFiveTotalFeeDeliveryUsersByMonthDto: params },
     fetchPolicy: 'network-only',
   });
 };
