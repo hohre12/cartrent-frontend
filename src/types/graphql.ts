@@ -393,7 +393,11 @@ export type CreateSupportAmountDto = {
 };
 
 export type CreateTeamDto = {
+  /** 조직 장 userId */
+  leaderUserId?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
+  /** 상위 부모 조직 Id */
+  parentId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CreateUserDto = {
@@ -940,6 +944,8 @@ export enum PositionType {
   Admin = 'ADMIN',
   /** 대리 */
   AssistantManager = 'ASSISTANT_MANAGER',
+  /** 본부장 */
+  GeneralManager = 'GENERAL_MANAGER',
   /** 과장 */
   Manager = 'MANAGER',
   /** 차장 */
@@ -1096,7 +1102,7 @@ export type QueryGetTeamArgs = {
 
 
 export type QueryGetTopFiveDeliveryUsersByMonthArgs = {
-  getFirstDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
+  getTopFiveDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
 };
 
 
@@ -1163,7 +1169,12 @@ export type Team = {
   created_at?: Maybe<Scalars['DateTime']['output']>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
   id: Scalars['Int']['output'];
+  leader?: Maybe<User>;
+  leaderId?: Maybe<Scalars['Int']['output']>;
   name: Scalars['String']['output'];
+  parentId?: Maybe<Scalars['Int']['output']>;
+  parentTeam?: Maybe<Team>;
+  subTeams?: Maybe<Array<Team>>;
   updated_at?: Maybe<Scalars['DateTime']['output']>;
   userList: Array<User>;
 };
@@ -1728,11 +1739,11 @@ export type GetPositionsQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetPositionsQuery = { getPositions: Array<{ id: number, name: PositionType, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null }> };
 
 export type GetTopFiveDeliveryUsersByMonthQueryVariables = Exact<{
-  getFirstDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
+  getTopFiveDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
 }>;
 
 
-export type GetTopFiveDeliveryUsersByMonthQuery = { getTopFiveDeliveryUsersByMonth: Array<{ year: string, month: string, totalFeeDelivery?: number | null, totalCountDelivery?: number | null, user: { id: number, name: string } }> };
+export type GetTopFiveDeliveryUsersByMonthQuery = { getTopFiveDeliveryUsersByMonth: Array<{ year: string, month: string, totalCountDelivery?: number | null, totalFeeDelivery?: number | null, user: { id: number, name: string } }> };
 
 export type GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables = Exact<{
   getTopFiveTotalFeeDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
@@ -4173,9 +4184,9 @@ export type GetPositionsLazyQueryHookResult = ReturnType<typeof useGetPositionsL
 export type GetPositionsSuspenseQueryHookResult = ReturnType<typeof useGetPositionsSuspenseQuery>;
 export type GetPositionsQueryResult = Apollo.QueryResult<GetPositionsQuery, GetPositionsQueryVariables>;
 export const GetTopFiveDeliveryUsersByMonthDocument = gql`
-    query GetTopFiveDeliveryUsersByMonth($getFirstDeliveryUsersByMonthDto: GetDashBoardByUsersDto!) {
+    query GetTopFiveDeliveryUsersByMonth($getTopFiveDeliveryUsersByMonthDto: GetDashBoardByUsersDto!) {
   getTopFiveDeliveryUsersByMonth(
-    getFirstDeliveryUsersByMonthDto: $getFirstDeliveryUsersByMonthDto
+    getTopFiveDeliveryUsersByMonthDto: $getTopFiveDeliveryUsersByMonthDto
   ) {
     user {
       id
@@ -4183,8 +4194,8 @@ export const GetTopFiveDeliveryUsersByMonthDocument = gql`
     }
     year
     month
-    totalFeeDelivery
     totalCountDelivery
+    totalFeeDelivery
   }
 }
     `;
@@ -4201,7 +4212,7 @@ export const GetTopFiveDeliveryUsersByMonthDocument = gql`
  * @example
  * const { data, loading, error } = useGetTopFiveDeliveryUsersByMonthQuery({
  *   variables: {
- *      getFirstDeliveryUsersByMonthDto: // value for 'getFirstDeliveryUsersByMonthDto'
+ *      getTopFiveDeliveryUsersByMonthDto: // value for 'getTopFiveDeliveryUsersByMonthDto'
  *   },
  * });
  */

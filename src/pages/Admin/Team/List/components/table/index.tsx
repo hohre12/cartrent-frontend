@@ -1,6 +1,7 @@
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
 import { Team } from '@/types/graphql';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -10,6 +11,23 @@ type TTableProps = {
 
 const TeamListTable = ({ data }: TTableProps) => {
   const navigate = useNavigate();
+  const renderRows = (items: Team[], level = 0) => {
+    return items.map((it, idx) => (
+      <React.Fragment key={it.id}>
+        <TableItem onClick={() => navigate(`${it.id}`)}>
+          <td
+            className="name"
+            style={{ paddingLeft: `${level * 20 + 15}px` }}
+          >
+            {it.name}
+          </td>
+        </TableItem>
+        {it.subTeams &&
+          it.subTeams.length > 0 &&
+          renderRows(it.subTeams, level + 1)}
+      </React.Fragment>
+    ));
+  };
   return (
     <>
       <TableWrapper>
@@ -19,14 +37,15 @@ const TeamListTable = ({ data }: TTableProps) => {
           </TableHeader>
         </thead>
         <tbody>
-          {data.map((it, idx) => (
+          {renderRows(data)}
+          {/* {data.map((it, idx) => (
             <TableItem
               key={idx}
               onClick={() => navigate(`${it.id}`)}
             >
               <td className="name">{it.name}</td>
             </TableItem>
-          ))}
+          ))} */}
         </tbody>
       </TableWrapper>
     </>
