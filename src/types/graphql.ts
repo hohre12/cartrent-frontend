@@ -1096,7 +1096,7 @@ export type QueryGetTeamArgs = {
 
 
 export type QueryGetTopFiveDeliveryUsersByMonthArgs = {
-  getFirstDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
+  getTopFiveDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
 };
 
 
@@ -1728,11 +1728,11 @@ export type GetPositionsQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetPositionsQuery = { getPositions: Array<{ id: number, name: PositionType, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null }> };
 
 export type GetTopFiveDeliveryUsersByMonthQueryVariables = Exact<{
-  getFirstDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
+  getTopFiveDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
 }>;
 
 
-export type GetTopFiveDeliveryUsersByMonthQuery = { getTopFiveDeliveryUsersByMonth: Array<{ year: string, month: string, totalFeeDelivery?: number | null, totalCountDelivery?: number | null, user: { id: number, name: string } }> };
+export type GetTopFiveDeliveryUsersByMonthQuery = { getTopFiveDeliveryUsersByMonth: Array<{ year: string, month: string, totalCountDelivery?: number | null, totalFeeDelivery?: number | null, user: { id: number, name: string } }> };
 
 export type GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables = Exact<{
   getTopFiveTotalFeeDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
@@ -4173,9 +4173,9 @@ export type GetPositionsLazyQueryHookResult = ReturnType<typeof useGetPositionsL
 export type GetPositionsSuspenseQueryHookResult = ReturnType<typeof useGetPositionsSuspenseQuery>;
 export type GetPositionsQueryResult = Apollo.QueryResult<GetPositionsQuery, GetPositionsQueryVariables>;
 export const GetTopFiveDeliveryUsersByMonthDocument = gql`
-    query GetTopFiveDeliveryUsersByMonth($getFirstDeliveryUsersByMonthDto: GetDashBoardByUsersDto!) {
+    query GetTopFiveDeliveryUsersByMonth($getTopFiveDeliveryUsersByMonthDto: GetDashBoardByUsersDto!) {
   getTopFiveDeliveryUsersByMonth(
-    getFirstDeliveryUsersByMonthDto: $getFirstDeliveryUsersByMonthDto
+    getTopFiveDeliveryUsersByMonthDto: $getTopFiveDeliveryUsersByMonthDto
   ) {
     user {
       id
@@ -4183,8 +4183,8 @@ export const GetTopFiveDeliveryUsersByMonthDocument = gql`
     }
     year
     month
-    totalFeeDelivery
     totalCountDelivery
+    totalFeeDelivery
   }
 }
     `;
@@ -4201,7 +4201,7 @@ export const GetTopFiveDeliveryUsersByMonthDocument = gql`
  * @example
  * const { data, loading, error } = useGetTopFiveDeliveryUsersByMonthQuery({
  *   variables: {
- *      getFirstDeliveryUsersByMonthDto: // value for 'getFirstDeliveryUsersByMonthDto'
+ *      getTopFiveDeliveryUsersByMonthDto: // value for 'getTopFiveDeliveryUsersByMonthDto'
  *   },
  * });
  */
