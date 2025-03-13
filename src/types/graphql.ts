@@ -393,7 +393,11 @@ export type CreateSupportAmountDto = {
 };
 
 export type CreateTeamDto = {
+  /** 조직 장 userId */
+  leaderUserId?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
+  /** 상위 부모 조직 Id */
+  parentId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CreateUserDto = {
@@ -940,6 +944,8 @@ export enum PositionType {
   Admin = 'ADMIN',
   /** 대리 */
   AssistantManager = 'ASSISTANT_MANAGER',
+  /** 본부장 */
+  GeneralManager = 'GENERAL_MANAGER',
   /** 과장 */
   Manager = 'MANAGER',
   /** 차장 */
@@ -1163,7 +1169,12 @@ export type Team = {
   created_at?: Maybe<Scalars['DateTime']['output']>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
   id: Scalars['Int']['output'];
+  leader?: Maybe<User>;
+  leaderId?: Maybe<Scalars['Int']['output']>;
   name: Scalars['String']['output'];
+  parentId?: Maybe<Scalars['Int']['output']>;
+  parentTeam?: Maybe<Team>;
+  subTeams?: Maybe<Array<Team>>;
   updated_at?: Maybe<Scalars['DateTime']['output']>;
   userList: Array<User>;
 };

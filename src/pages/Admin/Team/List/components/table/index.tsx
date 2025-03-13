@@ -11,23 +11,23 @@ type TTableProps = {
 
 const TeamListTable = ({ data }: TTableProps) => {
   const navigate = useNavigate();
-  //   const renderRows = (items: Team[], level = 0) => {
-  //     return items.map((it, idx) => (
-  //       <React.Fragment key={it.id}>
-  //         <TableItem onClick={() => navigate(`${it.id}`)}>
-  //           <td
-  //             className="name"
-  //             style={{ paddingLeft: `${level * 20}px` }}
-  //           >
-  //             {it.name}
-  //           </td>
-  //         </TableItem>
-  //         {it.children &&
-  //           it.children.length > 0 &&
-  //           renderRows(it.children, level + 1)}
-  //       </React.Fragment>
-  //     ));
-  //   };
+  const renderRows = (items: Team[], level = 0) => {
+    return items.map((it, idx) => (
+      <React.Fragment key={it.id}>
+        <TableItem onClick={() => navigate(`${it.id}`)}>
+          <td
+            className="name"
+            style={{ paddingLeft: `${level * 20 + 15}px` }}
+          >
+            {it.name}
+          </td>
+        </TableItem>
+        {it.subTeams &&
+          it.subTeams.length > 0 &&
+          renderRows(it.subTeams, level + 1)}
+      </React.Fragment>
+    ));
+  };
   return (
     <>
       <TableWrapper>
@@ -37,14 +37,15 @@ const TeamListTable = ({ data }: TTableProps) => {
           </TableHeader>
         </thead>
         <tbody>
-          {data.map((it, idx) => (
+          {renderRows(data)}
+          {/* {data.map((it, idx) => (
             <TableItem
               key={idx}
               onClick={() => navigate(`${it.id}`)}
             >
               <td className="name">{it.name}</td>
             </TableItem>
-          ))}
+          ))} */}
         </tbody>
       </TableWrapper>
     </>
