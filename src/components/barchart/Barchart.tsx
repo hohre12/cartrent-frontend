@@ -4,10 +4,19 @@ type TBarchartProps = {
   data: any[];
   keys: string[];
   indexBy: string;
-  formatText?: string;
+  unitKey?: string;
+  unit?: string;
+  marginLeft?: number;
 };
 
-const Barchart = ({ data, keys, indexBy, formatText }: TBarchartProps) => {
+const Barchart = ({
+  data,
+  keys,
+  indexBy,
+  unitKey,
+  unit,
+  marginLeft = 50,
+}: TBarchartProps) => {
   const handle = {
     barClick: (data: any) => {
       console.log(data);
@@ -17,14 +26,19 @@ const Barchart = ({ data, keys, indexBy, formatText }: TBarchartProps) => {
       console.log(data);
     },
   };
+  const maxValue = Math.max(...data.map((d) => d[keys[0]]));
 
   return (
     // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
     <div style={{ width: '100%', height: '500px', margin: '0 auto' }}>
       <ResponsiveBar
-        valueFormat={(value) => `${value.toLocaleString()}${formatText ?? ''}`}
+        valueFormat={(value) => `${value.toLocaleString()}${unit ?? ''}`}
         axisLeft={{
-          format: (value) => `${value.toLocaleString()}${formatText ?? ''}`, // 왼쪽 축 포맷팅
+          tickValues:
+            maxValue <= 10
+              ? Array.from({ length: maxValue }, (_, i) => i + 1)
+              : undefined,
+          format: (value) => `${value.toLocaleString()}${unit ?? ''}`, // 왼쪽 축 포맷팅
         }}
         tooltip={({ id, value }) => (
           <div
@@ -34,9 +48,11 @@ const Barchart = ({ data, keys, indexBy, formatText }: TBarchartProps) => {
               border: '1px solid #ccc',
             }}
           >
-            <strong>{id}</strong>: {value.toLocaleString()}원
+            <strong>{unitKey ?? ''}</strong>:{' '}
+            {`${value.toLocaleString()}${unit}`}
           </div>
         )}
+        valueScale={{ type: 'linear' }}
         /**
          * chart에 사용될 데이터
          */
@@ -52,7 +68,7 @@ const Barchart = ({ data, keys, indexBy, formatText }: TBarchartProps) => {
         /**
          * chart margin
          */
-        margin={{ top: 30, right: 60, bottom: 50, left: 70 }}
+        margin={{ top: 30, right: 60, bottom: 50, left: marginLeft }}
         /**
          * chart padding (bar간 간격)
          */
