@@ -5,50 +5,41 @@ import { userState } from '@/state/auth';
 import { useRecoilValue } from 'recoil';
 import { PermissionType } from '@/types/graphql';
 import {
-  useGetFirstContractUserByMonth,
-  useGetFirstRevenueUserByMonth,
+  useGetTopFiveDeliveryUsersByMonth,
+  useGetTopFiveTotalFeeDeliveryUsersByMonth,
 } from '@/services/user';
 import moment from 'moment';
 
-const data = [
-  { name: '노홍철', 매출: 1200 },
-  { name: '박명수', 매출: 2200 },
-  { name: '유재석', 매출: 3200 },
-  { name: '정형돈', 매출: 5200 },
-  { name: '강호동', 매출: 1200 },
-];
-const data2 = [
-  { name: '김홍철', 출고건수: 5 },
-  { name: '정명수', 출고건수: 1 },
-  { name: '박재석', 출고건수: 3 },
-  { name: '홍준하', 출고건수: 0 },
-  { name: '최성준', 출고건수: 10 },
-];
-const keys = ['매출'];
-const keys2 = ['출고건수'];
-const indexBy = 'name';
+const thisYear = moment().format('YYYY');
+const thisMonth = moment().format('M');
+const lastYear = moment().subtract(1, 'months').format('YYYY');
+const lastMonth = moment().subtract(1, 'months').format('M');
 
 const Dashboard = () => {
   //   const [activeGraphTab, setActiveGraphTab] = useState<
   //     'customer' | 'counsel' | 'adjustment'
   //   >('customer');
   const my = useRecoilValue(userState);
-  //   const { data: thisMonthContractUser } = useGetFirstContractUserByMonth({
-  //     year: moment().format('YYYY'),
-  //     month: moment().format('MM'),
-  //   });
-  //   const { data: lastMonthContractUser } = useGetFirstContractUserByMonth({
-  //     year: moment().subtract(1, 'months').format('YYYY'),
-  //     month: moment().subtract(1, 'months').format('MM'),
-  //   });
-  //   const { data: thisMonthRevenueUser } = useGetFirstRevenueUserByMonth({
-  //     year: moment().format('YYYY'),
-  //     month: moment().format('MM'),
-  //   });
-  //   const { data: lastMonthRevenueUser } = useGetFirstRevenueUserByMonth({
-  //     year: moment().subtract(1, 'months').format('YYYY'),
-  //     month: moment().subtract(1, 'months').format('MM'),
-  //   });
+  const { data: thisMonthTopFiveDeliveryUsers } =
+    useGetTopFiveDeliveryUsersByMonth({
+      year: thisYear,
+      month: thisMonth,
+    });
+  const { data: lastMonthTopFiveDeliveryUsers } =
+    useGetTopFiveDeliveryUsersByMonth({
+      year: lastYear,
+      month: lastMonth,
+    });
+  const { data: thisMonthTopFiveTotalFeeDeliveryUsers } =
+    useGetTopFiveTotalFeeDeliveryUsersByMonth({
+      year: thisYear,
+      month: thisMonth,
+    });
+  const { data: lastMonthTopFiveTotalFeeDeliveryUsers } =
+    useGetTopFiveTotalFeeDeliveryUsersByMonth({
+      year: lastYear,
+      month: lastMonth,
+    });
 
   return (
     <DashboardWrapper>
@@ -63,19 +54,16 @@ const Dashboard = () => {
                 <h3>영업사원별 이번달 매출현황 TOP 5</h3>
               </div>
               <div className="content">
-                <span
-                  style={{
-                    marginRight: 'auto',
-                    marginTop: '50px',
-                    fontSize: '14px',
-                  }}
-                >
-                  단위(만원)
-                </span>
                 <Barchart
-                  data={data}
-                  keys={keys}
-                  indexBy={indexBy}
+                  data={
+                    thisMonthTopFiveTotalFeeDeliveryUsers?.getTopFiveTotalFeeDeliveryUsersByMonth ??
+                    []
+                  }
+                  keys={['totalFeeDelivery']}
+                  indexBy={'user.name'}
+                  unitKey="이번달 매출"
+                  unit="원"
+                  marginLeft={100}
                 ></Barchart>
               </div>
             </Box>
@@ -84,19 +72,16 @@ const Dashboard = () => {
                 <h3>영업사원별 지난달 매출현황 TOP 5</h3>
               </div>
               <div className="content">
-                <span
-                  style={{
-                    marginRight: 'auto',
-                    marginTop: '50px',
-                    fontSize: '14px',
-                  }}
-                >
-                  단위(만원)
-                </span>
                 <Barchart
-                  data={data}
-                  keys={keys}
-                  indexBy={indexBy}
+                  data={
+                    lastMonthTopFiveTotalFeeDeliveryUsers?.getTopFiveTotalFeeDeliveryUsersByMonth ??
+                    []
+                  }
+                  keys={['totalFeeDelivery']}
+                  indexBy={'user.name'}
+                  unitKey={`${lastYear}년 ${lastMonth}월 매출`}
+                  unit="원"
+                  marginLeft={100}
                 ></Barchart>
               </div>
             </Box>
@@ -105,7 +90,7 @@ const Dashboard = () => {
                 <h3>영업사원별 이번달 출고건수 TOP 5</h3>
               </div>
               <div className="content">
-                <span
+                {/* <span
                   style={{
                     marginRight: 'auto',
                     marginTop: '50px',
@@ -113,11 +98,16 @@ const Dashboard = () => {
                   }}
                 >
                   단위(건)
-                </span>
+                </span> */}
                 <Barchart
-                  data={data2}
-                  keys={keys2}
-                  indexBy={indexBy}
+                  data={
+                    thisMonthTopFiveDeliveryUsers?.getTopFiveDeliveryUsersByMonth ??
+                    []
+                  }
+                  keys={['totalCountDelivery']}
+                  indexBy={'user.name'}
+                  unitKey="이번달 출고건수"
+                  unit="건"
                 ></Barchart>
               </div>
             </Box>
@@ -126,7 +116,7 @@ const Dashboard = () => {
                 <h3>영업사원별 지난달 출고건수 TOP 5</h3>
               </div>
               <div className="content">
-                <span
+                {/* <span
                   style={{
                     marginRight: 'auto',
                     marginTop: '50px',
@@ -134,11 +124,16 @@ const Dashboard = () => {
                   }}
                 >
                   단위(건)
-                </span>
+                </span> */}
                 <Barchart
-                  data={data2}
-                  keys={keys2}
-                  indexBy={indexBy}
+                  data={
+                    lastMonthTopFiveDeliveryUsers?.getTopFiveDeliveryUsersByMonth ??
+                    []
+                  }
+                  keys={['totalCountDelivery']}
+                  indexBy={'user.name'}
+                  unitKey={`${lastYear}년 ${lastMonth}월 출고건수`}
+                  unit="건"
                 ></Barchart>
               </div>
             </Box>

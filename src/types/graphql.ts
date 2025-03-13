@@ -499,40 +499,6 @@ export type FinancialCompany = {
   name: Scalars['String']['output'];
 };
 
-export type FirstContractCountUser = {
-  contractCount: Scalars['Int']['output'];
-  created_at?: Maybe<Scalars['DateTime']['output']>;
-  deleted_at?: Maybe<Scalars['DateTime']['output']>;
-  email: Scalars['String']['output'];
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  password: Scalars['String']['output'];
-  position: Position;
-  role: Role;
-  team?: Maybe<Team>;
-  totalRevenue: Scalars['Int']['output'];
-  updated_at?: Maybe<Scalars['DateTime']['output']>;
-};
-
-
-export type FirstContractCountUserTotalRevenueArgs = {
-  getRevenuesByUsersDto: GetRevenuesByUsersDto;
-};
-
-export type FirstRevenueUser = {
-  created_at?: Maybe<Scalars['DateTime']['output']>;
-  deleted_at?: Maybe<Scalars['DateTime']['output']>;
-  email: Scalars['String']['output'];
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  password: Scalars['String']['output'];
-  position: Position;
-  role: Role;
-  team?: Maybe<Team>;
-  totalRevenue: Scalars['Int']['output'];
-  updated_at?: Maybe<Scalars['DateTime']['output']>;
-};
-
 export type GetAdjustmentsDto = {
   month: Scalars['String']['input'];
   search?: InputMaybe<Scalars['String']['input']>;
@@ -582,6 +548,11 @@ export type GetCustomersDto = {
   userId?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
+export type GetDashBoardByUsersDto = {
+  month: Scalars['String']['input'];
+  year: Scalars['String']['input'];
+};
+
 export type GetDeliveriesDto = {
   /** 구분 Ids */
   divisionIds?: InputMaybe<Array<Scalars['Int']['input']>>;
@@ -607,9 +578,16 @@ export type GetPayStubDto = {
   year?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type GetRevenuesByUsersDto = {
-  month: Scalars['String']['input'];
-  year: Scalars['String']['input'];
+/** 월별 top5 유저 */
+export type MonthlyTopFiveUser = {
+  month: Scalars['String']['output'];
+  /** 출고건수 */
+  totalCountDelivery?: Maybe<Scalars['Int']['output']>;
+  /** 매출 합계 */
+  totalFeeDelivery?: Maybe<Scalars['Int']['output']>;
+  user: User;
+  userId?: Maybe<Scalars['Int']['output']>;
+  year: Scalars['String']['output'];
 };
 
 export type Mutation = {
@@ -1005,10 +983,6 @@ export type Query = {
   getDivisions: Array<Division>;
   /** 금융사 리스트 */
   getFinancialCompanies: Array<FinancialCompany>;
-  /** 월별 계약 1위 유저 */
-  getFirstContractUserByMonth: FirstContractCountUser;
-  /** 월별 매출 1위 유저 */
-  getFirstRevenueUserByMonth: FirstRevenueUser;
   /** 내 정보 조회 */
   getMyInfo: User;
   /** 알림 리스트 */
@@ -1019,8 +993,6 @@ export type Query = {
   getPayStubs: Array<PayStub>;
   /** 직책 리스트 */
   getPositions: Array<Position>;
-  /** 월별 매출 현황 */
-  getRevenuesByUsersMonth: Array<User>;
   /** 출고방식 리스트 */
   getShippingMethods: Array<ShippingMethod>;
   /** 지원금 조회 */
@@ -1031,6 +1003,10 @@ export type Query = {
   getTeam: Team;
   /** 팀 리스트 조회 */
   getTeams: Array<Team>;
+  /** 월별 출고건수 top5 유저 */
+  getTopFiveDeliveryUsersByMonth: Array<MonthlyTopFiveUser>;
+  /** 월별 매출 top5 유저 */
+  getTopFiveTotalFeeDeliveryUsersByMonth: Array<MonthlyTopFiveUser>;
   /** 담당자 상세 페이지 조회 */
   getUser: User;
   /** 담당자 리스트 */
@@ -1094,16 +1070,6 @@ export type QueryGetDeliveriesArgs = {
 };
 
 
-export type QueryGetFirstContractUserByMonthArgs = {
-  getFirstContractUserByMonthDto: GetRevenuesByUsersDto;
-};
-
-
-export type QueryGetFirstRevenueUserByMonthArgs = {
-  getFirstRevenueUserByMonthDto: GetRevenuesByUsersDto;
-};
-
-
 export type QueryGetPayStubArgs = {
   payStubId: Scalars['Float']['input'];
 };
@@ -1126,6 +1092,16 @@ export type QueryGetSupportAmountsArgs = {
 
 export type QueryGetTeamArgs = {
   teamId: Scalars['Float']['input'];
+};
+
+
+export type QueryGetTopFiveDeliveryUsersByMonthArgs = {
+  getFirstDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
+};
+
+
+export type QueryGetTopFiveTotalFeeDeliveryUsersByMonthArgs = {
+  getTopFiveTotalFeeDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
 };
 
 
@@ -1390,13 +1366,7 @@ export type User = {
   position: Position;
   role: Role;
   team?: Maybe<Team>;
-  totalRevenue: Scalars['Int']['output'];
   updated_at?: Maybe<Scalars['DateTime']['output']>;
-};
-
-
-export type UserTotalRevenueArgs = {
-  getRevenuesByUsersDto: GetRevenuesByUsersDto;
 };
 
 export type CreateAdditionalIncentiveMutationVariables = Exact<{
@@ -1712,14 +1682,14 @@ export type GetPayStubsQueryVariables = Exact<{
 }>;
 
 
-export type GetPayStubsQuery = { getPayStubs: Array<{ id: number, year: string, month: string, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, incomeTax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string } }> | null }> };
+export type GetPayStubsQuery = { getPayStubs: Array<{ id: number, year: string, month: string, day?: string | null, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, incomeTax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string } }> | null }> };
 
 export type GetPayStubQueryVariables = Exact<{
   payStubId: Scalars['Float']['input'];
 }>;
 
 
-export type GetPayStubQuery = { getPayStub: { id: number, year: string, month: string, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, incomeTax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string } }> | null } };
+export type GetPayStubQuery = { getPayStub: { id: number, year: string, month: string, day?: string | null, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, incomeTax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string } }> | null } };
 
 export type CheckSettleContractQueryVariables = Exact<{
   checkSettleContractDto: CheckSettleContractDto;
@@ -1757,19 +1727,19 @@ export type GetPositionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetPositionsQuery = { getPositions: Array<{ id: number, name: PositionType, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null }> };
 
-export type GetFirstContractUserByMonthQueryVariables = Exact<{
-  getFirstContractUserByMonthDto: GetRevenuesByUsersDto;
+export type GetTopFiveDeliveryUsersByMonthQueryVariables = Exact<{
+  getFirstDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
 }>;
 
 
-export type GetFirstContractUserByMonthQuery = { getFirstContractUserByMonth: { id: number, name: string } };
+export type GetTopFiveDeliveryUsersByMonthQuery = { getTopFiveDeliveryUsersByMonth: Array<{ year: string, month: string, totalFeeDelivery?: number | null, totalCountDelivery?: number | null, user: { id: number, name: string } }> };
 
-export type GetFirstRevenueUserByMonthQueryVariables = Exact<{
-  getFirstRevenueUserByMonthDto: GetRevenuesByUsersDto;
+export type GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables = Exact<{
+  getTopFiveTotalFeeDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
 }>;
 
 
-export type GetFirstRevenueUserByMonthQuery = { getFirstRevenueUserByMonth: { id: number, name: string } };
+export type GetTopFiveTotalFeeDeliveryUsersByMonthQuery = { getTopFiveTotalFeeDeliveryUsersByMonth: Array<{ year: string, month: string, totalFeeDelivery?: number | null, totalCountDelivery?: number | null, user: { id: number, name: string } }> };
 
 
 export const CreateAdditionalIncentiveDocument = gql`
@@ -3749,6 +3719,7 @@ export const GetPayStubsDocument = gql`
     id
     year
     month
+    day
     user {
       id
       name
@@ -3832,6 +3803,7 @@ export const GetPayStubDocument = gql`
     id
     year
     month
+    day
     user {
       id
       name
@@ -4200,89 +4172,101 @@ export type GetPositionsQueryHookResult = ReturnType<typeof useGetPositionsQuery
 export type GetPositionsLazyQueryHookResult = ReturnType<typeof useGetPositionsLazyQuery>;
 export type GetPositionsSuspenseQueryHookResult = ReturnType<typeof useGetPositionsSuspenseQuery>;
 export type GetPositionsQueryResult = Apollo.QueryResult<GetPositionsQuery, GetPositionsQueryVariables>;
-export const GetFirstContractUserByMonthDocument = gql`
-    query GetFirstContractUserByMonth($getFirstContractUserByMonthDto: GetRevenuesByUsersDto!) {
-  getFirstContractUserByMonth(
-    getFirstContractUserByMonthDto: $getFirstContractUserByMonthDto
+export const GetTopFiveDeliveryUsersByMonthDocument = gql`
+    query GetTopFiveDeliveryUsersByMonth($getFirstDeliveryUsersByMonthDto: GetDashBoardByUsersDto!) {
+  getTopFiveDeliveryUsersByMonth(
+    getFirstDeliveryUsersByMonthDto: $getFirstDeliveryUsersByMonthDto
   ) {
-    id
-    name
+    user {
+      id
+      name
+    }
+    year
+    month
+    totalFeeDelivery
+    totalCountDelivery
   }
 }
     `;
 
 /**
- * __useGetFirstContractUserByMonthQuery__
+ * __useGetTopFiveDeliveryUsersByMonthQuery__
  *
- * To run a query within a React component, call `useGetFirstContractUserByMonthQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetFirstContractUserByMonthQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetTopFiveDeliveryUsersByMonthQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTopFiveDeliveryUsersByMonthQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetFirstContractUserByMonthQuery({
+ * const { data, loading, error } = useGetTopFiveDeliveryUsersByMonthQuery({
  *   variables: {
- *      getFirstContractUserByMonthDto: // value for 'getFirstContractUserByMonthDto'
+ *      getFirstDeliveryUsersByMonthDto: // value for 'getFirstDeliveryUsersByMonthDto'
  *   },
  * });
  */
-export function useGetFirstContractUserByMonthQuery(baseOptions: Apollo.QueryHookOptions<GetFirstContractUserByMonthQuery, GetFirstContractUserByMonthQueryVariables> & ({ variables: GetFirstContractUserByMonthQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetTopFiveDeliveryUsersByMonthQuery(baseOptions: Apollo.QueryHookOptions<GetTopFiveDeliveryUsersByMonthQuery, GetTopFiveDeliveryUsersByMonthQueryVariables> & ({ variables: GetTopFiveDeliveryUsersByMonthQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetFirstContractUserByMonthQuery, GetFirstContractUserByMonthQueryVariables>(GetFirstContractUserByMonthDocument, options);
+        return Apollo.useQuery<GetTopFiveDeliveryUsersByMonthQuery, GetTopFiveDeliveryUsersByMonthQueryVariables>(GetTopFiveDeliveryUsersByMonthDocument, options);
       }
-export function useGetFirstContractUserByMonthLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFirstContractUserByMonthQuery, GetFirstContractUserByMonthQueryVariables>) {
+export function useGetTopFiveDeliveryUsersByMonthLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTopFiveDeliveryUsersByMonthQuery, GetTopFiveDeliveryUsersByMonthQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetFirstContractUserByMonthQuery, GetFirstContractUserByMonthQueryVariables>(GetFirstContractUserByMonthDocument, options);
+          return Apollo.useLazyQuery<GetTopFiveDeliveryUsersByMonthQuery, GetTopFiveDeliveryUsersByMonthQueryVariables>(GetTopFiveDeliveryUsersByMonthDocument, options);
         }
-export function useGetFirstContractUserByMonthSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetFirstContractUserByMonthQuery, GetFirstContractUserByMonthQueryVariables>) {
+export function useGetTopFiveDeliveryUsersByMonthSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTopFiveDeliveryUsersByMonthQuery, GetTopFiveDeliveryUsersByMonthQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetFirstContractUserByMonthQuery, GetFirstContractUserByMonthQueryVariables>(GetFirstContractUserByMonthDocument, options);
+          return Apollo.useSuspenseQuery<GetTopFiveDeliveryUsersByMonthQuery, GetTopFiveDeliveryUsersByMonthQueryVariables>(GetTopFiveDeliveryUsersByMonthDocument, options);
         }
-export type GetFirstContractUserByMonthQueryHookResult = ReturnType<typeof useGetFirstContractUserByMonthQuery>;
-export type GetFirstContractUserByMonthLazyQueryHookResult = ReturnType<typeof useGetFirstContractUserByMonthLazyQuery>;
-export type GetFirstContractUserByMonthSuspenseQueryHookResult = ReturnType<typeof useGetFirstContractUserByMonthSuspenseQuery>;
-export type GetFirstContractUserByMonthQueryResult = Apollo.QueryResult<GetFirstContractUserByMonthQuery, GetFirstContractUserByMonthQueryVariables>;
-export const GetFirstRevenueUserByMonthDocument = gql`
-    query GetFirstRevenueUserByMonth($getFirstRevenueUserByMonthDto: GetRevenuesByUsersDto!) {
-  getFirstRevenueUserByMonth(
-    getFirstRevenueUserByMonthDto: $getFirstRevenueUserByMonthDto
+export type GetTopFiveDeliveryUsersByMonthQueryHookResult = ReturnType<typeof useGetTopFiveDeliveryUsersByMonthQuery>;
+export type GetTopFiveDeliveryUsersByMonthLazyQueryHookResult = ReturnType<typeof useGetTopFiveDeliveryUsersByMonthLazyQuery>;
+export type GetTopFiveDeliveryUsersByMonthSuspenseQueryHookResult = ReturnType<typeof useGetTopFiveDeliveryUsersByMonthSuspenseQuery>;
+export type GetTopFiveDeliveryUsersByMonthQueryResult = Apollo.QueryResult<GetTopFiveDeliveryUsersByMonthQuery, GetTopFiveDeliveryUsersByMonthQueryVariables>;
+export const GetTopFiveTotalFeeDeliveryUsersByMonthDocument = gql`
+    query GetTopFiveTotalFeeDeliveryUsersByMonth($getTopFiveTotalFeeDeliveryUsersByMonthDto: GetDashBoardByUsersDto!) {
+  getTopFiveTotalFeeDeliveryUsersByMonth(
+    getTopFiveTotalFeeDeliveryUsersByMonthDto: $getTopFiveTotalFeeDeliveryUsersByMonthDto
   ) {
-    id
-    name
+    user {
+      id
+      name
+    }
+    year
+    month
+    totalFeeDelivery
+    totalCountDelivery
   }
 }
     `;
 
 /**
- * __useGetFirstRevenueUserByMonthQuery__
+ * __useGetTopFiveTotalFeeDeliveryUsersByMonthQuery__
  *
- * To run a query within a React component, call `useGetFirstRevenueUserByMonthQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetFirstRevenueUserByMonthQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetTopFiveTotalFeeDeliveryUsersByMonthQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTopFiveTotalFeeDeliveryUsersByMonthQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetFirstRevenueUserByMonthQuery({
+ * const { data, loading, error } = useGetTopFiveTotalFeeDeliveryUsersByMonthQuery({
  *   variables: {
- *      getFirstRevenueUserByMonthDto: // value for 'getFirstRevenueUserByMonthDto'
+ *      getTopFiveTotalFeeDeliveryUsersByMonthDto: // value for 'getTopFiveTotalFeeDeliveryUsersByMonthDto'
  *   },
  * });
  */
-export function useGetFirstRevenueUserByMonthQuery(baseOptions: Apollo.QueryHookOptions<GetFirstRevenueUserByMonthQuery, GetFirstRevenueUserByMonthQueryVariables> & ({ variables: GetFirstRevenueUserByMonthQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetTopFiveTotalFeeDeliveryUsersByMonthQuery(baseOptions: Apollo.QueryHookOptions<GetTopFiveTotalFeeDeliveryUsersByMonthQuery, GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables> & ({ variables: GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetFirstRevenueUserByMonthQuery, GetFirstRevenueUserByMonthQueryVariables>(GetFirstRevenueUserByMonthDocument, options);
+        return Apollo.useQuery<GetTopFiveTotalFeeDeliveryUsersByMonthQuery, GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables>(GetTopFiveTotalFeeDeliveryUsersByMonthDocument, options);
       }
-export function useGetFirstRevenueUserByMonthLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFirstRevenueUserByMonthQuery, GetFirstRevenueUserByMonthQueryVariables>) {
+export function useGetTopFiveTotalFeeDeliveryUsersByMonthLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTopFiveTotalFeeDeliveryUsersByMonthQuery, GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetFirstRevenueUserByMonthQuery, GetFirstRevenueUserByMonthQueryVariables>(GetFirstRevenueUserByMonthDocument, options);
+          return Apollo.useLazyQuery<GetTopFiveTotalFeeDeliveryUsersByMonthQuery, GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables>(GetTopFiveTotalFeeDeliveryUsersByMonthDocument, options);
         }
-export function useGetFirstRevenueUserByMonthSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetFirstRevenueUserByMonthQuery, GetFirstRevenueUserByMonthQueryVariables>) {
+export function useGetTopFiveTotalFeeDeliveryUsersByMonthSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTopFiveTotalFeeDeliveryUsersByMonthQuery, GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetFirstRevenueUserByMonthQuery, GetFirstRevenueUserByMonthQueryVariables>(GetFirstRevenueUserByMonthDocument, options);
+          return Apollo.useSuspenseQuery<GetTopFiveTotalFeeDeliveryUsersByMonthQuery, GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables>(GetTopFiveTotalFeeDeliveryUsersByMonthDocument, options);
         }
-export type GetFirstRevenueUserByMonthQueryHookResult = ReturnType<typeof useGetFirstRevenueUserByMonthQuery>;
-export type GetFirstRevenueUserByMonthLazyQueryHookResult = ReturnType<typeof useGetFirstRevenueUserByMonthLazyQuery>;
-export type GetFirstRevenueUserByMonthSuspenseQueryHookResult = ReturnType<typeof useGetFirstRevenueUserByMonthSuspenseQuery>;
-export type GetFirstRevenueUserByMonthQueryResult = Apollo.QueryResult<GetFirstRevenueUserByMonthQuery, GetFirstRevenueUserByMonthQueryVariables>;
+export type GetTopFiveTotalFeeDeliveryUsersByMonthQueryHookResult = ReturnType<typeof useGetTopFiveTotalFeeDeliveryUsersByMonthQuery>;
+export type GetTopFiveTotalFeeDeliveryUsersByMonthLazyQueryHookResult = ReturnType<typeof useGetTopFiveTotalFeeDeliveryUsersByMonthLazyQuery>;
+export type GetTopFiveTotalFeeDeliveryUsersByMonthSuspenseQueryHookResult = ReturnType<typeof useGetTopFiveTotalFeeDeliveryUsersByMonthSuspenseQuery>;
+export type GetTopFiveTotalFeeDeliveryUsersByMonthQueryResult = Apollo.QueryResult<GetTopFiveTotalFeeDeliveryUsersByMonthQuery, GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables>;

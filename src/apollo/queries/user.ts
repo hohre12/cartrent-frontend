@@ -58,30 +58,42 @@ export const GET_POSITIONS_QUERY = gql`
   }
 `;
 
-// 월별 계약 1위 직원
-export const GET_FIRST_CONTRACT_USER_BY_MONTH = gql`
-  query GetFirstContractUserByMonth(
-    $getFirstContractUserByMonthDto: GetRevenuesByUsersDto!
+// 월별 출고건수 top5 유저
+export const GET_TOP_FIVE_DELIVERY_USERS_BY_MONTH = gql`
+  query GetTopFiveDeliveryUsersByMonth(
+    $getTopFiveDeliveryUsersByMonthDto: GetDashBoardByUsersDto!
   ) {
-    getFirstContractUserByMonth(
-      getFirstContractUserByMonthDto: $getFirstContractUserByMonthDto
+    getTopFiveDeliveryUsersByMonth(
+      getTopFiveDeliveryUsersByMonthDto: $getTopFiveDeliveryUsersByMonthDto
     ) {
-      id
-      name
+      user {
+        id
+        name
+      }
+      year
+      month
+      totalCountDelivery
+      totalFeeDelivery
     }
   }
 `;
 
-// 월별 매출 1위 직원
-export const GET_FIRST_REVENUE_USER_BY_MONTH = gql`
-  query GetFirstRevenueUserByMonth(
-    $getFirstRevenueUserByMonthDto: GetRevenuesByUsersDto!
+// 월별 매출 top5 유저
+export const GET_TOP_FIVE_TOTAL_FEE_DELIVERY_USERS_BY_MONTH = gql`
+  query GetTopFiveTotalFeeDeliveryUsersByMonth(
+    $getTopFiveTotalFeeDeliveryUsersByMonthDto: GetDashBoardByUsersDto!
   ) {
-    getFirstRevenueUserByMonth(
-      getFirstRevenueUserByMonthDto: $getFirstRevenueUserByMonthDto
+    getTopFiveTotalFeeDeliveryUsersByMonth(
+      getTopFiveTotalFeeDeliveryUsersByMonthDto: $getTopFiveTotalFeeDeliveryUsersByMonthDto
     ) {
-      id
-      name
+      user {
+        id
+        name
+      }
+      year
+      month
+      totalFeeDelivery
+      totalCountDelivery
     }
   }
 `;
