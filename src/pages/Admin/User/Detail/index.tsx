@@ -54,7 +54,7 @@ const AdminUserDetail = () => {
                 showConfirm({
                   isOpen: true,
                   title: '유저 삭제',
-                  content: `${detail?.position.name === PositionType.TeamLeader || detail?.position.name === PositionType.GeneralManager ? `${detail?.name} 직원은 ${detail?.team?.name}팀의 <${UserPositionHangleEnum[detail.position.name]}>입니다.\n삭제시, ${detail?.team?.name}팀의 <${UserPositionHangleEnum[detail.position.name]}>직책이 사라지게 됩니다.\n그래도 삭제하시겠습니까?` : `${detail?.name} 직원을 삭제하시겠습니까?`} `,
+                  content: `${detail?.team && (detail?.position.name === PositionType.TeamLeader || detail?.position.name === PositionType.GeneralManager) ? `${detail?.name} 직원은 ${detail?.team?.name}팀의 <${UserPositionHangleEnum[detail.position.name]}>입니다.\n삭제시, ${detail?.team?.name}팀의 <${UserPositionHangleEnum[detail.position.name]}>직책이 사라지게 됩니다.\n그래도 삭제하시겠습니까?` : `${detail?.name} 직원을 삭제하시겠습니까?`} `,
                   cancelText: '취소',
                   confirmText: '삭제',
                   confirmVariant: 'primaryDanger',
