@@ -195,6 +195,7 @@ const ContractDetail = () => {
         'shippingMethod',
         'division',
         'isVATSupport',
+        '__typename',
       ]);
 
       setUpdateContract({

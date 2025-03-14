@@ -24,7 +24,7 @@ import {
   Team,
   User,
 } from '@/types/graphql';
-import { autoHypenTel } from '@/utils/common';
+import { autoHypenTel, flattenTeams } from '@/utils/common';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -155,7 +155,7 @@ const RegistModal = (props: TModal) => {
               size="medium"
               value={{ ...userTeam }}
               onChange={(value) => setUserTeam(value)}
-              list={teams?.getTeams ?? []}
+              list={teams?.getTeams ? flattenTeams(teams.getTeams) : []}
               trackBy="id"
               valueBy="name"
               placeholder="팀을 선택해주세요"

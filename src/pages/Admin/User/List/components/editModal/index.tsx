@@ -7,6 +7,7 @@ import { useGetTeams } from '@/services/team';
 import { useGetPositions, useGetUser, useUpdateUser } from '@/services/user';
 import { TModal } from '@/types/common';
 import { Position, Team, UpdateUserDto } from '@/types/graphql';
+import { flattenTeams } from '@/utils/common';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -146,7 +147,7 @@ const EditModal = (props: TModal & { idx: number }) => {
               size="medium"
               value={{ ...userTeam }}
               onChange={(value) => setUserTeam(value)}
-              list={teams?.getTeams ?? []}
+              list={teams?.getTeams ? flattenTeams(teams.getTeams) : []}
               trackBy="id"
               valueBy="name"
               placeholder="팀을 선택해주세요"
