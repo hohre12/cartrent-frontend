@@ -4,6 +4,7 @@ export const TEAM_FIELDS = gql`
   fragment TeamFields on Team {
     id
     name
+    depth
     leader {
       id
       name
