@@ -54,7 +54,7 @@ const AdminTeamDetail = () => {
                 showConfirm({
                   isOpen: true,
                   title: '팀 삭제',
-                  content: `${detail?.name}팀을 삭제하시겠습니까?`,
+                  content: `${detail?.subTeams && detail?.subTeams?.length > 0 ? `${detail?.name}팀을 삭제할시 ${detail?.name}팀의 모든 하위팀들이 삭제됩니다.\n그래도 삭제하시겠습니까?` : `${detail?.name}팀을 삭제하시겠습니까?`}`,
                   cancelText: '취소',
                   confirmText: '삭제',
                   confirmVariant: 'primaryDanger',
