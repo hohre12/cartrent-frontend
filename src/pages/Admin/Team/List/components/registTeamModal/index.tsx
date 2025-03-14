@@ -44,8 +44,14 @@ const RegistTeamModal = (props: TModal) => {
         });
         modalProps.onConfirm?.();
       }
-    } catch (e) {
-      console.warn(e);
+    } catch (e: any) {
+      addToast({
+        id: Date.now(),
+        isImage: true,
+        content: `${e.message}`,
+        type: 'error',
+      });
+      modalProps.onCancel?.();
     }
   };
 

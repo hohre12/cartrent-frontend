@@ -3,14 +3,8 @@ import { Modal } from '@/components/modal/Modal';
 import Select from '@/components/select/Select';
 import { UserPositionHangleEnum } from '@/constants/user';
 import { useToast } from '@/hooks/useToast';
-import {
-  useCreateCustomer,
-  useGetCustomerGrades,
-  useGetCustomerGroups,
-  useGetCustomerStatuses,
-} from '@/services/customer';
 import { useGetTeams } from '@/services/team';
-import { useCreateUser, useGetPositions, useGetUsers } from '@/services/user';
+import { useCreateUser, useGetPositions } from '@/services/user';
 import { userState } from '@/state/auth';
 import { TModal } from '@/types/common';
 import {
@@ -74,8 +68,14 @@ const RegistModal = (props: TModal) => {
       }
 
       modalProps.onConfirm?.();
-    } catch (e) {
-      console.warn(e);
+    } catch (e: any) {
+      addToast({
+        id: Date.now(),
+        isImage: true,
+        content: `${e.message}`,
+        type: 'error',
+      });
+      modalProps.onCancel?.();
     }
   };
 
