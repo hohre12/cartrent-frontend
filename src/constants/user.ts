@@ -1,6 +1,7 @@
 export enum UserPositionHangleEnum {
   ADMIN = '관리자',
   ASSISTANT_MANAGER = '대리',
+  GENERAL_MANAGER = '본부장',
   MANAGER = '과장',
   SENIOR_MANAGER = '차장',
   STAFF = '사원',

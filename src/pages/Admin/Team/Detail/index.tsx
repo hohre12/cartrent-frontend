@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import EditTeamModal from '../List/components/editTeamModal';
+import { numberFormat } from '@/utils/common';
 
 const AdminTeamDetail = () => {
   const { id } = useParams();
@@ -75,7 +76,7 @@ const AdminTeamDetail = () => {
         <DetailContentWrapper>
           <TeamBoxWrapper>
             <h3>팀장</h3>
-            <div>{formatDate(detail.created_at) ?? '-'}</div>
+            <div>{detail.leader?.name ?? '-'}</div>
           </TeamBoxWrapper>
           <TeamBoxWrapper>
             <h3>생성일</h3>
@@ -107,7 +108,7 @@ const AdminTeamDetail = () => {
                       <span>{it.email ?? '-'}</span>
                     </div>
                     <div>
-                      <h5>직원생성일</h5>
+                      <h5>직원 생성일</h5>
                       <span>{formatDate(it.created_at) ?? '-'}</span>
                     </div>
                   </UserBox>
@@ -115,6 +116,38 @@ const AdminTeamDetail = () => {
               </UserBoxWrapper>
             ) : (
               <div>소속된 팀원이 없습니다.</div>
+            )}
+          </TeamBoxWrapper>
+          <TeamBoxWrapper>
+            <h3>하위 팀</h3>
+            {detail.subTeams && detail.subTeams?.length > 0 ? (
+              <UserBoxWrapper>
+                {detail.subTeams.map((it, idx) => (
+                  <UserBox
+                    key={idx}
+                    onClick={() => navigate(`/admin/team/${it.id}`)}
+                  >
+                    <div>
+                      <h5>팀명</h5>
+                      <span>{it.name ?? '-'}</span>
+                    </div>
+                    <div>
+                      <h5>팀장</h5>
+                      <span>{it.leader?.name ?? '-'}</span>
+                    </div>
+                    <div>
+                      <h5>팀 생성일</h5>
+                      <span>{formatDate(it.created_at) ?? '-'}</span>
+                    </div>
+                    <div>
+                      <h5>팀원 수</h5>
+                      <span>{`${numberFormat(it.userList.length)}명`}</span>
+                    </div>
+                  </UserBox>
+                ))}
+              </UserBoxWrapper>
+            ) : (
+              <div>하위 팀이 없습니다.</div>
             )}
           </TeamBoxWrapper>
         </DetailContentWrapper>

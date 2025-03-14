@@ -1,11 +1,9 @@
 import Input from '@/components/input/Input';
 import { Modal } from '@/components/modal/Modal';
 import { useToast } from '@/hooks/useToast';
-import { useCreateAdditionalIncentive } from '@/services/adjustment';
-import { useCreateTeam, useGetTeam, useUpdateTeam } from '@/services/team';
+import { useGetTeam, useUpdateTeam } from '@/services/team';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
-import { numberFormat } from '@/utils/common';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 

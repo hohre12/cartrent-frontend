@@ -1348,7 +1348,11 @@ export type UpdateSupportAmountDto = {
 };
 
 export type UpdateTeamDto = {
+  /** 조직 장 userId */
+  leaderUserId?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
+  /** 상위 부모 조직 Id */
+  parentId?: InputMaybe<Scalars['Int']['input']>;
   teamId: Scalars['Int']['input'];
 };
 
@@ -1709,17 +1713,21 @@ export type CheckSettleContractQueryVariables = Exact<{
 
 export type CheckSettleContractQuery = { checkSettleContract: boolean };
 
+export type TeamFieldsFragment = { id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> };
+
+export type TeamWithSubTeamsFragment = { id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> };
+
 export type GetTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetTeamsQuery = { getTeams: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, userList: Array<{ id: number, name: string }> }> };
+export type GetTeamsQuery = { getTeams: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, parentTeam?: { id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> } | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> };
 
 export type GetTeamQueryVariables = Exact<{
   teamId: Scalars['Float']['input'];
 }>;
 
 
-export type GetTeamQuery = { getTeam: { id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, userList: Array<{ id: number, name: string, email: string, created_at?: string | null, position: { id: number, name: PositionType } }> } };
+export type GetTeamQuery = { getTeam: { id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, parentTeam?: { id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> } | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> } };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1752,7 +1760,41 @@ export type GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables = Exact<{
 
 export type GetTopFiveTotalFeeDeliveryUsersByMonthQuery = { getTopFiveTotalFeeDeliveryUsersByMonth: Array<{ year: string, month: string, totalFeeDelivery?: number | null, totalCountDelivery?: number | null, user: { id: number, name: string } }> };
 
-
+export const TeamFieldsFragmentDoc = gql`
+    fragment TeamFields on Team {
+  id
+  name
+  leader {
+    id
+    name
+  }
+  userList {
+    id
+    name
+    position {
+      id
+      name
+    }
+  }
+  created_at
+  updated_at
+  deleted_at
+}
+    `;
+export const TeamWithSubTeamsFragmentDoc = gql`
+    fragment TeamWithSubTeams on Team {
+  ...TeamFields
+  subTeams {
+    ...TeamFields
+    subTeams {
+      ...TeamFields
+      subTeams {
+        ...TeamFields
+      }
+    }
+  }
+}
+    ${TeamFieldsFragmentDoc}`;
 export const CreateAdditionalIncentiveDocument = gql`
     mutation CreateAdditionalIncentive($createAdditionalIncentiveDto: CreateAdditionalIncentiveDto!) {
   createAdditionalIncentive(
@@ -3933,18 +3975,14 @@ export type CheckSettleContractQueryResult = Apollo.QueryResult<CheckSettleContr
 export const GetTeamsDocument = gql`
     query GetTeams {
   getTeams {
-    id
-    name
-    created_at
-    updated_at
-    deleted_at
-    userList {
-      id
-      name
+    ...TeamWithSubTeams
+    parentTeam {
+      ...TeamFields
     }
   }
 }
-    `;
+    ${TeamWithSubTeamsFragmentDoc}
+${TeamFieldsFragmentDoc}`;
 
 /**
  * __useGetTeamsQuery__
@@ -3980,24 +4018,14 @@ export type GetTeamsQueryResult = Apollo.QueryResult<GetTeamsQuery, GetTeamsQuer
 export const GetTeamDocument = gql`
     query GetTeam($teamId: Float!) {
   getTeam(teamId: $teamId) {
-    id
-    name
-    created_at
-    updated_at
-    deleted_at
-    userList {
-      id
-      name
-      email
-      created_at
-      position {
-        id
-        name
-      }
+    ...TeamWithSubTeams
+    parentTeam {
+      ...TeamFields
     }
   }
 }
-    `;
+    ${TeamWithSubTeamsFragmentDoc}
+${TeamFieldsFragmentDoc}`;
 
 /**
  * __useGetTeamQuery__

@@ -1,3 +1,5 @@
+import { Team } from "@/types/graphql";
+
 // list 보기옵션 컬럼 노출 여부
 export const isColumnsViewHide = (
   keys: string[],
@@ -100,3 +102,13 @@ export const customerStatusColor = (value?: string): string => {
       return '111';
   }
 };
+
+export const flattenTeams = (teams: Team[], parentId: number | null = null): Team[] => {
+    return teams.flatMap((team) => {
+      const { subTeams, ...rest } = team;
+      const flattenedTeam = { ...rest, parentId };
+  
+      // 현재 팀 + 하위 팀 재귀 처리
+      return [flattenedTeam, ...flattenTeams(subTeams || [], team.id)];
+    });
+  };

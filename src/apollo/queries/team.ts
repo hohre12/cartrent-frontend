@@ -1,97 +1,66 @@
 import { gql } from '@apollo/client';
 
-/* Query */
-export const GET_TEAMS_QUERY = gql`
-  query GetTeams {
-    getTeams {
+export const TEAM_FIELDS = gql`
+  fragment TeamFields on Team {
+    id
+    name
+    leader {
       id
       name
-      leader {
+    }
+    userList {
+      id
+      name
+      position {
         id
         name
       }
-      userList {
-        id
-        name
-        position {
-          id
-          name
-        }
-      }
-      created_at
-      updated_at
-      deleted_at
-      parentTeam {
-        id
-        name
-        leader {
-          id
-          name
-        }
-        userList {
-          id
-          name
-          position {
-            id
-            name
-          }
-        }
-      }
+    }
+    created_at
+    updated_at
+    deleted_at
+  }
+`;
+
+export const TEAM_WITH_SUBTEAMS = gql`
+  fragment TeamWithSubTeams on Team {
+    ...TeamFields
+    subTeams {
+      ...TeamFields
       subTeams {
-        id
-        name
-        leader {
-          id
-          name
-        }
-        userList {
-          id
-          name
-          position {
-            id
-            name
-          }
-        }
+        ...TeamFields
         subTeams {
-          id
-          name
-          leader {
-            id
-            name
-          }
-          userList {
-            id
-            name
-            position {
-              id
-              name
-            }
-          }
+          ...TeamFields
         }
       }
     }
   }
 `;
 
-export const GET_TEAM_QUERY = gql`
-  query GetTeam($teamId: Float!) {
-    getTeam(teamId: $teamId) {
-      id
-      name
-      created_at
-      updated_at
-      deleted_at
-      userList {
-        id
-        name
-        email
-        created_at
-        position {
-          id
-          name
-        }
+/* Query */
+export const GET_TEAMS_QUERY = gql`
+  query GetTeams {
+    getTeams {
+      ...TeamWithSubTeams
+      parentTeam {
+        ...TeamFields
       }
     }
   }
+  ${TEAM_FIELDS}
+  ${TEAM_WITH_SUBTEAMS}
+`;
+
+export const GET_TEAM_QUERY = gql`
+  query GetTeam($teamId: Float!) {
+    getTeam(teamId: $teamId) {
+      ...TeamWithSubTeams
+      parentTeam {
+        ...TeamFields
+      }
+    }
+  }
+  ${TEAM_FIELDS}
+  ${TEAM_WITH_SUBTEAMS}
 `;
 /* Query */
