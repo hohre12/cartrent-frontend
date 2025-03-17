@@ -47,50 +47,50 @@ const Dashboard = () => {
         <h2>대시보드</h2>
       </DashboardHeader>
       <DashboardContent>
-        {my?.role?.name === PermissionType.Admin && (
-          <>
-            <Box>
-              <div className="header">
-                <h3>영업사원별 이번달 매출현황 TOP 5</h3>
-              </div>
-              <div className="content">
-                <Barchart
-                  data={
-                    thisMonthTopFiveTotalFeeDeliveryUsers?.getTopFiveTotalFeeDeliveryUsersByMonth ??
-                    []
-                  }
-                  keys={['totalFeeDelivery']}
-                  indexBy={'user.name'}
-                  unitKey="이번달 매출"
-                  unit="원"
-                  marginLeft={100}
-                ></Barchart>
-              </div>
-            </Box>
-            <Box className="green">
-              <div className="header">
-                <h3>영업사원별 지난달 매출현황 TOP 5</h3>
-              </div>
-              <div className="content">
-                <Barchart
-                  data={
-                    lastMonthTopFiveTotalFeeDeliveryUsers?.getTopFiveTotalFeeDeliveryUsersByMonth ??
-                    []
-                  }
-                  keys={['totalFeeDelivery']}
-                  indexBy={'user.name'}
-                  unitKey={`${lastYear}년 ${lastMonth}월 매출`}
-                  unit="원"
-                  marginLeft={100}
-                ></Barchart>
-              </div>
-            </Box>
-            <Box>
-              <div className="header">
-                <h3>영업사원별 이번달 출고건수 TOP 5</h3>
-              </div>
-              <div className="content">
-                {/* <span
+        {/* {my?.role?.name === PermissionType.Admin && ( */}
+        <>
+          <Box>
+            <div className="header">
+              <h3>영업사원별 이번달 매출현황 TOP 5</h3>
+            </div>
+            <div className="content">
+              <Barchart
+                data={
+                  thisMonthTopFiveTotalFeeDeliveryUsers?.getTopFiveTotalFeeDeliveryUsersByMonth ??
+                  []
+                }
+                keys={['totalFeeDelivery']}
+                indexBy={'user.name'}
+                unitKey="이번달 매출"
+                unit="원"
+                marginLeft={100}
+              ></Barchart>
+            </div>
+          </Box>
+          <Box className="green">
+            <div className="header">
+              <h3>영업사원별 지난달 매출현황 TOP 5</h3>
+            </div>
+            <div className="content">
+              <Barchart
+                data={
+                  lastMonthTopFiveTotalFeeDeliveryUsers?.getTopFiveTotalFeeDeliveryUsersByMonth ??
+                  []
+                }
+                keys={['totalFeeDelivery']}
+                indexBy={'user.name'}
+                unitKey={`${lastYear}년 ${lastMonth}월 매출`}
+                unit="원"
+                marginLeft={100}
+              ></Barchart>
+            </div>
+          </Box>
+          <Box>
+            <div className="header">
+              <h3>영업사원별 이번달 출고건수 TOP 5</h3>
+            </div>
+            <div className="content">
+              {/* <span
                   style={{
                     marginRight: 'auto',
                     marginTop: '50px',
@@ -99,24 +99,24 @@ const Dashboard = () => {
                 >
                   단위(건)
                 </span> */}
-                <Barchart
-                  data={
-                    thisMonthTopFiveDeliveryUsers?.getTopFiveDeliveryUsersByMonth ??
-                    []
-                  }
-                  keys={['totalCountDelivery']}
-                  indexBy={'user.name'}
-                  unitKey="이번달 출고건수"
-                  unit="건"
-                ></Barchart>
-              </div>
-            </Box>
-            <Box className="green">
-              <div className="header">
-                <h3>영업사원별 지난달 출고건수 TOP 5</h3>
-              </div>
-              <div className="content">
-                {/* <span
+              <Barchart
+                data={
+                  thisMonthTopFiveDeliveryUsers?.getTopFiveDeliveryUsersByMonth ??
+                  []
+                }
+                keys={['totalCountDelivery']}
+                indexBy={'user.name'}
+                unitKey="이번달 출고건수"
+                unit="건"
+              ></Barchart>
+            </div>
+          </Box>
+          <Box className="green">
+            <div className="header">
+              <h3>영업사원별 지난달 출고건수 TOP 5</h3>
+            </div>
+            <div className="content">
+              {/* <span
                   style={{
                     marginRight: 'auto',
                     marginTop: '50px',
@@ -125,20 +125,20 @@ const Dashboard = () => {
                 >
                   단위(건)
                 </span> */}
-                <Barchart
-                  data={
-                    lastMonthTopFiveDeliveryUsers?.getTopFiveDeliveryUsersByMonth ??
-                    []
-                  }
-                  keys={['totalCountDelivery']}
-                  indexBy={'user.name'}
-                  unitKey={`${lastYear}년 ${lastMonth}월 출고건수`}
-                  unit="건"
-                ></Barchart>
-              </div>
-            </Box>
-          </>
-        )}
+              <Barchart
+                data={
+                  lastMonthTopFiveDeliveryUsers?.getTopFiveDeliveryUsersByMonth ??
+                  []
+                }
+                keys={['totalCountDelivery']}
+                indexBy={'user.name'}
+                unitKey={`${lastYear}년 ${lastMonth}월 출고건수`}
+                unit="건"
+              ></Barchart>
+            </div>
+          </Box>
+        </>
+        {/* )} */}
         {/* <Box>
           <div className="header">
             <h3>이번달 매출 1위</h3>
