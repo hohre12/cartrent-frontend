@@ -36,7 +36,7 @@ export type Adjustment = {
   additionalIncentive?: Maybe<AdditionalIncentive>;
   additionalIncentiveId?: Maybe<Scalars['Int']['output']>;
   /** 기타 수당 / 팀장급 이상 팀 전체 매출의 인센티브 */
-  etcIncentive: Scalars['Int']['output'];
+  etcIncentive: Scalars['Float']['output'];
   /** 달 */
   month: Scalars['String']['output'];
   /** 계약 총 건수 */
@@ -898,7 +898,7 @@ export type PayStub = {
   day?: Maybe<Scalars['String']['output']>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
   /** 기타수당 */
-  etcIncentive?: Maybe<Scalars['Int']['output']>;
+  etcIncentive?: Maybe<Scalars['Float']['output']>;
   id: Scalars['Int']['output'];
   /** 소득세 - 수당합계 * 0.033 */
   incomeTax: Scalars['Int']['output'];
@@ -911,7 +911,7 @@ export type PayStub = {
   /** 매출합계 - 출고매출 합계 */
   totalFeeDelivery: Scalars['Int']['output'];
   /** 출고 수당의 직급별 인센티브 */
-  totalIncentiveDelivery?: Maybe<Scalars['Int']['output']>;
+  totalIncentiveDelivery?: Maybe<Scalars['Float']['output']>;
   /** 정산합계 - 출고순익 합계 */
   totalNetIncomeDelivery: Scalars['Int']['output'];
   updated_at?: Maybe<Scalars['DateTime']['output']>;
@@ -944,6 +944,10 @@ export enum PositionType {
   Admin = 'ADMIN',
   /** 대리 */
   AssistantManager = 'ASSISTANT_MANAGER',
+  /** 대표 */
+  Ceo = 'CEO',
+  /** 실장 */
+  DepartmentManager = 'DEPARTMENT_MANAGER',
   /** 본부장 */
   GeneralManager = 'GENERAL_MANAGER',
   /** 과장 */
@@ -1168,6 +1172,8 @@ export type SupportAmount = {
 export type Team = {
   created_at?: Maybe<Scalars['DateTime']['output']>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
+  /** 깊이 */
+  depth?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   leader?: Maybe<User>;
   leaderId?: Maybe<Scalars['Int']['output']>;
@@ -1713,21 +1719,21 @@ export type CheckSettleContractQueryVariables = Exact<{
 
 export type CheckSettleContractQuery = { checkSettleContract: boolean };
 
-export type TeamFieldsFragment = { id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> };
+export type TeamFieldsFragment = { id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> };
 
-export type TeamWithSubTeamsFragment = { id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> };
+export type TeamWithSubTeamsFragment = { id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> };
 
 export type GetTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetTeamsQuery = { getTeams: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, parentTeam?: { id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> } | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> };
+export type GetTeamsQuery = { getTeams: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, parentTeam?: { id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> } | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> };
 
 export type GetTeamQueryVariables = Exact<{
   teamId: Scalars['Float']['input'];
 }>;
 
 
-export type GetTeamQuery = { getTeam: { id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, parentTeam?: { id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> } | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> } };
+export type GetTeamQuery = { getTeam: { id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, parentTeam?: { id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> } | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> } };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1764,6 +1770,7 @@ export const TeamFieldsFragmentDoc = gql`
     fragment TeamFields on Team {
   id
   name
+  depth
   leader {
     id
     name
