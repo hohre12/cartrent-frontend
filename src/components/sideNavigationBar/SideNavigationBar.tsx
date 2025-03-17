@@ -6,14 +6,13 @@ import styled from 'styled-components';
 import { titleL18Bold, titleM16Semibold } from '@/styles/typography';
 import { userState } from '@/state/auth';
 import { useRecoilValue } from 'recoil';
-import { PermissionType } from '@/types/graphql';
 import Logo from '@/assets/pngs/logo.png';
+import { PermissionType } from '@/types/graphql';
 
 const SideNavigationBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const my = useRecoilValue(userState);
-
   return (
     <>
       <SideNavigationBarWrapper>
@@ -23,8 +22,7 @@ const SideNavigationBar = () => {
         <SideBarMenu>
           {SIDE_MENU.map(
             (it, idx) =>
-              (my?.role?.name === PermissionType.Admin ||
-                it.engTitle !== 'auth') && (
+              it.auth.includes(my?.role?.name || PermissionType.User) && (
                 <li
                   key={idx}
                   onClick={() => navigate(it.path)}
