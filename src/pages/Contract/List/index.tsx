@@ -217,12 +217,12 @@ const ContractList = () => {
                     <SvgIcon iconName="icon-eye-show" />
                     <p>보기옵션</p>
                   </Button>
-                  <Button onClick={() => navigate('regist')}>
-                    <SvgIcon iconName="icon-plus" />
-                    <p>계약등록</p>
-                  </Button>
                 </>
               )}
+              <Button onClick={() => navigate('regist')}>
+                <SvgIcon iconName="icon-plus" />
+                <p>계약등록</p>
+              </Button>
             </FunctionWrapper>
           </ControlWrapper>
         </Header>
