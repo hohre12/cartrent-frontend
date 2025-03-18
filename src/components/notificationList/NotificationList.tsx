@@ -8,10 +8,8 @@ import {
   useGetNotifications,
 } from '@/services/notification';
 import NotificationItem from './notificationItem/NotificationItem';
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { debounce } from 'lodash';
-import { useSetRecoilState } from 'recoil';
-import { notificationIsNewState } from '@/state/notification';
 import { useToast } from '@/hooks/useToast';
 
 type NotificationListProps = {
@@ -20,13 +18,15 @@ type NotificationListProps = {
 
 const NotificationList = ({ onClose }: NotificationListProps) => {
   const listWrapperRef = useRef<HTMLDivElement | null>(null);
+  const [offset, setOffset] = useState<number>(1);
+  const limit = 5;
 
   const { addToast } = useToast();
   const { readAllNotification } = useReadAllNotification();
   const { deleteAllNotification } = useDeleteAllNotification();
-  const { data, loading, error } = useGetNotifications({
-    offset: 1,
-    limit: 10,
+  const { data, loading, error, fetchMore } = useGetNotifications({
+    offset: offset,
+    limit: limit,
   });
 
   const handleReadAll = async () => {
@@ -61,13 +61,42 @@ const NotificationList = ({ onClose }: NotificationListProps) => {
     }
   };
 
+  const fetchMoreNotifications = async () => {
+    await fetchMore({
+      variables: { offset: offset + 1, limit: limit }, // ✅ 새로운 offset
+      updateQuery: (prev, { fetchMoreResult }) => {
+        console.log('prev@@@@@', prev);
+        console.log(fetchMoreResult);
+        console.log('합체', [
+          ...prev.getNotifications.notifications,
+          ...fetchMoreResult.getNotifications.notifications,
+        ]);
+        if (!fetchMoreResult) return prev;
+        return {
+          getNotifications: {
+            count: prev.getNotifications.count,
+            isNewNotificationCount:
+              prev.getNotifications.isNewNotificationCount,
+            __typename: 'NotificationPayLoad',
+            notifications: [
+              ...prev.getNotifications.notifications,
+              ...fetchMoreResult.getNotifications.notifications,
+            ],
+          },
+        };
+      },
+    });
+    setOffset((prev) => prev + 1);
+  };
+
   const handleScroll = debounce(() => {
     if (listWrapperRef.current) {
       const { scrollTop, clientHeight, scrollHeight } = listWrapperRef.current;
 
       // 스크롤이 하단에 도달했는지 확인
       if (scrollTop + clientHeight >= scrollHeight) {
-        // fetchNextPage();
+        console.log('몇번하니');
+        fetchMoreNotifications();
       }
     }
   }, 300); // 디바운스 시간: 300ms
@@ -82,7 +111,7 @@ const NotificationList = ({ onClose }: NotificationListProps) => {
         wrapper.removeEventListener('scroll', handleScroll);
       }
     };
-  }, [handleScroll]);
+  }, [loading]);
 
   useEffect(() => {
     if (listWrapperRef.current) {
@@ -93,6 +122,7 @@ const NotificationList = ({ onClose }: NotificationListProps) => {
   //   const list = data?.pages.flatMap((page) => page.list) ?? [];
   //   const count = data?.pages[0]?.count ?? 0;
   //   const isNewCount = data?.pages[0]?.isNewCount ?? 0;
+  console.log('씨발좀', data?.getNotifications);
 
   const list = data?.getNotifications.notifications ?? [];
   const count = data?.getNotifications.count ?? 0;
