@@ -1,12 +1,8 @@
-import Button from '@/components/button/Button';
 import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
 import {
   CONTRACT_LIST_WATCH_OPTIONS,
   CONTRACT_LIST_WATCH_REQUIRED_OPTIONS,
 } from '@/constants/contract';
-// import { dummyContractList } from '@/dummy/contract';
-import { useConfirm } from '@/hooks/useConfirm';
-import { useToast } from '@/hooks/useToast';
 import { userState } from '@/state/auth';
 import {
   selectedContractHideWatchOptionsState,

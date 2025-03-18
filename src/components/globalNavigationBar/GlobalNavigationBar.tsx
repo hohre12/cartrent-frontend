@@ -8,12 +8,20 @@ import { SIDE_MENU } from '@/constants/menu';
 import { SvgIcon } from '../common/SvgIcon';
 import Button from '../button/Button';
 import { useSignOut } from '@/services/auth';
+import { useState } from 'react';
+import useClickOutside from '@/hooks/useClickOutside';
+import NotificationList from '../notificationList/NotificationList';
 
 const GlobalNavigationBar = () => {
   const location = useLocation();
   const resetToken = useResetRecoilState(tokenState);
   const resetUser = useResetRecoilState(userState);
   const user = useRecoilValue(userState);
+  const [isShowNotificationList, setIsShowNotificationList] =
+    useState<boolean>(false);
+  const notificationListRef = useClickOutside(() =>
+    setIsShowNotificationList(false),
+  );
   const { signOut } = useSignOut();
 
   const handleLogout = async () => {
@@ -44,6 +52,30 @@ const GlobalNavigationBar = () => {
           <b>{pageName}</b>
         </RouteWrapper>
         <GlobalFunctionWrapper>
+          <NotificationListContent ref={notificationListRef}>
+            <Button
+              variant="transparent"
+              onClick={() => setIsShowNotificationList(!isShowNotificationList)}
+            >
+              <SvgIcon
+                iconName="icon-noti-new"
+                alt="noti"
+              />
+              {/* <SvgIcon
+                iconName="icon-noti"
+                alt="noti"
+              /> */}
+            </Button>
+            {isShowNotificationList && (
+              <NotificationList
+                onClose={() => setIsShowNotificationList(false)}
+              ></NotificationList>
+            )}
+          </NotificationListContent>
+          <div className="userInfo">
+            <SvgIcon iconName="icon-memberDefault" />
+            <h3>{user?.name ? `${user.name}님` : '-'}</h3>
+          </div>
           <Button
             variant="white"
             style={{ border: '1px solid #111' }}
@@ -51,10 +83,6 @@ const GlobalNavigationBar = () => {
           >
             로그아웃
           </Button>
-          <div className="userInfo">
-            <SvgIcon iconName="icon-memberDefault" />
-            <h3>{user?.name ? `${user.name}님` : '-'}</h3>
-          </div>
         </GlobalFunctionWrapper>
       </GlobalNavigationBarWrapper>
     </>
@@ -72,7 +100,7 @@ export const GlobalNavigationBarWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: fixed;
+  position: absolute;
   left: 100px;
   border-bottom: 1px solid #e1e0dd;
 `;
@@ -111,6 +139,16 @@ export const GlobalFunctionWrapper = styled.div`
     svg {
       width: 24px;
       height: 24px;
+    }
+  }
+`;
+
+const NotificationListContent = styled.div`
+  position: relative;
+  & > button {
+    border-radius: 6px;
+    &:hover {
+      background-color: #eee;
     }
   }
 `;
