@@ -5,7 +5,6 @@ import Button from '../button/Button';
 import {
   useReadAllNotification,
   useDeleteAllNotification,
-  useGetNotificationIsNew,
   useGetNotifications,
 } from '@/services/notification';
 import NotificationItem from './notificationItem/NotificationItem';
@@ -21,15 +20,18 @@ type NotificationListProps = {
 const NotificationList = ({ onClose }: NotificationListProps) => {
   const listWrapperRef = useRef<HTMLDivElement | null>(null);
 
-  //   const { getNotificationIsNew } = useGetNotificationIsNew();
   const { readAllNotification } = useReadAllNotification();
   const { deleteAllNotification } = useDeleteAllNotification();
 
-  const { data, loading, error } = useGetNotifications();
+  const { data, loading, error } = useGetNotifications({
+    offset: 1,
+    limit: 10,
+  });
 
   const handleReadAll = async () => {
     try {
       const response = await readAllNotification();
+      console.log('handleReadAll', response);
     } catch (e) {
       console.warn(e);
     }
@@ -38,6 +40,7 @@ const NotificationList = ({ onClose }: NotificationListProps) => {
   const handleDeleteAll = async () => {
     try {
       const response = await deleteAllNotification();
+      console.log('handleDeleteAll', response);
     } catch (e) {
       console.warn(e);
     }

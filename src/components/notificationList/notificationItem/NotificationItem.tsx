@@ -1,29 +1,13 @@
 import Button from '@/components/button/Button';
-import { SvgIcon } from '@/components/common/SvgIcon';
-import Dropdown from '@/components/dropdown/Dropdown';
+import { NotificationTypeEndPointEnum } from '@/constants/common';
 import {
-  NotificationTypeEndPointEnum,
-  NotificationTypeEnumRecord,
-  YnEnum,
-} from '@/constants/common';
-import useClickOutside from '@/hooks/useClickOutside';
-import { useConfirm } from '@/hooks/useConfirm';
-import {
-  useGetNotificationIsNew,
   useReadNotification,
   useDeleteNotification,
 } from '@/services/notification';
-import { notificationIsNewState } from '@/state/notification';
-import {
-  textS14Medium,
-  textS14Regular,
-  textXs12Medium,
-} from '@/styles/typography';
+import { textS14Regular, textXs12Medium } from '@/styles/typography';
 import { Notification } from '@/types/graphql';
 import { formatDate } from '@/utils/dateUtils';
-import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 type NotificationItemProps = {
@@ -33,14 +17,14 @@ type NotificationItemProps = {
 const NotificationItem = (props: NotificationItemProps) => {
   const { item, onClose } = props;
   const navigate = useNavigate();
-  //   const { getNotificationIsNew } = useGetNotificationIsNew();
+
   const { readNotification } = useReadNotification();
   const { deleteNotification } = useDeleteNotification();
-  const { showConfirm, hideConfirm } = useConfirm();
 
   const handleRead = async (id: Notification['id']) => {
     try {
       const response = await readNotification(id);
+      console.log('handleRead', response);
     } catch (e) {
       console.warn(e);
     }
@@ -49,6 +33,7 @@ const NotificationItem = (props: NotificationItemProps) => {
   const handleDelete = async (id: Notification['id']) => {
     try {
       const response = await deleteNotification(id);
+      console.log('handleDelete', response);
     } catch (e) {
       console.warn(e);
     }
@@ -59,6 +44,7 @@ const NotificationItem = (props: NotificationItemProps) => {
         className={item.isRead === false ? 'new' : ''}
         onClick={() => {
           if (NotificationTypeEndPointEnum[item.type]) {
+            console.log(item.id);
             handleRead(item.id);
             navigate(NotificationTypeEndPointEnum[item.type]);
             onClose();
@@ -71,24 +57,14 @@ const NotificationItem = (props: NotificationItemProps) => {
         </NotificationItemHeader>
         <NotificationItemContent>
           <h5>{item.content}</h5>
-          <Button
-            variant="black"
-            onClick={() =>
-              showConfirm({
-                isOpen: true,
-                title: '알림 삭제',
-                content: `해당 알림을 삭제하시겠습니까?`,
-                cancelText: '취소',
-                confirmText: '삭제',
-                confirmVariant: 'primaryDanger',
-                onClose: hideConfirm,
-                onCancel: hideConfirm,
-                onConfirm: () => handleDelete(item.id),
-              })
-            }
-          >
-            삭제
-          </Button>
+          <div onClick={(e) => e.stopPropagation()}>
+            <Button
+              variant="black"
+              onClick={() => handleDelete(item.id)}
+            >
+              삭제
+            </Button>
+          </div>
         </NotificationItemContent>
         <NotificationItemFooter>
           <h6>{formatDate(item.created_at, 'YYYY-MM-DD HH:mm:ss')}</h6>
@@ -139,10 +115,14 @@ const NotificationItemContent = styled.div`
   gap: 10px;
   h5 {
     ${textS14Regular}
+    text-align: left;
     overflow: hidden;
-    white-space: nowrap;
+    white-space: normal;
     text-overflow: ellipsis;
-    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: keep-all; // 문단으로 끊어져서 줄바꿈 됨
   }
   button {
     overflow: hidden;

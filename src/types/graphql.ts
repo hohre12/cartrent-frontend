@@ -918,6 +918,8 @@ export type Notification = {
 };
 
 export type NotificationPayLoad = {
+  /** 알림 개수 */
+  count: Scalars['Int']['output'];
   /** 새로운 메세지 개수 */
   isNewNotificationCount: Scalars['Int']['output'];
   notifications: Array<Notification>;
@@ -1003,6 +1005,8 @@ export enum PositionType {
 }
 
 export type Query = {
+  /** 새 알림 체크 api */
+  checkNewNotifications: Scalars['Boolean']['output'];
   /** 계약 정산 유무 */
   checkSettleContract: Scalars['Boolean']['output'];
   /** 정산 리스트 조회 */
@@ -1119,6 +1123,12 @@ export type QueryGetCustomersArgs = {
 
 export type QueryGetDeliveriesArgs = {
   getDeliveriesDto: GetDeliveriesDto;
+};
+
+
+export type QueryGetNotificationsArgs = {
+  limit: Scalars['Float']['input'];
+  offset: Scalars['Float']['input'];
 };
 
 
@@ -1764,10 +1774,13 @@ export type GetDeliveriesQueryVariables = Exact<{
 
 export type GetDeliveriesQuery = { getDeliveries: Array<{ id: number, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, customer: { id: number, name: string }, user: { id: number, name: string }, financialCompany?: { id: number, name: string } | null, division?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null }> };
 
-export type GetNotificationsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetNotificationsQueryVariables = Exact<{
+  offset: Scalars['Float']['input'];
+  limit: Scalars['Float']['input'];
+}>;
 
 
-export type GetNotificationsQuery = { getNotifications: { isNewNotificationCount: number, notifications: Array<{ id: number, title: string, content: string, isRead: boolean, type: NotificationType, created_at?: string | null }> } };
+export type GetNotificationsQuery = { getNotifications: { count: number, isNewNotificationCount: number, notifications: Array<{ id: number, title: string, content: string, isRead: boolean, type: NotificationType, created_at?: string | null }> } };
 
 export type GetPayStubsQueryVariables = Exact<{
   getPayStubDto: GetPayStubDto;
@@ -3969,8 +3982,9 @@ export type GetDeliveriesLazyQueryHookResult = ReturnType<typeof useGetDeliverie
 export type GetDeliveriesSuspenseQueryHookResult = ReturnType<typeof useGetDeliveriesSuspenseQuery>;
 export type GetDeliveriesQueryResult = Apollo.QueryResult<GetDeliveriesQuery, GetDeliveriesQueryVariables>;
 export const GetNotificationsDocument = gql`
-    query GetNotifications {
-  getNotifications {
+    query GetNotifications($offset: Float!, $limit: Float!) {
+  getNotifications(offset: $offset, limit: $limit) {
+    count
     isNewNotificationCount
     notifications {
       id
@@ -3996,10 +4010,12 @@ export const GetNotificationsDocument = gql`
  * @example
  * const { data, loading, error } = useGetNotificationsQuery({
  *   variables: {
+ *      offset: // value for 'offset'
+ *      limit: // value for 'limit'
  *   },
  * });
  */
-export function useGetNotificationsQuery(baseOptions?: Apollo.QueryHookOptions<GetNotificationsQuery, GetNotificationsQueryVariables>) {
+export function useGetNotificationsQuery(baseOptions: Apollo.QueryHookOptions<GetNotificationsQuery, GetNotificationsQueryVariables> & ({ variables: GetNotificationsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetNotificationsQuery, GetNotificationsQueryVariables>(GetNotificationsDocument, options);
       }

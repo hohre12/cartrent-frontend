@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import './App.css';
 import {
   Navigate,
@@ -6,7 +6,7 @@ import {
   Route,
   Outlet,
 } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { tokenState } from './state/auth';
 import { createGlobalStyle } from 'styled-components';
 import Login from './pages/Auth/Login';
@@ -32,6 +32,9 @@ import AdminTeamList from './pages/Admin/Team/List';
 import AdminCityList from './pages/Admin/City/List';
 import AdminTeamDetail from './pages/Admin/Team/Detail';
 import AdminUserDetail from './pages/Admin/User/Detail';
+import { HEALTH_CHECK_TIME } from './constants/common';
+import { useCheckNewNotifications } from './services/notification';
+import { notificationIsNewState } from './state/notification';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -59,6 +62,23 @@ const PrivateLayout = () => {
 
 function App() {
   const [token, setToken] = useRecoilState(tokenState);
+  const setNotificationIsNew = useSetRecoilState(notificationIsNewState);
+  const { data, refetch: checkNewNotifications } = useCheckNewNotifications();
+
+  useEffect(() => {
+    if (token) {
+      const intervalId = setInterval(() => {
+        checkNewNotifications();
+      }, HEALTH_CHECK_TIME);
+      return () => clearInterval(intervalId);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (data?.checkNewNotifications !== undefined) {
+      setNotificationIsNew(data.checkNewNotifications);
+    }
+  }, [data, setNotificationIsNew]);
 
   return (
     <div className="App">

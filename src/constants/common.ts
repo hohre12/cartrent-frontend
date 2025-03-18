@@ -1,4 +1,5 @@
 export const TOAST_TIME = 5000;
+export const HEALTH_CHECK_TIME = 60000;
 export const TOKEN_KEY =
   import.meta.env.VITE_PUBLIC_ACCESS_TOKEN ?? 'app.token';
 export const REFRESH_TOKEN_KEY =

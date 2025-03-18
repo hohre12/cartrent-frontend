@@ -11,12 +11,15 @@ import { useSignOut } from '@/services/auth';
 import { useState } from 'react';
 import useClickOutside from '@/hooks/useClickOutside';
 import NotificationList from '../notificationList/NotificationList';
+import { notificationIsNewState } from '@/state/notification';
+import { PermissionType } from '@/types/graphql';
 
 const GlobalNavigationBar = () => {
   const location = useLocation();
   const resetToken = useResetRecoilState(tokenState);
   const resetUser = useResetRecoilState(userState);
-  const user = useRecoilValue(userState);
+  const my = useRecoilValue(userState);
+  const notificationIsNew = useRecoilValue(notificationIsNewState);
   const [isShowNotificationList, setIsShowNotificationList] =
     useState<boolean>(false);
   const notificationListRef = useClickOutside(() =>
@@ -52,29 +55,36 @@ const GlobalNavigationBar = () => {
           <b>{pageName}</b>
         </RouteWrapper>
         <GlobalFunctionWrapper>
-          <NotificationListContent ref={notificationListRef}>
-            <Button
-              variant="transparent"
-              onClick={() => setIsShowNotificationList(!isShowNotificationList)}
-            >
-              <SvgIcon
-                iconName="icon-noti-new"
-                alt="noti"
-              />
-              {/* <SvgIcon
-                iconName="icon-noti"
-                alt="noti"
-              /> */}
-            </Button>
-            {isShowNotificationList && (
-              <NotificationList
-                onClose={() => setIsShowNotificationList(false)}
-              ></NotificationList>
-            )}
-          </NotificationListContent>
+          {my?.role?.name === PermissionType.User && (
+            <NotificationListContent ref={notificationListRef}>
+              <Button
+                variant="transparent"
+                onClick={() =>
+                  setIsShowNotificationList(!isShowNotificationList)
+                }
+              >
+                {notificationIsNew ? (
+                  <SvgIcon
+                    iconName="icon-noti-new"
+                    alt="noti"
+                  />
+                ) : (
+                  <SvgIcon
+                    iconName="icon-noti"
+                    alt="noti"
+                  />
+                )}
+              </Button>
+              {isShowNotificationList && (
+                <NotificationList
+                  onClose={() => setIsShowNotificationList(false)}
+                ></NotificationList>
+              )}
+            </NotificationListContent>
+          )}
           <div className="userInfo">
             <SvgIcon iconName="icon-memberDefault" />
-            <h3>{user?.name ? `${user.name}님` : '-'}</h3>
+            <h3>{my?.name ? `${my.name}님` : '-'}</h3>
           </div>
           <Button
             variant="white"
