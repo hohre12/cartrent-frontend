@@ -23,3 +23,68 @@ p.required {
   display: inline-block;
   color: #ff3b31;
 }
+
+/* Tooltip */
+.hover {
+  position: relative;
+}
+.hover:hover > .tooltip {
+  display: block;
+}
+.hover:hover > .tooltip > span {
+  max-width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.tooltip {
+  white-space: pre-line;
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: #333;
+  border: 1px solid #333;
+  border-radius: 5px;
+  color: #f5f5f5;
+  font-size: 12px;
+  font-weight: 400;
+  height: auto;
+  letter-spacing: -0.25px;
+  margin-top: 6.8px;
+  padding: 5px 11px;
+  width: max-content;
+  z-index: 99999;
+  transform: translateX(-50%); /* 수평 중앙 정렬 및 Y축 이동 */
+}
+
+.tooltip::after {
+  border-color: #333 transparent;
+  border-style: solid;
+  border-width: 0 6px 8px 6.5px;
+  content: '';
+  display: block;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  top: -7px;
+  width: 0;
+  z-index: 1;
+}
+
+.tooltip::before {
+  border-color: #333 transparent;
+  border-style: solid;
+  border-width: 0 6px 8px 6.5px;
+  content: '';
+  display: block;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  top: -8px;
+  width: 0;
+  z-index: 0;
+}

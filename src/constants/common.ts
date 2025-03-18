@@ -10,3 +10,8 @@ export enum CustomerStatusEnum {
   ACTIVE = '활성화',
   DELETED = '삭제',
 }
+
+export enum NotificationTypeEndPointEnum {
+  COUNSEL = '/counsel',
+  CUSTOMER = '/customer',
+}
