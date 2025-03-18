@@ -1,5 +1,6 @@
 import Button from '@/components/button/Button';
 import { NotificationTypeEndPointEnum } from '@/constants/common';
+import { useToast } from '@/hooks/useToast';
 import {
   useReadNotification,
   useDeleteNotification,
@@ -18,13 +19,21 @@ const NotificationItem = (props: NotificationItemProps) => {
   const { item, onClose } = props;
   const navigate = useNavigate();
 
+  const { addToast } = useToast();
   const { readNotification } = useReadNotification();
   const { deleteNotification } = useDeleteNotification();
 
   const handleRead = async (id: Notification['id']) => {
     try {
       const response = await readNotification(id);
-      console.log('handleRead', response);
+      if (response && response.data.readNotification) {
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `알림을 확인하였습니다.`,
+          type: 'success',
+        });
+      }
     } catch (e) {
       console.warn(e);
     }
@@ -33,7 +42,14 @@ const NotificationItem = (props: NotificationItemProps) => {
   const handleDelete = async (id: Notification['id']) => {
     try {
       const response = await deleteNotification(id);
-      console.log('handleDelete', response);
+      if (response && response.data.deleteNotification) {
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `알림을 삭제하였습니다.`,
+          type: 'success',
+        });
+      }
     } catch (e) {
       console.warn(e);
     }
