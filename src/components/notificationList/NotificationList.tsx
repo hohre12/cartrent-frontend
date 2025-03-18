@@ -21,11 +21,12 @@ const NotificationList = ({ onClose }: NotificationListProps) => {
   const [offset, setOffset] = useState<number>(1);
   const limit = 5;
 
+  const [isLastPage, setIsLastPage] = useState<boolean>(false);
   const { addToast } = useToast();
   const { readAllNotification } = useReadAllNotification();
   const { deleteAllNotification } = useDeleteAllNotification();
   const { data, loading, error, fetchMore } = useGetNotifications({
-    offset: offset,
+    offset: 1,
     limit: limit,
   });
 
@@ -62,22 +63,21 @@ const NotificationList = ({ onClose }: NotificationListProps) => {
   };
 
   const fetchMoreNotifications = async () => {
+    if (!data?.getNotifications?.notifications.length) return;
+    if (isLastPage) return;
     await fetchMore({
-      variables: { offset: offset + 1, limit: limit }, // ✅ 새로운 offset
+      variables: { offset: offset + 1, limit: limit },
       updateQuery: (prev, { fetchMoreResult }) => {
-        console.log('prev@@@@@', prev);
-        console.log(fetchMoreResult);
-        console.log('합체', [
-          ...prev.getNotifications.notifications,
-          ...fetchMoreResult.getNotifications.notifications,
-        ]);
-        if (!fetchMoreResult) return prev;
+        if (fetchMoreResult.getNotifications.notifications.length === 0)
+          return prev;
+        if (fetchMoreResult.getNotifications.notifications.length >= limit) {
+          setOffset((prev) => prev + 1);
+        } else {
+          setIsLastPage(true);
+        }
         return {
           getNotifications: {
-            count: prev.getNotifications.count,
-            isNewNotificationCount:
-              prev.getNotifications.isNewNotificationCount,
-            __typename: 'NotificationPayLoad',
+            ...prev.getNotifications,
             notifications: [
               ...prev.getNotifications.notifications,
               ...fetchMoreResult.getNotifications.notifications,
@@ -86,7 +86,6 @@ const NotificationList = ({ onClose }: NotificationListProps) => {
         };
       },
     });
-    setOffset((prev) => prev + 1);
   };
 
   const handleScroll = debounce(() => {
@@ -95,7 +94,6 @@ const NotificationList = ({ onClose }: NotificationListProps) => {
 
       // 스크롤이 하단에 도달했는지 확인
       if (scrollTop + clientHeight >= scrollHeight) {
-        console.log('몇번하니');
         fetchMoreNotifications();
       }
     }
@@ -111,18 +109,13 @@ const NotificationList = ({ onClose }: NotificationListProps) => {
         wrapper.removeEventListener('scroll', handleScroll);
       }
     };
-  }, [loading]);
+  }, [handleScroll]);
 
   useEffect(() => {
     if (listWrapperRef.current) {
       listWrapperRef.current.scrollTo({ top: 0 });
     }
   }, []);
-
-  //   const list = data?.pages.flatMap((page) => page.list) ?? [];
-  //   const count = data?.pages[0]?.count ?? 0;
-  //   const isNewCount = data?.pages[0]?.isNewCount ?? 0;
-  console.log('씨발좀', data?.getNotifications);
 
   const list = data?.getNotifications.notifications ?? [];
   const count = data?.getNotifications.count ?? 0;
