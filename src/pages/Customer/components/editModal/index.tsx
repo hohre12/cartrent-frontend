@@ -20,6 +20,7 @@ import {
   CustomerGroup,
   CustomerStatus,
   PermissionType,
+  PositionType,
   UpdateCustomerDto,
   User,
 } from '@/types/graphql';
@@ -137,7 +138,12 @@ const EditModal = (props: TModal) => {
               trackBy="id"
               valueBy="name"
               placeholder="담당자를 선택해주세요"
-              disabled={my?.role?.name === PermissionType.User}
+              disabled={
+                my?.position?.name === PositionType.SeniorManager ||
+                my?.position?.name === PositionType.Manager ||
+                my?.position?.name === PositionType.AssistantManager ||
+                my?.position?.name === PositionType.Staff
+              }
               isError={submit && !user}
             />
           </div>
