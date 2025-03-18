@@ -12,6 +12,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { debounce } from 'lodash';
 import { useSetRecoilState } from 'recoil';
 import { notificationIsNewState } from '@/state/notification';
+import { useToast } from '@/hooks/useToast';
 
 type NotificationListProps = {
   onClose: () => void;
@@ -20,9 +21,9 @@ type NotificationListProps = {
 const NotificationList = ({ onClose }: NotificationListProps) => {
   const listWrapperRef = useRef<HTMLDivElement | null>(null);
 
+  const { addToast } = useToast();
   const { readAllNotification } = useReadAllNotification();
   const { deleteAllNotification } = useDeleteAllNotification();
-
   const { data, loading, error } = useGetNotifications({
     offset: 1,
     limit: 10,
@@ -31,7 +32,14 @@ const NotificationList = ({ onClose }: NotificationListProps) => {
   const handleReadAll = async () => {
     try {
       const response = await readAllNotification();
-      console.log('handleReadAll', response);
+      if (response && response.data.readAllNotification) {
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `모든 알림을 읽음처리 하였습니다.`,
+          type: 'success',
+        });
+      }
     } catch (e) {
       console.warn(e);
     }
@@ -40,7 +48,14 @@ const NotificationList = ({ onClose }: NotificationListProps) => {
   const handleDeleteAll = async () => {
     try {
       const response = await deleteAllNotification();
-      console.log('handleDeleteAll', response);
+      if (response && response.data.deleteAllNotification) {
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `모든 알림을 삭제 하였습니다.`,
+          type: 'success',
+        });
+      }
     } catch (e) {
       console.warn(e);
     }
