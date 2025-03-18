@@ -35,7 +35,11 @@ export const useGetPayStub = (params: PayStub['id']) => {
 
 export const useCreatePayStub = () => {
   const [createPayStubMutate] = useMutation(CREATE_PAY_STUB_MUTATION, {
-    refetchQueries: [GET_PAYSTUBS_QUERY, 'GetPayStubs'],
+    refetchQueries: [
+      GET_PAYSTUBS_QUERY,
+      CHECK_SETTLE_CONTRACT_QUERY,
+      'GetPayStubs',
+    ],
   });
 
   const createPayStub = async (params: CreatePayStubDto) => {
