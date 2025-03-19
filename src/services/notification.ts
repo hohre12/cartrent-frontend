@@ -8,7 +8,9 @@ import {
   CHECK_NEW_NOTIFICATIONS_QUERY,
   GET_NOTIFICATIONS_QUERY,
 } from '@/apollo/queries/notification';
+import { TOKEN_KEY } from '@/constants/common';
 import { Notification } from '@/types/graphql';
+import LocalStorage from '@/utils/localStorage';
 import { useMutation, useQuery } from '@apollo/client';
 
 export const useGetNotifications = (params: {
@@ -31,10 +33,12 @@ export const useGetNotifications = (params: {
 };
 
 export const useCheckNewNotifications = () => {
-  return useQuery<{ checkNewNotifications: boolean }>(
+  const token = LocalStorage.getItem(TOKEN_KEY);
+  return useQuery<{ checkNewNotifications: boolean; isToken: boolean }>(
     CHECK_NEW_NOTIFICATIONS_QUERY,
     {
       fetchPolicy: 'network-only',
+      skip: !token,
     },
   );
 };
