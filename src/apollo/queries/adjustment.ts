@@ -42,7 +42,7 @@ export const GET_ADJUSTMENTS_QUERY = gql`
  * 정산 엑셀 다운로드
  */
 export const MAKE_EXCEL_QUERY = gql`
-  query MakeExcel($year: String!, $month: String!) {
-    makeExcel(year: $year, month: $month)
+  query MakeExcel($year: String!, $month: String!, $email: String!) {
+    makeExcel(year: $year, month: $month, email: $email)
   }
 `;
