@@ -1068,6 +1068,8 @@ export type Query = {
   getUser: User;
   /** 담당자 리스트 */
   getUsers: Array<User>;
+  /** 정산 엑셀 다운로드 */
+  makeExcel: Scalars['Boolean']['output'];
   userInfo: Scalars['String']['output'];
 };
 
@@ -1170,6 +1172,12 @@ export type QueryGetTopFiveTotalFeeDeliveryUsersByMonthArgs = {
 
 export type QueryGetUserArgs = {
   userId: Scalars['Float']['input'];
+};
+
+
+export type QueryMakeExcelArgs = {
+  month: Scalars['String']['input'];
+  year: Scalars['String']['input'];
 };
 
 export type Role = {
@@ -1432,6 +1440,7 @@ export type UpdateUserMyInfoDto = {
 
 export type User = {
   created_at?: Maybe<Scalars['DateTime']['output']>;
+  customers?: Maybe<Array<Customer>>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
   email: Scalars['String']['output'];
   id: Scalars['Int']['output'];
@@ -1683,6 +1692,14 @@ export type GetAdjustmentsQueryVariables = Exact<{
 
 export type GetAdjustmentsQuery = { getAdjustments: Array<{ year: string, month: string, totalCountContract: number, totalFeeContract: number, totalExpenditureContract: number, totalNetIncomeContract: number, totalIncentiveContract: number, totalCountDelivery: number, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalIncentiveDelivery: number, etcIncentive: number, user: { id: number, name: string, position: { id: number, name: PositionType } }, additionalIncentive?: { id: number, additionalIncentive: number } | null }> };
 
+export type MakeExcelQueryVariables = Exact<{
+  year: Scalars['String']['input'];
+  month: Scalars['String']['input'];
+}>;
+
+
+export type MakeExcelQuery = { makeExcel: boolean };
+
 export type GetCitiesQueryVariables = Exact<{
   getCitiesDto: GetCitiesDto;
 }>;
@@ -1829,14 +1846,14 @@ export type GetTeamQuery = { getTeam: { id: number, name: string, depth?: number
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUsersQuery = { getUsers: Array<{ id: number, name: string, email: string, password: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType } }> };
+export type GetUsersQuery = { getUsers: Array<{ id: number, name: string, email: string, password: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType }, customers?: Array<{ id: number, name: string }> | null }> };
 
 export type GetUserQueryVariables = Exact<{
   userId: Scalars['Float']['input'];
 }>;
 
 
-export type GetUserQuery = { getUser: { id: number, name: string, email: string, password: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType }, team?: { id: number, name: string } | null } };
+export type GetUserQuery = { getUser: { id: number, name: string, email: string, password: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType }, team?: { id: number, name: string } | null, customers?: Array<{ id: number, name: string }> | null } };
 
 export type GetPositionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3094,6 +3111,45 @@ export type GetAdjustmentsQueryHookResult = ReturnType<typeof useGetAdjustmentsQ
 export type GetAdjustmentsLazyQueryHookResult = ReturnType<typeof useGetAdjustmentsLazyQuery>;
 export type GetAdjustmentsSuspenseQueryHookResult = ReturnType<typeof useGetAdjustmentsSuspenseQuery>;
 export type GetAdjustmentsQueryResult = Apollo.QueryResult<GetAdjustmentsQuery, GetAdjustmentsQueryVariables>;
+export const MakeExcelDocument = gql`
+    query MakeExcel($year: String!, $month: String!) {
+  makeExcel(year: $year, month: $month)
+}
+    `;
+
+/**
+ * __useMakeExcelQuery__
+ *
+ * To run a query within a React component, call `useMakeExcelQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMakeExcelQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMakeExcelQuery({
+ *   variables: {
+ *      year: // value for 'year'
+ *      month: // value for 'month'
+ *   },
+ * });
+ */
+export function useMakeExcelQuery(baseOptions: Apollo.QueryHookOptions<MakeExcelQuery, MakeExcelQueryVariables> & ({ variables: MakeExcelQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MakeExcelQuery, MakeExcelQueryVariables>(MakeExcelDocument, options);
+      }
+export function useMakeExcelLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MakeExcelQuery, MakeExcelQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MakeExcelQuery, MakeExcelQueryVariables>(MakeExcelDocument, options);
+        }
+export function useMakeExcelSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<MakeExcelQuery, MakeExcelQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<MakeExcelQuery, MakeExcelQueryVariables>(MakeExcelDocument, options);
+        }
+export type MakeExcelQueryHookResult = ReturnType<typeof useMakeExcelQuery>;
+export type MakeExcelLazyQueryHookResult = ReturnType<typeof useMakeExcelLazyQuery>;
+export type MakeExcelSuspenseQueryHookResult = ReturnType<typeof useMakeExcelSuspenseQuery>;
+export type MakeExcelQueryResult = Apollo.QueryResult<MakeExcelQuery, MakeExcelQueryVariables>;
 export const GetCitiesDocument = gql`
     query GetCities($getCitiesDto: GetCitiesDto!) {
   getCities(getCitiesDto: $getCitiesDto) {
@@ -4384,6 +4440,10 @@ export const GetUsersDocument = gql`
       id
       name
     }
+    customers {
+      id
+      name
+    }
     created_at
     updated_at
   }
@@ -4437,6 +4497,10 @@ export const GetUserDocument = gql`
       name
     }
     team {
+      id
+      name
+    }
+    customers {
       id
       name
     }

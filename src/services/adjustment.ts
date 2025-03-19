@@ -3,7 +3,10 @@ import {
   DELETE_ADDITIONAL_INCENTIVE_MUTATION,
   UPDATE_ADDITIONAL_INCENTIVE_MUTATION,
 } from '@/apollo/mutations/adjustment';
-import { GET_ADJUSTMENTS_QUERY } from '@/apollo/queries/adjustment';
+import {
+  GET_ADJUSTMENTS_QUERY,
+  MAKE_EXCEL_QUERY,
+} from '@/apollo/queries/adjustment';
 import {
   AdditionalIncentive,
   Adjustment,
@@ -11,7 +14,7 @@ import {
   GetAdjustmentsDto,
   UpdateAdditionalIncentiveDto,
 } from '@/types/graphql';
-import { useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 
 export const useGetAdjustments = (params: GetAdjustmentsDto) => {
   return useQuery<
@@ -21,6 +24,10 @@ export const useGetAdjustments = (params: GetAdjustmentsDto) => {
     variables: { getAdjustmentsDto: params },
     fetchPolicy: 'network-only',
   });
+};
+
+export const useMakeExcel = () => {
+  return useLazyQuery(MAKE_EXCEL_QUERY);
 };
 
 export const useCreateAdditionalIncentive = () => {

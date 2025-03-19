@@ -67,10 +67,12 @@ const AdminUserDetail = () => {
                   onClose: hideConfirm,
                   onCancel: hideConfirm,
                   onConfirm: () => {
-                    hideConfirm();
-                    setIsOpenTargetUserSelectModal(
-                      !isOpenTargetUserSelectModal,
-                    );
+                    if (detail?.customers && detail.customers.length > 0) {
+                      hideConfirm();
+                      setIsOpenTargetUserSelectModal(
+                        !isOpenTargetUserSelectModal,
+                      );
+                    }
                   },
                 })
               }
