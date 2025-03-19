@@ -11,7 +11,7 @@ import { TFilterList } from '@/types/common';
 import { Circle, FilterContent, FilterWrapper } from '@/styles/common';
 import AdjustmentListTable from './components/table';
 import { adjustmentFiltersState } from '@/state/adjustment';
-import { useGetAdjustments } from '@/services/adjustment';
+import { useGetAdjustments, useMakeExcel } from '@/services/adjustment';
 import FilterUser from './components/filter/user';
 import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
@@ -37,6 +37,7 @@ const AdjustmentList = () => {
   const { showConfirm, hideConfirm } = useConfirm();
 
   const { createPayStub } = useCreatePayStub();
+  const [makeExcel, { data: makeExcelResponse }] = useMakeExcel();
 
   // filters
   const [filters, setFilters] = useRecoilState(adjustmentFiltersState);
@@ -203,6 +204,15 @@ const AdjustmentList = () => {
             <FunctionWrapper>
               {user?.role.name === PermissionType.Admin && (
                 <>
+                  <Button
+                    onClick={() =>
+                      makeExcel({
+                        variables: { year: filters.year, month: filters.month },
+                      })
+                    }
+                  >
+                    <p>정산표 엑셀 다운로드</p>
+                  </Button>
                   <Button
                     onClick={() =>
                       showConfirm({

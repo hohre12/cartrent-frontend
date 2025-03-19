@@ -67,10 +67,16 @@ export const useDeleteUser = () => {
     refetchQueries: [GET_USERS_QUERY],
   });
 
-  const deleteUser = async (params: User['id']) => {
+  const deleteUser = async (params: {
+    deleteUserId: User['id'];
+    targetUserId: User['id'];
+  }) => {
     if (!params) return;
     return deleteUserMutate({
-      variables: { userId: params },
+      variables: {
+        deleteUserId: params.deleteUserId,
+        targetUserId: params.targetUserId,
+      },
     });
   };
   return { deleteUser };
