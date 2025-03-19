@@ -1,3 +1,12 @@
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .App {
   text-align: center;
   height: 100vh;
@@ -22,6 +31,16 @@
 p.required {
   display: inline-block;
   color: #ff3b31;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #eee;
+  border-bottom-color: #ff3d00;
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
 }
 
 /* Tooltip */
