@@ -36,6 +36,8 @@ const InputEmailModal = (props: TModal) => {
       }
     } catch (e) {
       console.warn(e);
+    } finally {
+      setSubmit(false);
     }
   };
 
@@ -51,17 +53,24 @@ const InputEmailModal = (props: TModal) => {
         }}
         onConfirm={handleMakeExcel}
       >
-        <RegistTeamModalContentWrapper>
-          <div className="InputWrapper">
-            <span>
-              Email <p className="required">*</p>
-            </span>
-            <Input
-              value={email}
-              onTextChange={(text) => setEmail(text)}
-            />
-          </div>
-        </RegistTeamModalContentWrapper>
+        {submit ? (
+          <div
+            className="loader"
+            style={{ margin: 'auto' }}
+          ></div>
+        ) : (
+          <RegistTeamModalContentWrapper>
+            <div className="InputWrapper">
+              <span>
+                Email <p className="required">*</p>
+              </span>
+              <Input
+                value={email}
+                onTextChange={(text) => setEmail(text)}
+              />
+            </div>
+          </RegistTeamModalContentWrapper>
+        )}
       </SModal>
     </>
   );
