@@ -1,36 +1,42 @@
 import Input from '@/components/input/Input';
 import { Modal } from '@/components/modal/Modal';
 import { useToast } from '@/hooks/useToast';
+import { useMakeExcel } from '@/services/adjustment';
 import { useCreateCity } from '@/services/city';
+import { adjustmentFiltersState } from '@/state/adjustment';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
 import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-const RegistCityModal = (props: TModal) => {
+const InputEmailModal = (props: TModal) => {
   const { ...modalProps } = props;
-  const [name, setName] = useState<string>();
+  const [email, setEmail] = useState<string>();
   const [submit, setSubmit] = useState<boolean>(false);
   const { addToast } = useToast();
+  const filters = useRecoilValue(adjustmentFiltersState);
 
-  const { createCity } = useCreateCity();
+  const [makeExcel, { data: makeExcelResponse }] = useMakeExcel();
 
-  const handleCityRegist = async () => {
+  const handleMakeExcel = async () => {
     setSubmit(true);
-    if (!name) return;
+    if (!email) return;
     try {
-      const response = await createCity({
-        name,
-      });
-      if (response && response.data.createCity.id) {
-        addToast({
-          id: Date.now(),
-          isImage: true,
-          content: `지역이 등록되었습니다.`,
-          type: 'success',
-        });
-        modalProps.onConfirm?.();
-      }
+      console.log(email);
+      //   await makeExcel({
+      //     variables: { year: filters.year, month: filters.month },
+      //   });
+      console.log('makeExcelResponse', makeExcelResponse);
+      //   if (response && response.data.makeExcel) {
+      //     addToast({
+      //       id: Date.now(),
+      //       isImage: true,
+      //       content: `이메일이 정상적으로 발송되었습니다.`,
+      //       type: 'success',
+      //     });
+      //     modalProps.onConfirm?.();
+      //   }
     } catch (e) {
       console.warn(e);
     }
@@ -40,22 +46,22 @@ const RegistCityModal = (props: TModal) => {
     <>
       <SModal
         {...modalProps}
-        title="지역등록"
+        title="이메일 입력"
         size={'small'}
         footerOption={{
           cancelText: '취소',
-          confirmText: '등록',
+          confirmText: '발송',
         }}
-        onConfirm={handleCityRegist}
+        onConfirm={handleMakeExcel}
       >
         <RegistTeamModalContentWrapper>
           <div className="InputWrapper">
             <span>
-              지역명 <p className="required">*</p>
+              Email <p className="required">*</p>
             </span>
             <Input
-              value={name}
-              onTextChange={(text) => setName(text)}
+              value={email}
+              onTextChange={(text) => setEmail(text)}
             />
           </div>
         </RegistTeamModalContentWrapper>
@@ -64,7 +70,7 @@ const RegistCityModal = (props: TModal) => {
   );
 };
 
-export default RegistCityModal;
+export default InputEmailModal;
 
 const SModal = styled(Modal)`
   .modalWrapper {
