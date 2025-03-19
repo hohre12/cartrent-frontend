@@ -2,7 +2,6 @@ import Input from '@/components/input/Input';
 import { Modal } from '@/components/modal/Modal';
 import { useToast } from '@/hooks/useToast';
 import { useMakeExcel } from '@/services/adjustment';
-import { useCreateCity } from '@/services/city';
 import { adjustmentFiltersState } from '@/state/adjustment';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
@@ -17,26 +16,24 @@ const InputEmailModal = (props: TModal) => {
   const { addToast } = useToast();
   const filters = useRecoilValue(adjustmentFiltersState);
 
-  const [makeExcel, { data: makeExcelResponse }] = useMakeExcel();
+  const [makeExcel] = useMakeExcel();
 
   const handleMakeExcel = async () => {
     setSubmit(true);
     if (!email) return;
     try {
-      console.log(email);
-      //   await makeExcel({
-      //     variables: { year: filters.year, month: filters.month },
-      //   });
-      console.log('makeExcelResponse', makeExcelResponse);
-      //   if (response && response.data.makeExcel) {
-      //     addToast({
-      //       id: Date.now(),
-      //       isImage: true,
-      //       content: `이메일이 정상적으로 발송되었습니다.`,
-      //       type: 'success',
-      //     });
-      //     modalProps.onConfirm?.();
-      //   }
+      const response = await makeExcel({
+        variables: { year: filters.year, month: filters.month, email: email },
+      });
+      if (response?.data?.makeExcel) {
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `${email}로 정산내역 엑셀파일이 정상적으로 발송되었습니다.`,
+          type: 'success',
+        });
+        modalProps.onConfirm?.();
+      }
     } catch (e) {
       console.warn(e);
     }
@@ -46,7 +43,7 @@ const InputEmailModal = (props: TModal) => {
     <>
       <SModal
         {...modalProps}
-        title="이메일 입력"
+        title="첨부받을 이메일 입력"
         size={'small'}
         footerOption={{
           cancelText: '취소',
