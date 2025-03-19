@@ -8,7 +8,8 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import EditModal from '../List/components/editModal';
-import { PositionType } from '@/types/graphql';
+import { PositionType, User } from '@/types/graphql';
+import TargetUserSelectModal from '../List/components/targetUserSelectModal';
 
 const AdminUserDetail = () => {
   const { id } = useParams();
@@ -19,11 +20,16 @@ const AdminUserDetail = () => {
   const { data, loading, error } = useGetUser(userIdx);
   const [isOpenUserEditModal, setIsOpenUserEditModal] =
     useState<boolean>(false);
+  const [isOpenTargetUserSelectModal, setIsOpenTargetUserSelectModal] =
+    useState<boolean>(false);
   const { deleteUser } = useDeleteUser();
 
-  const handleDeleteUser = async () => {
+  const handleDeleteUser = async (targetUser: User) => {
     try {
-      const response = await deleteUser(userIdx);
+      const response = await deleteUser({
+        deleteUserId: userIdx,
+        targetUserId: targetUser.id,
+      });
       if (response && response.data.deleteUser) {
         hideConfirm();
         addToast({
@@ -60,7 +66,12 @@ const AdminUserDetail = () => {
                   confirmVariant: 'primaryDanger',
                   onClose: hideConfirm,
                   onCancel: hideConfirm,
-                  onConfirm: handleDeleteUser,
+                  onConfirm: () => {
+                    hideConfirm();
+                    setIsOpenTargetUserSelectModal(
+                      !isOpenTargetUserSelectModal,
+                    );
+                  },
                 })
               }
             >
@@ -113,6 +124,17 @@ const AdminUserDetail = () => {
           onCancel={() => setIsOpenUserEditModal(false)}
           onConfirm={() => setIsOpenUserEditModal(false)}
         ></EditModal>
+      )}
+      {isOpenTargetUserSelectModal && (
+        <TargetUserSelectModal
+          isOpen={isOpenTargetUserSelectModal}
+          onCancel={() => setIsOpenTargetUserSelectModal(false)}
+          onConfirm={(targetUser: User) => {
+            console.log(targetUser);
+            handleDeleteUser(targetUser);
+            setIsOpenTargetUserSelectModal(false);
+          }}
+        ></TargetUserSelectModal>
       )}
     </>
   );

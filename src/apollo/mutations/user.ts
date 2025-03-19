@@ -16,8 +16,8 @@ export const UPDATE_USER_MUTATION = gql`
   }
 `;
 export const DELETE_USER_MUTATION = gql`
-  mutation DeleteUser($userId: Float!) {
-    deleteUser(userId: $userId)
+  mutation DeleteUser($deleteUserId: Float!, $targetUserId: Float!) {
+    deleteUser(deleteUserId: $deleteUserId, targetUserId: $targetUserId)
   }
 `;
 /* Mutation */

@@ -804,7 +804,8 @@ export type MutationDeleteTeamArgs = {
 
 
 export type MutationDeleteUserArgs = {
-  userId: Scalars['Float']['input'];
+  deleteUserId: Scalars['Float']['input'];
+  targetUserId: Scalars['Float']['input'];
 };
 
 
@@ -1668,7 +1669,8 @@ export type UpdateUserMutationVariables = Exact<{
 export type UpdateUserMutation = { updateUser: { id: number } };
 
 export type DeleteUserMutationVariables = Exact<{
-  userId: Scalars['Float']['input'];
+  deleteUserId: Scalars['Float']['input'];
+  targetUserId: Scalars['Float']['input'];
 }>;
 
 
@@ -1781,6 +1783,11 @@ export type GetNotificationsQueryVariables = Exact<{
 
 
 export type GetNotificationsQuery = { getNotifications: { count: number, isNewNotificationCount: number, notifications: Array<{ id: number, title: string, content: string, isRead: boolean, type: NotificationType, created_at?: string | null }> } };
+
+export type CheckNewNotificationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CheckNewNotificationsQuery = { checkNewNotifications: boolean };
 
 export type GetPayStubsQueryVariables = Exact<{
   getPayStubDto: GetPayStubDto;
@@ -2992,8 +2999,8 @@ export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutati
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const DeleteUserDocument = gql`
-    mutation DeleteUser($userId: Float!) {
-  deleteUser(userId: $userId)
+    mutation DeleteUser($deleteUserId: Float!, $targetUserId: Float!) {
+  deleteUser(deleteUserId: $deleteUserId, targetUserId: $targetUserId)
 }
     `;
 export type DeleteUserMutationFn = Apollo.MutationFunction<DeleteUserMutation, DeleteUserMutationVariables>;
@@ -3011,7 +3018,8 @@ export type DeleteUserMutationFn = Apollo.MutationFunction<DeleteUserMutation, D
  * @example
  * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
  *   variables: {
- *      userId: // value for 'userId'
+ *      deleteUserId: // value for 'deleteUserId'
+ *      targetUserId: // value for 'targetUserId'
  *   },
  * });
  */
@@ -4031,6 +4039,43 @@ export type GetNotificationsQueryHookResult = ReturnType<typeof useGetNotificati
 export type GetNotificationsLazyQueryHookResult = ReturnType<typeof useGetNotificationsLazyQuery>;
 export type GetNotificationsSuspenseQueryHookResult = ReturnType<typeof useGetNotificationsSuspenseQuery>;
 export type GetNotificationsQueryResult = Apollo.QueryResult<GetNotificationsQuery, GetNotificationsQueryVariables>;
+export const CheckNewNotificationsDocument = gql`
+    query CheckNewNotifications {
+  checkNewNotifications
+}
+    `;
+
+/**
+ * __useCheckNewNotificationsQuery__
+ *
+ * To run a query within a React component, call `useCheckNewNotificationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckNewNotificationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckNewNotificationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCheckNewNotificationsQuery(baseOptions?: Apollo.QueryHookOptions<CheckNewNotificationsQuery, CheckNewNotificationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CheckNewNotificationsQuery, CheckNewNotificationsQueryVariables>(CheckNewNotificationsDocument, options);
+      }
+export function useCheckNewNotificationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckNewNotificationsQuery, CheckNewNotificationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CheckNewNotificationsQuery, CheckNewNotificationsQueryVariables>(CheckNewNotificationsDocument, options);
+        }
+export function useCheckNewNotificationsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<CheckNewNotificationsQuery, CheckNewNotificationsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<CheckNewNotificationsQuery, CheckNewNotificationsQueryVariables>(CheckNewNotificationsDocument, options);
+        }
+export type CheckNewNotificationsQueryHookResult = ReturnType<typeof useCheckNewNotificationsQuery>;
+export type CheckNewNotificationsLazyQueryHookResult = ReturnType<typeof useCheckNewNotificationsLazyQuery>;
+export type CheckNewNotificationsSuspenseQueryHookResult = ReturnType<typeof useCheckNewNotificationsSuspenseQuery>;
+export type CheckNewNotificationsQueryResult = Apollo.QueryResult<CheckNewNotificationsQuery, CheckNewNotificationsQueryVariables>;
 export const GetPayStubsDocument = gql`
     query GetPayStubs($getPayStubDto: GetPayStubDto!) {
   getPayStubs(getPayStubDto: $getPayStubDto) {
