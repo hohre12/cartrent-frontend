@@ -45,6 +45,7 @@ export const CONTRACT_LIST_WATCH_OPTIONS = {
 
 export const CONTRACT_LIST_WATCH_REQUIRED_OPTIONS = [
   'customerStatus',
+  'userName',
   'cityName',
   'contractAt',
   'customerName',

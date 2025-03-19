@@ -113,6 +113,11 @@ const CounselListTable = ({ data }: TTableProps) => {
             )}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
+              'userName',
+              isHideColumn('userName'),
+            ) && <td>{it.user.name ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedCounselHideWatchOptions,
               'counselAt',
               isHideColumn('counselAt'),
             ) && <td>{formatDate(it.counselAt, 'YYYY-MM-DD HH:mm') ?? '-'}</td>}
@@ -131,11 +136,6 @@ const CounselListTable = ({ data }: TTableProps) => {
               'context',
               isHideColumn('context'),
             ) && <td className="textHidden">{it.context ?? '-'}</td>}
-            {!isColumnsViewHide(
-              selectedCounselHideWatchOptions,
-              'userName',
-              isHideColumn('userName'),
-            ) && <td>{it.user.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
               'customerGroup',
