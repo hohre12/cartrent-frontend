@@ -21,12 +21,15 @@ import moment from 'moment';
 import { useCheckSettleContract, useCreatePayStub } from '@/services/payStub';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
+import InputEmailModal from './components/inputEmailModal';
 
 const AdjustmentList = () => {
   const navigationType = useNavigationType();
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
+    useState<boolean>(false);
+  const [isOpenInputEmailModal, setIsOpenInputEmailModal] =
     useState<boolean>(false);
   const user = useRecoilValue(userState);
   const currentYear = moment().format('YYYY');
@@ -37,7 +40,6 @@ const AdjustmentList = () => {
   const { showConfirm, hideConfirm } = useConfirm();
 
   const { createPayStub } = useCreatePayStub();
-  const [makeExcel, { data: makeExcelResponse }] = useMakeExcel();
 
   // filters
   const [filters, setFilters] = useRecoilState(adjustmentFiltersState);
@@ -206,9 +208,7 @@ const AdjustmentList = () => {
                 <>
                   <Button
                     onClick={() =>
-                      makeExcel({
-                        variables: { year: filters.year, month: filters.month },
-                      })
+                      setIsOpenInputEmailModal(!isOpenInputEmailModal)
                     }
                   >
                     <p>정산표 엑셀 다운로드</p>
@@ -270,6 +270,15 @@ const AdjustmentList = () => {
           onCancel={() => setIsOpenWatchOptionModal(false)}
           onConfirm={() => {
             setIsOpenWatchOptionModal(false);
+          }}
+        />
+      )}
+      {isOpenInputEmailModal && (
+        <InputEmailModal
+          isOpen={isOpenInputEmailModal}
+          onCancel={() => setIsOpenInputEmailModal(false)}
+          onConfirm={() => {
+            setIsOpenInputEmailModal(false);
           }}
         />
       )}
