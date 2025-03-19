@@ -22,6 +22,7 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
   const selectedCustomerHideWatchOptions = useRecoilValue(
     selectedCustomerHideWatchOptionsState,
   );
+  const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
   const my = useRecoilValue(userState);
   const isHideColumn = (columeKey: string) => {
     return my?.role.name === PermissionType.Admin
@@ -51,6 +52,7 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
           <tr
             key={idx}
             onClick={() => setSelectedCustomer(it.id)}
+            className={selectedCustomerIdx === it.id ? 'selected' : ''}
           >
             <td>{idx}</td>
             {!isColumnsViewHide(
@@ -170,6 +172,9 @@ export const CustomerListTableWrapper = styled.table`
   tbody {
     tr {
       cursor: pointer;
+      &.selected {
+        background: #eee;
+      }
       &:hover {
         background: #f5f5f5;
       }

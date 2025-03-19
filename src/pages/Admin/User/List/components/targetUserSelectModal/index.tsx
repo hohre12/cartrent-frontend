@@ -22,7 +22,7 @@ const TargetUserSelectModal = (props: TModal) => {
         size={'small'}
         footerOption={{
           cancelText: '취소',
-          confirmText: '지정 완료 및 담당자 삭제',
+          confirmText: '담당자 삭제',
           confirmVariant: 'primaryDanger',
         }}
         onConfirm={() => {

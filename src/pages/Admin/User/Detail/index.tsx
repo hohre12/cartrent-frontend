@@ -24,11 +24,11 @@ const AdminUserDetail = () => {
     useState<boolean>(false);
   const { deleteUser } = useDeleteUser();
 
-  const handleDeleteUser = async (targetUser: User) => {
+  const handleDeleteUser = async (targetUser?: User) => {
     try {
       const response = await deleteUser({
         deleteUserId: userIdx,
-        targetUserId: targetUser.id,
+        targetUserId: targetUser?.id,
       });
       if (response && response.data.deleteUser) {
         hideConfirm();
@@ -62,8 +62,14 @@ const AdminUserDetail = () => {
                   title: '유저 삭제',
                   content: `${detail?.team && (detail?.position.name === PositionType.TeamLeader || detail?.position.name === PositionType.GeneralManager) ? `${detail?.name} 직원은 ${detail?.team?.name}팀의 <${UserPositionHangleEnum[detail.position.name]}>입니다.\n삭제시, ${detail?.team?.name}팀의 <${UserPositionHangleEnum[detail.position.name]}>직책이 사라지게 됩니다.\n그래도 삭제하시겠습니까?` : `${detail?.name} 직원을 삭제하시겠습니까?`} `,
                   cancelText: '취소',
-                  confirmText: '삭제',
-                  confirmVariant: 'primaryDanger',
+                  confirmText:
+                    detail?.customers && detail.customers.length > 0
+                      ? '담당자 지정으로 이동'
+                      : '삭제',
+                  confirmVariant:
+                    detail?.customers && detail.customers.length > 0
+                      ? 'primaryInfo'
+                      : 'primaryDanger',
                   onClose: hideConfirm,
                   onCancel: hideConfirm,
                   onConfirm: () => {
@@ -72,6 +78,8 @@ const AdminUserDetail = () => {
                       setIsOpenTargetUserSelectModal(
                         !isOpenTargetUserSelectModal,
                       );
+                    } else {
+                      handleDeleteUser();
                     }
                   },
                 })
