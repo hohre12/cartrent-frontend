@@ -69,7 +69,7 @@ export const useDeleteUser = () => {
 
   const deleteUser = async (params: {
     deleteUserId: User['id'];
-    targetUserId: User['id'];
+    targetUserId?: User['id'];
   }) => {
     if (!params) return;
     return deleteUserMutate({

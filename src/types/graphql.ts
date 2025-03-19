@@ -805,7 +805,7 @@ export type MutationDeleteTeamArgs = {
 
 export type MutationDeleteUserArgs = {
   deleteUserId: Scalars['Float']['input'];
-  targetUserId: Scalars['Float']['input'];
+  targetUserId?: InputMaybe<Scalars['Float']['input']>;
 };
 
 
@@ -1068,7 +1068,7 @@ export type Query = {
   getUser: User;
   /** 담당자 리스트 */
   getUsers: Array<User>;
-  /** 정산 엑셀 다운로드 */
+  /** 정산 엑셀 이메일 발송 */
   makeExcel: Scalars['Boolean']['output'];
   userInfo: Scalars['String']['output'];
 };
@@ -1679,7 +1679,7 @@ export type UpdateUserMutation = { updateUser: { id: number } };
 
 export type DeleteUserMutationVariables = Exact<{
   deleteUserId: Scalars['Float']['input'];
-  targetUserId: Scalars['Float']['input'];
+  targetUserId?: InputMaybe<Scalars['Float']['input']>;
 }>;
 
 
@@ -3016,7 +3016,7 @@ export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutati
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const DeleteUserDocument = gql`
-    mutation DeleteUser($deleteUserId: Float!, $targetUserId: Float!) {
+    mutation DeleteUser($deleteUserId: Float!, $targetUserId: Float) {
   deleteUser(deleteUserId: $deleteUserId, targetUserId: $targetUserId)
 }
     `;
