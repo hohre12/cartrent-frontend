@@ -2,7 +2,11 @@ import {
   CREATE_CUSTOMER_GRADE_MUTATION,
   CREATE_CUSTOMER_GROUP_MUTATION,
   CREATE_CUSTOMER_MUTATION,
+  DELETE_CUSTOMER_GRADE_MUTATION,
+  DELETE_CUSTOMER_GROUP_MUTATION,
   DELETE_CUSTOMER_MUTATION,
+  UPDATE_CUSTOMER_GRADE_MUTATION,
+  UPDATE_CUSTOMER_GROUP_MUTATION,
   UPDATE_CUSTOMER_MUTATION,
 } from '@/apollo/mutations/customer';
 import {
@@ -22,6 +26,8 @@ import {
   CustomerStatus,
   GetCustomersDto,
   UpdateCustomerDto,
+  UpdateCustomerGradeDto,
+  UpdateCustomerGroupDto,
 } from '@/types/graphql';
 import { useMutation, useQuery } from '@apollo/client';
 
@@ -100,6 +106,59 @@ export const useUpdateCustomer = () => {
   return { updateCustomer };
 };
 
+// 고객그룹
+export const useCreateCustomerGroup = () => {
+  const [createCustomerGroupMutate] = useMutation(
+    CREATE_CUSTOMER_GROUP_MUTATION,
+    {
+      refetchQueries: [GET_CUSTOMER_GROUPS_QUERY, 'GetCustomerGroups'],
+    },
+  );
+
+  const createCustomerGroup = async (params: CreateCustomerGroupDto) => {
+    if (!params) return;
+    return createCustomerGroupMutate({
+      variables: { createCustomerGroupDto: params },
+    });
+  };
+  return { createCustomerGroup };
+};
+
+export const useUpdateCustomerGroup = () => {
+  const [updateCustomerGroupMutate] = useMutation(
+    UPDATE_CUSTOMER_GROUP_MUTATION,
+    {
+      refetchQueries: [GET_CUSTOMER_GROUPS_QUERY],
+    },
+  );
+
+  const updateCustomerGroup = async (params: UpdateCustomerGroupDto) => {
+    if (!params) return;
+    return updateCustomerGroupMutate({
+      variables: { updateCustomerGroupDto: params },
+    });
+  };
+  return { updateCustomerGroup };
+};
+
+export const useDeleteCustomerGroup = () => {
+  const [deleteCustomerGroupMutate] = useMutation(
+    DELETE_CUSTOMER_GROUP_MUTATION,
+    {
+      refetchQueries: [GET_CUSTOMER_GROUPS_QUERY],
+    },
+  );
+
+  const deleteCustomerGroup = async (params: CustomerGroup['id']) => {
+    if (!params) return;
+    return deleteCustomerGroupMutate({
+      variables: { customerGroupId: params },
+    });
+  };
+  return { deleteCustomerGroup };
+};
+
+// 고객등급
 export const useCreateCustomerGrade = () => {
   const [createCustomerGradeMutate] = useMutation(
     CREATE_CUSTOMER_GRADE_MUTATION,
@@ -117,19 +176,36 @@ export const useCreateCustomerGrade = () => {
   return { createCustomerGrade };
 };
 
-export const useCreateCustomerGroup = () => {
-  const [createCustomerGroupMutate] = useMutation(
-    CREATE_CUSTOMER_GROUP_MUTATION,
+export const useUpdateCustomerGrade = () => {
+  const [updateCustomerGradeMutate] = useMutation(
+    UPDATE_CUSTOMER_GRADE_MUTATION,
     {
-      refetchQueries: [GET_CUSTOMER_GROUPS_QUERY, 'GetCustomerGroups'],
+      refetchQueries: [GET_CUSTOMER_GRADES_QUERY],
     },
   );
 
-  const createCustomerGroup = async (params: CreateCustomerGroupDto) => {
+  const updateCustomerGrade = async (params: UpdateCustomerGradeDto) => {
     if (!params) return;
-    return createCustomerGroupMutate({
-      variables: { createCustomerGroupDto: params },
+    return updateCustomerGradeMutate({
+      variables: { updateCustomerGradeDto: params },
     });
   };
-  return { createCustomerGroup };
+  return { updateCustomerGrade };
+};
+
+export const useDeleteCustomerGrade = () => {
+  const [deleteCustomerGradeMutate] = useMutation(
+    DELETE_CUSTOMER_GRADE_MUTATION,
+    {
+      refetchQueries: [GET_CUSTOMER_GRADES_QUERY],
+    },
+  );
+
+  const deleteCustomerGrade = async (params: CustomerGrade['id']) => {
+    if (!params) return;
+    return deleteCustomerGradeMutate({
+      variables: { customerGradeId: params },
+    });
+  };
+  return { deleteCustomerGrade };
 };
