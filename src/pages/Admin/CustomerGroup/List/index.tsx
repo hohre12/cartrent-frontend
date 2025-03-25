@@ -1,10 +1,9 @@
 import Button from '@/components/button/Button';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import styled from 'styled-components';
-import CityListTable from './components/table';
 import { useState } from 'react';
 import { useGetCustomerGroups } from '@/services/customer';
-import RegistCustomerGroupModal from './components/registCityModal';
+import RegistCustomerGroupModal from './components/registCustomerGroupModal';
 import CustomerGroupListTable from './components/table';
 
 const AdminCustomerGroupList = () => {

@@ -203,11 +203,11 @@ function App() {
               element={<AdminCityList />}
             />
             <Route
-              path="customer/group"
+              path="group"
               element={<AdminCustomerGroupList />}
             />
             <Route
-              path="customer/grade"
+              path="grade"
               element={<AdminCustomerGradeList />}
             />
           </Route>

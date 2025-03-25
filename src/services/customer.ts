@@ -10,7 +10,9 @@ import {
   UPDATE_CUSTOMER_MUTATION,
 } from '@/apollo/mutations/customer';
 import {
+  GET_CUSTOMER_GRADE_QUERY,
   GET_CUSTOMER_GRADES_QUERY,
+  GET_CUSTOMER_GROUP_QUERY,
   GET_CUSTOMER_GROUPS_QUERY,
   GET_CUSTOMER_QUERY,
   GET_CUSTOMER_STATUSES_QUERY,
@@ -58,18 +60,6 @@ export const useGetCustomerStatuses = () => {
   );
 };
 
-export const useGetCustomerGrades = () => {
-  return useQuery<{ getCustomerGrades: CustomerGrade[] }>(
-    GET_CUSTOMER_GRADES_QUERY,
-  );
-};
-
-export const useGetCustomerGroups = () => {
-  return useQuery<{ getCustomerGroups: CustomerGroup[] }>(
-    GET_CUSTOMER_GROUPS_QUERY,
-  );
-};
-
 export const useCreateCustomer = () => {
   const [createCustomerMutate] = useMutation(CREATE_CUSTOMER_MUTATION, {
     refetchQueries: [GET_CUSTOMERS_QUERY, 'GetCustomers'],
@@ -107,6 +97,23 @@ export const useUpdateCustomer = () => {
 };
 
 // 고객그룹
+export const useGetCustomerGroups = () => {
+  return useQuery<{ getCustomerGroups: CustomerGroup[] }>(
+    GET_CUSTOMER_GROUPS_QUERY,
+  );
+};
+
+export const useGetCustomerGroup = (params: CustomerGroup['id']) => {
+  return useQuery<
+    { getCustomerGroup: CustomerGroup },
+    { customerGroupId: CustomerGroup['id'] }
+  >(GET_CUSTOMER_GROUP_QUERY, {
+    variables: { customerGroupId: params },
+    skip: !params,
+    fetchPolicy: 'network-only',
+  });
+};
+
 export const useCreateCustomerGroup = () => {
   const [createCustomerGroupMutate] = useMutation(
     CREATE_CUSTOMER_GROUP_MUTATION,
@@ -159,6 +166,23 @@ export const useDeleteCustomerGroup = () => {
 };
 
 // 고객등급
+export const useGetCustomerGrades = () => {
+  return useQuery<{ getCustomerGrades: CustomerGrade[] }>(
+    GET_CUSTOMER_GRADES_QUERY,
+  );
+};
+
+export const useGetCustomerGrade = (params: CustomerGrade['id']) => {
+  return useQuery<
+    { getCustomerGrade: CustomerGrade },
+    { customerGradeId: CustomerGrade['id'] }
+  >(GET_CUSTOMER_GRADE_QUERY, {
+    variables: { customerGradeId: params },
+    skip: !params,
+    fetchPolicy: 'network-only',
+  });
+};
+
 export const useCreateCustomerGrade = () => {
   const [createCustomerGradeMutate] = useMutation(
     CREATE_CUSTOMER_GRADE_MUTATION,

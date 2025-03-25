@@ -1,13 +1,14 @@
 import Button from '@/components/button/Button';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
-import { useDeleteCity } from '@/services/city';
 import { useDeleteCustomerGroup } from '@/services/customer';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { City, CustomerGroup, Team } from '@/types/graphql';
+import { CustomerGroup } from '@/types/graphql';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import EditCustomerGroupModal from '../editCustomerGroupModal';
 
 type TTableProps = {
   data: CustomerGroup[];
@@ -18,6 +19,7 @@ const CustomerGroupListTable = ({ data }: TTableProps) => {
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
   const { deleteCustomerGroup } = useDeleteCustomerGroup();
+  const [selectedGroup, setSelectedGroup] = useState<CustomerGroup>();
   const handleDeleteCustomerGroup = async (idx: CustomerGroup['id']) => {
     try {
       const response = await deleteCustomerGroup(idx);
@@ -45,6 +47,7 @@ const CustomerGroupListTable = ({ data }: TTableProps) => {
         <thead>
           <TableHeader>
             <th>고객그룹명</th>
+            <th>수정</th>
             <th>삭제</th>
           </TableHeader>
         </thead>
@@ -55,6 +58,14 @@ const CustomerGroupListTable = ({ data }: TTableProps) => {
               //   onClick={() => navigate(`${it.id}`)}
             >
               <td className="name">{it.name}</td>
+              <td>
+                <Button
+                  variant="primaryInfo"
+                  onClick={() => setSelectedGroup(it)}
+                >
+                  수정
+                </Button>
+              </td>
               <td>
                 <Button
                   variant="black"
@@ -79,6 +90,14 @@ const CustomerGroupListTable = ({ data }: TTableProps) => {
           ))}
         </tbody>
       </TableWrapper>
+      {selectedGroup && (
+        <EditCustomerGroupModal
+          idx={selectedGroup.id}
+          isOpen={!!selectedGroup}
+          onCancel={() => setSelectedGroup(undefined)}
+          onConfirm={() => setSelectedGroup(undefined)}
+        ></EditCustomerGroupModal>
+      )}
     </>
   );
 };
