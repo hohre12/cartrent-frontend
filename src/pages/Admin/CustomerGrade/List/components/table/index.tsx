@@ -6,8 +6,10 @@ import { useDeleteCustomerGrade } from '@/services/customer';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
 import { City, CustomerGrade, Team } from '@/types/graphql';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import EditCustomerGradeModal from '../editCustomerGradeModal';
 
 type TTableProps = {
   data: CustomerGrade[];
@@ -18,6 +20,7 @@ const CustomerGradeListTable = ({ data }: TTableProps) => {
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
   const { deleteCustomerGrade } = useDeleteCustomerGrade();
+  const [selectedGrade, setSelectedGrade] = useState<CustomerGrade>();
   const handleDeleteCustomerGrade = async (idx: CustomerGrade['id']) => {
     try {
       const response = await deleteCustomerGrade(idx);
@@ -45,6 +48,7 @@ const CustomerGradeListTable = ({ data }: TTableProps) => {
         <thead>
           <TableHeader>
             <th>고객등급명</th>
+            <th>수정</th>
             <th>삭제</th>
           </TableHeader>
         </thead>
@@ -55,6 +59,14 @@ const CustomerGradeListTable = ({ data }: TTableProps) => {
               //   onClick={() => navigate(`${it.id}`)}
             >
               <td className="name">{it.name}</td>
+              <td>
+                <Button
+                  variant="primaryInfo"
+                  onClick={() => setSelectedGrade(it)}
+                >
+                  수정
+                </Button>
+              </td>
               <td>
                 <Button
                   variant="black"
@@ -79,6 +91,14 @@ const CustomerGradeListTable = ({ data }: TTableProps) => {
           ))}
         </tbody>
       </TableWrapper>
+      {selectedGrade && (
+        <EditCustomerGradeModal
+          idx={selectedGrade.id}
+          isOpen={!!selectedGrade}
+          onCancel={() => setSelectedGrade(undefined)}
+          onConfirm={() => setSelectedGrade(undefined)}
+        ></EditCustomerGradeModal>
+      )}
     </>
   );
 };

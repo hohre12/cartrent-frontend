@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useGetCustomerGrades } from '@/services/customer';
 import CustomerGradeListTable from './components/table';
-import RegistCustomerGradeModal from './components/registCityModal';
+import RegistCustomerGradeModal from './components/registCustomerGradeModal';
 
 const AdminCustomerGradeList = () => {
   const { data, loading, error } = useGetCustomerGrades();
