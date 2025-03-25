@@ -27,7 +27,11 @@ const CustomerFilter = () => {
   const user = useRecoilValue(userState);
 
   const [filters, setFilters] = useRecoilState(customerFiltersState);
-  const [isOpenFilters, setIsOpenFilters] = useState<string[]>([]);
+  const [isOpenFilters, setIsOpenFilters] = useState<string[]>([
+    'group',
+    'grade',
+    'user',
+  ]);
   const handleOpenFilters = (key: string) => {
     if (isOpenFilters.some((it) => it === key)) {
       const newValue = isOpenFilters.filter((it) => it !== key);

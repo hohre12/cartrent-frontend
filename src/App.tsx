@@ -35,6 +35,8 @@ import AdminUserDetail from './pages/Admin/User/Detail';
 import { HEALTH_CHECK_TIME } from './constants/common';
 import { useCheckNewNotifications } from './services/notification';
 import { notificationIsNewState } from './state/notification';
+import AdminCustomerGroupList from './pages/Admin/CustomerGroup/List';
+import AdminCustomerGradeList from './pages/Admin/CustomerGrade/List';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -199,6 +201,14 @@ function App() {
             <Route
               path="city"
               element={<AdminCityList />}
+            />
+            <Route
+              path="group"
+              element={<AdminCustomerGroupList />}
+            />
+            <Route
+              path="grade"
+              element={<AdminCustomerGradeList />}
             />
           </Route>
         </Route>

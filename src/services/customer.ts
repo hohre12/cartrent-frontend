@@ -2,11 +2,17 @@ import {
   CREATE_CUSTOMER_GRADE_MUTATION,
   CREATE_CUSTOMER_GROUP_MUTATION,
   CREATE_CUSTOMER_MUTATION,
+  DELETE_CUSTOMER_GRADE_MUTATION,
+  DELETE_CUSTOMER_GROUP_MUTATION,
   DELETE_CUSTOMER_MUTATION,
+  UPDATE_CUSTOMER_GRADE_MUTATION,
+  UPDATE_CUSTOMER_GROUP_MUTATION,
   UPDATE_CUSTOMER_MUTATION,
 } from '@/apollo/mutations/customer';
 import {
+  GET_CUSTOMER_GRADE_QUERY,
   GET_CUSTOMER_GRADES_QUERY,
+  GET_CUSTOMER_GROUP_QUERY,
   GET_CUSTOMER_GROUPS_QUERY,
   GET_CUSTOMER_QUERY,
   GET_CUSTOMER_STATUSES_QUERY,
@@ -22,6 +28,8 @@ import {
   CustomerStatus,
   GetCustomersDto,
   UpdateCustomerDto,
+  UpdateCustomerGradeDto,
+  UpdateCustomerGroupDto,
 } from '@/types/graphql';
 import { useMutation, useQuery } from '@apollo/client';
 
@@ -49,18 +57,6 @@ export const useGetCustomer = (params: Customer['id']) => {
 export const useGetCustomerStatuses = () => {
   return useQuery<{ getCustomerStatuses: CustomerStatus[] }>(
     GET_CUSTOMER_STATUSES_QUERY,
-  );
-};
-
-export const useGetCustomerGrades = () => {
-  return useQuery<{ getCustomerGrades: CustomerGrade[] }>(
-    GET_CUSTOMER_GRADES_QUERY,
-  );
-};
-
-export const useGetCustomerGroups = () => {
-  return useQuery<{ getCustomerGroups: CustomerGroup[] }>(
-    GET_CUSTOMER_GROUPS_QUERY,
   );
 };
 
@@ -100,21 +96,22 @@ export const useUpdateCustomer = () => {
   return { updateCustomer };
 };
 
-export const useCreateCustomerGrade = () => {
-  const [createCustomerGradeMutate] = useMutation(
-    CREATE_CUSTOMER_GRADE_MUTATION,
-    {
-      refetchQueries: [GET_CUSTOMER_GRADES_QUERY, 'GetCustomerGrades'],
-    },
+// 고객그룹
+export const useGetCustomerGroups = () => {
+  return useQuery<{ getCustomerGroups: CustomerGroup[] }>(
+    GET_CUSTOMER_GROUPS_QUERY,
   );
+};
 
-  const createCustomerGrade = async (params: CreateCustomerGradeDto) => {
-    if (!params) return;
-    return createCustomerGradeMutate({
-      variables: { createCustomerGradeDto: params },
-    });
-  };
-  return { createCustomerGrade };
+export const useGetCustomerGroup = (params: CustomerGroup['id']) => {
+  return useQuery<
+    { getCustomerGroup: CustomerGroup },
+    { customerGroupId: CustomerGroup['id'] }
+  >(GET_CUSTOMER_GROUP_QUERY, {
+    variables: { customerGroupId: params },
+    skip: !params,
+    fetchPolicy: 'network-only',
+  });
 };
 
 export const useCreateCustomerGroup = () => {
@@ -132,4 +129,107 @@ export const useCreateCustomerGroup = () => {
     });
   };
   return { createCustomerGroup };
+};
+
+export const useUpdateCustomerGroup = () => {
+  const [updateCustomerGroupMutate] = useMutation(
+    UPDATE_CUSTOMER_GROUP_MUTATION,
+    {
+      refetchQueries: [GET_CUSTOMER_GROUPS_QUERY],
+    },
+  );
+
+  const updateCustomerGroup = async (params: UpdateCustomerGroupDto) => {
+    if (!params) return;
+    return updateCustomerGroupMutate({
+      variables: { updateCustomerGroupDto: params },
+    });
+  };
+  return { updateCustomerGroup };
+};
+
+export const useDeleteCustomerGroup = () => {
+  const [deleteCustomerGroupMutate] = useMutation(
+    DELETE_CUSTOMER_GROUP_MUTATION,
+    {
+      refetchQueries: [GET_CUSTOMER_GROUPS_QUERY],
+    },
+  );
+
+  const deleteCustomerGroup = async (params: CustomerGroup['id']) => {
+    if (!params) return;
+    return deleteCustomerGroupMutate({
+      variables: { customerGroupId: params },
+    });
+  };
+  return { deleteCustomerGroup };
+};
+
+// 고객등급
+export const useGetCustomerGrades = () => {
+  return useQuery<{ getCustomerGrades: CustomerGrade[] }>(
+    GET_CUSTOMER_GRADES_QUERY,
+  );
+};
+
+export const useGetCustomerGrade = (params: CustomerGrade['id']) => {
+  return useQuery<
+    { getCustomerGrade: CustomerGrade },
+    { customerGradeId: CustomerGrade['id'] }
+  >(GET_CUSTOMER_GRADE_QUERY, {
+    variables: { customerGradeId: params },
+    skip: !params,
+    fetchPolicy: 'network-only',
+  });
+};
+
+export const useCreateCustomerGrade = () => {
+  const [createCustomerGradeMutate] = useMutation(
+    CREATE_CUSTOMER_GRADE_MUTATION,
+    {
+      refetchQueries: [GET_CUSTOMER_GRADES_QUERY, 'GetCustomerGrades'],
+    },
+  );
+
+  const createCustomerGrade = async (params: CreateCustomerGradeDto) => {
+    if (!params) return;
+    return createCustomerGradeMutate({
+      variables: { createCustomerGradeDto: params },
+    });
+  };
+  return { createCustomerGrade };
+};
+
+export const useUpdateCustomerGrade = () => {
+  const [updateCustomerGradeMutate] = useMutation(
+    UPDATE_CUSTOMER_GRADE_MUTATION,
+    {
+      refetchQueries: [GET_CUSTOMER_GRADES_QUERY],
+    },
+  );
+
+  const updateCustomerGrade = async (params: UpdateCustomerGradeDto) => {
+    if (!params) return;
+    return updateCustomerGradeMutate({
+      variables: { updateCustomerGradeDto: params },
+    });
+  };
+  return { updateCustomerGrade };
+};
+
+export const useDeleteCustomerGrade = () => {
+  const [deleteCustomerGradeMutate] = useMutation(
+    DELETE_CUSTOMER_GRADE_MUTATION,
+    {
+      refetchQueries: [GET_CUSTOMER_GRADES_QUERY],
+    },
+  );
+
+  const deleteCustomerGrade = async (params: CustomerGrade['id']) => {
+    if (!params) return;
+    return deleteCustomerGradeMutate({
+      variables: { customerGradeId: params },
+    });
+  };
+  return { deleteCustomerGrade };
 };

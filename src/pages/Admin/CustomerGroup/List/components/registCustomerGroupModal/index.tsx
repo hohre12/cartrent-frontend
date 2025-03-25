@@ -1,78 +1,79 @@
 import Input from '@/components/input/Input';
 import { Modal } from '@/components/modal/Modal';
 import { useToast } from '@/hooks/useToast';
-import { useCreateCustomerGrade } from '@/services/customer';
+import { useCreateCustomerGroup } from '@/services/customer';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
-const RegistGradeModal = (props: TModal) => {
+const RegistCustomerGroupModal = (props: TModal) => {
   const { ...modalProps } = props;
   const [name, setName] = useState<string>();
   const [submit, setSubmit] = useState<boolean>(false);
   const { addToast } = useToast();
 
-  const { createCustomerGrade } = useCreateCustomerGrade();
+  const { createCustomerGroup } = useCreateCustomerGroup();
 
-  const handleCustomerGradeRegist = async () => {
+  const handleCustomerGroupRegist = async () => {
     setSubmit(true);
     if (!name) return;
     try {
-      const response = await createCustomerGrade({
+      const response = await createCustomerGroup({
         name,
       });
-
-      if (response && response.data.createCustomerGrade.id) {
+      if (response && response.data.createCustomerGroup.id) {
         addToast({
           id: Date.now(),
           isImage: true,
-          content: `고객등급이 등록되었습니다.`,
+          content: `고객그룹이 등록되었습니다.`,
           type: 'success',
         });
         modalProps.onConfirm?.();
       }
-    } catch (e: any) {
-      addToast({
-        id: Date.now(),
-        isImage: true,
-        content: `${e.message}`,
-        type: 'error',
-      });
+    } catch (e) {
+      console.warn(e);
     }
   };
 
   return (
     <>
-      <Modal
+      <SModal
         {...modalProps}
-        title="고객등급등록"
+        title="고객그룹등록"
         size={'small'}
         footerOption={{
           cancelText: '취소',
           confirmText: '등록',
         }}
-        onConfirm={handleCustomerGradeRegist}
+        onConfirm={handleCustomerGroupRegist}
       >
-        <CounselModalContentWrapper>
+        <RegistTeamModalContentWrapper>
           <div className="InputWrapper">
             <span>
-              고객등급명 <p className="required">*</p>
+              고객그룹명 <p className="required">*</p>
             </span>
             <Input
-              value={name ?? ''}
+              value={name}
               onTextChange={(text) => setName(text)}
             />
           </div>
-        </CounselModalContentWrapper>
-      </Modal>
+        </RegistTeamModalContentWrapper>
+      </SModal>
     </>
   );
 };
 
-export default RegistGradeModal;
+export default RegistCustomerGroupModal;
 
-const CounselModalContentWrapper = styled.div`
+const SModal = styled(Modal)`
+  .modalWrapper {
+    .modalHeader {
+      padding: 30px 30px 0px;
+    }
+  }
+`;
+const RegistTeamModalContentWrapper = styled.div`
   .InputWrapper {
     display: flex;
     gap: 5px;

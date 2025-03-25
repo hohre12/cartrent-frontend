@@ -109,6 +109,17 @@ export const GET_CUSTOMER_GROUPS_QUERY = gql`
     }
   }
 `;
+export const GET_CUSTOMER_GROUP_QUERY = gql`
+  query GetCustomerGroup($customerGroupId: Float!) {
+    getCustomerGroup(customerGroupId: $customerGroupId) {
+      id
+      name
+      updated_at
+      deleted_at
+      created_at
+    }
+  }
+`;
 
 /**
  * 고객 등급 리스트 쿼리
@@ -122,6 +133,17 @@ export const GET_CUSTOMER_GRADES_QUERY = gql`
       created_at
       updated_at
       deleted_at
+    }
+  }
+`;
+export const GET_CUSTOMER_GRADE_QUERY = gql`
+  query GetCustomerGrade($customerGradeId: Float!) {
+    getCustomerGrade(customerGradeId: $customerGradeId) {
+      id
+      name
+      updated_at
+      deleted_at
+      created_at
     }
   }
 `;

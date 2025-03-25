@@ -4,10 +4,10 @@ import { useToast } from '@/hooks/useToast';
 import { useCreateCustomerGrade } from '@/services/customer';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
-const RegistGradeModal = (props: TModal) => {
+const RegistCustomerGradeModal = (props: TModal) => {
   const { ...modalProps } = props;
   const [name, setName] = useState<string>();
   const [submit, setSubmit] = useState<boolean>(false);
@@ -22,7 +22,6 @@ const RegistGradeModal = (props: TModal) => {
       const response = await createCustomerGrade({
         name,
       });
-
       if (response && response.data.createCustomerGrade.id) {
         addToast({
           id: Date.now(),
@@ -32,19 +31,14 @@ const RegistGradeModal = (props: TModal) => {
         });
         modalProps.onConfirm?.();
       }
-    } catch (e: any) {
-      addToast({
-        id: Date.now(),
-        isImage: true,
-        content: `${e.message}`,
-        type: 'error',
-      });
+    } catch (e) {
+      console.warn(e);
     }
   };
 
   return (
     <>
-      <Modal
+      <SModal
         {...modalProps}
         title="고객등급등록"
         size={'small'}
@@ -54,25 +48,32 @@ const RegistGradeModal = (props: TModal) => {
         }}
         onConfirm={handleCustomerGradeRegist}
       >
-        <CounselModalContentWrapper>
+        <RegistTeamModalContentWrapper>
           <div className="InputWrapper">
             <span>
               고객등급명 <p className="required">*</p>
             </span>
             <Input
-              value={name ?? ''}
+              value={name}
               onTextChange={(text) => setName(text)}
             />
           </div>
-        </CounselModalContentWrapper>
-      </Modal>
+        </RegistTeamModalContentWrapper>
+      </SModal>
     </>
   );
 };
 
-export default RegistGradeModal;
+export default RegistCustomerGradeModal;
 
-const CounselModalContentWrapper = styled.div`
+const SModal = styled(Modal)`
+  .modalWrapper {
+    .modalHeader {
+      padding: 30px 30px 0px;
+    }
+  }
+`;
+const RegistTeamModalContentWrapper = styled.div`
   .InputWrapper {
     display: flex;
     gap: 5px;
