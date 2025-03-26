@@ -67,6 +67,11 @@ export const GET_CUSTOMER_QUERY = gql`
       contractList {
         id
         company_name_nominee
+        advancePayment
+        shippingMethod {
+          id
+          name
+        }
         division {
           name
         }

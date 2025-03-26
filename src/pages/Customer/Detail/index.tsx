@@ -61,7 +61,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.userList.name ?? ''}
-                placeholder="정보없음"
+                placeholder=""
               ></Input>
             </div>
             <div>
@@ -70,26 +70,16 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.customerGroup?.name ?? ''}
-                placeholder="정보없음"
+                placeholder=""
               ></Input>
             </div>
-
             <div>
               <span>고객명</span>
               <Input
                 className="inputWrapper"
                 disabled
                 value={detail.name ?? ''}
-                placeholder="정보없음"
-              ></Input>
-            </div>
-            <div>
-              <span>상태</span>
-              <Input
-                className="inputWrapper"
-                disabled
-                value={detail.customerStatus?.status ?? ''}
-                placeholder="정보없음"
+                placeholder=""
               ></Input>
             </div>
             <div>
@@ -98,7 +88,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.phone ?? ''}
-                placeholder="정보없음"
+                placeholder=""
               ></Input>
             </div>
             <div>
@@ -109,7 +99,7 @@ const CustomerDetail = () => {
                 value={detail.contractList
                   .map((it) => it.company_name_nominee ?? '-')
                   .join(' / ')}
-                placeholder="정보없음"
+                placeholder=""
               ></Input>
             </div>
             <div>
@@ -118,7 +108,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.sub_phone ?? ''}
-                placeholder="정보없음"
+                placeholder=""
               ></Input>
             </div>
             <div>
@@ -129,7 +119,18 @@ const CustomerDetail = () => {
                 value={detail.contractList
                   .map((it) => it.division?.name ?? '-')
                   .join(' / ')}
-                placeholder="정보없음"
+                placeholder=""
+              ></Input>
+            </div>
+            <div>
+              <span>출고방식</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.contractList
+                  .map((it) => it.shippingMethod?.name ?? '-')
+                  .join(' / ')}
+                placeholder=""
               ></Input>
             </div>
             <div>
@@ -138,18 +139,18 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.contractList.map((it) => it.carName).join(' / ')}
-                placeholder="정보없음"
+                placeholder=""
               ></Input>
             </div>
             <div>
-              <span>차옵션</span>
+              <span>옵션</span>
               <Input
                 className="inputWrapper"
                 disabled
                 value={detail.contractList
                   .map((it) => it.carOption ?? '-')
                   .join(' / ')}
-                placeholder="정보없음"
+                placeholder=""
               ></Input>
             </div>
             <div>
@@ -164,7 +165,7 @@ const CustomerDetail = () => {
                       : '-',
                   )
                   .join(' / ')}
-                placeholder="정보없음"
+                placeholder=""
               ></Input>
             </div>
             <div>
@@ -179,7 +180,7 @@ const CustomerDetail = () => {
                       : '-',
                   )
                   .join(' / ')}
-                placeholder="정보없음"
+                placeholder=""
               ></Input>
             </div>
             <div>
@@ -194,7 +195,7 @@ const CustomerDetail = () => {
                       : '-',
                   )
                   .join(' / ')}
-                placeholder="정보없음"
+                placeholder=""
               ></Input>
             </div>
             <div>
@@ -203,7 +204,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.type ?? ''}
-                placeholder="정보없음"
+                placeholder=""
               ></Input>
             </div>
             <div>
@@ -212,17 +213,25 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={formatDate(detail.created_at) ?? ''}
-                placeholder="정보없음"
+                placeholder=""
+              ></Input>
+            </div>
+            <div>
+              <span>상태</span>
+              <Input
+                className="inputWrapper"
+                disabled
+                value={detail.customerStatus?.status ?? ''}
+                placeholder=""
               ></Input>
             </div>
             <div style={{ width: '100%', height: 'auto', marginLeft: '30px' }}>
               <span>메모</span>
-              <TextArea
+              <Input
                 value={detail.memo ?? ''}
                 disabled
-                height="100px"
-                placeholder="정보없음"
-              ></TextArea>
+                placeholder=""
+              ></Input>
             </div>
             <div>
               <span>고객등급</span>
@@ -230,7 +239,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.customerGrade?.name ?? ''}
-                placeholder="정보없음"
+                placeholder=""
               ></Input>
             </div>
             <div>
@@ -239,7 +248,7 @@ const CustomerDetail = () => {
                 className="inputWrapper"
                 disabled
                 value={detail.note ?? ''}
-                placeholder="정보없음"
+                placeholder=""
               ></Input>
             </div>
           </div>
@@ -382,7 +391,7 @@ export const InfoWrapper = styled.div`
         white-space: nowrap;
       }
       &:nth-child(even) {
-        margin-left: auto;
+        /* margin-left: auto; */
       }
       .inputWrapper {
         max-width: 150px;

@@ -73,7 +73,11 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
               selectedCustomerHideWatchOptions,
               'created_at',
               isHideColumn('created_at'),
-            ) && <td>{formatDate(it.created_at) ?? '-'}</td>}
+            ) && (
+              <td style={{ maxWidth: '200px' }}>
+                {formatDate(it.created_at) ?? '-'}
+              </td>
+            )}
             {!isColumnsViewHide(
               selectedCustomerHideWatchOptions,
               'name',
@@ -83,12 +87,12 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
               selectedCustomerHideWatchOptions,
               'phone',
               isHideColumn('phone'),
-            ) && <td>{it.phone ?? '-'}</td>}
+            ) && <td style={{ maxWidth: '200px' }}>{it.phone ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCustomerHideWatchOptions,
               'memo',
               isHideColumn('memo'),
-            ) && <td>{it.memo ?? '-'}</td>}
+            ) && <td style={{ maxWidth: '200px' }}>{it.memo ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCustomerHideWatchOptions,
               'carName',
@@ -110,9 +114,9 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
               'counselAt',
               isHideColumn('counselAt'),
             ) && (
-              <td>
+              <td style={{ maxWidth: '200px' }}>
                 {it.counselList.length > 0
-                  ? formatDate(it.counselList[0].counselAt, 'YYYY-MM-DD HH:mm')
+                  ? formatDate(it.counselList[0].counselAt, 'YYYY.MM.DD HH:mm')
                   : '-'}
               </td>
             )}
@@ -166,7 +170,7 @@ export const CustomerListTableWrapper = styled.table`
       width: 100vw;
       border-top: 1px solid #eee;
       white-space: nowrap;
-      padding: 0px 25px;
+      /* padding: 0px 5px; */
     }
   }
   tbody {
@@ -181,8 +185,8 @@ export const CustomerListTableWrapper = styled.table`
       td {
         height: 40px;
         overflow: hidden;
-        padding: 0px 25px;
-        max-width: 150px;
+        padding: 0px 5px;
+        max-width: 60px;
         white-space: nowrap;
         text-overflow: ellipsis;
         word-break: break-all;
