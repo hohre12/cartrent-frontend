@@ -46,6 +46,10 @@ const Dashboard = () => {
       <DashboardHeader>
         <h2>대시보드</h2>
       </DashboardHeader>
+      <NoticeWrapper>
+        <h3>공지사항 영역</h3>
+        <NoticeContent></NoticeContent>
+      </NoticeWrapper>
       <DashboardContent>
         {/* {my?.role?.name === PermissionType.Admin && ( */}
         <>
@@ -279,13 +283,28 @@ const DashboardHeader = styled.div`
     font-weight: 700;
   }
 `;
+const NoticeWrapper = styled.div`
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    text-align: left;
+  }
+`;
+const NoticeContent = styled.div``;
 const DashboardContent = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  justify-content: space-between;
+  padding: 50px 100px;
 `;
 const Box = styled.div`
-  width: 49%;
+  width: 45%;
   border-radius: 10px;
   background-color: #fff;
   padding: 20px;
@@ -293,6 +312,7 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-bottom: 50px;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
   &.green {
     background-color: #e7faf2;
