@@ -1,9 +1,18 @@
-import { UserPositionHangleEnum, UserRoleHangleEnum } from '@/constants/user';
+import {
+  USER_LIST_WATCH_OPTIONS,
+  USER_LIST_WATCH_REQUIRED_OPTIONS,
+  UserPositionHangleEnum,
+  UserRoleHangleEnum,
+} from '@/constants/user';
+import { userState } from '@/state/auth';
+import { selectedUserHideWatchOptionsState } from '@/state/user';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { User } from '@/types/graphql';
+import { PermissionType, User } from '@/types/graphql';
+import { isColumnsViewHide } from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 type TTableProps = {
@@ -12,16 +21,29 @@ type TTableProps = {
 
 const UserListTable = ({ data }: TTableProps) => {
   const navigate = useNavigate();
+  const my = useRecoilValue(userState);
+  const selectedUserHideWatchOptions = useRecoilValue(
+    selectedUserHideWatchOptionsState,
+  );
+  const isHideColumn = (columeKey: string) => {
+    return my?.role.name === PermissionType.Admin
+      ? false
+      : !USER_LIST_WATCH_REQUIRED_OPTIONS.includes(columeKey);
+  };
   return (
     <>
       <TableWrapper>
         <thead>
           <TableHeader>
-            <th>직원명</th>
-            <th>이메일</th>
-            <th>직책</th>
-            <th>권한</th>
-            <th>생성일</th>
+            {Object.entries(USER_LIST_WATCH_OPTIONS).map(([key, value]) => {
+              return (
+                !isColumnsViewHide(
+                  selectedUserHideWatchOptions,
+                  key,
+                  isHideColumn(key),
+                ) && <th key={key}>{value}</th>
+              );
+            })}
           </TableHeader>
         </thead>
         <tbody>
@@ -30,15 +52,41 @@ const UserListTable = ({ data }: TTableProps) => {
               key={idx}
               onClick={() => navigate(`${it.id}`)}
             >
-              <td className="name">{it.name}</td>
-              <td>{it.email}</td>
-              <td>
-                {it.position?.name
-                  ? UserPositionHangleEnum[it.position.name]
-                  : '-'}
-              </td>
-              <td>{it.role?.name ? UserRoleHangleEnum[it.role.name] : '-'}</td>
-              <td>{formatDate(it.created_at) ?? '-'}</td>
+              {!isColumnsViewHide(
+                selectedUserHideWatchOptions,
+                'userName',
+                isHideColumn('userName'),
+              ) && <td className="name">{it.name}</td>}
+              {!isColumnsViewHide(
+                selectedUserHideWatchOptions,
+                'userEmail',
+                isHideColumn('userEmail'),
+              ) && <td>{it.email}</td>}
+              {!isColumnsViewHide(
+                selectedUserHideWatchOptions,
+                'userPosition',
+                isHideColumn('userPosition'),
+              ) && (
+                <td>
+                  {it.position?.name
+                    ? UserPositionHangleEnum[it.position.name]
+                    : '-'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedUserHideWatchOptions,
+                'userRole',
+                isHideColumn('userRole'),
+              ) && (
+                <td>
+                  {it.role?.name ? UserRoleHangleEnum[it.role.name] : '-'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedUserHideWatchOptions,
+                'userCreatedAt',
+                isHideColumn('userCreatedAt'),
+              ) && <td>{formatDate(it.created_at) ?? '-'}</td>}
             </TableItem>
           ))}
         </tbody>

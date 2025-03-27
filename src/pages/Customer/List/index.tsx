@@ -16,6 +16,7 @@ import { useGetCustomers } from '@/services/customer';
 import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
 import { useNavigationType } from 'react-router-dom';
+import { useConfirm } from '@/hooks/useConfirm';
 
 const CustomerList = () => {
   const navigationType = useNavigationType();
@@ -34,6 +35,7 @@ const CustomerList = () => {
   const filters = useRecoilValue(customerFiltersState);
   const resetFilters = useResetRecoilState(customerFiltersState);
   const user = useRecoilValue(userState);
+  const { showConfirm, hideConfirm } = useConfirm();
 
   const { data, loading, error } = useGetCustomers({
     search: searchText ? searchText : null,
@@ -140,7 +142,23 @@ const CustomerList = () => {
         <RegistModal
           isOpen={isOpenRegistModal}
           onCancel={() => setIsOpenRegistModal(false)}
-          onConfirm={() => setIsOpenRegistModal(false)}
+          onConfirm={() => {
+            setIsOpenRegistModal(false);
+            showConfirm({
+              isOpen: true,
+              title: '고객 추가 등록',
+              content: `고객을 추가로 등록하시겠습니까?`,
+              cancelText: '닫기',
+              confirmText: '등록',
+              confirmVariant: 'primaryInfo',
+              onClose: hideConfirm,
+              onCancel: hideConfirm,
+              onConfirm: () => {
+                hideConfirm();
+                setIsOpenRegistModal(true);
+              },
+            });
+          }}
         ></RegistModal>
       )}
     </>

@@ -86,7 +86,7 @@ const CounselDetail = () => {
             </div>
             <div>
               <p>상담일시</p>
-              <div>{formatDate(detail.counselAt, 'YYYY-MM-DD HH:mm')}</div>
+              <div>{formatDate(detail.counselAt, 'YYYY.MM.DD HH:mm')}</div>
             </div>
             <div>
               <p>고객등급</p>

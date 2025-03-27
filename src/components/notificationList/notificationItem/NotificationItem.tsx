@@ -83,7 +83,7 @@ const NotificationItem = (props: NotificationItemProps) => {
           </div>
         </NotificationItemContent>
         <NotificationItemFooter>
-          <h6>{formatDate(item.created_at, 'YYYY-MM-DD HH:mm:ss')}</h6>
+          <h6>{formatDate(item.created_at, 'YYYY.MM.DD HH:mm:ss')}</h6>
         </NotificationItemFooter>
       </NotificationItemWrapper>
     </>

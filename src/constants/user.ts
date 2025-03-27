@@ -1,3 +1,13 @@
+export const USER_LIST_WATCH_OPTIONS = {
+  userName: '직원명',
+  userEmail: '이메일',
+  userPosition: '직책',
+  userRole: '권한',
+  userCreatedAt: '생성일',
+};
+
+export const USER_LIST_WATCH_REQUIRED_OPTIONS = ['userName', 'userCreatedAt'];
+
 export enum UserPositionHangleEnum {
   ADMIN = '관리자',
   ASSISTANT_MANAGER = '대리',

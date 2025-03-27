@@ -120,7 +120,7 @@ const CounselListTable = ({ data }: TTableProps) => {
               selectedCounselHideWatchOptions,
               'counselAt',
               isHideColumn('counselAt'),
-            ) && <td>{formatDate(it.counselAt, 'YYYY-MM-DD HH:mm') ?? '-'}</td>}
+            ) && <td>{formatDate(it.counselAt, 'YYYY.MM.DD HH:mm') ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCounselHideWatchOptions,
               'customerName',
