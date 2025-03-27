@@ -5,9 +5,13 @@ import styled from 'styled-components';
 import UserListTable from './components/table';
 import { useState } from 'react';
 import RegistModal from './components/registModal';
+import WatchOptionModal from './components/watchOptionModal';
+import { SvgIcon } from '@/components/common/SvgIcon';
 
 const AdminUserList = () => {
   const { data, loading, error } = useGetUsers();
+  const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
+    useState<boolean>(false);
   const [isOpenRegistUserModal, setIsOpenRegistUserModal] =
     useState<boolean>(false);
   return (
@@ -21,6 +25,14 @@ const AdminUserList = () => {
                 onClick={() => setIsOpenRegistUserModal(!isOpenRegistUserModal)}
               >
                 <p>직원생성</p>
+              </Button>
+              <Button
+                onClick={() =>
+                  setIsOpenWatchOptionModal(!isOpenWatchOptionModal)
+                }
+              >
+                <SvgIcon iconName="icon-eye-show" />
+                <p>보기옵션</p>
               </Button>
             </FunctionWrapper>
           </ControlWrapper>
@@ -38,6 +50,15 @@ const AdminUserList = () => {
           )}
         </ListContent>
       </ListWrapper>
+      {isOpenWatchOptionModal && (
+        <WatchOptionModal
+          isOpen={isOpenWatchOptionModal}
+          onCancel={() => setIsOpenWatchOptionModal(false)}
+          onConfirm={() => {
+            setIsOpenWatchOptionModal(false);
+          }}
+        />
+      )}
       {isOpenRegistUserModal && (
         <RegistModal
           isOpen={isOpenRegistUserModal}
@@ -80,10 +101,6 @@ const ControlWrapper = styled.div`
       font-weight: 700;
     }
   }
-`;
-const SearchBoxWrapper = styled.div`
-  display: flex;
-  gap: 20px;
 `;
 
 const FunctionWrapper = styled.div`
