@@ -96,7 +96,7 @@ const RegistModal = (props: TModal) => {
         onConfirm={handleCustomerRegist}
       >
         <RegistCustomerWrapper>
-          {/* 담당자, 이름, 전화번호, 메모, 고객유형, 구분, 회사명/명의자, 상태, 등급, 그룹, 비고 */}
+          {/* 담당자, 이름, 연락처, 메모, 고객유형, 구분, 회사명/명의자, 상태, 등급, 그룹, 비고 */}
           <div>
             <span>
               담당자 <p className="required">*</p>
@@ -129,24 +129,17 @@ const RegistModal = (props: TModal) => {
           </div>
           <div>
             <span>
-              전화번호 <p className="required">*</p>
+              연락처 <p className="required">*</p>
             </span>
             <Input
-              placeholder="전화번호를 입력해 주세요."
+              placeholder="연락처를 입력해 주세요."
               value={phone}
               onTextChange={(text) => setPhone(autoHypenTel(text))}
               isError={submit && !phone}
-              errorMessage="전화번호는 필수입니다."
+              errorMessage="연락처는 필수입니다."
             />
           </div>
-          <div>
-            <span>메모</span>
-            <Input
-              placeholder="메모를 입력해 주세요."
-              value={memo ?? ''}
-              onTextChange={(text) => setMemo(text)}
-            />
-          </div>
+
           <div>
             <span>고객유형</span>
             <Input
@@ -199,6 +192,14 @@ const RegistModal = (props: TModal) => {
               onTextChange={(text) => setNote(text)}
             />
           </div>
+          <div style={{ width: '100%' }}>
+            <span>메모</span>
+            <Input
+              placeholder="메모를 입력해 주세요."
+              value={memo ?? ''}
+              onTextChange={(text) => setMemo(text)}
+            />
+          </div>
         </RegistCustomerWrapper>
       </SModal>
     </>
@@ -210,12 +211,9 @@ export default RegistModal;
 export const SModal = styled(Modal)``;
 const RegistCustomerWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 20px;
-`;
-
-const SelectWrapper = styled.div`
-  .selectBox {
-    height: 40px;
+  & > div {
+    width: 48%;
   }
 `;

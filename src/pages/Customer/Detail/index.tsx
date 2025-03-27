@@ -1,7 +1,6 @@
 import Button from '@/components/button/Button';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import Input from '@/components/input/Input';
-import TextArea from '@/components/textArea/TextArea';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import { useDeleteCustomer, useGetCustomer } from '@/services/customer';

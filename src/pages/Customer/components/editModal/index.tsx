@@ -171,14 +171,7 @@ const EditModal = (props: TModal) => {
               errorMessage="전화번호는 필수입니다."
             />
           </div>
-          <div>
-            <span>메모</span>
-            <Input
-              placeholder="메모를 입력해 주세요."
-              value={memo ?? ''}
-              onTextChange={(text) => setMemo(text)}
-            />
-          </div>
+
           <div>
             <span>고객유형</span>
             <Input
@@ -231,6 +224,14 @@ const EditModal = (props: TModal) => {
               onTextChange={(text) => setNote(text)}
             />
           </div>
+          <div style={{ width: '100%' }}>
+            <span>메모</span>
+            <Input
+              placeholder="메모를 입력해 주세요."
+              value={memo ?? ''}
+              onTextChange={(text) => setMemo(text)}
+            />
+          </div>
         </RegistCustomerWrapper>
       </SModal>
     </>
@@ -242,12 +243,9 @@ export default EditModal;
 export const SModal = styled(Modal)``;
 const RegistCustomerWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 20px;
-`;
-
-const SelectWrapper = styled.div`
-  .selectBox {
-    height: 40px;
+  & > div {
+    width: 48%;
   }
 `;
