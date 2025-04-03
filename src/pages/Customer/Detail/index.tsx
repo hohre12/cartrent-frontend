@@ -44,7 +44,7 @@ const CustomerDetail = () => {
     } catch (e) {
       console.warn(e);
     }
-  }, [selectedCustomerIdx, hideConfirm, addToast]);
+  }, [deleteCustomer, selectedCustomerIdx, hideConfirm, addToast]);
 
   const detail = data?.getCustomer;
   if (!detail) return <></>;
@@ -95,9 +95,7 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled
-                value={detail.contractList
-                  .map((it) => it.company_name_nominee ?? '-')
-                  .join(' / ')}
+                value={detail.company_name_nominee ?? ''}
                 placeholder=""
               ></Input>
             </div>
@@ -115,21 +113,18 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled
-                value={detail.contractList
-                  .map((it) => it.division?.name ?? '-')
-                  .join(' / ')}
+                value={detail.customerDivision?.name}
                 placeholder=""
               ></Input>
             </div>
             <div>
-              <span>출고방식</span>
+              <span>보험연령</span>
               <Input
                 className="inputWrapper"
                 disabled
-                value={detail.contractList
-                  .map((it) => it.shippingMethod?.name ?? '-')
-                  .join(' / ')}
+                value={detail.insuranceAge ?? 0}
                 placeholder=""
+                postfixNode="세"
               ></Input>
             </div>
             <div>
@@ -137,7 +132,7 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled
-                value={detail.contractList.map((it) => it.carName).join(' / ')}
+                value={detail.carName ?? ''}
                 placeholder=""
               ></Input>
             </div>
@@ -146,9 +141,7 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled
-                value={detail.contractList
-                  .map((it) => it.carOption ?? '-')
-                  .join(' / ')}
+                value={detail.carOption ?? ''}
                 placeholder=""
               ></Input>
             </div>
@@ -157,14 +150,9 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled
-                value={detail.contractList
-                  .map((it) =>
-                    it.contractPeriod
-                      ? `${numberFormat(it.contractPeriod)} 개월`
-                      : '-',
-                  )
-                  .join(' / ')}
+                value={detail.contractPeriod ?? 0}
                 placeholder=""
+                postfixNode="개월"
               ></Input>
             </div>
             <div>
@@ -172,14 +160,9 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled
-                value={detail.contractList
-                  .map((it) =>
-                    it.agreedMileage
-                      ? `${numberFormat(it.agreedMileage)} km`
-                      : '-',
-                  )
-                  .join(' / ')}
+                value={detail.agreedMileage ?? 0}
                 placeholder=""
+                postfixNode="km"
               ></Input>
             </div>
             <div>
@@ -187,14 +170,9 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled
-                value={detail.contractList
-                  .map((it) =>
-                    it.advancePayment
-                      ? `${numberFormat(it.advancePayment)}원`
-                      : '-',
-                  )
-                  .join(' / ')}
+                value={detail.advancePayment ? detail.advancePayment : 0}
                 placeholder=""
+                postfixNode="원"
               ></Input>
             </div>
             <div>

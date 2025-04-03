@@ -410,9 +410,23 @@ export type CreateUserDto = {
 
 /** 고객 */
 export type Customer = {
+  /** 선수금 */
+  advancePayment?: Maybe<Scalars['Int']['output']>;
+  /** 약정 거리 */
+  agreedMileage?: Maybe<Scalars['Int']['output']>;
+  /** 차종 */
+  carName?: Maybe<Scalars['String']['output']>;
+  /** 차 옵션 */
+  carOption?: Maybe<Scalars['String']['output']>;
+  /** 회사명/명의자 */
+  company_name_nominee?: Maybe<Scalars['String']['output']>;
   contractList: Array<Contract>;
+  /** 약정 기간 */
+  contractPeriod?: Maybe<Scalars['Int']['output']>;
   counselList: Array<Counsel>;
   created_at?: Maybe<Scalars['DateTime']['output']>;
+  /** 고객 테이블의 division */
+  customerDivision?: Maybe<Division>;
   customerGrade?: Maybe<CustomerGrade>;
   customerGroup?: Maybe<CustomerGroup>;
   customerStatus?: Maybe<CustomerStatus>;
@@ -420,7 +434,10 @@ export type Customer = {
   customer_group_id?: Maybe<Scalars['Int']['output']>;
   customer_status_id?: Maybe<Scalars['Int']['output']>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
+  divisionId?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
+  /** 보험 연령 */
+  insuranceAge?: Maybe<Scalars['Int']['output']>;
   /** 고객 메모 */
   memo?: Maybe<Scalars['String']['output']>;
   /** 고객 이름 */
@@ -677,6 +694,8 @@ export type Mutation = {
   updateCustomerOfUser: Customer;
   /** 고객 상태 수정 */
   updateCustomerStatus: CustomerStatus;
+  /** 여러 고객 정보 수정 */
+  updateCustomers: Scalars['Boolean']['output'];
   /** 내 정보 수정 */
   updateMyInfo: AuthPayload;
   /** 지원금 수정 */
@@ -879,6 +898,11 @@ export type MutationUpdateCustomerStatusArgs = {
 };
 
 
+export type MutationUpdateCustomersArgs = {
+  updateCustomersDto: UpdateCustomersDto;
+};
+
+
 export type MutationUpdateMyInfoArgs = {
   updateUserMyInfoDto: UpdateUserMyInfoDto;
 };
@@ -1026,8 +1050,12 @@ export type Query = {
   getCounsels: Array<Counsel>;
   /** 고객 정보 조회 */
   getCustomer: Customer;
+  /** 고객 등급 상세페이지 */
+  getCustomerGrade: CustomerGrade;
   /** 고객 등급 리스트 */
   getCustomerGrades: Array<CustomerGrade>;
+  /** 고객 그룹 상세페이지 */
+  getCustomerGroup: CustomerGroup;
   /** 고객 그룹 리스트 */
   getCustomerGroups: Array<CustomerGroup>;
   /** 고객 상태 리스트 */
@@ -1119,6 +1147,16 @@ export type QueryGetCustomerArgs = {
 };
 
 
+export type QueryGetCustomerGradeArgs = {
+  customerGradeId: Scalars['Float']['input'];
+};
+
+
+export type QueryGetCustomerGroupArgs = {
+  customerGroupId: Scalars['Float']['input'];
+};
+
+
 export type QueryGetCustomersArgs = {
   getCustomersDto: GetCustomersDto;
 };
@@ -1176,6 +1214,7 @@ export type QueryGetUserArgs = {
 
 
 export type QueryMakeExcelArgs = {
+  email: Scalars['String']['input'];
   month: Scalars['String']['input'];
   year: Scalars['String']['input'];
 };
@@ -1360,10 +1399,25 @@ export type UpdateCounselDto = {
 };
 
 export type UpdateCustomerDto = {
+  /** 선수금 */
+  advancePayment?: InputMaybe<Scalars['Int']['input']>;
+  /** 약정 거리 */
+  agreedMileage?: InputMaybe<Scalars['Int']['input']>;
+  /** 차종 */
+  carName?: InputMaybe<Scalars['String']['input']>;
+  /** 차 옵션 */
+  carOption?: InputMaybe<Scalars['String']['input']>;
+  /** 회사명/명의자 */
+  company_name_nominee?: InputMaybe<Scalars['String']['input']>;
+  /** 약정 기간 */
+  contractPeriod?: InputMaybe<Scalars['Int']['input']>;
   customerGradeId?: InputMaybe<Scalars['Int']['input']>;
   customerGroupId?: InputMaybe<Scalars['Int']['input']>;
   customerId: Scalars['Int']['input'];
   customerStatusId?: InputMaybe<Scalars['Int']['input']>;
+  divisionId?: InputMaybe<Scalars['Int']['input']>;
+  /** 보험 연령 */
+  insuranceAge?: InputMaybe<Scalars['Int']['input']>;
   /** 메모 */
   memo?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -1396,6 +1450,14 @@ export type UpdateCustomerStatusDto = {
   customerStatusId: Scalars['Int']['input'];
   /** 고객 상태 이름 */
   status: Scalars['String']['input'];
+};
+
+export type UpdateCustomersDto = {
+  customerGradeId?: InputMaybe<Scalars['Int']['input']>;
+  customerGroupId?: InputMaybe<Scalars['Int']['input']>;
+  customerIds: Array<Scalars['Int']['input']>;
+  customerStatusId?: InputMaybe<Scalars['Int']['input']>;
+  userId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** 지원금 수정 */
@@ -1604,12 +1666,40 @@ export type CreateCustomerGroupMutationVariables = Exact<{
 
 export type CreateCustomerGroupMutation = { createCustomerGroup: { id: number } };
 
+export type UpdateCustomerGroupMutationVariables = Exact<{
+  updateCustomerGroupDto: UpdateCustomerGroupDto;
+}>;
+
+
+export type UpdateCustomerGroupMutation = { updateCustomerGroup: { id: number } };
+
+export type DeleteCustomerGroupMutationVariables = Exact<{
+  customerGroupId: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteCustomerGroupMutation = { deleteCustomerGroup: string };
+
 export type CreateCustomerGradeMutationVariables = Exact<{
   createCustomerGradeDto: CreateCustomerGradeDto;
 }>;
 
 
 export type CreateCustomerGradeMutation = { createCustomerGrade: { id: number } };
+
+export type UpdateCustomerGradeMutationVariables = Exact<{
+  updateCustomerGradeDto: UpdateCustomerGradeDto;
+}>;
+
+
+export type UpdateCustomerGradeMutation = { updateCustomerGrade: { id: number } };
+
+export type DeleteCustomerGradeMutationVariables = Exact<{
+  customerGradeId: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteCustomerGradeMutation = { deleteCustomerGrade: string };
 
 export type ReadNotificationMutationVariables = Exact<{
   notificationId: Scalars['Float']['input'];
@@ -1695,6 +1785,7 @@ export type GetAdjustmentsQuery = { getAdjustments: Array<{ year: string, month:
 export type MakeExcelQueryVariables = Exact<{
   year: Scalars['String']['input'];
   month: Scalars['String']['input'];
+  email: Scalars['String']['input'];
 }>;
 
 
@@ -1769,17 +1860,31 @@ export type GetCustomerQueryVariables = Exact<{
 }>;
 
 
-export type GetCustomerQuery = { getCustomer: { id: number, name: string, phone: string, sub_phone?: string | null, type?: string | null, created_at?: string | null, memo?: string | null, note?: string | null, userList: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null, contractList: Array<{ id: number, company_name_nominee?: string | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, division?: { name: string } | null }>, customerGrade?: { id: number, name: string } | null, counselList: Array<{ id: number, counselAt: string, context: string, customer: { name: string }, user: { name: string } }> } };
+export type GetCustomerQuery = { getCustomer: { id: number, name: string, phone: string, sub_phone?: string | null, type?: string | null, created_at?: string | null, memo?: string | null, note?: string | null, userList: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null, contractList: Array<{ id: number, company_name_nominee?: string | null, advancePayment?: number | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, shippingMethod?: { id: number, name: string } | null, division?: { name: string } | null }>, customerGrade?: { id: number, name: string } | null, counselList: Array<{ id: number, counselAt: string, context: string, customer: { name: string }, user: { name: string } }> } };
 
 export type GetCustomerGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetCustomerGroupsQuery = { getCustomerGroups: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null }> };
 
+export type GetCustomerGroupQueryVariables = Exact<{
+  customerGroupId: Scalars['Float']['input'];
+}>;
+
+
+export type GetCustomerGroupQuery = { getCustomerGroup: { id: number, name: string, updated_at?: string | null, deleted_at?: string | null, created_at?: string | null } };
+
 export type GetCustomerGradesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetCustomerGradesQuery = { getCustomerGrades: Array<{ id: number, name: string, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null }> };
+
+export type GetCustomerGradeQueryVariables = Exact<{
+  customerGradeId: Scalars['Float']['input'];
+}>;
+
+
+export type GetCustomerGradeQuery = { getCustomerGrade: { id: number, name: string, updated_at?: string | null, deleted_at?: string | null, created_at?: string | null } };
 
 export type GetCustomerStatusesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2664,6 +2769,70 @@ export function useCreateCustomerGroupMutation(baseOptions?: Apollo.MutationHook
 export type CreateCustomerGroupMutationHookResult = ReturnType<typeof useCreateCustomerGroupMutation>;
 export type CreateCustomerGroupMutationResult = Apollo.MutationResult<CreateCustomerGroupMutation>;
 export type CreateCustomerGroupMutationOptions = Apollo.BaseMutationOptions<CreateCustomerGroupMutation, CreateCustomerGroupMutationVariables>;
+export const UpdateCustomerGroupDocument = gql`
+    mutation UpdateCustomerGroup($updateCustomerGroupDto: UpdateCustomerGroupDto!) {
+  updateCustomerGroup(UpdateCustomerGroupDto: $updateCustomerGroupDto) {
+    id
+  }
+}
+    `;
+export type UpdateCustomerGroupMutationFn = Apollo.MutationFunction<UpdateCustomerGroupMutation, UpdateCustomerGroupMutationVariables>;
+
+/**
+ * __useUpdateCustomerGroupMutation__
+ *
+ * To run a mutation, you first call `useUpdateCustomerGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCustomerGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCustomerGroupMutation, { data, loading, error }] = useUpdateCustomerGroupMutation({
+ *   variables: {
+ *      updateCustomerGroupDto: // value for 'updateCustomerGroupDto'
+ *   },
+ * });
+ */
+export function useUpdateCustomerGroupMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCustomerGroupMutation, UpdateCustomerGroupMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCustomerGroupMutation, UpdateCustomerGroupMutationVariables>(UpdateCustomerGroupDocument, options);
+      }
+export type UpdateCustomerGroupMutationHookResult = ReturnType<typeof useUpdateCustomerGroupMutation>;
+export type UpdateCustomerGroupMutationResult = Apollo.MutationResult<UpdateCustomerGroupMutation>;
+export type UpdateCustomerGroupMutationOptions = Apollo.BaseMutationOptions<UpdateCustomerGroupMutation, UpdateCustomerGroupMutationVariables>;
+export const DeleteCustomerGroupDocument = gql`
+    mutation DeleteCustomerGroup($customerGroupId: Float!) {
+  deleteCustomerGroup(customerGroupId: $customerGroupId)
+}
+    `;
+export type DeleteCustomerGroupMutationFn = Apollo.MutationFunction<DeleteCustomerGroupMutation, DeleteCustomerGroupMutationVariables>;
+
+/**
+ * __useDeleteCustomerGroupMutation__
+ *
+ * To run a mutation, you first call `useDeleteCustomerGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCustomerGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCustomerGroupMutation, { data, loading, error }] = useDeleteCustomerGroupMutation({
+ *   variables: {
+ *      customerGroupId: // value for 'customerGroupId'
+ *   },
+ * });
+ */
+export function useDeleteCustomerGroupMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCustomerGroupMutation, DeleteCustomerGroupMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCustomerGroupMutation, DeleteCustomerGroupMutationVariables>(DeleteCustomerGroupDocument, options);
+      }
+export type DeleteCustomerGroupMutationHookResult = ReturnType<typeof useDeleteCustomerGroupMutation>;
+export type DeleteCustomerGroupMutationResult = Apollo.MutationResult<DeleteCustomerGroupMutation>;
+export type DeleteCustomerGroupMutationOptions = Apollo.BaseMutationOptions<DeleteCustomerGroupMutation, DeleteCustomerGroupMutationVariables>;
 export const CreateCustomerGradeDocument = gql`
     mutation CreateCustomerGrade($createCustomerGradeDto: CreateCustomerGradeDto!) {
   createCustomerGrade(CreateCustomerGradeDto: $createCustomerGradeDto) {
@@ -2697,6 +2866,70 @@ export function useCreateCustomerGradeMutation(baseOptions?: Apollo.MutationHook
 export type CreateCustomerGradeMutationHookResult = ReturnType<typeof useCreateCustomerGradeMutation>;
 export type CreateCustomerGradeMutationResult = Apollo.MutationResult<CreateCustomerGradeMutation>;
 export type CreateCustomerGradeMutationOptions = Apollo.BaseMutationOptions<CreateCustomerGradeMutation, CreateCustomerGradeMutationVariables>;
+export const UpdateCustomerGradeDocument = gql`
+    mutation UpdateCustomerGrade($updateCustomerGradeDto: UpdateCustomerGradeDto!) {
+  updateCustomerGrade(UpdateCustomerGradeDto: $updateCustomerGradeDto) {
+    id
+  }
+}
+    `;
+export type UpdateCustomerGradeMutationFn = Apollo.MutationFunction<UpdateCustomerGradeMutation, UpdateCustomerGradeMutationVariables>;
+
+/**
+ * __useUpdateCustomerGradeMutation__
+ *
+ * To run a mutation, you first call `useUpdateCustomerGradeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCustomerGradeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCustomerGradeMutation, { data, loading, error }] = useUpdateCustomerGradeMutation({
+ *   variables: {
+ *      updateCustomerGradeDto: // value for 'updateCustomerGradeDto'
+ *   },
+ * });
+ */
+export function useUpdateCustomerGradeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCustomerGradeMutation, UpdateCustomerGradeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCustomerGradeMutation, UpdateCustomerGradeMutationVariables>(UpdateCustomerGradeDocument, options);
+      }
+export type UpdateCustomerGradeMutationHookResult = ReturnType<typeof useUpdateCustomerGradeMutation>;
+export type UpdateCustomerGradeMutationResult = Apollo.MutationResult<UpdateCustomerGradeMutation>;
+export type UpdateCustomerGradeMutationOptions = Apollo.BaseMutationOptions<UpdateCustomerGradeMutation, UpdateCustomerGradeMutationVariables>;
+export const DeleteCustomerGradeDocument = gql`
+    mutation DeleteCustomerGrade($customerGradeId: Float!) {
+  deleteCustomerGrade(customerGradeId: $customerGradeId)
+}
+    `;
+export type DeleteCustomerGradeMutationFn = Apollo.MutationFunction<DeleteCustomerGradeMutation, DeleteCustomerGradeMutationVariables>;
+
+/**
+ * __useDeleteCustomerGradeMutation__
+ *
+ * To run a mutation, you first call `useDeleteCustomerGradeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCustomerGradeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCustomerGradeMutation, { data, loading, error }] = useDeleteCustomerGradeMutation({
+ *   variables: {
+ *      customerGradeId: // value for 'customerGradeId'
+ *   },
+ * });
+ */
+export function useDeleteCustomerGradeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCustomerGradeMutation, DeleteCustomerGradeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCustomerGradeMutation, DeleteCustomerGradeMutationVariables>(DeleteCustomerGradeDocument, options);
+      }
+export type DeleteCustomerGradeMutationHookResult = ReturnType<typeof useDeleteCustomerGradeMutation>;
+export type DeleteCustomerGradeMutationResult = Apollo.MutationResult<DeleteCustomerGradeMutation>;
+export type DeleteCustomerGradeMutationOptions = Apollo.BaseMutationOptions<DeleteCustomerGradeMutation, DeleteCustomerGradeMutationVariables>;
 export const ReadNotificationDocument = gql`
     mutation ReadNotification($notificationId: Float!) {
   readNotification(notificationId: $notificationId) {
@@ -3112,8 +3345,8 @@ export type GetAdjustmentsLazyQueryHookResult = ReturnType<typeof useGetAdjustme
 export type GetAdjustmentsSuspenseQueryHookResult = ReturnType<typeof useGetAdjustmentsSuspenseQuery>;
 export type GetAdjustmentsQueryResult = Apollo.QueryResult<GetAdjustmentsQuery, GetAdjustmentsQueryVariables>;
 export const MakeExcelDocument = gql`
-    query MakeExcel($year: String!, $month: String!) {
-  makeExcel(year: $year, month: $month)
+    query MakeExcel($year: String!, $month: String!, $email: String!) {
+  makeExcel(year: $year, month: $month, email: $email)
 }
     `;
 
@@ -3131,6 +3364,7 @@ export const MakeExcelDocument = gql`
  *   variables: {
  *      year: // value for 'year'
  *      month: // value for 'month'
+ *      email: // value for 'email'
  *   },
  * });
  */
@@ -3794,6 +4028,11 @@ export const GetCustomerDocument = gql`
     contractList {
       id
       company_name_nominee
+      advancePayment
+      shippingMethod {
+        id
+        name
+      }
       division {
         name
       }
@@ -3896,6 +4135,50 @@ export type GetCustomerGroupsQueryHookResult = ReturnType<typeof useGetCustomerG
 export type GetCustomerGroupsLazyQueryHookResult = ReturnType<typeof useGetCustomerGroupsLazyQuery>;
 export type GetCustomerGroupsSuspenseQueryHookResult = ReturnType<typeof useGetCustomerGroupsSuspenseQuery>;
 export type GetCustomerGroupsQueryResult = Apollo.QueryResult<GetCustomerGroupsQuery, GetCustomerGroupsQueryVariables>;
+export const GetCustomerGroupDocument = gql`
+    query GetCustomerGroup($customerGroupId: Float!) {
+  getCustomerGroup(customerGroupId: $customerGroupId) {
+    id
+    name
+    updated_at
+    deleted_at
+    created_at
+  }
+}
+    `;
+
+/**
+ * __useGetCustomerGroupQuery__
+ *
+ * To run a query within a React component, call `useGetCustomerGroupQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCustomerGroupQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCustomerGroupQuery({
+ *   variables: {
+ *      customerGroupId: // value for 'customerGroupId'
+ *   },
+ * });
+ */
+export function useGetCustomerGroupQuery(baseOptions: Apollo.QueryHookOptions<GetCustomerGroupQuery, GetCustomerGroupQueryVariables> & ({ variables: GetCustomerGroupQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCustomerGroupQuery, GetCustomerGroupQueryVariables>(GetCustomerGroupDocument, options);
+      }
+export function useGetCustomerGroupLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCustomerGroupQuery, GetCustomerGroupQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCustomerGroupQuery, GetCustomerGroupQueryVariables>(GetCustomerGroupDocument, options);
+        }
+export function useGetCustomerGroupSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCustomerGroupQuery, GetCustomerGroupQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCustomerGroupQuery, GetCustomerGroupQueryVariables>(GetCustomerGroupDocument, options);
+        }
+export type GetCustomerGroupQueryHookResult = ReturnType<typeof useGetCustomerGroupQuery>;
+export type GetCustomerGroupLazyQueryHookResult = ReturnType<typeof useGetCustomerGroupLazyQuery>;
+export type GetCustomerGroupSuspenseQueryHookResult = ReturnType<typeof useGetCustomerGroupSuspenseQuery>;
+export type GetCustomerGroupQueryResult = Apollo.QueryResult<GetCustomerGroupQuery, GetCustomerGroupQueryVariables>;
 export const GetCustomerGradesDocument = gql`
     query GetCustomerGrades {
   getCustomerGrades {
@@ -3939,6 +4222,50 @@ export type GetCustomerGradesQueryHookResult = ReturnType<typeof useGetCustomerG
 export type GetCustomerGradesLazyQueryHookResult = ReturnType<typeof useGetCustomerGradesLazyQuery>;
 export type GetCustomerGradesSuspenseQueryHookResult = ReturnType<typeof useGetCustomerGradesSuspenseQuery>;
 export type GetCustomerGradesQueryResult = Apollo.QueryResult<GetCustomerGradesQuery, GetCustomerGradesQueryVariables>;
+export const GetCustomerGradeDocument = gql`
+    query GetCustomerGrade($customerGradeId: Float!) {
+  getCustomerGrade(customerGradeId: $customerGradeId) {
+    id
+    name
+    updated_at
+    deleted_at
+    created_at
+  }
+}
+    `;
+
+/**
+ * __useGetCustomerGradeQuery__
+ *
+ * To run a query within a React component, call `useGetCustomerGradeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCustomerGradeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCustomerGradeQuery({
+ *   variables: {
+ *      customerGradeId: // value for 'customerGradeId'
+ *   },
+ * });
+ */
+export function useGetCustomerGradeQuery(baseOptions: Apollo.QueryHookOptions<GetCustomerGradeQuery, GetCustomerGradeQueryVariables> & ({ variables: GetCustomerGradeQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCustomerGradeQuery, GetCustomerGradeQueryVariables>(GetCustomerGradeDocument, options);
+      }
+export function useGetCustomerGradeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCustomerGradeQuery, GetCustomerGradeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCustomerGradeQuery, GetCustomerGradeQueryVariables>(GetCustomerGradeDocument, options);
+        }
+export function useGetCustomerGradeSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCustomerGradeQuery, GetCustomerGradeQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCustomerGradeQuery, GetCustomerGradeQueryVariables>(GetCustomerGradeDocument, options);
+        }
+export type GetCustomerGradeQueryHookResult = ReturnType<typeof useGetCustomerGradeQuery>;
+export type GetCustomerGradeLazyQueryHookResult = ReturnType<typeof useGetCustomerGradeLazyQuery>;
+export type GetCustomerGradeSuspenseQueryHookResult = ReturnType<typeof useGetCustomerGradeSuspenseQuery>;
+export type GetCustomerGradeQueryResult = Apollo.QueryResult<GetCustomerGradeQuery, GetCustomerGradeQueryVariables>;
 export const GetCustomerStatusesDocument = gql`
     query GetCustomerStatuses {
   getCustomerStatuses {
