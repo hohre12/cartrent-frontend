@@ -28,6 +28,7 @@ const CounselList = () => {
   const [text, setText] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const selectedCounsel = useRecoilValue(selectedCounselState);
+  const resetCounsel = useResetRecoilState(selectedCounselState);
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
   //   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
@@ -99,8 +100,9 @@ const CounselList = () => {
   useEffect(() => {
     if (navigationType !== 'POP') {
       resetFilters();
+      resetCounsel();
     }
-  }, [navigationType, resetFilters]);
+  }, [navigationType, resetCounsel, resetFilters]);
 
   return (
     <>

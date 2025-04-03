@@ -8,6 +8,7 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import {
   customerFiltersState,
   selectedCustomerIdxState,
+  selectedCustomerState,
 } from '@/state/customer';
 import Button from '@/components/button/Button';
 import RegistModal from '../components/registModal';
@@ -17,6 +18,7 @@ import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
 import { useNavigationType } from 'react-router-dom';
 import { useConfirm } from '@/hooks/useConfirm';
+import FloatingMenu from '../components/floatingMenu';
 
 const CustomerList = () => {
   const navigationType = useNavigationType();
@@ -28,6 +30,8 @@ const CustomerList = () => {
   const resetSelectedCustomerIdx = useResetRecoilState(
     selectedCustomerIdxState,
   );
+  const selectedCustomer = useRecoilValue(selectedCustomerState);
+  const resetCustomer = useResetRecoilState(selectedCustomerState);
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
@@ -58,22 +62,13 @@ const CustomerList = () => {
     [setSearchText],
   );
   useEffect(() => {
-    if (
-      !selectedCustomerIdx &&
-      data?.getCustomers &&
-      data?.getCustomers?.length > 0
-    ) {
-      setSelectedCustomerIdx(data.getCustomers[0].id);
-    } else {
-      if (navigationType !== 'POP') {
-        resetSelectedCustomerIdx();
-      }
-    }
-  }, [data]);
+    if (data?.getCustomers) setSelectedCustomerIdx(data.getCustomers[0].id);
+  }, [data, setSelectedCustomerIdx]);
 
   useEffect(() => {
     resetFilters();
-  }, [resetFilters]);
+    resetCustomer();
+  }, [resetCustomer, resetFilters]);
 
   if (error) return <></>;
 
@@ -125,7 +120,10 @@ const CustomerList = () => {
             </div>
           </div>
           {data && (
-            <CustomerListTable data={data.getCustomers}></CustomerListTable>
+            <>
+              <CustomerListTable data={data.getCustomers}></CustomerListTable>
+              {selectedCustomer.length > 0 && <FloatingMenu></FloatingMenu>}
+            </>
           )}
         </TableWrapper>
       </ListWrapper>
