@@ -130,8 +130,6 @@ const ContractRegist = () => {
             (createContract?.businessExpenses ?? 0)),
       };
 
-      console.log(createContractPayload);
-
       const response = await createContractMutation(createContractPayload);
       if (response && response.data.createContract.id) {
         addToast({
@@ -151,12 +149,25 @@ const ContractRegist = () => {
     if (my) {
       setUser(my);
       if (customerIdx && customers && customers?.getCustomers?.length > 0) {
-        setCustomer(customers.getCustomers.find((it) => it.id === customerIdx));
-        setCreateContract((prevState) => ({
-          ...prevState,
-          customerId: customerIdx,
-          userId: my.id,
-        }));
+        const tempCustomer = customers.getCustomers.find(
+          (it) => it.id === customerIdx,
+        );
+        if (tempCustomer) {
+          setCustomer(tempCustomer);
+          setCreateContract((prevState) => ({
+            ...prevState,
+            customerId: customerIdx,
+            userId: my.id,
+            company_name_nominee: tempCustomer.company_name_nominee,
+            carName: tempCustomer.carName ?? '',
+            carOption: tempCustomer.carOption,
+            contractPeriod: tempCustomer.contractPeriod,
+            agreedMileage: tempCustomer.agreedMileage,
+            advancePayment: tempCustomer.advancePayment,
+            insuranceAge: tempCustomer.insuranceAge,
+          }));
+          setDivision(tempCustomer.customerDivision ?? undefined);
+        }
       }
     }
   }, [my, setUser, customerIdx, setCustomer, customers]);
