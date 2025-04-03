@@ -1426,6 +1426,8 @@ export type UpdateCustomerDto = {
   phone?: InputMaybe<Scalars['String']['input']>;
   /** 고객 삭제 상태 */
   status?: InputMaybe<Scalars['String']['input']>;
+  /** 추가 연락처 */
+  sub_phone?: InputMaybe<Scalars['String']['input']>;
   /** 고객 유형 */
   type?: InputMaybe<Scalars['String']['input']>;
   userId?: InputMaybe<Scalars['Int']['input']>;
@@ -1853,14 +1855,14 @@ export type GetCustomersQueryVariables = Exact<{
 }>;
 
 
-export type GetCustomersQuery = { getCustomers: Array<{ id: number, created_at?: string | null, name: string, phone: string, memo?: string | null, note?: string | null, type?: string | null, contractList: Array<{ carName?: string | null, division?: { name: string } | null }>, counselList: Array<{ counselAt: string }>, customerGrade?: { name: string } | null, userList: { name: string }, customerStatus?: { status: string } | null }> };
+export type GetCustomersQuery = { getCustomers: Array<{ id: number, created_at?: string | null, name: string, phone: string, memo?: string | null, note?: string | null, type?: string | null, carName?: string | null, contractList: Array<{ carName?: string | null, division?: { name: string } | null }>, counselList: Array<{ counselAt: string }>, customerGrade?: { name: string } | null, userList: { name: string }, customerStatus?: { status: string } | null }> };
 
 export type GetCustomerQueryVariables = Exact<{
   customerId: Scalars['Float']['input'];
 }>;
 
 
-export type GetCustomerQuery = { getCustomer: { id: number, name: string, phone: string, sub_phone?: string | null, type?: string | null, created_at?: string | null, memo?: string | null, note?: string | null, userList: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null, contractList: Array<{ id: number, company_name_nominee?: string | null, advancePayment?: number | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, shippingMethod?: { id: number, name: string } | null, division?: { name: string } | null }>, customerGrade?: { id: number, name: string } | null, counselList: Array<{ id: number, counselAt: string, context: string, customer: { name: string }, user: { name: string } }> } };
+export type GetCustomerQuery = { getCustomer: { id: number, name: string, phone: string, sub_phone?: string | null, type?: string | null, created_at?: string | null, memo?: string | null, note?: string | null, company_name_nominee?: string | null, insuranceAge?: number | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, advancePayment?: number | null, customerDivision?: { id: number, name: string } | null, userList: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null, contractList: Array<{ id: number, company_name_nominee?: string | null, advancePayment?: number | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, shippingMethod?: { id: number, name: string } | null, division?: { name: string } | null }>, customerGrade?: { id: number, name: string } | null, counselList: Array<{ id: number, counselAt: string, context: string, customer: { name: string }, user: { name: string } }> } };
 
 export type GetCustomerGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3948,6 +3950,7 @@ export const GetCustomersDocument = gql`
     memo
     note
     type
+    carName
     contractList {
       carName
       division {
@@ -4013,6 +4016,17 @@ export const GetCustomerDocument = gql`
     created_at
     memo
     note
+    company_name_nominee
+    customerDivision {
+      id
+      name
+    }
+    insuranceAge
+    carName
+    carOption
+    contractPeriod
+    agreedMileage
+    advancePayment
     userList {
       id
       name

@@ -14,7 +14,7 @@ type TInputType =
   | 'datetime-local';
 
 interface IInputProps extends HTMLAttributes<HTMLDivElement> {
-  size?: 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large';
   name?: string;
   placeholder?: string;
   errorMessage?: string;

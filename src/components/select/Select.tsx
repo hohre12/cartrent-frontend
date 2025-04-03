@@ -19,7 +19,7 @@ interface TSelectProps<T> extends TUIOptions, HTMLAttributes<HTMLDivElement> {
   placeholder?: string;
   autoCopmlete?: boolean;
 
-  size?: 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large';
 }
 
 /**
@@ -134,7 +134,10 @@ const Select = (props: TSelectProps<any>) => {
   };
 
   return (
-    <Root ref={selectRef}>
+    <Root
+      ref={selectRef}
+      {...rest}
+    >
       {autoCopmlete ? (
         <Input
           onClick={() => setIsShow(true)}
@@ -147,7 +150,6 @@ const Select = (props: TSelectProps<any>) => {
           disabled={disabled}
           readOnly={readOnly}
           remove={true}
-          {...rest}
         />
       ) : (
         <React.Fragment>
@@ -211,6 +213,12 @@ const Root = styled.div`
     border: 1px solid ${palette['$border-inputfield-enable']};
     height: fit-content;
     cursor: pointer;
+
+    &.small {
+      padding: 4px 4px 4px 10px;
+      border-radius: ${palette['$radius-s']};
+      max-height: 36px;
+    }
 
     &.medium {
       padding: 5px 13px;

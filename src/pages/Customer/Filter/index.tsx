@@ -13,12 +13,23 @@ import { customerFiltersState } from '@/state/customer';
 import RegistGradeModal from '../components/registGradeModal';
 import RegistGroupModal from '../components/registGroupModal';
 import { userState } from '@/state/auth';
-import { PermissionType } from '@/types/graphql';
+import {
+  CustomerGrade,
+  CustomerGroup,
+  PermissionType,
+  User,
+} from '@/types/graphql';
 
-const CustomerFilter = () => {
-  const { data: groups } = useGetCustomerGroups();
-  const { data: grades } = useGetCustomerGrades();
-  const { data: users } = useGetUsers();
+type TCustomerFilterProps = {
+  users: User[];
+  groups: CustomerGroup[];
+  grades: CustomerGrade[];
+};
+
+const CustomerFilter = ({ users, groups, grades }: TCustomerFilterProps) => {
+  //   const { data: groups } = useGetCustomerGroups();
+  //   const { data: grades } = useGetCustomerGrades();
+  //   const { data: users } = useGetUsers();
 
   const [isOpenRegistGradeModal, setIsOpenRegistGradeModal] =
     useState<boolean>(false);
@@ -90,7 +101,7 @@ const CustomerFilter = () => {
           </div>
           {isOpenFilters.some((it) => it === 'group') && (
             <div className="SubMenu">
-              {groups?.getCustomerGroups.map((it) => (
+              {groups?.map((it) => (
                 <div key={it.id}>
                   <Checkbox
                     value={filters.groups
@@ -132,7 +143,7 @@ const CustomerFilter = () => {
           </div>
           {isOpenFilters.some((it) => it === 'grade') && (
             <div className="SubMenu">
-              {grades?.getCustomerGrades.map((it) => (
+              {grades?.map((it) => (
                 <div key={it.id}>
                   <Checkbox
                     value={filters.grades
@@ -167,7 +178,7 @@ const CustomerFilter = () => {
             </div>
             {isOpenFilters.some((it) => it === 'user') && (
               <div className="SubMenu">
-                {users?.getUsers.map((it) => (
+                {users?.map((it) => (
                   <div key={it.id}>
                     <Checkbox
                       value={filters.users

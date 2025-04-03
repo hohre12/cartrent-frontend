@@ -3,32 +3,125 @@ import { SvgIcon } from '@/components/common/SvgIcon';
 import Input from '@/components/input/Input';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
-import { useDeleteCustomer, useGetCustomer } from '@/services/customer';
+import {
+  useDeleteCustomer,
+  useGetCustomer,
+  useUpdateCustomer,
+} from '@/services/customer';
 import { selectedCustomerIdxState } from '@/state/customer';
 import { textS14Medium, textS14Regular } from '@/styles/typography';
 import { formatDate } from '@/utils/dateUtils';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import EditModal from '../components/editModal';
+// import EditModal from '../components/editModal';
 import { useNavigate } from 'react-router-dom';
 import { userState } from '@/state/auth';
-import { PermissionType } from '@/types/graphql';
+import {
+  CustomerGrade,
+  CustomerGroup,
+  CustomerStatus,
+  Division,
+  PermissionType,
+  UpdateCustomerDto,
+  User,
+} from '@/types/graphql';
 import RegistModal from '@/pages/Counsel/List/components/registModal';
-import { numberFormat } from '@/utils/common';
+import { autoHypenTel, numberFormat } from '@/utils/common';
+import Select from '@/components/select/Select';
 
-const CustomerDetail = () => {
+type TCustomerDetailProps = {
+  users: User[];
+  groups: CustomerGroup[];
+  grades: CustomerGrade[];
+  statuses: CustomerStatus[];
+  divisions: Division[];
+};
+
+const CustomerDetail = ({
+  users,
+  groups,
+  grades,
+  statuses,
+  divisions,
+}: TCustomerDetailProps) => {
   const navigate = useNavigate();
   const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
+  //   const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
   const [isOpenCounselRegistModal, setIsOpenCounselRegistModal] =
     useState<boolean>(false);
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
   const { data, loading, error } = useGetCustomer(selectedCustomerIdx);
   const { deleteCustomer } = useDeleteCustomer();
-  const user = useRecoilValue(userState);
+  const my = useRecoilValue(userState);
+
+  const [user, setUser] = useState<User>();
+  const [division, setDivision] = useState<Division>();
+  const [customerGrade, setCustomerGrade] = useState<CustomerGrade>();
+  const [customerGroup, setCustomerGroup] = useState<CustomerGroup>();
+  const [customerStatus, setCustomerStatus] = useState<CustomerStatus>();
+  const [name, setName] = useState<UpdateCustomerDto['name']>();
+  const [phone, setPhone] = useState<UpdateCustomerDto['phone']>();
+  const [companyNameNominee, setCompanyNameNominee] =
+    useState<UpdateCustomerDto['company_name_nominee']>();
+  const [subPhone, setSubPhone] = useState<UpdateCustomerDto['sub_phone']>();
+  const [insuranceAge, setInsuranceAge] =
+    useState<UpdateCustomerDto['insuranceAge']>();
+  const [carName, setCarName] = useState<UpdateCustomerDto['carName']>();
+  const [carOption, setCarOption] = useState<UpdateCustomerDto['carOption']>();
+  const [contractPeriod, setContractPeriod] =
+    useState<UpdateCustomerDto['contractPeriod']>();
+  const [agreedMileage, setAgreedMileage] =
+    useState<UpdateCustomerDto['agreedMileage']>();
+  const [advancePayment, setAdvancePayment] =
+    useState<UpdateCustomerDto['advancePayment']>();
+  const [type, setType] = useState<UpdateCustomerDto['type']>();
+  const [memo, setMemo] = useState<UpdateCustomerDto['memo']>();
+  const [note, setNote] = useState<UpdateCustomerDto['note']>();
+
+  const { updateCustomer } = useUpdateCustomer();
+
+  const handleUpdateCustomer = async () => {
+    if (!name) return;
+    if (!phone) return;
+    if (!user) return;
+    try {
+      const response = await updateCustomer({
+        customerId: selectedCustomerIdx,
+        userId: user.id,
+        customerGroupId: customerGroup?.id,
+        name,
+        phone,
+        company_name_nominee: companyNameNominee,
+        sub_phone: subPhone,
+        divisionId: division?.id,
+        insuranceAge: insuranceAge,
+        carName: carName,
+        carOption: carOption,
+        contractPeriod: contractPeriod,
+        agreedMileage: agreedMileage,
+        advancePayment: advancePayment,
+        type,
+        customerStatusId: customerStatus?.id,
+        memo,
+        customerGradeId: customerGrade?.id,
+        note,
+      });
+      if (response && response.data.updateCustomer.id) {
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `${name} 고객이 수정되었습니다.`,
+          type: 'success',
+        });
+        setIsEdit(false);
+      }
+    } catch (e) {
+      console.warn(e);
+    }
+  };
 
   const handleDeleteCustomer = useCallback(async () => {
     try {
@@ -48,6 +141,28 @@ const CustomerDetail = () => {
   }, [deleteCustomer, selectedCustomerIdx, hideConfirm, addToast]);
 
   const detail = data?.getCustomer;
+  useEffect(() => {
+    if (detail) {
+      setName(detail.name);
+      setPhone(detail.phone);
+      setCompanyNameNominee(detail.company_name_nominee);
+      setSubPhone(detail.sub_phone);
+      setInsuranceAge(detail.insuranceAge);
+      setCarName(detail.carName);
+      setCarOption(detail.carOption);
+      setContractPeriod(detail.contractPeriod);
+      setAgreedMileage(detail.agreedMileage);
+      setAdvancePayment(detail.advancePayment);
+      setType(detail.type);
+      setMemo(detail.memo);
+      setNote(detail.note);
+      setUser(detail.userList);
+      setDivision(detail.customerDivision ?? undefined);
+      setCustomerGrade(detail.customerGrade ?? undefined);
+      setCustomerGroup(detail.customerGroup ?? undefined);
+      setCustomerStatus(detail.customerStatus ?? undefined);
+    }
+  }, [detail]);
   if (!detail) return <></>;
 
   return (
@@ -57,28 +172,37 @@ const CustomerDetail = () => {
           <div className="Info">
             <div>
               <span>담당자</span>
-              <Input
-                className="inputWrapper"
-                disabled
-                value={detail.userList.name ?? ''}
-                placeholder=""
-              ></Input>
+              <Select
+                value={{ ...user }}
+                list={users}
+                size="small"
+                trackBy="id"
+                valueBy="name"
+                onChange={(value) => setUser(value)}
+                disabled={!isEdit}
+                style={{ width: '150px' }}
+              />
             </div>
             <div>
               <span>고객그룹</span>
-              <Input
-                className="inputWrapper"
-                disabled
-                value={detail.customerGroup?.name ?? ''}
-                placeholder=""
-              ></Input>
+              <Select
+                value={{ ...customerGroup }}
+                list={groups}
+                size="small"
+                trackBy="id"
+                valueBy="name"
+                onChange={(value) => setCustomerGroup(value)}
+                disabled={!isEdit}
+                style={{ width: '150px' }}
+              />
             </div>
             <div>
               <span>고객명</span>
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
-                value={detail.name ?? ''}
+                value={name ?? ''}
+                onTextChange={(text) => setName(text)}
                 placeholder=""
               ></Input>
             </div>
@@ -87,7 +211,8 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
-                value={detail.phone ?? ''}
+                value={phone ?? ''}
+                onTextChange={(text) => setPhone(autoHypenTel(text))}
                 placeholder=""
               ></Input>
             </div>
@@ -96,7 +221,8 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
-                value={detail.company_name_nominee ?? ''}
+                value={companyNameNominee ?? ''}
+                onTextChange={(text) => setCompanyNameNominee(text)}
                 placeholder=""
               ></Input>
             </div>
@@ -105,25 +231,33 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
-                value={detail.sub_phone ?? ''}
+                value={subPhone ?? ''}
+                onTextChange={(text) => setSubPhone(autoHypenTel(text))}
                 placeholder=""
               ></Input>
             </div>
             <div>
               <span>구분</span>
-              <Input
-                className="inputWrapper"
-                disabled
-                value={detail.customerDivision?.name}
-                placeholder=""
-              ></Input>
+              <Select
+                value={{ ...division }}
+                list={divisions}
+                size="small"
+                trackBy="id"
+                valueBy="name"
+                onChange={(value) => setDivision(value)}
+                disabled={!isEdit}
+                style={{ width: '150px' }}
+              />
             </div>
             <div>
               <span>보험연령</span>
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
-                value={detail.insuranceAge ?? 0}
+                value={insuranceAge ? numberFormat(insuranceAge) : 0}
+                onTextChange={(text) =>
+                  setInsuranceAge(Number(text.replace(/,/g, '')))
+                }
                 placeholder=""
                 postfixNode="세"
               ></Input>
@@ -133,7 +267,8 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
-                value={detail.carName ?? ''}
+                value={carName ?? ''}
+                onTextChange={(text) => setCarName(text)}
                 placeholder=""
               ></Input>
             </div>
@@ -142,7 +277,8 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
-                value={detail.carOption ?? ''}
+                value={carOption ?? ''}
+                onTextChange={(text) => setCarOption(text)}
                 placeholder=""
               ></Input>
             </div>
@@ -151,10 +287,9 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
-                value={
-                  detail.contractPeriod
-                    ? numberFormat(detail.contractPeriod)
-                    : 0
+                value={contractPeriod ? numberFormat(contractPeriod) : 0}
+                onTextChange={(text) =>
+                  setContractPeriod(Number(text.replace(/,/g, '')))
                 }
                 placeholder=""
                 postfixNode="개월"
@@ -165,8 +300,9 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
-                value={
-                  detail.agreedMileage ? numberFormat(detail.agreedMileage) : 0
+                value={agreedMileage ? numberFormat(agreedMileage) : 0}
+                onTextChange={(text) =>
+                  setAgreedMileage(Number(text.replace(/,/g, '')))
                 }
                 placeholder=""
                 postfixNode="km"
@@ -177,10 +313,9 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
-                value={
-                  detail.advancePayment
-                    ? numberFormat(detail.advancePayment)
-                    : 0
+                value={advancePayment ? numberFormat(advancePayment) : 0}
+                onTextChange={(text) =>
+                  setAdvancePayment(Number(text.replace(/,/g, '')))
                 }
                 placeholder=""
                 postfixNode="원"
@@ -191,7 +326,8 @@ const CustomerDetail = () => {
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
-                value={detail.type ?? ''}
+                value={type ?? ''}
+                onTextChange={(text) => setType(text)}
                 placeholder=""
               ></Input>
             </div>
@@ -206,36 +342,46 @@ const CustomerDetail = () => {
             </div>
             <div>
               <span>상태</span>
-              <Input
-                className="inputWrapper"
-                disabled
-                value={detail.customerStatus?.status ?? ''}
-                placeholder=""
-              ></Input>
+              <Select
+                value={{ ...customerStatus }}
+                list={statuses}
+                size="small"
+                trackBy="id"
+                valueBy="status"
+                onChange={(value) => setCustomerStatus(value)}
+                disabled={!isEdit}
+                style={{ width: '150px' }}
+              />
             </div>
             <div style={{ width: '100%', height: 'auto', marginLeft: '30px' }}>
               <span>메모</span>
               <Input
-                value={detail.memo ?? ''}
+                value={memo ?? ''}
+                onTextChange={(text) => setMemo(text)}
                 disabled={!isEdit}
                 placeholder=""
               ></Input>
             </div>
             <div>
               <span>고객등급</span>
-              <Input
-                className="inputWrapper"
-                disabled
-                value={detail.customerGrade?.name ?? ''}
-                placeholder=""
-              ></Input>
+              <Select
+                value={{ ...customerGrade }}
+                list={grades}
+                size="small"
+                trackBy="id"
+                valueBy="name"
+                onChange={(value) => setCustomerGrade(value)}
+                disabled={!isEdit}
+                style={{ width: '150px' }}
+              />
             </div>
             <div>
               <span>비고</span>
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
-                value={detail.note ?? ''}
+                value={note ?? ''}
+                onTextChange={(text) => setNote(text)}
                 placeholder=""
               ></Input>
             </div>
@@ -254,7 +400,7 @@ const CustomerDetail = () => {
               <Button
                 variant="white"
                 configuration="stroke"
-                onClick={() => setIsEdit(false)}
+                onClick={handleUpdateCustomer}
               >
                 저장
               </Button>
@@ -276,7 +422,7 @@ const CustomerDetail = () => {
                 계약 등록
               </Button>
             )}
-            {user?.role.name === PermissionType.Admin && (
+            {my?.role.name === PermissionType.Admin && (
               <Button
                 variant="white"
                 configuration="stroke"
@@ -325,13 +471,13 @@ const CustomerDetail = () => {
           )}
         </HistoryWrapper>
       </DetailWrapper>
-      {isOpenEditModal && (
+      {/* {isOpenEditModal && (
         <EditModal
           isOpen={isOpenEditModal}
           onCancel={() => setIsOpenEditModal(false)}
           onConfirm={() => setIsOpenEditModal(false)}
         ></EditModal>
-      )}
+      )} */}
       {isOpenCounselRegistModal && (
         <RegistModal
           propsCustomer={detail}
