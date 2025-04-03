@@ -49,7 +49,7 @@ const CounselListTable = ({ data }: TTableProps) => {
     } else {
       setSelectedCounsel(data);
     }
-  }, [selectedCounsel, data]);
+  }, [selectedCounsel.length, setSelectedCounsel, data]);
 
   const handleChecked = useCallback(
     (val: TCheckBoxValue, counsel: Counsel) => {
@@ -60,7 +60,7 @@ const CounselListTable = ({ data }: TTableProps) => {
         setSelectedCounsel(newList);
       }
     },
-    [selectedCounsel],
+    [selectedCounsel, setSelectedCounsel],
   );
   return (
     <TableWrapper>

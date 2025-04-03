@@ -8,6 +8,7 @@ import {
   UPDATE_CUSTOMER_GRADE_MUTATION,
   UPDATE_CUSTOMER_GROUP_MUTATION,
   UPDATE_CUSTOMER_MUTATION,
+  UPDATE_CUSTOMERS_MUTATION,
 } from '@/apollo/mutations/customer';
 import {
   GET_CUSTOMER_GRADE_QUERY,
@@ -30,6 +31,7 @@ import {
   UpdateCustomerDto,
   UpdateCustomerGradeDto,
   UpdateCustomerGroupDto,
+  UpdateCustomersDto,
 } from '@/types/graphql';
 import { useMutation, useQuery } from '@apollo/client';
 
@@ -94,6 +96,18 @@ export const useUpdateCustomer = () => {
     return updateCustomerMutate({ variables: { updateCustomerDto: params } });
   };
   return { updateCustomer };
+};
+
+export const useUpdateCustomers = () => {
+  const [updateCustomersMutate] = useMutation(UPDATE_CUSTOMERS_MUTATION, {
+    refetchQueries: [GET_CUSTOMERS_QUERY, GET_CUSTOMER_QUERY],
+  });
+
+  const updateCustomers = async (params: UpdateCustomersDto) => {
+    if (!params) return;
+    return updateCustomersMutate({ variables: { updateCustomersDto: params } });
+  };
+  return { updateCustomers };
 };
 
 // 고객그룹

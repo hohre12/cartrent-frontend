@@ -23,6 +23,7 @@ import {
   CustomerStatus,
   Division,
   PermissionType,
+  PositionType,
   UpdateCustomerDto,
   User,
 } from '@/types/graphql';
@@ -179,7 +180,13 @@ const CustomerDetail = ({
                 trackBy="id"
                 valueBy="name"
                 onChange={(value) => setUser(value)}
-                disabled={!isEdit}
+                disabled={
+                  !isEdit ||
+                  my?.position?.name === PositionType.SeniorManager ||
+                  my?.position?.name === PositionType.Manager ||
+                  my?.position?.name === PositionType.AssistantManager ||
+                  my?.position?.name === PositionType.Staff
+                }
                 style={{ width: '150px' }}
               />
             </div>
@@ -398,8 +405,7 @@ const CustomerDetail = ({
             </Button>
             {isEdit ? (
               <Button
-                variant="white"
-                configuration="stroke"
+                variant="primaryInfo"
                 onClick={handleUpdateCustomer}
               >
                 저장
