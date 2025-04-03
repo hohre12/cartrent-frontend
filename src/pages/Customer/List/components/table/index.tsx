@@ -97,13 +97,7 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
               selectedCustomerHideWatchOptions,
               'carName',
               isHideColumn('carName'),
-            ) && (
-              <td>
-                {it.contractList.length > 0
-                  ? it.contractList.map((it) => it.carName).join(' / ')
-                  : '-'}
-              </td>
-            )}
+            ) && <td>{it.carName ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCustomerHideWatchOptions,
               'note',
@@ -134,13 +128,7 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
               selectedCustomerHideWatchOptions,
               'divisionName',
               isHideColumn('divisionName'),
-            ) && (
-              <td>
-                {it.contractList.length > 0
-                  ? it.contractList.map((it) => it.division?.name).join(' / ')
-                  : '-'}
-              </td>
-            )}
+            ) && <td>{it.customerDivision?.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedCustomerHideWatchOptions,
               'type',

@@ -16,6 +16,10 @@ export const GET_CUSTOMERS_QUERY = gql`
       note
       type
       carName
+      customerDivision {
+        id
+        name
+      }
       contractList {
         carName
         division {
