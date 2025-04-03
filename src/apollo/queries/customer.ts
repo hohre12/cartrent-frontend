@@ -15,11 +15,17 @@ export const GET_CUSTOMERS_QUERY = gql`
       memo
       note
       type
-      carName
+      company_name_nominee
       customerDivision {
         id
         name
       }
+      insuranceAge
+      carName
+      carOption
+      contractPeriod
+      agreedMileage
+      advancePayment
       contractList {
         carName
         division {

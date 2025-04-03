@@ -9,13 +9,13 @@ module.exports = {
     node: true,
   },
   extends: [
-    'react-app',
+    // 'react-app',
     'eslint:recommended', // ESLint에서 권장하는 기본 규칙
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:prettier/recommended', // Prettier와 ESLint의 충돌을 방지하기 위한 규칙
     'plugin:react-hooks/recommended',
   ],
-  parser: '@babel/eslint-parser',
+  parser: '@typescript-eslint/parser', // TypeScript 코드를 파싱하는데 사용할 파서 지정
   parserOptions: {
     requireConfigFile: false,
     parser: '@typescript-eslint/parser', // TypeScript 코드를 파싱하는데 사용할 파서 지정
