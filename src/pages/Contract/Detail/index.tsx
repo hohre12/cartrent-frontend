@@ -29,7 +29,7 @@ import {
   User,
 } from '@/types/graphql';
 import { numberFormat } from '@/utils/common';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import _ from 'lodash';
@@ -178,7 +178,9 @@ const ContractDetail = () => {
     }
   };
 
-  const handleInit = () => {
+  const detail = data?.getContract;
+
+  const handleInit = useCallback(() => {
     if (detail) {
       setUser(detail.user);
       setCity(detail.city ?? undefined);
@@ -205,15 +207,13 @@ const ContractDetail = () => {
         userId: detail.user.id,
       });
     }
-  };
-
-  const detail = data?.getContract;
+  }, [contractIdx, detail]);
 
   useEffect(() => {
     if (detail) {
       handleInit();
     }
-  }, [detail]);
+  }, [detail, handleInit]);
 
   if (!detail) return <></>;
 

@@ -20,6 +20,7 @@ import { numberFormat } from '@/utils/common';
 const CustomerDetail = () => {
   const navigate = useNavigate();
   const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
   const [isOpenCounselRegistModal, setIsOpenCounselRegistModal] =
     useState<boolean>(false);
@@ -76,7 +77,7 @@ const CustomerDetail = () => {
               <span>고객명</span>
               <Input
                 className="inputWrapper"
-                disabled
+                disabled={!isEdit}
                 value={detail.name ?? ''}
                 placeholder=""
               ></Input>
@@ -85,7 +86,7 @@ const CustomerDetail = () => {
               <span>연락처</span>
               <Input
                 className="inputWrapper"
-                disabled
+                disabled={!isEdit}
                 value={detail.phone ?? ''}
                 placeholder=""
               ></Input>
@@ -94,7 +95,7 @@ const CustomerDetail = () => {
               <span>회사/명의</span>
               <Input
                 className="inputWrapper"
-                disabled
+                disabled={!isEdit}
                 value={detail.company_name_nominee ?? ''}
                 placeholder=""
               ></Input>
@@ -103,7 +104,7 @@ const CustomerDetail = () => {
               <span>추가연락처</span>
               <Input
                 className="inputWrapper"
-                disabled
+                disabled={!isEdit}
                 value={detail.sub_phone ?? ''}
                 placeholder=""
               ></Input>
@@ -121,7 +122,7 @@ const CustomerDetail = () => {
               <span>보험연령</span>
               <Input
                 className="inputWrapper"
-                disabled
+                disabled={!isEdit}
                 value={detail.insuranceAge ?? 0}
                 placeholder=""
                 postfixNode="세"
@@ -131,7 +132,7 @@ const CustomerDetail = () => {
               <span>차종</span>
               <Input
                 className="inputWrapper"
-                disabled
+                disabled={!isEdit}
                 value={detail.carName ?? ''}
                 placeholder=""
               ></Input>
@@ -140,7 +141,7 @@ const CustomerDetail = () => {
               <span>옵션</span>
               <Input
                 className="inputWrapper"
-                disabled
+                disabled={!isEdit}
                 value={detail.carOption ?? ''}
                 placeholder=""
               ></Input>
@@ -149,8 +150,12 @@ const CustomerDetail = () => {
               <span>약정기간</span>
               <Input
                 className="inputWrapper"
-                disabled
-                value={detail.contractPeriod ?? 0}
+                disabled={!isEdit}
+                value={
+                  detail.contractPeriod
+                    ? numberFormat(detail.contractPeriod)
+                    : 0
+                }
                 placeholder=""
                 postfixNode="개월"
               ></Input>
@@ -159,8 +164,10 @@ const CustomerDetail = () => {
               <span>약정거리</span>
               <Input
                 className="inputWrapper"
-                disabled
-                value={detail.agreedMileage ?? 0}
+                disabled={!isEdit}
+                value={
+                  detail.agreedMileage ? numberFormat(detail.agreedMileage) : 0
+                }
                 placeholder=""
                 postfixNode="km"
               ></Input>
@@ -169,8 +176,12 @@ const CustomerDetail = () => {
               <span>선수금</span>
               <Input
                 className="inputWrapper"
-                disabled
-                value={detail.advancePayment ? detail.advancePayment : 0}
+                disabled={!isEdit}
+                value={
+                  detail.advancePayment
+                    ? numberFormat(detail.advancePayment)
+                    : 0
+                }
                 placeholder=""
                 postfixNode="원"
               ></Input>
@@ -179,7 +190,7 @@ const CustomerDetail = () => {
               <span>고객유형</span>
               <Input
                 className="inputWrapper"
-                disabled
+                disabled={!isEdit}
                 value={detail.type ?? ''}
                 placeholder=""
               ></Input>
@@ -206,7 +217,7 @@ const CustomerDetail = () => {
               <span>메모</span>
               <Input
                 value={detail.memo ?? ''}
-                disabled
+                disabled={!isEdit}
                 placeholder=""
               ></Input>
             </div>
@@ -223,7 +234,7 @@ const CustomerDetail = () => {
               <span>비고</span>
               <Input
                 className="inputWrapper"
-                disabled
+                disabled={!isEdit}
                 value={detail.note ?? ''}
                 placeholder=""
               ></Input>
@@ -239,13 +250,23 @@ const CustomerDetail = () => {
             >
               <p>상담등록</p>
             </Button>
-            <Button
-              variant="white"
-              configuration="stroke"
-              onClick={() => setIsOpenEditModal(true)}
-            >
-              고객 수정
-            </Button>
+            {isEdit ? (
+              <Button
+                variant="white"
+                configuration="stroke"
+                onClick={() => setIsEdit(false)}
+              >
+                저장
+              </Button>
+            ) : (
+              <Button
+                variant="white"
+                configuration="stroke"
+                onClick={() => setIsEdit(true)}
+              >
+                고객 수정
+              </Button>
+            )}
             {detail.customerStatus?.status === '계약완료' && (
               <Button
                 variant="white"
