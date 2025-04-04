@@ -345,6 +345,8 @@ export type CreateCounselDto = {
 };
 
 export type CreateCustomerDto = {
+  /** 차종 */
+  carName?: InputMaybe<Scalars['String']['input']>;
   customerGradeId?: InputMaybe<Scalars['Int']['input']>;
   customerGroupId?: InputMaybe<Scalars['Int']['input']>;
   customerStatusId?: InputMaybe<Scalars['Int']['input']>;
@@ -444,6 +446,8 @@ export type Customer = {
   name: Scalars['String']['output'];
   /** 비고 */
   note?: Maybe<Scalars['String']['output']>;
+  /** 원산지 */
+  origin?: Maybe<Scalars['String']['output']>;
   /** 핸드폰 번호 */
   phone: Scalars['String']['output'];
   /** 상태 */
@@ -1423,6 +1427,8 @@ export type UpdateCustomerDto = {
   name?: InputMaybe<Scalars['String']['input']>;
   /** 비고 */
   note?: InputMaybe<Scalars['String']['input']>;
+  /** 원산지 */
+  origin?: InputMaybe<Scalars['String']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
   /** 고객 삭제 상태 */
   status?: InputMaybe<Scalars['String']['input']>;
@@ -1654,12 +1660,12 @@ export type DeleteCustomerMutationVariables = Exact<{
 
 export type DeleteCustomerMutation = { deleteCustomer: string };
 
-export type UpdateCustomerOfUserMutationVariables = Exact<{
-  updateCustomerOfUserDto: UpdateCustomerOfUserDto;
+export type UpdateCustomersMutationVariables = Exact<{
+  updateCustomersDto: UpdateCustomersDto;
 }>;
 
 
-export type UpdateCustomerOfUserMutation = { updateCustomerOfUser: { id: number } };
+export type UpdateCustomersMutation = { updateCustomers: boolean };
 
 export type CreateCustomerGroupMutationVariables = Exact<{
   createCustomerGroupDto: CreateCustomerGroupDto;
@@ -1855,14 +1861,14 @@ export type GetCustomersQueryVariables = Exact<{
 }>;
 
 
-export type GetCustomersQuery = { getCustomers: Array<{ id: number, created_at?: string | null, name: string, phone: string, memo?: string | null, note?: string | null, type?: string | null, carName?: string | null, contractList: Array<{ carName?: string | null, division?: { name: string } | null }>, counselList: Array<{ counselAt: string }>, customerGrade?: { name: string } | null, userList: { name: string }, customerStatus?: { status: string } | null }> };
+export type GetCustomersQuery = { getCustomers: Array<{ id: number, created_at?: string | null, name: string, phone: string, memo?: string | null, note?: string | null, type?: string | null, company_name_nominee?: string | null, origin?: string | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, advancePayment?: number | null, customerDivision?: { id: number, name: string } | null, contractList: Array<{ carName?: string | null, division?: { name: string } | null }>, counselList: Array<{ counselAt: string }>, customerGrade?: { name: string } | null, userList: { name: string }, customerStatus?: { status: string } | null }> };
 
 export type GetCustomerQueryVariables = Exact<{
   customerId: Scalars['Float']['input'];
 }>;
 
 
-export type GetCustomerQuery = { getCustomer: { id: number, name: string, phone: string, sub_phone?: string | null, type?: string | null, created_at?: string | null, memo?: string | null, note?: string | null, company_name_nominee?: string | null, insuranceAge?: number | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, advancePayment?: number | null, customerDivision?: { id: number, name: string } | null, userList: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null, contractList: Array<{ id: number, company_name_nominee?: string | null, advancePayment?: number | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, shippingMethod?: { id: number, name: string } | null, division?: { name: string } | null }>, customerGrade?: { id: number, name: string } | null, counselList: Array<{ id: number, counselAt: string, context: string, customer: { name: string }, user: { name: string } }> } };
+export type GetCustomerQuery = { getCustomer: { id: number, name: string, phone: string, sub_phone?: string | null, type?: string | null, created_at?: string | null, memo?: string | null, note?: string | null, company_name_nominee?: string | null, origin?: string | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, advancePayment?: number | null, customerDivision?: { id: number, name: string } | null, userList: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null, contractList: Array<{ id: number, company_name_nominee?: string | null, advancePayment?: number | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, shippingMethod?: { id: number, name: string } | null, division?: { name: string } | null }>, customerGrade?: { id: number, name: string } | null, counselList: Array<{ id: number, counselAt: string, context: string, customer: { name: string }, user: { name: string } }> } };
 
 export type GetCustomerGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2705,39 +2711,37 @@ export function useDeleteCustomerMutation(baseOptions?: Apollo.MutationHookOptio
 export type DeleteCustomerMutationHookResult = ReturnType<typeof useDeleteCustomerMutation>;
 export type DeleteCustomerMutationResult = Apollo.MutationResult<DeleteCustomerMutation>;
 export type DeleteCustomerMutationOptions = Apollo.BaseMutationOptions<DeleteCustomerMutation, DeleteCustomerMutationVariables>;
-export const UpdateCustomerOfUserDocument = gql`
-    mutation UpdateCustomerOfUser($updateCustomerOfUserDto: UpdateCustomerOfUserDto!) {
-  updateCustomerOfUser(updateCustomerOfUserDto: $updateCustomerOfUserDto) {
-    id
-  }
+export const UpdateCustomersDocument = gql`
+    mutation UpdateCustomers($updateCustomersDto: UpdateCustomersDto!) {
+  updateCustomers(updateCustomersDto: $updateCustomersDto)
 }
     `;
-export type UpdateCustomerOfUserMutationFn = Apollo.MutationFunction<UpdateCustomerOfUserMutation, UpdateCustomerOfUserMutationVariables>;
+export type UpdateCustomersMutationFn = Apollo.MutationFunction<UpdateCustomersMutation, UpdateCustomersMutationVariables>;
 
 /**
- * __useUpdateCustomerOfUserMutation__
+ * __useUpdateCustomersMutation__
  *
- * To run a mutation, you first call `useUpdateCustomerOfUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateCustomerOfUserMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateCustomersMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCustomersMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateCustomerOfUserMutation, { data, loading, error }] = useUpdateCustomerOfUserMutation({
+ * const [updateCustomersMutation, { data, loading, error }] = useUpdateCustomersMutation({
  *   variables: {
- *      updateCustomerOfUserDto: // value for 'updateCustomerOfUserDto'
+ *      updateCustomersDto: // value for 'updateCustomersDto'
  *   },
  * });
  */
-export function useUpdateCustomerOfUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCustomerOfUserMutation, UpdateCustomerOfUserMutationVariables>) {
+export function useUpdateCustomersMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCustomersMutation, UpdateCustomersMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateCustomerOfUserMutation, UpdateCustomerOfUserMutationVariables>(UpdateCustomerOfUserDocument, options);
+        return Apollo.useMutation<UpdateCustomersMutation, UpdateCustomersMutationVariables>(UpdateCustomersDocument, options);
       }
-export type UpdateCustomerOfUserMutationHookResult = ReturnType<typeof useUpdateCustomerOfUserMutation>;
-export type UpdateCustomerOfUserMutationResult = Apollo.MutationResult<UpdateCustomerOfUserMutation>;
-export type UpdateCustomerOfUserMutationOptions = Apollo.BaseMutationOptions<UpdateCustomerOfUserMutation, UpdateCustomerOfUserMutationVariables>;
+export type UpdateCustomersMutationHookResult = ReturnType<typeof useUpdateCustomersMutation>;
+export type UpdateCustomersMutationResult = Apollo.MutationResult<UpdateCustomersMutation>;
+export type UpdateCustomersMutationOptions = Apollo.BaseMutationOptions<UpdateCustomersMutation, UpdateCustomersMutationVariables>;
 export const CreateCustomerGroupDocument = gql`
     mutation CreateCustomerGroup($createCustomerGroupDto: CreateCustomerGroupDto!) {
   createCustomerGroup(CreateCustomerGroupDto: $createCustomerGroupDto) {
@@ -3950,7 +3954,17 @@ export const GetCustomersDocument = gql`
     memo
     note
     type
+    company_name_nominee
+    customerDivision {
+      id
+      name
+    }
+    origin
     carName
+    carOption
+    contractPeriod
+    agreedMileage
+    advancePayment
     contractList {
       carName
       division {
@@ -4021,7 +4035,7 @@ export const GetCustomerDocument = gql`
       id
       name
     }
-    insuranceAge
+    origin
     carName
     carOption
     contractPeriod

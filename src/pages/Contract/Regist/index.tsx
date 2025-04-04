@@ -164,7 +164,6 @@ const ContractRegist = () => {
             contractPeriod: tempCustomer.contractPeriod,
             agreedMileage: tempCustomer.agreedMileage,
             advancePayment: tempCustomer.advancePayment,
-            insuranceAge: tempCustomer.insuranceAge,
           }));
           setDivision(tempCustomer.customerDivision ?? undefined);
         }

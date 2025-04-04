@@ -68,8 +68,7 @@ const CustomerDetail = ({
   const [companyNameNominee, setCompanyNameNominee] =
     useState<UpdateCustomerDto['company_name_nominee']>();
   const [subPhone, setSubPhone] = useState<UpdateCustomerDto['sub_phone']>();
-  const [insuranceAge, setInsuranceAge] =
-    useState<UpdateCustomerDto['insuranceAge']>();
+  const [origin, setOrigin] = useState<UpdateCustomerDto['origin']>();
   const [carName, setCarName] = useState<UpdateCustomerDto['carName']>();
   const [carOption, setCarOption] = useState<UpdateCustomerDto['carOption']>();
   const [contractPeriod, setContractPeriod] =
@@ -84,7 +83,7 @@ const CustomerDetail = ({
 
   const { updateCustomer } = useUpdateCustomer();
 
-  const handleUpdateCustomer = async () => {
+  const handleUpdateCustomer = useCallback(async () => {
     if (!name) return;
     if (!phone) return;
     if (!user) return;
@@ -98,7 +97,7 @@ const CustomerDetail = ({
         company_name_nominee: companyNameNominee,
         sub_phone: subPhone,
         divisionId: division?.id,
-        insuranceAge: insuranceAge,
+        origin: origin,
         carName: carName,
         carOption: carOption,
         contractPeriod: contractPeriod,
@@ -122,7 +121,29 @@ const CustomerDetail = ({
     } catch (e) {
       console.warn(e);
     }
-  };
+  }, [
+    addToast,
+    advancePayment,
+    agreedMileage,
+    carName,
+    carOption,
+    companyNameNominee,
+    contractPeriod,
+    customerGrade?.id,
+    customerGroup?.id,
+    customerStatus?.id,
+    division?.id,
+    memo,
+    name,
+    note,
+    origin,
+    phone,
+    selectedCustomerIdx,
+    subPhone,
+    type,
+    updateCustomer,
+    user,
+  ]);
 
   const handleDeleteCustomer = useCallback(async () => {
     try {
@@ -141,14 +162,25 @@ const CustomerDetail = ({
     }
   }, [deleteCustomer, selectedCustomerIdx, hideConfirm, addToast]);
 
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleUpdateCustomer();
+      }
+    },
+    [handleUpdateCustomer],
+  );
+
   const detail = data?.getCustomer;
-  useEffect(() => {
+
+  const handleInit = useCallback(() => {
     if (detail) {
+      setIsEdit(false);
       setName(detail.name);
       setPhone(detail.phone);
       setCompanyNameNominee(detail.company_name_nominee);
       setSubPhone(detail.sub_phone);
-      setInsuranceAge(detail.insuranceAge);
+      setOrigin(detail.origin);
       setCarName(detail.carName);
       setCarOption(detail.carOption);
       setContractPeriod(detail.contractPeriod);
@@ -164,6 +196,21 @@ const CustomerDetail = ({
       setCustomerStatus(detail.customerStatus ?? undefined);
     }
   }, [detail]);
+  useEffect(() => {
+    handleInit();
+  }, [handleInit]);
+
+  useEffect(() => {
+    if (isEdit) {
+      window.addEventListener('keydown', handleEnter);
+    }
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter, handleUpdateCustomer, isEdit]);
+
   if (!detail) return <></>;
 
   return (
@@ -257,16 +304,13 @@ const CustomerDetail = ({
               />
             </div>
             <div>
-              <span>보험연령</span>
+              <span>국산/수입</span>
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
-                value={insuranceAge ? numberFormat(insuranceAge) : 0}
-                onTextChange={(text) =>
-                  setInsuranceAge(Number(text.replace(/,/g, '')))
-                }
+                value={origin ?? ''}
+                onTextChange={(text) => setOrigin(text)}
                 placeholder=""
-                postfixNode="세"
               ></Input>
             </div>
             <div>
@@ -404,12 +448,23 @@ const CustomerDetail = ({
               <p>상담등록</p>
             </Button>
             {isEdit ? (
-              <Button
-                variant="primaryInfo"
-                onClick={handleUpdateCustomer}
-              >
-                저장
-              </Button>
+              <>
+                <Button
+                  variant="secondaryDanger"
+                  onClick={() => {
+                    setIsEdit(false);
+                    handleInit();
+                  }}
+                >
+                  취소
+                </Button>
+                <Button
+                  variant="primaryInfo"
+                  onClick={handleUpdateCustomer}
+                >
+                  저장
+                </Button>
+              </>
             ) : (
               <Button
                 variant="white"

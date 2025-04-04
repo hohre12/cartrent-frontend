@@ -20,7 +20,7 @@ export const GET_CUSTOMERS_QUERY = gql`
         id
         name
       }
-      insuranceAge
+      origin
       carName
       carOption
       contractPeriod
@@ -68,7 +68,7 @@ export const GET_CUSTOMER_QUERY = gql`
         id
         name
       }
-      insuranceAge
+      origin
       carName
       carOption
       contractPeriod
