@@ -84,7 +84,7 @@ const CustomerDetail = ({
 
   const { updateCustomer } = useUpdateCustomer();
 
-  const handleUpdateCustomer = async () => {
+  const handleUpdateCustomer = useCallback(async () => {
     if (!name) return;
     if (!phone) return;
     if (!user) return;
@@ -122,7 +122,29 @@ const CustomerDetail = ({
     } catch (e) {
       console.warn(e);
     }
-  };
+  }, [
+    addToast,
+    advancePayment,
+    agreedMileage,
+    carName,
+    carOption,
+    companyNameNominee,
+    contractPeriod,
+    customerGrade?.id,
+    customerGroup?.id,
+    customerStatus?.id,
+    division?.id,
+    insuranceAge,
+    memo,
+    name,
+    note,
+    phone,
+    selectedCustomerIdx,
+    subPhone,
+    type,
+    updateCustomer,
+    user,
+  ]);
 
   const handleDeleteCustomer = useCallback(async () => {
     try {
@@ -141,9 +163,20 @@ const CustomerDetail = ({
     }
   }, [deleteCustomer, selectedCustomerIdx, hideConfirm, addToast]);
 
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleUpdateCustomer();
+      }
+    },
+    [handleUpdateCustomer],
+  );
+
   const detail = data?.getCustomer;
-  useEffect(() => {
+
+  const handleInit = useCallback(() => {
     if (detail) {
+      setIsEdit(false);
       setName(detail.name);
       setPhone(detail.phone);
       setCompanyNameNominee(detail.company_name_nominee);
@@ -164,6 +197,21 @@ const CustomerDetail = ({
       setCustomerStatus(detail.customerStatus ?? undefined);
     }
   }, [detail]);
+  useEffect(() => {
+    handleInit();
+  }, [handleInit]);
+
+  useEffect(() => {
+    if (isEdit) {
+      window.addEventListener('keydown', handleEnter);
+    }
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter, handleUpdateCustomer, isEdit]);
+
   if (!detail) return <></>;
 
   return (
@@ -404,12 +452,23 @@ const CustomerDetail = ({
               <p>상담등록</p>
             </Button>
             {isEdit ? (
-              <Button
-                variant="primaryInfo"
-                onClick={handleUpdateCustomer}
-              >
-                저장
-              </Button>
+              <>
+                <Button
+                  variant="secondaryDanger"
+                  onClick={() => {
+                    setIsEdit(false);
+                    handleInit();
+                  }}
+                >
+                  취소
+                </Button>
+                <Button
+                  variant="primaryInfo"
+                  onClick={handleUpdateCustomer}
+                >
+                  저장
+                </Button>
+              </>
             ) : (
               <Button
                 variant="white"
