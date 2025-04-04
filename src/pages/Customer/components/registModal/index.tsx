@@ -20,7 +20,7 @@ import {
   User,
 } from '@/types/graphql';
 import { autoHypenTel } from '@/utils/common';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
@@ -37,6 +37,7 @@ const RegistModal = (props: TModal) => {
   const [note, setNote] = useState<CreateCustomerDto['note']>();
   const [phone, setPhone] = useState<CreateCustomerDto['phone']>();
   const [type, setType] = useState<CreateCustomerDto['type']>();
+  const [carName, setCarName] = useState<CreateCustomerDto['carName']>();
 
   const { data: users } = useGetUsers();
   const { data: statuses } = useGetCustomerStatuses();
@@ -48,7 +49,7 @@ const RegistModal = (props: TModal) => {
 
   const { createCustomer } = useCreateCustomer();
 
-  const handleCustomerRegist = async () => {
+  const handleCustomerRegist = useCallback(async () => {
     setSubmit(true);
     if (!name) return;
     if (!phone) return;
@@ -64,6 +65,7 @@ const RegistModal = (props: TModal) => {
         note,
         phone,
         type,
+        carName,
       });
 
       if (response && response.data.createCustomer.id) {
@@ -79,7 +81,39 @@ const RegistModal = (props: TModal) => {
     } catch (e) {
       console.warn(e);
     }
-  };
+  }, [
+    addToast,
+    carName,
+    createCustomer,
+    customerGrade?.id,
+    customerGroup?.id,
+    customerStatus?.id,
+    memo,
+    modalProps,
+    name,
+    note,
+    phone,
+    type,
+    user,
+  ]);
+
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleCustomerRegist();
+      }
+    },
+    [handleCustomerRegist],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEnter);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter]);
 
   useEffect(() => {
     if (my) {
@@ -192,7 +226,15 @@ const RegistModal = (props: TModal) => {
               onTextChange={(text) => setNote(text)}
             />
           </div>
-          <div style={{ width: '100%' }}>
+          <div>
+            <span>차종</span>
+            <Input
+              placeholder="차종을 입력해 주세요."
+              value={carName ?? ''}
+              onTextChange={(text) => setCarName(text)}
+            />
+          </div>
+          <div>
             <span>메모</span>
             <Input
               placeholder="메모를 입력해 주세요."
