@@ -17,7 +17,7 @@ import {
   UpdateCounselDto,
   User,
 } from '@/types/graphql';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
@@ -46,7 +46,7 @@ const EditModal = (props: TModal & { idx: number }) => {
 
   const { updateCounsel } = useUpdateCounsel();
 
-  const handleCounselEdit = async () => {
+  const handleCounselEdit = useCallback(async () => {
     setSubmit(true);
     if (!customer) return;
     if (!context) return;
@@ -73,7 +73,35 @@ const EditModal = (props: TModal & { idx: number }) => {
     } catch (e) {
       console.warn(e);
     }
-  };
+  }, [
+    addToast,
+    context,
+    contract?.id,
+    counselAt,
+    customer,
+    idx,
+    modalProps,
+    updateCounsel,
+    user?.id,
+  ]);
+
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleCounselEdit();
+      }
+    },
+    [handleCounselEdit],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEnter);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter]);
 
   useEffect(() => {
     const detail = data?.getCounsel;

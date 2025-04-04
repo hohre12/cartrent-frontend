@@ -231,7 +231,7 @@ export const Filter = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-  height: 270px;
+  height: 33%;
   .Menu {
     background: #fff;
     border: 1px solid #ddd;

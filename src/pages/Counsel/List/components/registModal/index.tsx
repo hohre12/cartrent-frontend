@@ -18,7 +18,7 @@ import {
   User,
 } from '@/types/graphql';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
@@ -48,7 +48,7 @@ const RegistModal = (props: TModal & { propsCustomer: Customer }) => {
 
   const { createCounsel } = useCreateCounsel();
 
-  const handleCounselRegist = async () => {
+  const handleCounselRegist = useCallback(async () => {
     setSubmit(true);
     if (!customer) return;
     if (!counselAt) return;
@@ -74,7 +74,25 @@ const RegistModal = (props: TModal & { propsCustomer: Customer }) => {
     } catch (e) {
       console.warn(e);
     }
-  };
+  }, [
+    addToast,
+    context,
+    contract?.id,
+    counselAt,
+    createCounsel,
+    customer,
+    modalProps,
+    user?.id,
+  ]);
+
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleCounselRegist();
+      }
+    },
+    [handleCounselRegist],
+  );
 
   useEffect(() => {
     if (propsCustomer) {
@@ -85,6 +103,15 @@ const RegistModal = (props: TModal & { propsCustomer: Customer }) => {
   useEffect(() => {
     setContract(undefined);
   }, [customer]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEnter);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter]);
 
   useEffect(() => {
     if (my) {
