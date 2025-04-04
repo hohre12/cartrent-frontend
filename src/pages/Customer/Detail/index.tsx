@@ -68,8 +68,7 @@ const CustomerDetail = ({
   const [companyNameNominee, setCompanyNameNominee] =
     useState<UpdateCustomerDto['company_name_nominee']>();
   const [subPhone, setSubPhone] = useState<UpdateCustomerDto['sub_phone']>();
-  const [insuranceAge, setInsuranceAge] =
-    useState<UpdateCustomerDto['insuranceAge']>();
+  const [origin, setOrigin] = useState<UpdateCustomerDto['origin']>();
   const [carName, setCarName] = useState<UpdateCustomerDto['carName']>();
   const [carOption, setCarOption] = useState<UpdateCustomerDto['carOption']>();
   const [contractPeriod, setContractPeriod] =
@@ -98,7 +97,7 @@ const CustomerDetail = ({
         company_name_nominee: companyNameNominee,
         sub_phone: subPhone,
         divisionId: division?.id,
-        insuranceAge: insuranceAge,
+        origin: origin,
         carName: carName,
         carOption: carOption,
         contractPeriod: contractPeriod,
@@ -134,10 +133,10 @@ const CustomerDetail = ({
     customerGroup?.id,
     customerStatus?.id,
     division?.id,
-    insuranceAge,
     memo,
     name,
     note,
+    origin,
     phone,
     selectedCustomerIdx,
     subPhone,
@@ -181,7 +180,7 @@ const CustomerDetail = ({
       setPhone(detail.phone);
       setCompanyNameNominee(detail.company_name_nominee);
       setSubPhone(detail.sub_phone);
-      setInsuranceAge(detail.insuranceAge);
+      setOrigin(detail.origin);
       setCarName(detail.carName);
       setCarOption(detail.carOption);
       setContractPeriod(detail.contractPeriod);
@@ -305,16 +304,13 @@ const CustomerDetail = ({
               />
             </div>
             <div>
-              <span>보험연령</span>
+              <span>국산/수입</span>
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
-                value={insuranceAge ? numberFormat(insuranceAge) : 0}
-                onTextChange={(text) =>
-                  setInsuranceAge(Number(text.replace(/,/g, '')))
-                }
+                value={origin ?? ''}
+                onTextChange={(text) => setOrigin(text)}
                 placeholder=""
-                postfixNode="세"
               ></Input>
             </div>
             <div>

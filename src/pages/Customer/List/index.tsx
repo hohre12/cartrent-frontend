@@ -62,8 +62,9 @@ const CustomerList = () => {
     [setSearchText],
   );
   useEffect(() => {
-    if (data?.getCustomers) setSelectedCustomerIdx(data.getCustomers[0].id);
-  }, [data, setSelectedCustomerIdx]);
+    if (!selectedCustomerIdx && data?.getCustomers)
+      setSelectedCustomerIdx(data.getCustomers[0].id);
+  }, [data, selectedCustomerIdx, setSelectedCustomerIdx]);
 
   useEffect(() => {
     resetFilters();
