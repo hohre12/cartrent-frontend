@@ -9,7 +9,7 @@ import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
 import { Team, User } from '@/types/graphql';
 import { flattenTeams, numberFormat } from '@/utils/common';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const RegistTeamModal = (props: TModal) => {
@@ -26,7 +26,7 @@ const RegistTeamModal = (props: TModal) => {
 
   const { createTeam } = useCreateTeam();
 
-  const handleTeamRegist = async () => {
+  const handleTeamRegist = useCallback(async () => {
     setSubmit(true);
     if (!name) return;
     try {
@@ -53,7 +53,25 @@ const RegistTeamModal = (props: TModal) => {
       });
       modalProps.onCancel?.();
     }
-  };
+  }, [addToast, createTeam, leaderUser?.id, modalProps, name, parentTeam?.id]);
+
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleTeamRegist();
+      }
+    },
+    [handleTeamRegist],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEnter);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter]);
 
   return (
     <>

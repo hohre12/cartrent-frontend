@@ -107,7 +107,7 @@ const ContractDetail = () => {
     }
   };
 
-  const handleContractEdit = async () => {
+  const handleContractEdit = useCallback(async () => {
     setSubmit(true);
     if (!user) return;
     if (!customer) return;
@@ -158,7 +158,17 @@ const ContractDetail = () => {
     } catch (e) {
       console.warn(e);
     }
-  };
+  }, [
+    addToast,
+    city?.id,
+    customer,
+    division?.id,
+    financialCompany?.id,
+    shippingMethod?.id,
+    updateContract,
+    updateContractMutation,
+    user,
+  ]);
 
   const handleDeleteContract = async () => {
     try {
@@ -214,6 +224,24 @@ const ContractDetail = () => {
       handleInit();
     }
   }, [detail, handleInit]);
+
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleContractEdit();
+      }
+    },
+    [handleContractEdit],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEnter);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter]);
 
   if (!detail) return <></>;
 

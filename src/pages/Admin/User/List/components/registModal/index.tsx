@@ -19,7 +19,7 @@ import {
   User,
 } from '@/types/graphql';
 import { autoHypenTel, flattenTeams } from '@/utils/common';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
@@ -43,7 +43,7 @@ const RegistModal = (props: TModal) => {
 
   const { createUser } = useCreateUser();
 
-  const handleUserRegist = async () => {
+  const handleUserRegist = useCallback(async () => {
     setSubmit(true);
     if (!name) return;
     if (!email) return;
@@ -77,7 +77,34 @@ const RegistModal = (props: TModal) => {
       });
       modalProps.onCancel?.();
     }
-  };
+  }, [
+    addToast,
+    createUser,
+    email,
+    modalProps,
+    name,
+    password,
+    userPosition,
+    userTeam?.id,
+  ]);
+
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleUserRegist();
+      }
+    },
+    [handleUserRegist],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEnter);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter]);
 
   return (
     <>

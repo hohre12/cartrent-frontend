@@ -4,7 +4,7 @@ import { useToast } from '@/hooks/useToast';
 import { useCreateCity } from '@/services/city';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const RegistCityModal = (props: TModal) => {
@@ -15,7 +15,7 @@ const RegistCityModal = (props: TModal) => {
 
   const { createCity } = useCreateCity();
 
-  const handleCityRegist = async () => {
+  const handleCityRegist = useCallback(async () => {
     setSubmit(true);
     if (!name) return;
     try {
@@ -34,7 +34,24 @@ const RegistCityModal = (props: TModal) => {
     } catch (e) {
       console.warn(e);
     }
-  };
+  }, [addToast, createCity, modalProps, name]);
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleCityRegist();
+      }
+    },
+    [handleCityRegist],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEnter);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter]);
 
   return (
     <>

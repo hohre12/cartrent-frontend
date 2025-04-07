@@ -5,7 +5,7 @@ import { useMakeExcel } from '@/services/adjustment';
 import { adjustmentFiltersState } from '@/state/adjustment';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
@@ -18,7 +18,7 @@ const InputEmailModal = (props: TModal) => {
 
   const [makeExcel] = useMakeExcel();
 
-  const handleMakeExcel = async () => {
+  const handleMakeExcel = useCallback(async () => {
     setSubmit(true);
     if (!email) return;
     try {
@@ -39,7 +39,25 @@ const InputEmailModal = (props: TModal) => {
     } finally {
       setSubmit(false);
     }
-  };
+  }, [addToast, email, filters.month, filters.year, makeExcel, modalProps]);
+
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleMakeExcel();
+      }
+    },
+    [handleMakeExcel],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEnter);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter]);
 
   return (
     <>
