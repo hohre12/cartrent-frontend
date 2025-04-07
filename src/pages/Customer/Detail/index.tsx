@@ -281,7 +281,7 @@ const CustomerDetail = ({
               ></Input>
             </div>
             <div>
-              <span>추가연락처</span>
+              <span>부연락처</span>
               <Input
                 className="inputWrapper"
                 disabled={!isEdit}
