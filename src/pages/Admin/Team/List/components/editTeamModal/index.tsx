@@ -8,7 +8,7 @@ import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
 import { Team, User } from '@/types/graphql';
 import { flattenTeams } from '@/utils/common';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const EditTeamModal = (props: TModal & { idx: number }) => {
@@ -27,7 +27,7 @@ const EditTeamModal = (props: TModal & { idx: number }) => {
 
   const { updateTeam } = useUpdateTeam();
 
-  const handleTeamEdit = async () => {
+  const handleTeamEdit = useCallback(async () => {
     setSubmit(true);
     if (!name) return;
     try {
@@ -55,7 +55,33 @@ const EditTeamModal = (props: TModal & { idx: number }) => {
       });
       modalProps.onCancel?.();
     }
-  };
+  }, [
+    addToast,
+    idx,
+    leaderUser?.id,
+    modalProps,
+    name,
+    parentTeam?.id,
+    updateTeam,
+  ]);
+
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleTeamEdit();
+      }
+    },
+    [handleTeamEdit],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEnter);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter]);
 
   useEffect(() => {
     const detail = data?.getTeam;

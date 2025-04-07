@@ -25,7 +25,7 @@ import {
 } from '@/types/graphql';
 import { numberFormat } from '@/utils/common';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -94,7 +94,7 @@ const ContractRegist = () => {
     }
   };
 
-  const handleContractRegist = async () => {
+  const handleContractRegist = useCallback(async () => {
     setSubmit(true);
     if (!my) return;
     if (!customer) return;
@@ -143,7 +143,19 @@ const ContractRegist = () => {
     } catch (e) {
       console.warn(e);
     }
-  };
+  }, [
+    addToast,
+    city?.id,
+    createContract,
+    createContractMutation,
+    customer,
+    division?.id,
+    financialCompany?.id,
+    my,
+    navigate,
+    shippingMethod?.id,
+    user,
+  ]);
 
   useEffect(() => {
     if (my) {
@@ -170,6 +182,24 @@ const ContractRegist = () => {
       }
     }
   }, [my, setUser, customerIdx, setCustomer, customers]);
+
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleContractRegist();
+      }
+    },
+    [handleContractRegist],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEnter);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter]);
 
   return (
     <DetailWrapper>

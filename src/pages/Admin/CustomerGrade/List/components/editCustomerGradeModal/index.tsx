@@ -10,7 +10,7 @@ import {
 } from '@/services/customer';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const EditCustomerGradeModal = (props: TModal & { idx: number }) => {
@@ -23,7 +23,7 @@ const EditCustomerGradeModal = (props: TModal & { idx: number }) => {
 
   const { updateCustomerGrade } = useUpdateCustomerGrade();
 
-  const handleCustomerGradeEdit = async () => {
+  const handleCustomerGradeEdit = useCallback(async () => {
     setSubmit(true);
     if (!name) return;
     try {
@@ -43,7 +43,25 @@ const EditCustomerGradeModal = (props: TModal & { idx: number }) => {
     } catch (e) {
       console.warn(e);
     }
-  };
+  }, [addToast, idx, modalProps, name, updateCustomerGrade]);
+
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleCustomerGradeEdit();
+      }
+    },
+    [handleCustomerGradeEdit],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEnter);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter]);
 
   useEffect(() => {
     const detail = data?.getCustomerGrade;

@@ -8,7 +8,7 @@ import { useGetPositions, useGetUser, useUpdateUser } from '@/services/user';
 import { TModal } from '@/types/common';
 import { Position, Team, UpdateUserDto } from '@/types/graphql';
 import { flattenTeams } from '@/utils/common';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const EditModal = (props: TModal & { idx: number }) => {
@@ -30,7 +30,7 @@ const EditModal = (props: TModal & { idx: number }) => {
 
   const { updateUser } = useUpdateUser();
 
-  const handleUserEdit = async () => {
+  const handleUserEdit = useCallback(async () => {
     setSubmit(true);
     if (!name) return;
     if (!email) return;
@@ -64,7 +64,16 @@ const EditModal = (props: TModal & { idx: number }) => {
       });
       modalProps.onCancel?.();
     }
-  };
+  }, [
+    addToast,
+    email,
+    idx,
+    modalProps,
+    name,
+    updateUser,
+    userPosition,
+    userTeam?.id,
+  ]);
 
   useEffect(() => {
     const detail = data?.getUser;
@@ -76,6 +85,24 @@ const EditModal = (props: TModal & { idx: number }) => {
       //   setPassword(detail.password);
     }
   }, [data, setUserPosition, setUserTeam, setName, setEmail]);
+
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleUserEdit();
+      }
+    },
+    [handleUserEdit],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEnter);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter]);
 
   return (
     <>

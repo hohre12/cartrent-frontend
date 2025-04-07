@@ -4,7 +4,7 @@ import { useToast } from '@/hooks/useToast';
 import { useCreateCustomerGrade } from '@/services/customer';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const RegistGradeModal = (props: TModal) => {
@@ -15,7 +15,7 @@ const RegistGradeModal = (props: TModal) => {
 
   const { createCustomerGrade } = useCreateCustomerGrade();
 
-  const handleCustomerGradeRegist = async () => {
+  const handleCustomerGradeRegist = useCallback(async () => {
     setSubmit(true);
     if (!name) return;
     try {
@@ -40,7 +40,25 @@ const RegistGradeModal = (props: TModal) => {
         type: 'error',
       });
     }
-  };
+  }, [addToast, createCustomerGrade, modalProps, name]);
+
+  const handleEnter = useCallback(
+    (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleCustomerGradeRegist();
+      }
+    },
+    [handleCustomerGradeRegist],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEnter);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('keydown', handleEnter);
+    };
+  }, [handleEnter]);
 
   return (
     <>
