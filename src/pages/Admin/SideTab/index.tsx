@@ -36,13 +36,19 @@ const AdminSideTab = () => {
             $isActive={location.pathname.includes('/admin/group').toString()}
             onClick={() => navigate('group')}
           >
-            <p>고객그룹관리</p>
+            <p>고객그룹</p>
           </SideTabItem>
           <SideTabItem
             $isActive={location.pathname.includes('/admin/grade').toString()}
             onClick={() => navigate('grade')}
           >
-            <p>고객등급관리</p>
+            <p>고객등급</p>
+          </SideTabItem>
+          <SideTabItem
+            $isActive={location.pathname.includes('/admin/notice').toString()}
+            onClick={() => navigate('notice')}
+          >
+            <p>공지사항</p>
           </SideTabItem>
         </SideTabMenu>
       </AdminSideTabWrapper>
