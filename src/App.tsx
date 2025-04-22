@@ -37,6 +37,8 @@ import { useCheckNewNotifications } from './services/notification';
 import { notificationIsNewState } from './state/notification';
 import AdminCustomerGroupList from './pages/Admin/CustomerGroup/List';
 import AdminCustomerGradeList from './pages/Admin/CustomerGrade/List';
+import AdminNoticeList from './pages/Admin/Notice/List';
+import AdminNoticeDetail from './pages/Admin/Notice/Detail';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -74,7 +76,7 @@ function App() {
       }, HEALTH_CHECK_TIME);
       return () => clearInterval(intervalId);
     }
-  }, [token]);
+  }, [token, checkNewNotifications]);
 
   useEffect(() => {
     if (data?.checkNewNotifications !== undefined) {
@@ -209,6 +211,14 @@ function App() {
             <Route
               path="grade"
               element={<AdminCustomerGradeList />}
+            />
+            <Route
+              path="notice"
+              element={<AdminNoticeList />}
+            />
+            <Route
+              path="notice/:id"
+              element={<AdminNoticeDetail />}
             />
           </Route>
         </Route>

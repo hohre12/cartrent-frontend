@@ -16,3 +16,8 @@ export enum NotificationTypeEndPointEnum {
   COUNSEL = '/counsel',
   CUSTOMER = '/customer',
 }
+
+export enum DirectionEnum {
+  ASC = 'asc',
+  DESC = 'desc',
+}

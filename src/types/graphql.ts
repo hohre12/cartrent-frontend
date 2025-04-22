@@ -374,6 +374,13 @@ export type CreateCustomerStatusDto = {
   status: Scalars['String']['input'];
 };
 
+export type CreateNoticeDto = {
+  /** 공지사항 내용 */
+  body: Scalars['String']['input'];
+  /** 공지사항 제목 */
+  title: Scalars['String']['input'];
+};
+
 export type CreatePayStubDto = {
   month: Scalars['String']['input'];
   year: Scalars['String']['input'];
@@ -632,6 +639,8 @@ export type Mutation = {
   createCustomerGroup: CustomerGroup;
   /** 고객 상태 생성 */
   createCustomerStatus: CustomerStatus;
+  /** 공지사항 생성 */
+  createNotice: Notice;
   /** 급여 명세서 생성 */
   createPayStub: Scalars['Boolean']['output'];
   /** 지원금 생성 */
@@ -658,6 +667,8 @@ export type Mutation = {
   deleteCustomerGroup: Scalars['String']['output'];
   /** 고객 상태 삭제 */
   deleteCustomerStatus: Scalars['String']['output'];
+  /** 공지사항 삭제 */
+  deleteNotice: Scalars['Boolean']['output'];
   /** 알림 삭제 */
   deleteNotification: Scalars['Boolean']['output'];
   /** 지원금 삭제 */
@@ -702,6 +713,8 @@ export type Mutation = {
   updateCustomers: Scalars['Boolean']['output'];
   /** 내 정보 수정 */
   updateMyInfo: AuthPayload;
+  /** 공지사항 수정 */
+  updateNotice: Notice;
   /** 지원금 수정 */
   updateSupportAmount: SupportAmount;
   /** 팀 수정 */
@@ -748,6 +761,11 @@ export type MutationCreateCustomerGroupArgs = {
 
 export type MutationCreateCustomerStatusArgs = {
   CreateCustomerStatusDto: CreateCustomerStatusDto;
+};
+
+
+export type MutationCreateNoticeArgs = {
+  createNoticeDto: CreateNoticeDto;
 };
 
 
@@ -808,6 +826,11 @@ export type MutationDeleteCustomerGroupArgs = {
 
 export type MutationDeleteCustomerStatusArgs = {
   customerStatusId: Scalars['Float']['input'];
+};
+
+
+export type MutationDeleteNoticeArgs = {
+  noticeId: Scalars['Float']['input'];
 };
 
 
@@ -912,6 +935,11 @@ export type MutationUpdateMyInfoArgs = {
 };
 
 
+export type MutationUpdateNoticeArgs = {
+  updateNoticeDto: UpdateNoticeDto;
+};
+
+
 export type MutationUpdateSupportAmountArgs = {
   updateSupportAmountDto: UpdateSupportAmountDto;
 };
@@ -924,6 +952,20 @@ export type MutationUpdateTeamArgs = {
 
 export type MutationUpdateUserArgs = {
   updateUserDto: UpdateUserDto;
+};
+
+/** 공지사항 */
+export type Notice = {
+  author: User;
+  authorId: Scalars['Int']['output'];
+  /** 공지사항 내용 */
+  body: Scalars['String']['output'];
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  deleted_at?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['Int']['output'];
+  /** 공지사항 제목 */
+  title: Scalars['String']['output'];
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /** 알림 */
@@ -1074,6 +1116,10 @@ export type Query = {
   getFinancialCompanies: Array<FinancialCompany>;
   /** 내 정보 조회 */
   getMyInfo: User;
+  /** 공지사항 상세 */
+  getNotice: Notice;
+  /** 공지사항 목록 */
+  getNotices: Array<Notice>;
   /** 알림 리스트 */
   getNotifications: NotificationPayLoad;
   /** 급여 명세서 상세페이지 */
@@ -1168,6 +1214,11 @@ export type QueryGetCustomersArgs = {
 
 export type QueryGetDeliveriesArgs = {
   getDeliveriesDto: GetDeliveriesDto;
+};
+
+
+export type QueryGetNoticeArgs = {
+  noticeId: Scalars['Float']['input'];
 };
 
 
@@ -1468,6 +1519,15 @@ export type UpdateCustomersDto = {
   userId?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type UpdateNoticeDto = {
+  /** 공지사항 내용 */
+  body: Scalars['String']['input'];
+  /** 공지사항 아이디 */
+  noticeId: Scalars['Int']['input'];
+  /** 공지사항 제목 */
+  title: Scalars['String']['input'];
+};
+
 /** 지원금 수정 */
 export type UpdateSupportAmountDto = {
   /** 지원금액 */
@@ -1709,6 +1769,27 @@ export type DeleteCustomerGradeMutationVariables = Exact<{
 
 export type DeleteCustomerGradeMutation = { deleteCustomerGrade: string };
 
+export type CreateNoticeMutationVariables = Exact<{
+  createNoticeDto: CreateNoticeDto;
+}>;
+
+
+export type CreateNoticeMutation = { createNotice: { id: number } };
+
+export type UpdateNoticeMutationVariables = Exact<{
+  updateNoticeDto: UpdateNoticeDto;
+}>;
+
+
+export type UpdateNoticeMutation = { updateNotice: { id: number } };
+
+export type DeleteNoticeMutationVariables = Exact<{
+  noticeId: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteNoticeMutation = { deleteNotice: boolean };
+
 export type ReadNotificationMutationVariables = Exact<{
   notificationId: Scalars['Float']['input'];
 }>;
@@ -1905,6 +1986,18 @@ export type GetDeliveriesQueryVariables = Exact<{
 
 
 export type GetDeliveriesQuery = { getDeliveries: Array<{ id: number, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, customer: { id: number, name: string }, user: { id: number, name: string }, financialCompany?: { id: number, name: string } | null, division?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null }> };
+
+export type GetNoticesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetNoticesQuery = { getNotices: Array<{ id: number, title: string, body: string, created_at?: string | null, deleted_at?: string | null, updated_at?: string | null, author: { id: number, name: string } }> };
+
+export type GetNoticeQueryVariables = Exact<{
+  noticeId: Scalars['Float']['input'];
+}>;
+
+
+export type GetNoticeQuery = { getNotice: { id: number, title: string, body: string, created_at?: string | null, deleted_at?: string | null, updated_at?: string | null, author: { id: number, name: string } } };
 
 export type GetNotificationsQueryVariables = Exact<{
   offset: Scalars['Float']['input'];
@@ -2936,6 +3029,103 @@ export function useDeleteCustomerGradeMutation(baseOptions?: Apollo.MutationHook
 export type DeleteCustomerGradeMutationHookResult = ReturnType<typeof useDeleteCustomerGradeMutation>;
 export type DeleteCustomerGradeMutationResult = Apollo.MutationResult<DeleteCustomerGradeMutation>;
 export type DeleteCustomerGradeMutationOptions = Apollo.BaseMutationOptions<DeleteCustomerGradeMutation, DeleteCustomerGradeMutationVariables>;
+export const CreateNoticeDocument = gql`
+    mutation CreateNotice($createNoticeDto: CreateNoticeDto!) {
+  createNotice(createNoticeDto: $createNoticeDto) {
+    id
+  }
+}
+    `;
+export type CreateNoticeMutationFn = Apollo.MutationFunction<CreateNoticeMutation, CreateNoticeMutationVariables>;
+
+/**
+ * __useCreateNoticeMutation__
+ *
+ * To run a mutation, you first call `useCreateNoticeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNoticeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createNoticeMutation, { data, loading, error }] = useCreateNoticeMutation({
+ *   variables: {
+ *      createNoticeDto: // value for 'createNoticeDto'
+ *   },
+ * });
+ */
+export function useCreateNoticeMutation(baseOptions?: Apollo.MutationHookOptions<CreateNoticeMutation, CreateNoticeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateNoticeMutation, CreateNoticeMutationVariables>(CreateNoticeDocument, options);
+      }
+export type CreateNoticeMutationHookResult = ReturnType<typeof useCreateNoticeMutation>;
+export type CreateNoticeMutationResult = Apollo.MutationResult<CreateNoticeMutation>;
+export type CreateNoticeMutationOptions = Apollo.BaseMutationOptions<CreateNoticeMutation, CreateNoticeMutationVariables>;
+export const UpdateNoticeDocument = gql`
+    mutation UpdateNotice($updateNoticeDto: UpdateNoticeDto!) {
+  updateNotice(updateNoticeDto: $updateNoticeDto) {
+    id
+  }
+}
+    `;
+export type UpdateNoticeMutationFn = Apollo.MutationFunction<UpdateNoticeMutation, UpdateNoticeMutationVariables>;
+
+/**
+ * __useUpdateNoticeMutation__
+ *
+ * To run a mutation, you first call `useUpdateNoticeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateNoticeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateNoticeMutation, { data, loading, error }] = useUpdateNoticeMutation({
+ *   variables: {
+ *      updateNoticeDto: // value for 'updateNoticeDto'
+ *   },
+ * });
+ */
+export function useUpdateNoticeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateNoticeMutation, UpdateNoticeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateNoticeMutation, UpdateNoticeMutationVariables>(UpdateNoticeDocument, options);
+      }
+export type UpdateNoticeMutationHookResult = ReturnType<typeof useUpdateNoticeMutation>;
+export type UpdateNoticeMutationResult = Apollo.MutationResult<UpdateNoticeMutation>;
+export type UpdateNoticeMutationOptions = Apollo.BaseMutationOptions<UpdateNoticeMutation, UpdateNoticeMutationVariables>;
+export const DeleteNoticeDocument = gql`
+    mutation DeleteNotice($noticeId: Float!) {
+  deleteNotice(noticeId: $noticeId)
+}
+    `;
+export type DeleteNoticeMutationFn = Apollo.MutationFunction<DeleteNoticeMutation, DeleteNoticeMutationVariables>;
+
+/**
+ * __useDeleteNoticeMutation__
+ *
+ * To run a mutation, you first call `useDeleteNoticeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteNoticeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteNoticeMutation, { data, loading, error }] = useDeleteNoticeMutation({
+ *   variables: {
+ *      noticeId: // value for 'noticeId'
+ *   },
+ * });
+ */
+export function useDeleteNoticeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteNoticeMutation, DeleteNoticeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteNoticeMutation, DeleteNoticeMutationVariables>(DeleteNoticeDocument, options);
+      }
+export type DeleteNoticeMutationHookResult = ReturnType<typeof useDeleteNoticeMutation>;
+export type DeleteNoticeMutationResult = Apollo.MutationResult<DeleteNoticeMutation>;
+export type DeleteNoticeMutationOptions = Apollo.BaseMutationOptions<DeleteNoticeMutation, DeleteNoticeMutationVariables>;
 export const ReadNotificationDocument = gql`
     mutation ReadNotification($notificationId: Float!) {
   readNotification(notificationId: $notificationId) {
@@ -4400,6 +4590,103 @@ export type GetDeliveriesQueryHookResult = ReturnType<typeof useGetDeliveriesQue
 export type GetDeliveriesLazyQueryHookResult = ReturnType<typeof useGetDeliveriesLazyQuery>;
 export type GetDeliveriesSuspenseQueryHookResult = ReturnType<typeof useGetDeliveriesSuspenseQuery>;
 export type GetDeliveriesQueryResult = Apollo.QueryResult<GetDeliveriesQuery, GetDeliveriesQueryVariables>;
+export const GetNoticesDocument = gql`
+    query GetNotices {
+  getNotices {
+    id
+    title
+    body
+    author {
+      id
+      name
+    }
+    created_at
+    deleted_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetNoticesQuery__
+ *
+ * To run a query within a React component, call `useGetNoticesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNoticesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNoticesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetNoticesQuery(baseOptions?: Apollo.QueryHookOptions<GetNoticesQuery, GetNoticesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNoticesQuery, GetNoticesQueryVariables>(GetNoticesDocument, options);
+      }
+export function useGetNoticesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNoticesQuery, GetNoticesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNoticesQuery, GetNoticesQueryVariables>(GetNoticesDocument, options);
+        }
+export function useGetNoticesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetNoticesQuery, GetNoticesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetNoticesQuery, GetNoticesQueryVariables>(GetNoticesDocument, options);
+        }
+export type GetNoticesQueryHookResult = ReturnType<typeof useGetNoticesQuery>;
+export type GetNoticesLazyQueryHookResult = ReturnType<typeof useGetNoticesLazyQuery>;
+export type GetNoticesSuspenseQueryHookResult = ReturnType<typeof useGetNoticesSuspenseQuery>;
+export type GetNoticesQueryResult = Apollo.QueryResult<GetNoticesQuery, GetNoticesQueryVariables>;
+export const GetNoticeDocument = gql`
+    query GetNotice($noticeId: Float!) {
+  getNotice(noticeId: $noticeId) {
+    id
+    title
+    author {
+      id
+      name
+    }
+    body
+    created_at
+    deleted_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetNoticeQuery__
+ *
+ * To run a query within a React component, call `useGetNoticeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNoticeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNoticeQuery({
+ *   variables: {
+ *      noticeId: // value for 'noticeId'
+ *   },
+ * });
+ */
+export function useGetNoticeQuery(baseOptions: Apollo.QueryHookOptions<GetNoticeQuery, GetNoticeQueryVariables> & ({ variables: GetNoticeQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNoticeQuery, GetNoticeQueryVariables>(GetNoticeDocument, options);
+      }
+export function useGetNoticeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNoticeQuery, GetNoticeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNoticeQuery, GetNoticeQueryVariables>(GetNoticeDocument, options);
+        }
+export function useGetNoticeSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetNoticeQuery, GetNoticeQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetNoticeQuery, GetNoticeQueryVariables>(GetNoticeDocument, options);
+        }
+export type GetNoticeQueryHookResult = ReturnType<typeof useGetNoticeQuery>;
+export type GetNoticeLazyQueryHookResult = ReturnType<typeof useGetNoticeLazyQuery>;
+export type GetNoticeSuspenseQueryHookResult = ReturnType<typeof useGetNoticeSuspenseQuery>;
+export type GetNoticeQueryResult = Apollo.QueryResult<GetNoticeQuery, GetNoticeQueryVariables>;
 export const GetNotificationsDocument = gql`
     query GetNotifications($offset: Float!, $limit: Float!) {
   getNotifications(offset: $offset, limit: $limit) {

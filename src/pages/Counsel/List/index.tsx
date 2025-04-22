@@ -14,7 +14,11 @@ import { TFilterList } from '@/types/common';
 import { Circle, FilterContent, FilterWrapper } from '@/styles/common';
 import RegistModal from './components/registModal';
 import CounselListTable from './components/table';
-import { counselFiltersState, selectedCounselState } from '@/state/counsel';
+import {
+  counselFiltersState,
+  selectedCounselSortState,
+  selectedCounselState,
+} from '@/state/counsel';
 import FloatingMenu from './components/floatingMenu';
 import { useGetCounsels } from '@/services/counsel';
 import FilterStatus from './components/filter/status';
@@ -22,6 +26,7 @@ import FilterUser from './components/filter/user';
 import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
 import { useNavigationType } from 'react-router-dom';
+import Sort from './components/sort';
 
 const CounselList = () => {
   const navigationType = useNavigationType();
@@ -62,6 +67,12 @@ const CounselList = () => {
   const [isFilterUserOpen, setIsFilterUserOpen] = useState<boolean>(false);
   const filterUserRef = useClickOutside(() => setIsFilterUserOpen(false));
 
+  // sort
+  const [isSortOpen, setIsSortOpen] = useState<boolean>(false);
+  const selectedSort = useRecoilValue(selectedCounselSortState);
+  const sortRef = useClickOutside(() => setIsSortOpen(false));
+  const resetSort = useResetRecoilState(selectedCounselSortState);
+
   const handleSearchTextDelete = useCallback(() => {
     setSearchText('');
   }, [setSearchText]);
@@ -101,8 +112,9 @@ const CounselList = () => {
     if (navigationType !== 'POP') {
       resetFilters();
       resetCounsel();
+      resetSort();
     }
-  }, [navigationType, resetCounsel, resetFilters]);
+  }, [navigationType, resetCounsel, resetFilters, resetSort]);
 
   return (
     <>
@@ -197,6 +209,25 @@ const CounselList = () => {
                     )}
                   </FilterContent>
                 )}
+                <FilterContent ref={sortRef}>
+                  <Button
+                    variant="white"
+                    configuration="stroke"
+                    style={{ border: '1px solid #ddd' }}
+                    onClick={() => setIsSortOpen(!isSortOpen)}
+                  >
+                    {`정렬: 상담일시(${selectedSort.sortDirection === 'asc' ? '과거순' : '최신순'})`}
+                    <SvgIcon
+                      iconName="icon-arrowButton"
+                      style={{ fill: '#333' }}
+                    />
+                  </Button>
+                  {isSortOpen && (
+                    <div>
+                      <Sort></Sort>
+                    </div>
+                  )}
+                </FilterContent>
               </FilterWrapper>
             </SearchBoxWrapper>
             <FunctionWrapper>
@@ -210,10 +241,6 @@ const CounselList = () => {
                   <p>보기옵션</p>
                 </Button>
               )}
-              {/* <Button onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}>
-                <SvgIcon iconName="icon-plus" />
-                <p>상담등록</p>
-              </Button> */}
             </FunctionWrapper>
           </ControlWrapper>
         </Header>
@@ -235,12 +262,6 @@ const CounselList = () => {
             </div>
           )}
         </ListContent>
-        {/* {dummyCustomerList.length > 0 && (
-          <Pagination
-            totalCount={dummyCounselList.length}
-            length={dummyCounselList.length}
-          ></Pagination>
-        )} */}
       </ListWrapper>
       {isOpenWatchOptionModal && (
         <WatchOptionModal
