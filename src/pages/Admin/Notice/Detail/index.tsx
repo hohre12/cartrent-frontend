@@ -24,6 +24,7 @@ const AdminNoticeDetail = () => {
       const response = await deleteNotice({
         noticeId: noticeIdx,
       });
+      console.log(response);
       if (response && response.data.deleteNotice) {
         hideConfirm();
         addToast({

@@ -107,3 +107,61 @@ p.required {
   width: 0;
   z-index: 0;
 }
+
+/* div className radio */
+/* input type radio */
+/* span */
+.radio {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+.radio input {
+  height: 20px;
+  width: 20px;
+  z-index: 1;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.radio span {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  border: 1px solid #cacacb;
+}
+
+.radio span:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+.radio input:checked ~ span:after {
+  display: block;
+}
+
+.radio input:checked ~ span {
+  border: 1px solid #333;
+}
+
+.radio span:after {
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #111;
+}
+
+.radio input:checked ~ .blue {
+  border: 1px solid #0d6dff;
+}
+
+.radio .blue:after {
+  background: #0d6dff;
+}
