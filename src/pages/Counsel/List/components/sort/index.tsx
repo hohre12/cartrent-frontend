@@ -1,7 +1,7 @@
 import Button from '@/components/button/Button';
 import { SvgIcon } from '@/components/common/SvgIcon';
-import { DirectionEnum } from '@/constants/common';
 import { selectedCounselSortState } from '@/state/counsel';
+import { CounselSortDirectionType } from '@/types/graphql';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
@@ -35,18 +35,18 @@ const Sort = () => {
       <div className="footer">
         <Button
           variant="white"
-          className={selectedSort.sortDirection === 'asc' ? 'active' : ''}
+          className={selectedSort.sortDirection === 'ASC' ? 'active' : ''}
           onClick={() =>
             setSelectedSort((prev) => ({
               ...prev,
-              sortDirection: DirectionEnum.ASC,
+              sortDirection: CounselSortDirectionType.Asc,
             }))
           }
         >
           <SvgIcon
             iconName="icon-arrow"
             style={
-              selectedSort.sortDirection === 'asc'
+              selectedSort.sortDirection === 'ASC'
                 ? { fill: '#fff' }
                 : { fill: '#333' }
             }
@@ -55,18 +55,18 @@ const Sort = () => {
         </Button>
         <Button
           variant="white"
-          className={selectedSort.sortDirection === 'desc' ? 'active' : ''}
+          className={selectedSort.sortDirection === 'DESC' ? 'active' : ''}
           onClick={() =>
             setSelectedSort((prev) => ({
               ...prev,
-              sortDirection: DirectionEnum.DESC,
+              sortDirection: CounselSortDirectionType.Desc,
             }))
           }
         >
           <SvgIcon
             iconName="icon-arrow"
             style={{
-              fill: selectedSort.sortDirection === 'desc' ? '#fff' : '#333',
+              fill: selectedSort.sortDirection === 'DESC' ? '#fff' : '#333',
               transform: 'rotate(180deg)',
             }}
           />

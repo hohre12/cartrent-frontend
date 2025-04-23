@@ -1,6 +1,5 @@
-import { DirectionEnum } from '@/constants/common';
 import { TCounselFiltersStateType } from '@/types/counsel';
-import { Counsel } from '@/types/graphql';
+import { Counsel, CounselSortDirectionType } from '@/types/graphql';
 import { atom } from 'recoil';
 
 export const selectedCounselState = atom<Counsel[]>({
@@ -24,11 +23,11 @@ export const counselFiltersState = atom<TCounselFiltersStateType>({
 
 export const selectedCounselSortState = atom<{
   sortKey: 'counselAt';
-  sortDirection: DirectionEnum;
+  sortDirection: CounselSortDirectionType;
 }>({
   key: 'selectedCounselSortState',
   default: {
     sortKey: 'counselAt',
-    sortDirection: DirectionEnum.DESC,
+    sortDirection: CounselSortDirectionType.Desc,
   },
 });

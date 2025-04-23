@@ -236,6 +236,14 @@ export enum CounselSearchType {
   UserName = 'USER_NAME'
 }
 
+/** 상담 정렬 방향 Enum Type */
+export enum CounselSortDirectionType {
+  /** 오름차순 */
+  Asc = 'ASC',
+  /** 내림차순 */
+  Desc = 'DESC'
+}
+
 export type CreateAdditionalIncentiveDto = {
   /** 추가 수당 */
   additionalIncentive: Scalars['Int']['input'];
@@ -410,10 +418,30 @@ export type CreateTeamDto = {
 };
 
 export type CreateUserDto = {
+  /** 은행 */
+  bank: Scalars['String']['input'];
+  /** 생년월일 */
+  birthDate: Scalars['String']['input'];
+  /** 소속 */
+  company: Scalars['String']['input'];
   email: Scalars['String']['input'];
+  /** 이메일주소 */
+  emailAddress: Scalars['String']['input'];
+  /** 영문이름 */
+  englishName: Scalars['String']['input'];
+  /** 팩스번호 */
+  fax: Scalars['String']['input'];
+  /** 입사일시 */
+  hireDate: Scalars['String']['input'];
   name: Scalars['String']['input'];
   password: Scalars['String']['input'];
+  /** 연락처 */
+  phone: Scalars['String']['input'];
   positionId: Scalars['Int']['input'];
+  /** 급여계좌번호 */
+  salaryAccount: Scalars['String']['input'];
+  /** 영업폰 */
+  salesPhone: Scalars['String']['input'];
   teamId?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -510,6 +538,14 @@ export enum CustomerSearchType {
   Type = 'TYPE'
 }
 
+/** 정렬 방향 Enum Type */
+export enum CustomerSortDirectionType {
+  /** 오름차순 */
+  Asc = 'ASC',
+  /** 내림차순 */
+  Desc = 'DESC'
+}
+
 /** 고객 상태 */
 export type CustomerStatus = {
   /** id */
@@ -563,6 +599,10 @@ export type GetCounselsDto = {
   search?: InputMaybe<Scalars['String']['input']>;
   /** 검색 타입 */
   searchType?: InputMaybe<CounselSearchType>;
+  /** 정렬 방향 */
+  sortDirection?: InputMaybe<CounselSortDirectionType>;
+  /** 정렬 기준 */
+  sortKey?: InputMaybe<Scalars['String']['input']>;
   userId?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
@@ -576,6 +616,10 @@ export type GetCustomersDto = {
   search?: InputMaybe<Scalars['String']['input']>;
   /** 검색 타입 */
   searchType?: InputMaybe<CustomerSearchType>;
+  /** 정렬 방향 */
+  sortDirection?: InputMaybe<CustomerSortDirectionType>;
+  /** 정렬 기준 */
+  sortKey?: InputMaybe<Scalars['String']['input']>;
   /** 유저 Id */
   userId?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
@@ -1114,6 +1158,8 @@ export type Query = {
   getDivisions: Array<Division>;
   /** 금융사 리스트 */
   getFinancialCompanies: Array<FinancialCompany>;
+  /** 노출 최신 공지사항 */
+  getLatestNotice: Notice;
   /** 내 정보 조회 */
   getMyInfo: User;
   /** 공지사항 상세 */
@@ -1554,11 +1600,31 @@ export type UpdateTeamDto = {
 };
 
 export type UpdateUserDto = {
+  /** 은행 */
+  bank: Scalars['String']['input'];
+  /** 생년월일 */
+  birthDate: Scalars['String']['input'];
+  /** 소속 */
+  company: Scalars['String']['input'];
   /** 이메일 */
   email: Scalars['String']['input'];
+  /** 이메일주소 */
+  emailAddress: Scalars['String']['input'];
+  /** 영문이름 */
+  englishName: Scalars['String']['input'];
+  /** 팩스번호 */
+  fax: Scalars['String']['input'];
+  /** 입사일시 */
+  hireDate: Scalars['String']['input'];
   /** 이름 */
   name: Scalars['String']['input'];
+  /** 연락처 */
+  phone: Scalars['String']['input'];
   positionId?: InputMaybe<Scalars['Int']['input']>;
+  /** 급여계좌번호 */
+  salaryAccount: Scalars['String']['input'];
+  /** 영업폰 */
+  salesPhone: Scalars['String']['input'];
   teamId?: InputMaybe<Scalars['Int']['input']>;
   userId: Scalars['Int']['input'];
 };
@@ -1569,15 +1635,25 @@ export type UpdateUserMyInfoDto = {
 };
 
 export type User = {
+  bank: Scalars['String']['output'];
+  birthDate: Scalars['String']['output'];
+  company: Scalars['String']['output'];
   created_at?: Maybe<Scalars['DateTime']['output']>;
   customers?: Maybe<Array<Customer>>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
   email: Scalars['String']['output'];
+  emailAddress: Scalars['String']['output'];
+  englishName: Scalars['String']['output'];
+  fax: Scalars['String']['output'];
+  hireDate: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   password: Scalars['String']['output'];
+  phone: Scalars['String']['output'];
   position: Position;
   role: Role;
+  salaryAccount: Scalars['String']['output'];
+  salesPhone: Scalars['String']['output'];
   team?: Maybe<Team>;
   updated_at?: Maybe<Scalars['DateTime']['output']>;
 };
