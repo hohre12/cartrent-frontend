@@ -1,5 +1,5 @@
 import { TCustomerFiltersStateType } from '@/types/customer';
-import { Customer } from '@/types/graphql';
+import { Customer, CustomerSortDirectionType } from '@/types/graphql';
 import { atom } from 'recoil';
 
 export const selectedCustomerIdxState = atom<number>({
@@ -15,6 +15,17 @@ export const selectedCustomerState = atom<Customer[]>({
 export const selectedCustomerHideWatchOptionsState = atom<string[]>({
   key: 'selectedCustomerHideWatchOptionsState',
   default: [],
+});
+
+export const selectedCustomerSortState = atom<{
+  sortKey: 'memo';
+  sortDirection: CustomerSortDirectionType;
+}>({
+  key: 'selectedCustomerSortState',
+  default: {
+    sortKey: 'memo',
+    sortDirection: CustomerSortDirectionType.Desc,
+  },
 });
 
 export const customerFiltersState = atom<TCustomerFiltersStateType>({
