@@ -5,22 +5,10 @@ import { UserPositionHangleEnum } from '@/constants/user';
 import { useToast } from '@/hooks/useToast';
 import { useGetTeams } from '@/services/team';
 import { useCreateUser, useGetPositions } from '@/services/user';
-import { userState } from '@/state/auth';
 import { TModal } from '@/types/common';
-import {
-  CreateCustomerDto,
-  CreateUserDto,
-  CustomerGrade,
-  CustomerGroup,
-  CustomerStatus,
-  PermissionType,
-  Position,
-  Team,
-  User,
-} from '@/types/graphql';
+import { CreateUserDto, Position, Team } from '@/types/graphql';
 import { autoHypenTel, flattenTeams } from '@/utils/common';
 import { useCallback, useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 const RegistModal = (props: TModal) => {
@@ -29,11 +17,21 @@ const RegistModal = (props: TModal) => {
 
   const [userPosition, setUserPosition] = useState<Position>();
   const [userTeam, setUserTeam] = useState<Team>();
-  //   const [user, setUser] = useState<User>();
-  //   const [memo, setMemo] = useState<CreateCustomerDto['memo']>();
+
   const [name, setName] = useState<CreateUserDto['name']>();
   const [email, setEmail] = useState<CreateUserDto['email']>();
   const [password, setPassword] = useState<CreateUserDto['password']>();
+
+  const [hireDate, setHireDate] = useState<CreateUserDto['hireDate']>();
+  const [birthDate, setBirthDate] = useState<CreateUserDto['birthDate']>();
+  const [phone, setPhone] = useState<CreateUserDto['phone']>();
+  const [salesPhone, setSalesPhone] = useState<CreateUserDto['salesPhone']>();
+  const [fax, setFax] = useState<CreateUserDto['fax']>();
+  const [englishName, setEnglishName] =
+    useState<CreateUserDto['englishName']>();
+  const [salaryAccount, setSalaryAccount] =
+    useState<CreateUserDto['salaryAccount']>();
+  const [bank, setBank] = useState<CreateUserDto['bank']>();
 
   const { data: positions } = useGetPositions();
   const { data: teams } = useGetTeams();
@@ -56,6 +54,14 @@ const RegistModal = (props: TModal) => {
         password,
         positionId: userPosition.id,
         teamId: userTeam?.id,
+        hireDate,
+        birthDate,
+        phone,
+        salesPhone,
+        fax,
+        englishName,
+        salaryAccount,
+        bank,
       });
 
       if (response && response.data.createUser.id) {
@@ -86,6 +92,14 @@ const RegistModal = (props: TModal) => {
     password,
     userPosition,
     userTeam?.id,
+    hireDate,
+    birthDate,
+    phone,
+    salesPhone,
+    fax,
+    englishName,
+    salaryAccount,
+    bank,
   ]);
 
   const handleEnter = useCallback(
@@ -115,7 +129,6 @@ const RegistModal = (props: TModal) => {
         onConfirm={handleUserRegist}
       >
         <RegistCustomerWrapper>
-          {/* 이름, email, 비밀번호, 직책, 팀 */}
           <div>
             <span>
               담당자명 <p className="required">*</p>
@@ -186,6 +199,72 @@ const RegistModal = (props: TModal) => {
               trackBy="id"
               valueBy="name"
               placeholder="팀을 선택해주세요"
+            />
+          </div>
+          <div>
+            <span>입사일시</span>
+            <Input
+              type="date"
+              style={{ cursor: 'pointer' }}
+              value={hireDate ?? ''}
+              onTextChange={(text) => setHireDate(text)}
+            />
+          </div>
+          <div>
+            <span>생년월일</span>
+            <Input
+              type="date"
+              style={{ cursor: 'pointer' }}
+              value={birthDate ?? ''}
+              onTextChange={(text) => setBirthDate(text)}
+            />
+          </div>
+          <div>
+            <span>연락처</span>
+            <Input
+              placeholder="연락처를 입력해 주세요."
+              value={phone}
+              onTextChange={(text) => setPhone(autoHypenTel(text))}
+            />
+          </div>
+          <div>
+            <span>영업폰 연락처</span>
+            <Input
+              placeholder="영업폰 연락처를 입력해 주세요."
+              value={salesPhone}
+              onTextChange={(text) => setSalesPhone(autoHypenTel(text))}
+            />
+          </div>
+          <div>
+            <span>팩스번호</span>
+            <Input
+              placeholder="팩스번호를 입력해 주세요."
+              value={fax}
+              onTextChange={(text) => setFax(text)}
+            />
+          </div>
+          <div>
+            <span>영문이름</span>
+            <Input
+              placeholder="영문이름을 입력해 주세요."
+              value={englishName ?? ''}
+              onTextChange={(text) => setEnglishName(text)}
+            />
+          </div>
+          <div>
+            <span>급여계좌번호</span>
+            <Input
+              placeholder="급여계좌번호를 입력해 주세요."
+              value={salaryAccount ?? ''}
+              onTextChange={(text) => setSalaryAccount(text)}
+            />
+          </div>
+          <div>
+            <span>은행</span>
+            <Input
+              placeholder="은행을 입력해 주세요."
+              value={bank ?? ''}
+              onTextChange={(text) => setBank(text)}
             />
           </div>
         </RegistCustomerWrapper>

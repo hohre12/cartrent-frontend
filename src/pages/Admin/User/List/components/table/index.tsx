@@ -59,6 +59,11 @@ const UserListTable = ({ data }: TTableProps) => {
               ) && <td className="name">{it.name}</td>}
               {!isColumnsViewHide(
                 selectedUserHideWatchOptions,
+                'englishName',
+                isHideColumn('englishName'),
+              ) && <td>{it.englishName ?? '-'}</td>}
+              {!isColumnsViewHide(
+                selectedUserHideWatchOptions,
                 'userEmail',
                 isHideColumn('userEmail'),
               ) && <td>{it.email}</td>}
@@ -82,6 +87,41 @@ const UserListTable = ({ data }: TTableProps) => {
                   {it.role?.name ? UserRoleHangleEnum[it.role.name] : '-'}
                 </td>
               )}
+              {!isColumnsViewHide(
+                selectedUserHideWatchOptions,
+                'hireDate',
+                isHideColumn('hireDate'),
+              ) && <td>{formatDate(it.hireDate) ?? '-'}</td>}
+              {!isColumnsViewHide(
+                selectedUserHideWatchOptions,
+                'birthDate',
+                isHideColumn('birthDate'),
+              ) && <td>{formatDate(it.birthDate) ?? '-'}</td>}
+              {!isColumnsViewHide(
+                selectedUserHideWatchOptions,
+                'phone',
+                isHideColumn('phone'),
+              ) && <td>{it.phone ?? '-'}</td>}
+              {!isColumnsViewHide(
+                selectedUserHideWatchOptions,
+                'salesPhone',
+                isHideColumn('salesPhone'),
+              ) && <td>{it.salesPhone ?? '-'}</td>}
+              {!isColumnsViewHide(
+                selectedUserHideWatchOptions,
+                'fax',
+                isHideColumn('fax'),
+              ) && <td>{it.fax ?? '-'}</td>}
+              {!isColumnsViewHide(
+                selectedUserHideWatchOptions,
+                'salaryAccount',
+                isHideColumn('salaryAccount'),
+              ) && <td>{it.salaryAccount ?? '-'}</td>}
+              {!isColumnsViewHide(
+                selectedUserHideWatchOptions,
+                'bank',
+                isHideColumn('bank'),
+              ) && <td>{it.bank ?? '-'}</td>}
               {!isColumnsViewHide(
                 selectedUserHideWatchOptions,
                 'userCreatedAt',

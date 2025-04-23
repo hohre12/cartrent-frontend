@@ -1,8 +1,16 @@
 export const USER_LIST_WATCH_OPTIONS = {
   userName: '직원명',
+  englishName: '영어이름',
   userEmail: '이메일',
   userPosition: '직책',
   userRole: '권한',
+  hireDate: '입사일',
+  birthDate: '생년월일',
+  phone: '연락처',
+  salesPhone: '영업폰',
+  fax: '팩스',
+  salaryAccount: '급여계좌번호',
+  bank: '은행',
   userCreatedAt: '생성일',
 };
 
