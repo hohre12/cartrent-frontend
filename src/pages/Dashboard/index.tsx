@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 import Barchart from '@/components/barchart/Barchart';
-import Trophy from '@/assets/pngs/trophy.png';
 import { userState } from '@/state/auth';
 import { useRecoilValue } from 'recoil';
-import { PermissionType } from '@/types/graphql';
 import {
   useGetTopFiveDeliveryUsersByMonth,
   useGetTopFiveTotalFeeDeliveryUsersByMonth,
 } from '@/services/user';
 import moment from 'moment';
+import { useGetLatestNotice } from '@/services/notice';
 
 const thisYear = moment().format('YYYY');
 const thisMonth = moment().format('M');
@@ -40,6 +39,7 @@ const Dashboard = () => {
       year: lastYear,
       month: lastMonth,
     });
+  const { data: latestNotice } = useGetLatestNotice();
 
   return (
     <DashboardWrapper>
@@ -48,7 +48,11 @@ const Dashboard = () => {
       </DashboardHeader>
       <NoticeWrapper>
         <h3>공지사항 영역</h3>
-        <NoticeContent></NoticeContent>
+        <NoticeContent>
+          {latestNotice
+            ? latestNotice.getLatestNotice.body
+            : '공지사항이 없습니다.'}
+        </NoticeContent>
       </NoticeWrapper>
       <DashboardContent>
         {/* {my?.role?.name === PermissionType.Admin && ( */}

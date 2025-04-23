@@ -8,6 +8,7 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import {
   customerFiltersState,
   selectedCustomerIdxState,
+  selectedCustomerSortState,
   selectedCustomerState,
 } from '@/state/customer';
 import Button from '@/components/button/Button';
@@ -19,6 +20,9 @@ import { PermissionType } from '@/types/graphql';
 import { useNavigationType } from 'react-router-dom';
 import { useConfirm } from '@/hooks/useConfirm';
 import FloatingMenu from '../components/floatingMenu';
+import useClickOutside from '@/hooks/useClickOutside';
+import Sort from '../components/sort';
+import { FilterContent } from '@/styles/common';
 
 const CustomerList = () => {
   const navigationType = useNavigationType();
@@ -41,6 +45,12 @@ const CustomerList = () => {
   const user = useRecoilValue(userState);
   const { showConfirm, hideConfirm } = useConfirm();
 
+  // sort
+  const [isSortOpen, setIsSortOpen] = useState<boolean>(false);
+  const selectedSort = useRecoilValue(selectedCustomerSortState);
+  const sortRef = useClickOutside(() => setIsSortOpen(false));
+  const resetSort = useResetRecoilState(selectedCustomerSortState);
+
   const { data, loading, error } = useGetCustomers({
     search: searchText ? searchText : null,
     customerGroupId:
@@ -49,6 +59,8 @@ const CustomerList = () => {
       filters?.grades?.length > 0 ? filters.grades.map((it) => it.value) : null,
     userId:
       filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
+    sortKey: selectedSort.sortKey,
+    sortDirection: selectedSort.sortDirection,
   });
 
   const handleSearchTextDelete = useCallback(() => {
@@ -69,7 +81,8 @@ const CustomerList = () => {
   useEffect(() => {
     resetFilters();
     resetCustomer();
-  }, [resetCustomer, resetFilters]);
+    resetSort();
+  }, [resetCustomer, resetFilters, resetSort]);
 
   if (error) return <></>;
 
@@ -77,16 +90,38 @@ const CustomerList = () => {
     <>
       <ListWrapper>
         <SearchBoxWrapper>
-          <SearchBox
-            value={text}
-            placeholder="검색"
-            recentKey="customerRecent"
-            onTextChange={(text) => setText(text)}
-            onRemoveClick={handleSearchTextDelete}
-            onKeyDown={handleSearch}
-            onRecentClick={handleSearch}
-            keyword="고객명, 연락처, 상태, 메모, 차종, 구분, 고객등급, 고객유형, 비고"
-          ></SearchBox>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <SearchBox
+              value={text}
+              placeholder="검색"
+              recentKey="customerRecent"
+              onTextChange={(text) => setText(text)}
+              onRemoveClick={handleSearchTextDelete}
+              onKeyDown={handleSearch}
+              onRecentClick={handleSearch}
+              keyword="고객명, 연락처, 상태, 메모, 차종, 구분, 고객등급, 고객유형, 비고"
+            ></SearchBox>
+            <FilterContent ref={sortRef}>
+              <Button
+                variant="white"
+                configuration="stroke"
+                style={{ border: '1px solid #ddd' }}
+                onClick={() => setIsSortOpen(!isSortOpen)}
+              >
+                {`정렬: 메모(${selectedSort.sortDirection === 'ASC' ? '오름차순' : '내림차순'})`}
+                <SvgIcon
+                  iconName="icon-arrowButton"
+                  style={{ fill: '#333' }}
+                />
+              </Button>
+              {isSortOpen && (
+                <div>
+                  <Sort></Sort>
+                </div>
+              )}
+            </FilterContent>
+          </div>
+
           <FunctionWrapper>
             {user?.role.name === PermissionType.Admin && (
               <>

@@ -43,6 +43,12 @@ const CounselList = () => {
   const [filters, setFilters] = useRecoilState(counselFiltersState);
   const resetFilters = useResetRecoilState(counselFiltersState);
 
+  // sort
+  const [isSortOpen, setIsSortOpen] = useState<boolean>(false);
+  const selectedSort = useRecoilValue(selectedCounselSortState);
+  const sortRef = useClickOutside(() => setIsSortOpen(false));
+  const resetSort = useResetRecoilState(selectedCounselSortState);
+
   const { data, loading, error } = useGetCounsels({
     search: searchText ? searchText : null,
     customerStatusId:
@@ -53,6 +59,8 @@ const CounselList = () => {
       filters?.groups?.length > 0 ? filters.groups.map((it) => it.value) : null,
     userId:
       filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
+    sortKey: selectedSort.sortKey,
+    sortDirection: selectedSort.sortDirection,
   });
 
   // filter - group
@@ -66,12 +74,6 @@ const CounselList = () => {
   // filter - user
   const [isFilterUserOpen, setIsFilterUserOpen] = useState<boolean>(false);
   const filterUserRef = useClickOutside(() => setIsFilterUserOpen(false));
-
-  // sort
-  const [isSortOpen, setIsSortOpen] = useState<boolean>(false);
-  const selectedSort = useRecoilValue(selectedCounselSortState);
-  const sortRef = useClickOutside(() => setIsSortOpen(false));
-  const resetSort = useResetRecoilState(selectedCounselSortState);
 
   const handleSearchTextDelete = useCallback(() => {
     setSearchText('');
@@ -216,7 +218,7 @@ const CounselList = () => {
                     style={{ border: '1px solid #ddd' }}
                     onClick={() => setIsSortOpen(!isSortOpen)}
                   >
-                    {`정렬: 상담일시(${selectedSort.sortDirection === 'asc' ? '과거순' : '최신순'})`}
+                    {`정렬: 상담일시(${selectedSort.sortDirection === 'ASC' ? '과거순' : '최신순'})`}
                     <SvgIcon
                       iconName="icon-arrowButton"
                       style={{ fill: '#333' }}

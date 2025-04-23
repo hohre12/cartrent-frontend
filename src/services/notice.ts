@@ -3,7 +3,11 @@ import {
   DELETE_NOTICE_MUTATION,
   UPDATE_NOTICE_MUTATION,
 } from '@/apollo/mutations/notice';
-import { GET_NOTICE_QUERY, GET_NOTICES_QUERY } from '@/apollo/queries/notice';
+import {
+  GET_LATEST_NOTICE_QUERY,
+  GET_NOTICE_QUERY,
+  GET_NOTICES_QUERY,
+} from '@/apollo/queries/notice';
 import { CreateNoticeDto, Notice, UpdateNoticeDto } from '@/types/graphql';
 import { useMutation, useQuery } from '@apollo/client';
 
@@ -22,6 +26,12 @@ export const useGetNotice = (params: Notice['id']) => {
       fetchPolicy: 'network-only',
     },
   );
+};
+
+export const useGetLatestNotice = () => {
+  return useQuery<{ getLatestNotice: Notice }>(GET_LATEST_NOTICE_QUERY, {
+    fetchPolicy: 'network-only',
+  });
 };
 
 export const useCreateNotice = () => {

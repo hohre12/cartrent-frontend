@@ -1,13 +1,13 @@
 import Button from '@/components/button/Button';
 import { SvgIcon } from '@/components/common/SvgIcon';
-import { selectedCounselSortState } from '@/state/counsel';
-import { CounselSortDirectionType } from '@/types/graphql';
+import { selectedCustomerSortState } from '@/state/customer';
+import { CustomerSortDirectionType } from '@/types/graphql';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 const Sort = () => {
   const [selectedSort, setSelectedSort] = useRecoilState(
-    selectedCounselSortState,
+    selectedCustomerSortState,
   );
   return (
     <SortWrapper>
@@ -17,19 +17,19 @@ const Sort = () => {
           onClick={() =>
             setSelectedSort((prev) => ({
               ...prev,
-              sortKey: 'counselAt',
+              sortKey: 'memo',
             }))
           }
         >
           <div className="radio">
             <input
               type="radio"
-              checked={selectedSort.sortKey === 'counselAt'}
+              checked={selectedSort.sortKey === 'memo'}
               readOnly
             />
             <span></span>
           </div>
-          <span>상담일시</span>
+          <span>메모</span>
         </div>
       </div>
       <div className="footer">
@@ -39,7 +39,7 @@ const Sort = () => {
           onClick={() =>
             setSelectedSort((prev) => ({
               ...prev,
-              sortDirection: CounselSortDirectionType.Asc,
+              sortDirection: CustomerSortDirectionType.Asc,
             }))
           }
         >
@@ -51,7 +51,7 @@ const Sort = () => {
                 : { fill: '#333' }
             }
           />
-          과거순
+          오름차순
         </Button>
         <Button
           variant="white"
@@ -59,7 +59,7 @@ const Sort = () => {
           onClick={() =>
             setSelectedSort((prev) => ({
               ...prev,
-              sortDirection: CounselSortDirectionType.Desc,
+              sortDirection: CustomerSortDirectionType.Desc,
             }))
           }
         >
@@ -70,7 +70,7 @@ const Sort = () => {
               transform: 'rotate(180deg)',
             }}
           />
-          최신순
+          내림차순
         </Button>
       </div>
     </SortWrapper>
