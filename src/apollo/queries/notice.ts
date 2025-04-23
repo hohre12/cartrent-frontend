@@ -33,3 +33,19 @@ export const GET_NOTICE_QUERY = gql`
     }
   }
 `;
+
+export const GET_LATEST_NOTICE_QUERY = gql`
+  query GetLatestNotice {
+    getLatestNotice {
+      id
+      title
+      body
+      author {
+        id
+        name
+      }
+      created_at
+      updated_at
+    }
+  }
+`;
