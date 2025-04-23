@@ -29,7 +29,7 @@ const NoticeListTable = ({ data }: TTableProps) => {
               onClick={() => navigate(`${it.id}`)}
             >
               <td className="name">{it.title}</td>
-              <td className="name">{it.body}</td>
+              <td className="name textHidden">{it.body}</td>
               <td>{formatDate(it.created_at, 'YYYY.MM.DD HH:mm:ss') ?? '-'}</td>
               <td>{formatDate(it.updated_at, 'YYYY.MM.DD HH:mm:ss') ?? '-'}</td>
             </TableItem>

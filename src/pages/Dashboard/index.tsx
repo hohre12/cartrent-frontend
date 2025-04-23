@@ -8,6 +8,8 @@ import {
 } from '@/services/user';
 import moment from 'moment';
 import { useGetLatestNotice } from '@/services/notice';
+import { useNavigate } from 'react-router-dom';
+import { PermissionType } from '@/types/graphql';
 
 const thisYear = moment().format('YYYY');
 const thisMonth = moment().format('M');
@@ -18,6 +20,7 @@ const Dashboard = () => {
   //   const [activeGraphTab, setActiveGraphTab] = useState<
   //     'customer' | 'counsel' | 'adjustment'
   //   >('customer');
+  const navigate = useNavigate();
   const my = useRecoilValue(userState);
   const { data: thisMonthTopFiveDeliveryUsers } =
     useGetTopFiveDeliveryUsersByMonth({
@@ -46,7 +49,13 @@ const Dashboard = () => {
       <DashboardHeader>
         <h2>대시보드</h2>
       </DashboardHeader>
-      <NoticeWrapper>
+      <NoticeWrapper
+        onClick={() => {
+          if (my?.role.name === PermissionType.Admin && latestNotice) {
+            navigate(`/admin/notice/${latestNotice.getLatestNotice.id}`);
+          }
+        }}
+      >
         <h3>공지사항 영역</h3>
         <NoticeContent>
           {latestNotice
@@ -288,19 +297,24 @@ const DashboardHeader = styled.div`
   }
 `;
 const NoticeWrapper = styled.div`
+  cursor: pointer;
   border-radius: 10px;
   background-color: #fff;
   padding: 20px;
   border: 1px solid #ddd;
   display: flex;
   flex-direction: column;
+  gap: 20px;
   h3 {
     font-size: 20px;
     font-weight: 700;
     text-align: left;
   }
 `;
-const NoticeContent = styled.div``;
+const NoticeContent = styled.div`
+  font-size: 16px;
+  text-align: left;
+`;
 const DashboardContent = styled.div`
   display: flex;
   flex-wrap: wrap;
