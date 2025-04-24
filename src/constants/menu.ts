@@ -23,6 +23,13 @@ export const SIDE_MENU = [
     auth: [PermissionType.Admin, PermissionType.User],
   },
   {
+    title: '대리점',
+    engTitle: 'agency',
+    icon: 'icon-draft',
+    path: '/agency',
+    auth: [PermissionType.Admin, PermissionType.User],
+  },
+  {
     title: '급여',
     engTitle: 'payStub',
     icon: 'icon-expense',
