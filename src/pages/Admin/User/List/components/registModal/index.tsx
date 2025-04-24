@@ -223,7 +223,7 @@ const RegistModal = (props: TModal) => {
             <span>연락처</span>
             <Input
               placeholder="연락처를 입력해 주세요."
-              value={phone}
+              value={phone ?? ''}
               onTextChange={(text) => setPhone(autoHypenTel(text))}
             />
           </div>
@@ -231,7 +231,7 @@ const RegistModal = (props: TModal) => {
             <span>영업폰 연락처</span>
             <Input
               placeholder="영업폰 연락처를 입력해 주세요."
-              value={salesPhone}
+              value={salesPhone ?? ''}
               onTextChange={(text) => setSalesPhone(autoHypenTel(text))}
             />
           </div>
@@ -239,7 +239,7 @@ const RegistModal = (props: TModal) => {
             <span>팩스번호</span>
             <Input
               placeholder="팩스번호를 입력해 주세요."
-              value={fax}
+              value={fax ?? ''}
               onTextChange={(text) => setFax(text)}
             />
           </div>

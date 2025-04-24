@@ -9,7 +9,7 @@ const AdminSideTab = () => {
     if (location.pathname === '/admin') {
       navigate('user');
     }
-  }, [location.pathname]);
+  }, [location.pathname, navigate]);
   return (
     <>
       <AdminSideTabWrapper>
@@ -61,7 +61,7 @@ export default AdminSideTab;
 const AdminSideTabWrapper = styled.div`
   background: #eee;
   width: 100px;
-  height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px);
   margin-right: auto;
   border-right: 1px solid #ddd;
 `;

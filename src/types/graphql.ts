@@ -419,29 +419,29 @@ export type CreateTeamDto = {
 
 export type CreateUserDto = {
   /** 은행 */
-  bank: Scalars['String']['input'];
+  bank?: InputMaybe<Scalars['String']['input']>;
   /** 생년월일 */
-  birthDate: Scalars['String']['input'];
+  birthDate?: InputMaybe<Scalars['String']['input']>;
   /** 소속 */
-  company: Scalars['String']['input'];
+  company?: InputMaybe<Scalars['String']['input']>;
   email: Scalars['String']['input'];
   /** 이메일주소 */
-  emailAddress: Scalars['String']['input'];
+  emailAddress?: InputMaybe<Scalars['String']['input']>;
   /** 영문이름 */
-  englishName: Scalars['String']['input'];
+  englishName?: InputMaybe<Scalars['String']['input']>;
   /** 팩스번호 */
-  fax: Scalars['String']['input'];
+  fax?: InputMaybe<Scalars['String']['input']>;
   /** 입사일시 */
-  hireDate: Scalars['String']['input'];
+  hireDate?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   password: Scalars['String']['input'];
   /** 연락처 */
-  phone: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
   positionId: Scalars['Int']['input'];
   /** 급여계좌번호 */
-  salaryAccount: Scalars['String']['input'];
+  salaryAccount?: InputMaybe<Scalars['String']['input']>;
   /** 영업폰 */
-  salesPhone: Scalars['String']['input'];
+  salesPhone?: InputMaybe<Scalars['String']['input']>;
   teamId?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -1601,30 +1601,30 @@ export type UpdateTeamDto = {
 
 export type UpdateUserDto = {
   /** 은행 */
-  bank: Scalars['String']['input'];
+  bank?: InputMaybe<Scalars['String']['input']>;
   /** 생년월일 */
-  birthDate: Scalars['String']['input'];
+  birthDate?: InputMaybe<Scalars['String']['input']>;
   /** 소속 */
-  company: Scalars['String']['input'];
+  company?: InputMaybe<Scalars['String']['input']>;
   /** 이메일 */
   email: Scalars['String']['input'];
   /** 이메일주소 */
-  emailAddress: Scalars['String']['input'];
+  emailAddress?: InputMaybe<Scalars['String']['input']>;
   /** 영문이름 */
-  englishName: Scalars['String']['input'];
+  englishName?: InputMaybe<Scalars['String']['input']>;
   /** 팩스번호 */
-  fax: Scalars['String']['input'];
+  fax?: InputMaybe<Scalars['String']['input']>;
   /** 입사일시 */
-  hireDate: Scalars['String']['input'];
+  hireDate?: InputMaybe<Scalars['String']['input']>;
   /** 이름 */
   name: Scalars['String']['input'];
   /** 연락처 */
-  phone: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
   positionId?: InputMaybe<Scalars['Int']['input']>;
   /** 급여계좌번호 */
-  salaryAccount: Scalars['String']['input'];
+  salaryAccount?: InputMaybe<Scalars['String']['input']>;
   /** 영업폰 */
-  salesPhone: Scalars['String']['input'];
+  salesPhone?: InputMaybe<Scalars['String']['input']>;
   teamId?: InputMaybe<Scalars['Int']['input']>;
   userId: Scalars['Int']['input'];
 };
@@ -1635,25 +1635,25 @@ export type UpdateUserMyInfoDto = {
 };
 
 export type User = {
-  bank: Scalars['String']['output'];
-  birthDate: Scalars['String']['output'];
-  company: Scalars['String']['output'];
+  bank?: Maybe<Scalars['String']['output']>;
+  birthDate?: Maybe<Scalars['String']['output']>;
+  company?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['DateTime']['output']>;
   customers?: Maybe<Array<Customer>>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
   email: Scalars['String']['output'];
-  emailAddress: Scalars['String']['output'];
-  englishName: Scalars['String']['output'];
-  fax: Scalars['String']['output'];
-  hireDate: Scalars['String']['output'];
+  emailAddress?: Maybe<Scalars['String']['output']>;
+  englishName?: Maybe<Scalars['String']['output']>;
+  fax?: Maybe<Scalars['String']['output']>;
+  hireDate?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   password: Scalars['String']['output'];
-  phone: Scalars['String']['output'];
+  phone?: Maybe<Scalars['String']['output']>;
   position: Position;
   role: Role;
-  salaryAccount: Scalars['String']['output'];
-  salesPhone: Scalars['String']['output'];
+  salaryAccount?: Maybe<Scalars['String']['output']>;
+  salesPhone?: Maybe<Scalars['String']['output']>;
   team?: Maybe<Team>;
   updated_at?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -2075,6 +2075,11 @@ export type GetNoticeQueryVariables = Exact<{
 
 export type GetNoticeQuery = { getNotice: { id: number, title: string, body: string, created_at?: string | null, deleted_at?: string | null, updated_at?: string | null, author: { id: number, name: string } } };
 
+export type GetLatestNoticeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetLatestNoticeQuery = { getLatestNotice: { id: number, title: string, body: string, created_at?: string | null, updated_at?: string | null, author: { id: number, name: string } } };
+
 export type GetNotificationsQueryVariables = Exact<{
   offset: Scalars['Float']['input'];
   limit: Scalars['Float']['input'];
@@ -2128,14 +2133,14 @@ export type GetTeamQuery = { getTeam: { id: number, name: string, depth?: number
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUsersQuery = { getUsers: Array<{ id: number, name: string, email: string, password: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType }, customers?: Array<{ id: number, name: string }> | null }> };
+export type GetUsersQuery = { getUsers: Array<{ id: number, name: string, email: string, password: string, hireDate?: string | null, birthDate?: string | null, phone?: string | null, salesPhone?: string | null, fax?: string | null, englishName?: string | null, salaryAccount?: string | null, bank?: string | null, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType }, customers?: Array<{ id: number, name: string }> | null }> };
 
 export type GetUserQueryVariables = Exact<{
   userId: Scalars['Float']['input'];
 }>;
 
 
-export type GetUserQuery = { getUser: { id: number, name: string, email: string, password: string, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType }, team?: { id: number, name: string } | null, customers?: Array<{ id: number, name: string }> | null } };
+export type GetUserQuery = { getUser: { id: number, name: string, email: string, password: string, hireDate?: string | null, birthDate?: string | null, phone?: string | null, salesPhone?: string | null, fax?: string | null, englishName?: string | null, salaryAccount?: string | null, bank?: string | null, created_at?: string | null, updated_at?: string | null, position: { id: number, name: PositionType }, role: { id: number, name: PermissionType }, team?: { id: number, name: string } | null, customers?: Array<{ id: number, name: string }> | null } };
 
 export type GetPositionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4763,6 +4768,53 @@ export type GetNoticeQueryHookResult = ReturnType<typeof useGetNoticeQuery>;
 export type GetNoticeLazyQueryHookResult = ReturnType<typeof useGetNoticeLazyQuery>;
 export type GetNoticeSuspenseQueryHookResult = ReturnType<typeof useGetNoticeSuspenseQuery>;
 export type GetNoticeQueryResult = Apollo.QueryResult<GetNoticeQuery, GetNoticeQueryVariables>;
+export const GetLatestNoticeDocument = gql`
+    query GetLatestNotice {
+  getLatestNotice {
+    id
+    title
+    body
+    author {
+      id
+      name
+    }
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetLatestNoticeQuery__
+ *
+ * To run a query within a React component, call `useGetLatestNoticeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLatestNoticeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLatestNoticeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetLatestNoticeQuery(baseOptions?: Apollo.QueryHookOptions<GetLatestNoticeQuery, GetLatestNoticeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLatestNoticeQuery, GetLatestNoticeQueryVariables>(GetLatestNoticeDocument, options);
+      }
+export function useGetLatestNoticeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLatestNoticeQuery, GetLatestNoticeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLatestNoticeQuery, GetLatestNoticeQueryVariables>(GetLatestNoticeDocument, options);
+        }
+export function useGetLatestNoticeSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetLatestNoticeQuery, GetLatestNoticeQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetLatestNoticeQuery, GetLatestNoticeQueryVariables>(GetLatestNoticeDocument, options);
+        }
+export type GetLatestNoticeQueryHookResult = ReturnType<typeof useGetLatestNoticeQuery>;
+export type GetLatestNoticeLazyQueryHookResult = ReturnType<typeof useGetLatestNoticeLazyQuery>;
+export type GetLatestNoticeSuspenseQueryHookResult = ReturnType<typeof useGetLatestNoticeSuspenseQuery>;
+export type GetLatestNoticeQueryResult = Apollo.QueryResult<GetLatestNoticeQuery, GetLatestNoticeQueryVariables>;
 export const GetNotificationsDocument = gql`
     query GetNotifications($offset: Float!, $limit: Float!) {
   getNotifications(offset: $offset, limit: $limit) {
@@ -5150,6 +5202,14 @@ export const GetUsersDocument = gql`
     name
     email
     password
+    hireDate
+    birthDate
+    phone
+    salesPhone
+    fax
+    englishName
+    salaryAccount
+    bank
     position {
       id
       name
@@ -5206,6 +5266,14 @@ export const GetUserDocument = gql`
     name
     email
     password
+    hireDate
+    birthDate
+    phone
+    salesPhone
+    fax
+    englishName
+    salaryAccount
+    bank
     position {
       id
       name
