@@ -7,6 +7,13 @@ export const GET_USERS_QUERY = gql`
       name
       email
       password
+      birthDate
+      phone
+      salesPhone
+      fax
+      englishName
+      salaryAccount
+      bank
       position {
         id
         name
@@ -32,6 +39,13 @@ export const GET_USER_QUERY = gql`
       name
       email
       password
+      birthDate
+      phone
+      salesPhone
+      fax
+      englishName
+      salaryAccount
+      bank
       position {
         id
         name

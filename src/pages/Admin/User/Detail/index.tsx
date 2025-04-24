@@ -100,6 +100,10 @@ const AdminUserDetail = () => {
             <div>{detail.name ?? '-'}</div>
           </UserBoxWrapper>
           <UserBoxWrapper>
+            <h3>영어이름</h3>
+            <div>{detail.englishName ?? '-'}</div>
+          </UserBoxWrapper>
+          <UserBoxWrapper>
             <h3>생성일</h3>
             <div>{formatDate(detail.created_at) ?? '-'}</div>
           </UserBoxWrapper>
@@ -124,6 +128,35 @@ const AdminUserDetail = () => {
             <div>
               {detail.role?.name ? UserRoleHangleEnum[detail.role.name] : '-'}
             </div>
+          </UserBoxWrapper>
+
+          <UserBoxWrapper>
+            <h3>입사일</h3>
+            <div>{detail.hireDate ?? '-'}</div>
+          </UserBoxWrapper>
+          <UserBoxWrapper>
+            <h3>생년월일</h3>
+            <div>{detail.birthDate ?? '-'}</div>
+          </UserBoxWrapper>
+          <UserBoxWrapper>
+            <h3>연락처</h3>
+            <div>{detail.phone ?? '-'}</div>
+          </UserBoxWrapper>
+          <UserBoxWrapper>
+            <h3>영업폰</h3>
+            <div>{detail.salesPhone ?? '-'}</div>
+          </UserBoxWrapper>
+          <UserBoxWrapper>
+            <h3>팩스번호</h3>
+            <div>{detail.fax ?? '-'}</div>
+          </UserBoxWrapper>
+          <UserBoxWrapper>
+            <h3>급여계좌번호</h3>
+            <div>{detail.salaryAccount ?? '-'}</div>
+          </UserBoxWrapper>
+          <UserBoxWrapper>
+            <h3>은행</h3>
+            <div>{detail.bank ?? '-'}</div>
           </UserBoxWrapper>
         </DetailContentWrapper>
       </DetailWrapper>

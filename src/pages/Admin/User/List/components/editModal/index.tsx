@@ -7,7 +7,7 @@ import { useGetTeams } from '@/services/team';
 import { useGetPositions, useGetUser, useUpdateUser } from '@/services/user';
 import { TModal } from '@/types/common';
 import { Position, Team, UpdateUserDto } from '@/types/graphql';
-import { flattenTeams } from '@/utils/common';
+import { autoHypenTel, flattenTeams } from '@/utils/common';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -20,7 +20,17 @@ const EditModal = (props: TModal & { idx: number }) => {
 
   const [name, setName] = useState<UpdateUserDto['name']>();
   const [email, setEmail] = useState<UpdateUserDto['email']>();
-  //   const [password, setPassword] = useState<UpdateUserDto['password']>();
+
+  const [hireDate, setHireDate] = useState<UpdateUserDto['hireDate']>();
+  const [birthDate, setBirthDate] = useState<UpdateUserDto['birthDate']>();
+  const [phone, setPhone] = useState<UpdateUserDto['phone']>();
+  const [salesPhone, setSalesPhone] = useState<UpdateUserDto['salesPhone']>();
+  const [fax, setFax] = useState<UpdateUserDto['fax']>();
+  const [englishName, setEnglishName] =
+    useState<UpdateUserDto['englishName']>();
+  const [salaryAccount, setSalaryAccount] =
+    useState<UpdateUserDto['salaryAccount']>();
+  const [bank, setBank] = useState<UpdateUserDto['bank']>();
 
   const { data: positions } = useGetPositions();
   const { data: teams } = useGetTeams();
@@ -34,16 +44,22 @@ const EditModal = (props: TModal & { idx: number }) => {
     setSubmit(true);
     if (!name) return;
     if (!email) return;
-    // if (!password) return;
     if (!userPosition) return;
     try {
       const response = await updateUser({
         userId: idx,
         name,
         email,
-        // password,
         positionId: userPosition.id,
         teamId: userTeam?.id,
+        hireDate,
+        birthDate,
+        phone,
+        salesPhone,
+        fax,
+        englishName,
+        salaryAccount,
+        bank,
       });
 
       if (response && response.data.updateUser.id) {
@@ -73,6 +89,14 @@ const EditModal = (props: TModal & { idx: number }) => {
     updateUser,
     userPosition,
     userTeam?.id,
+    hireDate,
+    birthDate,
+    phone,
+    salesPhone,
+    fax,
+    englishName,
+    salaryAccount,
+    bank,
   ]);
 
   useEffect(() => {
@@ -82,9 +106,17 @@ const EditModal = (props: TModal & { idx: number }) => {
       setUserTeam(detail.team ?? undefined);
       setName(detail.name);
       setEmail(detail.email);
-      //   setPassword(detail.password);
+
+      setHireDate(detail.hireDate);
+      setBirthDate(detail.birthDate);
+      setPhone(detail.phone);
+      setSalesPhone(detail.salesPhone);
+      setFax(detail.fax);
+      setEnglishName(detail.englishName);
+      setSalaryAccount(detail.salaryAccount);
+      setBank(detail.bank);
     }
-  }, [data, setUserPosition, setUserTeam, setName, setEmail]);
+  }, [data]);
 
   const handleEnter = useCallback(
     (e: globalThis.KeyboardEvent) => {
@@ -113,7 +145,6 @@ const EditModal = (props: TModal & { idx: number }) => {
         onConfirm={handleUserEdit}
       >
         <RegistCustomerWrapper>
-          {/* 이름, email, 직책, 팀 */}
           <div>
             <span>
               담당자명 <p className="required">*</p>
@@ -136,16 +167,6 @@ const EditModal = (props: TModal & { idx: number }) => {
               onTextChange={(text) => setEmail(text)}
             />
           </div>
-          {/* <div>
-            <span>
-              비밀번호 <p className="required">*</p>
-            </span>
-            <Input
-              placeholder="초기 비밀번호를 입력해 주세요."
-              value={password ?? ''}
-              onTextChange={(text) => setPassword(text)}
-            />
-          </div> */}
           <div>
             <span>
               직책 <p className="required">*</p>
@@ -184,6 +205,72 @@ const EditModal = (props: TModal & { idx: number }) => {
               trackBy="id"
               valueBy="name"
               placeholder="팀을 선택해주세요"
+            />
+          </div>
+          <div>
+            <span>입사일시</span>
+            <Input
+              type="date"
+              style={{ cursor: 'pointer' }}
+              value={hireDate ?? ''}
+              onTextChange={(text) => setHireDate(text)}
+            />
+          </div>
+          <div>
+            <span>생년월일</span>
+            <Input
+              type="date"
+              style={{ cursor: 'pointer' }}
+              value={birthDate ?? ''}
+              onTextChange={(text) => setBirthDate(text)}
+            />
+          </div>
+          <div>
+            <span>연락처</span>
+            <Input
+              placeholder="연락처를 입력해 주세요."
+              value={phone}
+              onTextChange={(text) => setPhone(autoHypenTel(text))}
+            />
+          </div>
+          <div>
+            <span>영업폰 연락처</span>
+            <Input
+              placeholder="영업폰 연락처를 입력해 주세요."
+              value={salesPhone}
+              onTextChange={(text) => setSalesPhone(autoHypenTel(text))}
+            />
+          </div>
+          <div>
+            <span>팩스번호</span>
+            <Input
+              placeholder="팩스번호를 입력해 주세요."
+              value={fax}
+              onTextChange={(text) => setFax(text)}
+            />
+          </div>
+          <div>
+            <span>영문이름</span>
+            <Input
+              placeholder="영문이름을 입력해 주세요."
+              value={englishName ?? ''}
+              onTextChange={(text) => setEnglishName(text)}
+            />
+          </div>
+          <div>
+            <span>급여계좌번호</span>
+            <Input
+              placeholder="급여계좌번호를 입력해 주세요."
+              value={salaryAccount ?? ''}
+              onTextChange={(text) => setSalaryAccount(text)}
+            />
+          </div>
+          <div>
+            <span>은행</span>
+            <Input
+              placeholder="은행을 입력해 주세요."
+              value={bank ?? ''}
+              onTextChange={(text) => setBank(text)}
             />
           </div>
         </RegistCustomerWrapper>
