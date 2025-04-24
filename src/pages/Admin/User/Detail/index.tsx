@@ -132,11 +132,11 @@ const AdminUserDetail = () => {
 
           <UserBoxWrapper>
             <h3>입사일</h3>
-            <div>{detail.hireDate ?? '-'}</div>
+            <div>{formatDate(detail.hireDate) ?? '-'}</div>
           </UserBoxWrapper>
           <UserBoxWrapper>
             <h3>생년월일</h3>
-            <div>{detail.birthDate ?? '-'}</div>
+            <div>{formatDate(detail.birthDate) ?? '-'}</div>
           </UserBoxWrapper>
           <UserBoxWrapper>
             <h3>연락처</h3>
