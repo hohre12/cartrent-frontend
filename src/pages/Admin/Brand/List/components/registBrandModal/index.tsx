@@ -14,8 +14,9 @@ const RegistBrandModal = (props: TModal) => {
   const { ...modalProps } = props;
   const [name, setName] = useState<CreateBrandDto['name']>();
   const [brandFee, setBrandFee] = useState<CreateBrandDto['brandFee']>();
-  const [isDomestic, setIsDomestic] = useState<CreateBrandDto['isDomestic']>();
-  const [submit, setSubmit] = useState<boolean>(false);
+  const [isDomestic, setIsDomestic] =
+    useState<CreateBrandDto['isDomestic']>(false);
+  const [submit, setSubmit] = useState<boolean>();
   const { addToast } = useToast();
 
   const { createBrand } = useCreateBrand();
@@ -24,7 +25,6 @@ const RegistBrandModal = (props: TModal) => {
     setSubmit(true);
     if (!name) return;
     if (!brandFee) return;
-    if (!isDomestic) return;
     try {
       const response = await createBrand({
         name,
@@ -43,7 +43,7 @@ const RegistBrandModal = (props: TModal) => {
     } catch (e) {
       console.warn(e);
     }
-  }, [addToast, createBrand, modalProps, name]);
+  }, [addToast, createBrand, modalProps, name, brandFee, isDomestic]);
   const handleEnter = useCallback(
     (e: globalThis.KeyboardEvent) => {
       if (e.key === 'Enter') {

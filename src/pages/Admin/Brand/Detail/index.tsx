@@ -60,7 +60,7 @@ const AdminBrandDetail = () => {
                 showConfirm({
                   isOpen: true,
                   title: '브랜드 삭제',
-                  content: `브랜드를 삭제하시겠습니까?`,
+                  content: `${detail.name} 브랜드를 삭제하시겠습니까?`,
                   cancelText: '취소',
                   confirmText: '삭제',
                   confirmVariant: 'primaryDanger',
