@@ -39,6 +39,8 @@ import AdminCustomerGroupList from './pages/Admin/CustomerGroup/List';
 import AdminCustomerGradeList from './pages/Admin/CustomerGrade/List';
 import AdminNoticeList from './pages/Admin/Notice/List';
 import AdminNoticeDetail from './pages/Admin/Notice/Detail';
+import AdminBrandList from './pages/Admin/Brand/List';
+import AdminBrandDetail from './pages/Admin/Brand/Detail';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -219,6 +221,14 @@ function App() {
             <Route
               path="notice/:id"
               element={<AdminNoticeDetail />}
+            />
+            <Route
+              path="brand"
+              element={<AdminBrandList />}
+            />
+            <Route
+              path="brand/:id"
+              element={<AdminBrandDetail />}
             />
           </Route>
         </Route>
