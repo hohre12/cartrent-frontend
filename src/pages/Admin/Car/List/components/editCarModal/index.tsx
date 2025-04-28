@@ -1,37 +1,39 @@
-import Checkbox from '@/components/checkbox/Checkbox';
 import Input from '@/components/input/Input';
 import { Modal } from '@/components/modal/Modal';
+import Select from '@/components/select/Select';
 import { useToast } from '@/hooks/useToast';
-import { useGetBrand, useUpdateBrand } from '@/services/brand';
+import { useGetBrands } from '@/services/brand';
+import { useGetCar, useUpdateCar } from '@/services/car';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
-import { UpdateBrandDto } from '@/types/graphql';
+import { Brand, UpdateCarDto } from '@/types/graphql';
 import { numberFormat } from '@/utils/common';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const EditBrandModal = (props: TModal & { id: number }) => {
+const EditCarModal = (props: TModal & { id: number }) => {
   const { id, ...modalProps } = props;
-  const { data } = useGetBrand(id);
-  const [name, setName] = useState<UpdateBrandDto['name']>();
-  const [brandFee, setBrandFee] = useState<UpdateBrandDto['brandFee']>();
-  const [isDomestic, setIsDomestic] = useState<UpdateBrandDto['isDomestic']>();
+  const { data } = useGetCar(id);
+  const [brand, setBrand] = useState<Brand>();
+  const [name, setName] = useState<UpdateCarDto['name']>();
+  const [carFee, setCarFee] = useState<UpdateCarDto['carFee']>();
   const [submit, setSubmit] = useState<boolean>(false);
   const { addToast } = useToast();
 
-  const { updateBrand } = useUpdateBrand();
+  const { data: brands } = useGetBrands({});
+  const { updateCar } = useUpdateCar();
 
-  const handleBrandEdit = useCallback(async () => {
+  const handleCarEdit = useCallback(async () => {
     setSubmit(true);
     if (!name) return;
     try {
-      const response = await updateBrand({
+      const response = await updateCar({
         id,
+        brandId: brand?.id,
         name,
-        brandFee,
-        isDomestic,
+        carFee,
       });
-      if (response && response.data.updateBrand.id) {
+      if (response && response.data.updateCar.id) {
         addToast({
           id: Date.now(),
           isImage: true,
@@ -43,14 +45,14 @@ const EditBrandModal = (props: TModal & { id: number }) => {
     } catch (e) {
       console.warn(e);
     }
-  }, [id, addToast, updateBrand, modalProps, name, brandFee, isDomestic]);
+  }, [brand, id, addToast, updateCar, modalProps, name, carFee]);
   const handleEnter = useCallback(
     (e: globalThis.KeyboardEvent) => {
       if (e.key === 'Enter') {
-        handleBrandEdit();
+        handleCarEdit();
       }
     },
-    [handleBrandEdit],
+    [handleCarEdit],
   );
 
   useEffect(() => {
@@ -63,11 +65,11 @@ const EditBrandModal = (props: TModal & { id: number }) => {
   }, [handleEnter]);
 
   useEffect(() => {
-    const detail = data?.getBrand;
+    const detail = data?.getCar;
     if (detail) {
+      setBrand(detail.brand);
       setName(detail.name);
-      setIsDomestic(detail.isDomestic);
-      setBrandFee(detail.brandFee);
+      setCarFee(detail.carFee);
     }
   }, [data]);
 
@@ -75,18 +77,32 @@ const EditBrandModal = (props: TModal & { id: number }) => {
     <>
       <SModal
         {...modalProps}
-        title="브랜드 수정"
+        title="차량 수정"
         size={'small'}
         footerOption={{
           cancelText: '취소',
           confirmText: '수정',
         }}
-        onConfirm={handleBrandEdit}
+        onConfirm={handleCarEdit}
       >
         <EditTeamModalContentWrapper>
           <div className="InputWrapper">
             <span>
-              브랜드 명 <p className="required">*</p>
+              브랜드 <p className="required">*</p>
+            </span>
+            <Select
+              size="medium"
+              value={{ ...brand }}
+              onChange={(value) => setBrand(value)}
+              list={brands?.getBrands ? brands.getBrands : []}
+              trackBy="id"
+              valueBy="name"
+              placeholder="브랜드를 선택해주세요"
+            />
+          </div>
+          <div className="InputWrapper">
+            <span>
+              차량명 <p className="required">*</p>
             </span>
             <Input
               value={name ?? ''}
@@ -95,15 +111,15 @@ const EditBrandModal = (props: TModal & { id: number }) => {
           </div>
           <div className="InputWrapper">
             <span>
-              브랜드 수수료율 <p className="required">*</p>
+              차량 수수료율 <p className="required">*</p>
             </span>
             <Input
-              value={numberFormat(brandFee)}
+              value={numberFormat(carFee)}
               onTextChange={(text) => {
                 const value = Number(text.replace(/,/g, ''));
                 if (value > 100) {
-                  setBrandFee(100);
-                } else setBrandFee(value);
+                  setCarFee(100);
+                } else setCarFee(value);
               }}
               max={100}
               type="number"
@@ -111,22 +127,13 @@ const EditBrandModal = (props: TModal & { id: number }) => {
               postfixNode={'%'}
             />
           </div>
-          <div className="InputWrapper">
-            <span>
-              국산여부 <p className="required">*</p>
-            </span>
-            <Checkbox
-              value={isDomestic ?? false}
-              onCheckedChange={() => setIsDomestic(!isDomestic)}
-            ></Checkbox>
-          </div>
         </EditTeamModalContentWrapper>
       </SModal>
     </>
   );
 };
 
-export default EditBrandModal;
+export default EditCarModal;
 
 const SModal = styled(Modal)`
   .modalWrapper {

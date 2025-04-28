@@ -1,41 +1,43 @@
-import Checkbox from '@/components/checkbox/Checkbox';
 import Input from '@/components/input/Input';
 import { Modal } from '@/components/modal/Modal';
+import Select from '@/components/select/Select';
 import { useToast } from '@/hooks/useToast';
-import { useGetBrand, useUpdateBrand } from '@/services/brand';
+import { useGetBrands } from '@/services/brand';
+import { useCreateCar } from '@/services/car';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
-import { UpdateBrandDto } from '@/types/graphql';
+import { Brand, CreateCarDto } from '@/types/graphql';
 import { numberFormat } from '@/utils/common';
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const EditBrandModal = (props: TModal & { id: number }) => {
-  const { id, ...modalProps } = props;
-  const { data } = useGetBrand(id);
-  const [name, setName] = useState<UpdateBrandDto['name']>();
-  const [brandFee, setBrandFee] = useState<UpdateBrandDto['brandFee']>();
-  const [isDomestic, setIsDomestic] = useState<UpdateBrandDto['isDomestic']>();
-  const [submit, setSubmit] = useState<boolean>(false);
+const RegistCarModal = (props: TModal) => {
+  const { ...modalProps } = props;
+  const [brand, setBrand] = useState<Brand>();
+  const [name, setName] = useState<CreateCarDto['name']>();
+  const [carFee, setCarFee] = useState<CreateCarDto['carFee']>();
+  const [submit, setSubmit] = useState<boolean>();
   const { addToast } = useToast();
 
-  const { updateBrand } = useUpdateBrand();
+  const { data: brands } = useGetBrands({});
+  const { createCar } = useCreateCar();
 
-  const handleBrandEdit = useCallback(async () => {
+  const handleCarRegist = useCallback(async () => {
     setSubmit(true);
+    if (!brand) return;
     if (!name) return;
+    if (!carFee) return;
     try {
-      const response = await updateBrand({
-        id,
+      const response = await createCar({
+        brandId: brand.id,
         name,
-        brandFee,
-        isDomestic,
+        carFee,
       });
-      if (response && response.data.updateBrand.id) {
+      if (response && response.data.createCar.id) {
         addToast({
           id: Date.now(),
           isImage: true,
-          content: `브랜드가 수정되었습니다.`,
+          content: `차량이 등록되었습니다.`,
           type: 'success',
         });
         modalProps.onConfirm?.();
@@ -43,14 +45,14 @@ const EditBrandModal = (props: TModal & { id: number }) => {
     } catch (e) {
       console.warn(e);
     }
-  }, [id, addToast, updateBrand, modalProps, name, brandFee, isDomestic]);
+  }, [brand, addToast, createCar, modalProps, name, carFee]);
   const handleEnter = useCallback(
     (e: globalThis.KeyboardEvent) => {
       if (e.key === 'Enter') {
-        handleBrandEdit();
+        handleCarRegist();
       }
     },
-    [handleBrandEdit],
+    [handleCarRegist],
   );
 
   useEffect(() => {
@@ -62,48 +64,53 @@ const EditBrandModal = (props: TModal & { id: number }) => {
     };
   }, [handleEnter]);
 
-  useEffect(() => {
-    const detail = data?.getBrand;
-    if (detail) {
-      setName(detail.name);
-      setIsDomestic(detail.isDomestic);
-      setBrandFee(detail.brandFee);
-    }
-  }, [data]);
-
   return (
     <>
       <SModal
         {...modalProps}
-        title="브랜드 수정"
+        title="차량 등록"
         size={'small'}
         footerOption={{
           cancelText: '취소',
-          confirmText: '수정',
+          confirmText: '등록',
         }}
-        onConfirm={handleBrandEdit}
+        onConfirm={handleCarRegist}
       >
-        <EditTeamModalContentWrapper>
+        <RegistTeamModalContentWrapper>
           <div className="InputWrapper">
             <span>
-              브랜드 명 <p className="required">*</p>
+              브랜드 <p className="required">*</p>
+            </span>
+            <Select
+              size="medium"
+              value={{ ...brand }}
+              onChange={(value) => setBrand(value)}
+              list={brands?.getBrands ? brands.getBrands : []}
+              trackBy="id"
+              valueBy="name"
+              placeholder="브랜드를 선택해주세요"
+            />
+          </div>
+          <div className="InputWrapper">
+            <span>
+              차량명 <p className="required">*</p>
             </span>
             <Input
-              value={name ?? ''}
+              value={name}
               onTextChange={(text) => setName(text)}
             />
           </div>
           <div className="InputWrapper">
             <span>
-              브랜드 수수료율 <p className="required">*</p>
+              차량 수수료율 <p className="required">*</p>
             </span>
             <Input
-              value={numberFormat(brandFee)}
+              value={numberFormat(carFee)}
               onTextChange={(text) => {
                 const value = Number(text.replace(/,/g, ''));
                 if (value > 100) {
-                  setBrandFee(100);
-                } else setBrandFee(value);
+                  setCarFee(100);
+                } else setCarFee(value);
               }}
               max={100}
               type="number"
@@ -111,22 +118,13 @@ const EditBrandModal = (props: TModal & { id: number }) => {
               postfixNode={'%'}
             />
           </div>
-          <div className="InputWrapper">
-            <span>
-              국산여부 <p className="required">*</p>
-            </span>
-            <Checkbox
-              value={isDomestic ?? false}
-              onCheckedChange={() => setIsDomestic(!isDomestic)}
-            ></Checkbox>
-          </div>
-        </EditTeamModalContentWrapper>
+        </RegistTeamModalContentWrapper>
       </SModal>
     </>
   );
 };
 
-export default EditBrandModal;
+export default RegistCarModal;
 
 const SModal = styled(Modal)`
   .modalWrapper {
@@ -135,7 +133,7 @@ const SModal = styled(Modal)`
     }
   }
 `;
-const EditTeamModalContentWrapper = styled.div`
+const RegistTeamModalContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
