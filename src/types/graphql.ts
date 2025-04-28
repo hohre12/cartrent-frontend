@@ -71,6 +71,37 @@ export type AuthPayload = {
   user?: Maybe<User>;
 };
 
+/** 차량 브랜드 */
+export type Brand = {
+  /** 브랜드 수수료 */
+  brandFee: Scalars['Float']['output'];
+  cars?: Maybe<Array<Car>>;
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  deleted_at?: Maybe<Scalars['DateTime']['output']>;
+  /** 브랜드 아이디 */
+  id: Scalars['Int']['output'];
+  /** 국산 여부 */
+  isDomestic: Scalars['Boolean']['output'];
+  /** 브랜드 이름 */
+  name: Scalars['String']['output'];
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
+};
+
+/** 차량 */
+export type Car = {
+  brand: Brand;
+  brandId: Scalars['Int']['output'];
+  /** 차량 수수료 */
+  carFee: Scalars['Float']['output'];
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  deleted_at?: Maybe<Scalars['DateTime']['output']>;
+  /** 차량 아이디 */
+  id: Scalars['Int']['output'];
+  /** 차량 이름 */
+  name: Scalars['String']['output'];
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
+};
+
 export type CheckSettleContractDto = {
   contractId?: InputMaybe<Scalars['Int']['input']>;
   month?: InputMaybe<Scalars['String']['input']>;
@@ -252,6 +283,24 @@ export type CreateAdditionalIncentiveDto = {
   userId: Scalars['Int']['input'];
   /** 년도 */
   year: Scalars['String']['input'];
+};
+
+export type CreateBrandDto = {
+  /** 수수료 */
+  brandFee: Scalars['Float']['input'];
+  /** 국산 여부 */
+  isDomestic: Scalars['Boolean']['input'];
+  /** 브랜드 이름 */
+  name: Scalars['String']['input'];
+};
+
+export type CreateCarDto = {
+  /** 브랜드 아이디 */
+  brandId: Scalars['Int']['input'];
+  /** 차량 수수료 */
+  carFee: Scalars['Float']['input'];
+  /** 차량 이름 */
+  name: Scalars['String']['input'];
 };
 
 export type CreateCityDto = {
@@ -575,6 +624,14 @@ export type GetAdjustmentsDto = {
   year: Scalars['String']['input'];
 };
 
+export type GetBrandsDto = {
+  isDomestic?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type GetCarsDto = {
+  brandId?: InputMaybe<Scalars['Float']['input']>;
+};
+
 export type GetCitiesDto = {
   search?: InputMaybe<Scalars['String']['input']>;
 };
@@ -669,6 +726,10 @@ export type MonthlyTopFiveUser = {
 export type Mutation = {
   /** 추가 수당 생성 */
   createAdditionalIncentive: AdditionalIncentive;
+  /** 브랜드 생성 */
+  createBrand: Brand;
+  /** 차량 생성 */
+  createCar: Car;
   /** 도시 생성 */
   createCity: City;
   /** 계약 생성 */
@@ -697,6 +758,10 @@ export type Mutation = {
   deleteAdditionalIncentive: Scalars['Boolean']['output'];
   /** 전체 알림 삭제 */
   deleteAllNotification: Scalars['Boolean']['output'];
+  /** 브랜드 삭제 */
+  deleteBrand: Scalars['Boolean']['output'];
+  /** 차량 삭제 */
+  deleteCar: Scalars['Boolean']['output'];
   /** 도시 삭제 */
   deleteCity: Scalars['String']['output'];
   /** 계약 삭제 */
@@ -737,6 +802,10 @@ export type Mutation = {
   testSignUp: User;
   /** 추가 수당 수정 */
   updateAdditionalIncentive: AdditionalIncentive;
+  /** 브랜드 수정 */
+  updateBrand: Brand;
+  /** 차량 수정 */
+  updateCar: Car;
   /** 도시 수정 */
   updateCity: City;
   /** 계약 수정 */
@@ -770,6 +839,16 @@ export type Mutation = {
 
 export type MutationCreateAdditionalIncentiveArgs = {
   createAdditionalIncentiveDto: CreateAdditionalIncentiveDto;
+};
+
+
+export type MutationCreateBrandArgs = {
+  createBrandDto: CreateBrandDto;
+};
+
+
+export type MutationCreateCarArgs = {
+  createCarDto: CreateCarDto;
 };
 
 
@@ -835,6 +914,16 @@ export type MutationCreateUserArgs = {
 
 export type MutationDeleteAdditionalIncentiveArgs = {
   additionalIncentiveId: Scalars['Float']['input'];
+};
+
+
+export type MutationDeleteBrandArgs = {
+  id: Scalars['Float']['input'];
+};
+
+
+export type MutationDeleteCarArgs = {
+  id: Scalars['Float']['input'];
 };
 
 
@@ -926,6 +1015,16 @@ export type MutationTestSignUpArgs = {
 
 export type MutationUpdateAdditionalIncentiveArgs = {
   updateAdditionalIncentiveDto: UpdateAdditionalIncentiveDto;
+};
+
+
+export type MutationUpdateBrandArgs = {
+  updateBrandDto: UpdateBrandDto;
+};
+
+
+export type MutationUpdateCarArgs = {
+  updateCarDto: UpdateCarDto;
 };
 
 
@@ -1126,6 +1225,14 @@ export type Query = {
   checkSettleContract: Scalars['Boolean']['output'];
   /** 정산 리스트 조회 */
   getAdjustments: Array<Adjustment>;
+  /** 브랜드 조회 */
+  getBrand: Brand;
+  /** 브랜드 리스트 조회 */
+  getBrands: Array<Brand>;
+  /** 차량 상세 조회 */
+  getCar: Car;
+  /** 차량 목록 조회 */
+  getCars: Array<Car>;
   /** 도시 리스트 조회 */
   getCities: Array<City>;
   /** 도시 상세 조회 */
@@ -1205,6 +1312,26 @@ export type QueryCheckSettleContractArgs = {
 
 export type QueryGetAdjustmentsArgs = {
   getAdjustmentsDto: GetAdjustmentsDto;
+};
+
+
+export type QueryGetBrandArgs = {
+  id: Scalars['Float']['input'];
+};
+
+
+export type QueryGetBrandsArgs = {
+  getBrandsDto: GetBrandsDto;
+};
+
+
+export type QueryGetCarArgs = {
+  id: Scalars['Float']['input'];
+};
+
+
+export type QueryGetCarsArgs = {
+  getCarsDto: GetCarsDto;
 };
 
 
@@ -1391,6 +1518,28 @@ export type UpdateAdditionalIncentiveDto = {
   additionalIncentive?: InputMaybe<Scalars['Int']['input']>;
   /** 추가 수당 Id */
   additionalIncentiveId: Scalars['Int']['input'];
+};
+
+export type UpdateBrandDto = {
+  /** 수수료 */
+  brandFee?: InputMaybe<Scalars['Float']['input']>;
+  /** 브랜드 아이디 */
+  id: Scalars['Int']['input'];
+  /** 국산 여부 */
+  isDomestic?: InputMaybe<Scalars['Boolean']['input']>;
+  /** 브랜드 이름 */
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateCarDto = {
+  /** 브랜드 아이디 */
+  brandId?: InputMaybe<Scalars['Int']['input']>;
+  /** 차량 수수료 */
+  carFee?: InputMaybe<Scalars['Float']['input']>;
+  /** 차량 아이디 */
+  id: Scalars['Int']['input'];
+  /** 차량 이름 */
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateCityDto = {

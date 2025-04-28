@@ -45,6 +45,18 @@ const AdminSideTab = () => {
             <p>고객등급</p>
           </SideTabItem>
           <SideTabItem
+            $isActive={location.pathname.includes('/admin/brand').toString()}
+            onClick={() => navigate('brand')}
+          >
+            <p>브랜드</p>
+          </SideTabItem>
+          <SideTabItem
+            $isActive={location.pathname.includes('/admin/car').toString()}
+            onClick={() => navigate('car')}
+          >
+            <p>차량</p>
+          </SideTabItem>
+          <SideTabItem
             $isActive={location.pathname.includes('/admin/notice').toString()}
             onClick={() => navigate('notice')}
           >
