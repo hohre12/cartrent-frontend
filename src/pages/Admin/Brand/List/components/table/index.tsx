@@ -47,6 +47,8 @@ const BrandListTable = ({ data }: TTableProps) => {
         <thead>
           <TableHeader>
             <th>브랜드명</th>
+            <th>국산/수입</th>
+            <th>브랜드 수수료</th>
             <th>삭제</th>
           </TableHeader>
         </thead>
@@ -57,6 +59,8 @@ const BrandListTable = ({ data }: TTableProps) => {
               onClick={() => navigate(`${it.id}`)}
             >
               <td className="name">{it.name}</td>
+              <td>{it.isDomestic ? '국산' : '수입'}</td>
+              <td>{it.brandFee ? `${it.brandFee}%` : '-'}</td>
               <td onClick={(e) => e.stopPropagation()}>
                 <Button
                   variant="black"
