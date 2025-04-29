@@ -1,13 +1,13 @@
 import Button from '@/components/button/Button';
-import { useGetCars } from '@/services/car';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import styled from 'styled-components';
 import { useState } from 'react';
 import CarListTable from './components/table';
 import RegistCarModal from './components/registCarModal';
+import { useGetBrands } from '@/services/brand';
 
 const AdminCarList = () => {
-  const { data, loading, error } = useGetCars({});
+  const { data, loading, error } = useGetBrands({});
   const [isOpenRegistCarModal, setIsOpenRegistCarModal] =
     useState<boolean>(false);
   return (
@@ -26,9 +26,9 @@ const AdminCarList = () => {
           </ControlWrapper>
         </Header>
         <ListContent>
-          {data && data.getCars?.length > 0 ? (
+          {data && data.getBrands?.length > 0 ? (
             <>
-              <CarListTable data={data.getCars}></CarListTable>
+              <CarListTable data={data.getBrands}></CarListTable>
             </>
           ) : (
             <div className="noList">

@@ -4,12 +4,13 @@ import { useToast } from '@/hooks/useToast';
 import { useDeleteCar } from '@/services/car';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { Car, Team } from '@/types/graphql';
+import { Brand, Car, Team } from '@/types/graphql';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 type TTableProps = {
-  data: Car[];
+  data: Brand[];
 };
 
 const CarListTable = ({ data }: TTableProps) => {
@@ -47,43 +48,33 @@ const CarListTable = ({ data }: TTableProps) => {
         <thead>
           <TableHeader>
             <th>차량명</th>
-            <th>국산/수입</th>
+            {/* <th>국산/수입</th>
             <th>차량 수수료</th>
-            <th>브랜드</th>
-            <th>삭제</th>
+            <th>삭제</th> */}
           </TableHeader>
         </thead>
         <tbody>
           {data.map((it, idx) => (
-            <TableItem
-              key={idx}
-              onClick={() => navigate(`${it.id}`)}
-            >
-              <td className="name">{it.name}</td>
-              <td>{it.brand.isDomestic ? '국산' : '수입'}</td>
-              <td>{it.carFee ? `${it.carFee}%` : '-'}</td>
-              <td>{it.brand.name ? it.brand.name : '-'}</td>
-              <td onClick={(e) => e.stopPropagation()}>
-                <Button
-                  variant="black"
-                  onClick={() =>
-                    showConfirm({
-                      isOpen: true,
-                      title: '차량 삭제',
-                      content: `${it.name} 차량을 삭제하시겠습니까?`,
-                      cancelText: '취소',
-                      confirmText: '삭제',
-                      confirmVariant: 'primaryDanger',
-                      onClose: hideConfirm,
-                      onCancel: hideConfirm,
-                      onConfirm: () => handleDeleteCar(it.id),
-                    })
-                  }
-                >
-                  삭제
-                </Button>
-              </td>
-            </TableItem>
+            <React.Fragment key={idx}>
+              <TableItem style={{ cursor: 'default' }}>
+                <td className="name">{it.name}</td>
+              </TableItem>
+              {it.cars &&
+                it.cars.length > 0 &&
+                it.cars.map((car, carIdx) => (
+                  <TableItem
+                    key={carIdx}
+                    onClick={() => navigate(`${car.id}`)}
+                  >
+                    <td
+                      className="name"
+                      style={{ paddingLeft: `40px` }}
+                    >
+                      {car.name}
+                    </td>
+                  </TableItem>
+                ))}
+            </React.Fragment>
           ))}
         </tbody>
       </TableWrapper>

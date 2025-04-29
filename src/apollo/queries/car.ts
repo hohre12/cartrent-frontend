@@ -9,6 +9,7 @@ export const GET_CARS_QUERY = gql`
         id
         name
         isDomestic
+        brandFee
       }
       carFee
       created_at
@@ -26,6 +27,7 @@ export const GET_CAR_QUERY = gql`
         id
         name
         isDomestic
+        brandFee
       }
       carFee
       created_at
