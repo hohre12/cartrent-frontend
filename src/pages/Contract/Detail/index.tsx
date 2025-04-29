@@ -19,6 +19,8 @@ import { useGetUsers } from '@/services/user';
 // import { useGetCustomer } from '@/services/customer';
 import { textM16Medium, titleXl20Bold } from '@/styles/typography';
 import {
+  Brand,
+  Car,
   City,
   Customer,
   Division,
@@ -36,6 +38,8 @@ import _ from 'lodash';
 import { userState } from '@/state/auth';
 import { useRecoilValue } from 'recoil';
 import { useCheckSettleContract } from '@/services/payStub';
+import { useGetBrands } from '@/services/brand';
+import { useGetCars } from '@/services/car';
 
 const ContractDetail = () => {
   const { id } = useParams();
@@ -47,6 +51,8 @@ const ContractDetail = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [submit, setSubmit] = useState<boolean>(false);
   const my = useRecoilValue(userState);
+  const [brand, setBrand] = useState<Brand>();
+  const [car, setCar] = useState<Car>();
 
   const { data: users } = useGetUsers();
   const { data: customers } = useGetCustomers({});
@@ -54,11 +60,15 @@ const ContractDetail = () => {
   const { data: financialCompanies } = useGetFinancialCompanies();
   const { data: divisions } = useGetDivisions();
   const { data: shippingMethods } = useGetShippingMethods();
+  const { data: brands } = useGetBrands({});
+  const { data: cars } = useGetCars({
+    brandId: brand?.id ? brand.id : undefined,
+  });
 
   const [updateContract, setUpdateContract] = useState<UpdateContractDto>({
     contractId: contractIdx,
     customerId: data?.getContract?.customer_id ?? 0,
-    carName: data?.getContract?.carName ?? '',
+    carId: data?.getContract?.carId ?? 0,
     userId: data?.getContract?.user_id ?? 0,
   });
 
@@ -111,7 +121,7 @@ const ContractDetail = () => {
     setSubmit(true);
     if (!user) return;
     if (!customer) return;
-    if (!updateContract?.carName) return;
+    if (!car) return;
     try {
       const updateContractPayload: UpdateContractDto = {
         ...updateContract,
@@ -119,6 +129,7 @@ const ContractDetail = () => {
         customerId: customer.id,
         // 셀렉
         cityId: city?.id,
+        carId: car.id,
         financialCompanyId: financialCompany?.id,
         divisionId: division?.id,
         shippingMethodId: shippingMethod?.id,
@@ -161,6 +172,7 @@ const ContractDetail = () => {
   }, [
     addToast,
     city?.id,
+    car,
     customer,
     division?.id,
     financialCompany?.id,
@@ -194,6 +206,8 @@ const ContractDetail = () => {
     if (detail) {
       setUser(detail.user);
       setCity(detail.city ?? undefined);
+      setBrand(detail.car?.brand ?? undefined);
+      setCar(detail.car ?? undefined);
       setCustomer(detail.customer ?? undefined);
       setFinancialCompany(detail.financialCompany ?? undefined);
       setShippingMethod(detail.shippingMethod ?? undefined);
@@ -202,6 +216,7 @@ const ContractDetail = () => {
         'id',
         'user',
         'city',
+        'car',
         'customer',
         'financialCompany',
         'shippingMethod',
@@ -249,7 +264,7 @@ const ContractDetail = () => {
     <DetailWrapper>
       <DetailHeaderWrapper>
         <div className="left">
-          <h2>{`${detail.customer?.name} 고객님의 ${detail.carName} 차량 계약`}</h2>
+          <h2>{`${detail.customer?.name} 고객님의 ${detail.car?.name} 차량 계약`}</h2>
         </div>
         <div className="right">
           {isEdit ? (
@@ -384,16 +399,42 @@ const ContractDetail = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
+              <span>브랜드</span>
+              <InputWrapper>
+                <Select
+                  size="medium"
+                  value={{
+                    ...brand,
+                  }}
+                  onChange={(value) => {
+                    setBrand(value);
+                    setCar(undefined);
+                  }}
+                  list={brands?.getBrands ?? []}
+                  trackBy="id"
+                  valueBy="name"
+                  disabled={!isEdit}
+                  placeholder="브랜드를 선택해주세요"
+                />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
               <span>
                 차종 <p className="required">*</p>
               </span>
               <InputWrapper>
-                <Input
-                  value={updateContract?.carName ?? ''}
-                  onTextChange={(text) => handleValueChange(text, 'carName')}
-                  disabled={!isEdit}
-                  isError={submit && !updateContract.carName}
-                  errorMessage="차종은 필수입니다."
+                <Select
+                  size="medium"
+                  value={{
+                    ...car,
+                  }}
+                  onChange={(value) => setCar(value)}
+                  list={cars?.getCars ?? []}
+                  trackBy="id"
+                  valueBy="name"
+                  placeholder="차종을 선택해주세요"
+                  disabled={!isEdit || !brand}
+                  isError={submit && !car}
                 />
               </InputWrapper>
             </InputLine>

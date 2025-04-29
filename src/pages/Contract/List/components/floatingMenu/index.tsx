@@ -4,7 +4,6 @@ import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import { useDeleteContract } from '@/services/contract';
 import { selectedContractState } from '@/state/contract';
-import { TConfirm, TToast } from '@/types/common';
 import { useCallback, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -18,7 +17,7 @@ const FloatingMenu = () => {
 
   const { deleteContractMutation } = useDeleteContract();
 
-  const handleContractDelete = async () => {
+  const handleContractDelete = useCallback(async () => {
     try {
       const response = await deleteContractMutation(
         selectedContract.map((it) => it.id),
@@ -36,7 +35,13 @@ const FloatingMenu = () => {
     } catch (e) {
       console.warn(e);
     }
-  };
+  }, [
+    addToast,
+    deleteContractMutation,
+    hideConfirm,
+    selectedContract,
+    setSelectedContract,
+  ]);
 
   const handleContractDeleteConfirm = useCallback(() => {
     showConfirm({

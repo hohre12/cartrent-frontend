@@ -11,7 +11,6 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { contractFiltersState, selectedContractState } from '@/state/contract';
 import { TFilterList } from '@/types/common';
 import { Circle, FilterContent, FilterWrapper } from '@/styles/common';
-import RegistModal from './components/registModal';
 import FloatingMenu from './components/floatingMenu';
 import ContractListTable from './components/table';
 import { useGetContracts } from '@/services/contract';
@@ -30,7 +29,6 @@ const ContractList = () => {
   const selectedContract = useRecoilValue(selectedContractState);
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
-  const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
   const my = useRecoilValue(userState);
 
   // filters
@@ -259,13 +257,6 @@ const ContractList = () => {
             setIsOpenWatchOptionModal(false);
           }}
         />
-      )}
-      {isOpenRegistModal && (
-        <RegistModal
-          isOpen={isOpenRegistModal}
-          onCancel={() => setIsOpenRegistModal(false)}
-          onConfirm={() => setIsOpenRegistModal(false)}
-        ></RegistModal>
       )}
     </>
   );

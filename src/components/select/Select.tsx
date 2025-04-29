@@ -74,13 +74,14 @@ const Select = (props: TSelectProps<any>) => {
 
   useEffect(() => {
     if (isObject) {
-      let defaultValue = value[valueBy];
+      let defaultValue =
+        valueBy === 'carName' ? value.car?.name : value[valueBy];
+
       if (!defaultValue && !isEmpty(list)) {
         defaultValue = list.find((item) => item[trackBy] === value[trackBy])?.[
           valueBy
         ];
       }
-
       setSelected({ [trackBy]: value[trackBy], [valueBy]: defaultValue });
     } else {
       setSelected({ [trackBy]: value, [valueBy]: value });
@@ -115,7 +116,7 @@ const Select = (props: TSelectProps<any>) => {
     }
   };
 
-  const handleOnClick = (item: string) => {
+  const handleOnClick = (item: any) => {
     setSelected(item);
     onChange && onChange(item);
     setIsShow(false);
@@ -185,7 +186,11 @@ const Select = (props: TSelectProps<any>) => {
                   key={index}
                   onClick={() => handleOnClick(item)}
                 >
-                  <div>{item[valueBy]}</div>
+                  <div>
+                    {valueBy === 'carName'
+                      ? (item.car?.name ?? '-')
+                      : item[valueBy]}
+                  </div>
                 </li>
               ))}
             </ul>

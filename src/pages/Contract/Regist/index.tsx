@@ -2,6 +2,8 @@ import Button from '@/components/button/Button';
 import Input from '@/components/input/Input';
 import Select from '@/components/select/Select';
 import { useToast } from '@/hooks/useToast';
+import { useGetBrands } from '@/services/brand';
+import { useGetCars } from '@/services/car';
 import { useGetCites } from '@/services/city';
 import {
   useCreateContract,
@@ -14,6 +16,8 @@ import { useGetUsers } from '@/services/user';
 import { userState } from '@/state/auth';
 import { textM16Medium, titleXl20Bold } from '@/styles/typography';
 import {
+  Brand,
+  Car,
   City,
   CreateContractDto,
   Customer,
@@ -38,6 +42,8 @@ const ContractRegist = () => {
   const { addToast } = useToast();
   const [submit, setSubmit] = useState<boolean>(false);
   const currentDate = moment().format('YYYY-MM-DD');
+  const [brand, setBrand] = useState<Brand>();
+  const [car, setCar] = useState<Car>();
 
   const { data: users } = useGetUsers();
   const { data: customers } = useGetCustomers({});
@@ -45,10 +51,14 @@ const ContractRegist = () => {
   const { data: financialCompanies } = useGetFinancialCompanies();
   const { data: divisions } = useGetDivisions();
   const { data: shippingMethods } = useGetShippingMethods();
+  const { data: brands } = useGetBrands({});
+  const { data: cars } = useGetCars({
+    brandId: brand?.id ? brand.id : undefined,
+  });
 
   const [createContract, setCreateContract] = useState<CreateContractDto>({
     customerId: 0,
-    carName: '',
+    carId: 0,
     userId: my ? my.id : 0,
     contractAt: currentDate,
   });
@@ -98,7 +108,7 @@ const ContractRegist = () => {
     setSubmit(true);
     if (!my) return;
     if (!customer) return;
-    if (!createContract?.carName) return;
+    if (!car) return;
     try {
       const createContractPayload: CreateContractDto = {
         ...createContract,
@@ -106,6 +116,7 @@ const ContractRegist = () => {
         customerId: customer.id,
         // 셀렉
         cityId: city?.id,
+        carId: car.id,
         financialCompanyId: financialCompany?.id,
         divisionId: division?.id,
         shippingMethodId: shippingMethod?.id,
@@ -146,6 +157,7 @@ const ContractRegist = () => {
   }, [
     addToast,
     city?.id,
+    car,
     createContract,
     createContractMutation,
     customer,
@@ -294,15 +306,38 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
+              <span>브랜드</span>
+              <InputWrapper>
+                <Select
+                  size="medium"
+                  value={{
+                    ...brand,
+                  }}
+                  onChange={(value) => setBrand(value)}
+                  list={brands?.getBrands ?? []}
+                  trackBy="id"
+                  valueBy="name"
+                  placeholder="브랜드를 선택해주세요"
+                />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
               <span>
                 차종 <p className="required">*</p>
               </span>
               <InputWrapper>
-                <Input
-                  value={createContract?.carName}
-                  onTextChange={(text) => handleValueChange(text, 'carName')}
-                  isError={submit && !createContract.carName}
-                  errorMessage="차종은 필수입니다."
+                <Select
+                  size="medium"
+                  value={{
+                    ...car,
+                  }}
+                  onChange={(value) => setCar(value)}
+                  list={cars?.getCars ?? []}
+                  trackBy="id"
+                  valueBy="name"
+                  placeholder="차종을 선택해주세요"
+                  disabled={!brand}
+                  isError={submit && !car}
                 />
               </InputWrapper>
             </InputLine>

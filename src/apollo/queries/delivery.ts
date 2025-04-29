@@ -28,7 +28,14 @@ export const GET_DELIVERIES_QUERY = gql`
         id
         name
       }
-      carName
+      car {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
       carPrice
       fee
       promotion

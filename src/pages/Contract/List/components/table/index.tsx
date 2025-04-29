@@ -53,7 +53,7 @@ const ContractListTable = ({ data }: TTableProps) => {
     } else {
       setSelectedContract(data);
     }
-  }, [selectedContract, data]);
+  }, [selectedContract, data, setSelectedContract]);
 
   const handleChecked = useCallback(
     (val: TCheckBoxValue, contract: Contract) => {
@@ -64,7 +64,7 @@ const ContractListTable = ({ data }: TTableProps) => {
         setSelectedContract(newList);
       }
     },
-    [selectedContract],
+    [selectedContract, setSelectedContract],
   );
   return (
     <ContractListTableWrapper>
@@ -153,7 +153,7 @@ const ContractListTable = ({ data }: TTableProps) => {
               selectedContractHideWatchOptions,
               'carName',
               isHideColumn('carName'),
-            ) && <td className="textHidden">{it.carName ?? '-'}</td>}
+            ) && <td className="textHidden">{it.car?.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'carOption',
