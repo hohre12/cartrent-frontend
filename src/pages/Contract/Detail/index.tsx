@@ -34,7 +34,7 @@ import { numberFormat } from '@/utils/common';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import _ from 'lodash';
+import _, { update } from 'lodash';
 import { userState } from '@/state/auth';
 import { useRecoilValue } from 'recoil';
 import { useCheckSettleContract } from '@/services/payStub';
@@ -240,6 +240,23 @@ const ContractDetail = () => {
     }
   }, [detail, handleInit]);
 
+  useEffect(() => {
+    if (car && updateContract.carPrice && brand) {
+      const carPrice = updateContract.carPrice;
+      setUpdateContract((prevState) => ({
+        ...prevState,
+        branchFee: Math.round(
+          carPrice * ((brand.brandFee * 0.667 * 0.7 * car.carFee) / 100),
+        ),
+      }));
+    } else {
+      setUpdateContract((prevState) => ({
+        ...prevState,
+        branchFee: 0,
+      }));
+    }
+  }, [car, brand, updateContract.carPrice]);
+
   const handleEnter = useCallback(
     (e: globalThis.KeyboardEvent) => {
       if (e.key === 'Enter') {
@@ -439,6 +456,27 @@ const ContractDetail = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
+              <span>차량가</span>
+              <InputWrapper>
+                <Input
+                  value={
+                    updateContract?.carPrice
+                      ? numberFormat(updateContract.carPrice)
+                      : 0
+                  }
+                  onTextChange={(text) =>
+                    handleValueChange(
+                      Number(text.replace(/,/g, '')),
+                      'carPrice',
+                    )
+                  }
+                  isNumber
+                  postfixNode={'원'}
+                  disabled={!isEdit}
+                />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
               <span>차 옵션</span>
               <InputWrapper>
                 <Input
@@ -464,27 +502,6 @@ const ContractDetail = () => {
                 <Input
                   value={updateContract?.innerColor ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'innerColor')}
-                  disabled={!isEdit}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>차량가</span>
-              <InputWrapper>
-                <Input
-                  value={
-                    updateContract?.carPrice
-                      ? numberFormat(updateContract.carPrice)
-                      : 0
-                  }
-                  onTextChange={(text) =>
-                    handleValueChange(
-                      Number(text.replace(/,/g, '')),
-                      'carPrice',
-                    )
-                  }
-                  isNumber
-                  postfixNode={'원'}
                   disabled={!isEdit}
                 />
               </InputWrapper>

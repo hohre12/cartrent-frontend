@@ -170,6 +170,23 @@ const ContractRegist = () => {
   ]);
 
   useEffect(() => {
+    if (car && createContract.carPrice && brand) {
+      const carPrice = createContract.carPrice;
+      setCreateContract((prevState) => ({
+        ...prevState,
+        branchFee: Math.round(
+          carPrice * ((brand.brandFee * 0.667 * 0.7 * car.carFee) / 100),
+        ),
+      }));
+    } else {
+      setCreateContract((prevState) => ({
+        ...prevState,
+        branchFee: 0,
+      }));
+    }
+  }, [car, brand, createContract.carPrice]);
+
+  useEffect(() => {
     if (my) {
       setUser(my);
       if (customerIdx && customers && customers?.getCustomers?.length > 0) {
@@ -313,7 +330,10 @@ const ContractRegist = () => {
                   value={{
                     ...brand,
                   }}
-                  onChange={(value) => setBrand(value)}
+                  onChange={(value) => {
+                    setBrand(value);
+                    setCar(undefined);
+                  }}
                   list={brands?.getBrands ?? []}
                   trackBy="id"
                   valueBy="name"
@@ -323,7 +343,8 @@ const ContractRegist = () => {
             </InputLine>
             <InputLine>
               <span>
-                차종 <p className="required">*</p>
+                차종
+                <p className="required">*</p>
               </span>
               <InputWrapper>
                 <Select
@@ -338,6 +359,22 @@ const ContractRegist = () => {
                   placeholder="차종을 선택해주세요"
                   disabled={!brand}
                   isError={submit && !car}
+                />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>차량가</span>
+              <InputWrapper>
+                <Input
+                  value={numberFormat(createContract.carPrice)}
+                  onTextChange={(text) =>
+                    handleValueChange(
+                      Number(text.replace(/,/g, '')),
+                      'carPrice',
+                    )
+                  }
+                  isNumber
+                  postfixNode={'원'}
                 />
               </InputWrapper>
             </InputLine>
@@ -365,22 +402,6 @@ const ContractRegist = () => {
                 <Input
                   value={createContract?.innerColor ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'innerColor')}
-                />
-              </InputWrapper>
-            </InputLine>
-            <InputLine>
-              <span>차량가</span>
-              <InputWrapper>
-                <Input
-                  value={numberFormat(createContract.carPrice)}
-                  onTextChange={(text) =>
-                    handleValueChange(
-                      Number(text.replace(/,/g, '')),
-                      'carPrice',
-                    )
-                  }
-                  isNumber
-                  postfixNode={'원'}
                 />
               </InputWrapper>
             </InputLine>
