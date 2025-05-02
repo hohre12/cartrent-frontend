@@ -43,6 +43,7 @@ import AdminBrandList from './pages/Admin/Brand/List';
 import AdminBrandDetail from './pages/Admin/Brand/Detail';
 import AdminCarList from './pages/Admin/Car/List';
 import AdminCarDetail from './pages/Admin/Car/Detail';
+import AgencyList from './pages/Agency/List';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -147,6 +148,15 @@ function App() {
           <Route
             path="regist"
             element={<ContractRegist></ContractRegist>}
+          />
+        </Route>
+        <Route
+          path="/agency"
+          element={<PrivateLayout />}
+        >
+          <Route
+            index
+            element={<AgencyList></AgencyList>}
           />
         </Route>
         <Route

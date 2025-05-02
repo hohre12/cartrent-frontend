@@ -82,6 +82,10 @@ export const GET_CONTRACTS_QUERY = gql`
         name
       }
       advancePayment
+      hasContractConfirmationLetter
+      hasRegistrationCertificate
+      note
+      agencyPaymentDate
     }
   }
 `;
@@ -163,6 +167,10 @@ export const GET_CONTRACT_QUERY = gql`
         name
       }
       advancePayment
+      hasContractConfirmationLetter
+      hasRegistrationCertificate
+      note
+      agencyPaymentDate
     }
   }
 `;
