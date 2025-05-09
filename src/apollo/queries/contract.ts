@@ -29,7 +29,14 @@ export const GET_CONTRACTS_QUERY = gql`
           status
         }
       }
-      carName
+      car {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
       carOption
       innerColor
       outerColor
@@ -75,6 +82,10 @@ export const GET_CONTRACTS_QUERY = gql`
         name
       }
       advancePayment
+      hasContractConfirmationLetter
+      hasRegistrationCertificate
+      note
+      agencyPaymentDate
     }
   }
 `;
@@ -103,7 +114,14 @@ export const GET_CONTRACT_QUERY = gql`
         name
         phone
       }
-      carName
+      car {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
       carOption
       innerColor
       outerColor
@@ -149,6 +167,10 @@ export const GET_CONTRACT_QUERY = gql`
         name
       }
       advancePayment
+      hasContractConfirmationLetter
+      hasRegistrationCertificate
+      note
+      agencyPaymentDate
     }
   }
 `;

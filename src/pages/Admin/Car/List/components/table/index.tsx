@@ -1,10 +1,11 @@
 import Button from '@/components/button/Button';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
-import { useDeleteBrand } from '@/services/brand';
+import { useDeleteCar } from '@/services/car';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { Brand, Team } from '@/types/graphql';
+import { Brand, Car, Team } from '@/types/graphql';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -12,20 +13,20 @@ type TTableProps = {
   data: Brand[];
 };
 
-const BrandListTable = ({ data }: TTableProps) => {
+const CarListTable = ({ data }: TTableProps) => {
   const navigate = useNavigate();
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
-  const { deleteBrand } = useDeleteBrand();
-  const handleDeleteBrand = async (idx: Brand['id']) => {
+  const { deleteCar } = useDeleteCar();
+  const handleDeleteCar = async (idx: Car['id']) => {
     try {
-      const response = await deleteBrand(idx);
-      if (response && response.data.deleteBrand) {
+      const response = await deleteCar(idx);
+      if (response && response.data.deleteCar) {
         hideConfirm();
         addToast({
           id: Date.now(),
           isImage: true,
-          content: `브랜드가 삭제되었습니다.`,
+          content: `차량이 삭제되었습니다.`,
           type: 'success',
         });
       } else {
@@ -33,7 +34,7 @@ const BrandListTable = ({ data }: TTableProps) => {
         addToast({
           id: Date.now(),
           isImage: true,
-          content: `브랜드에 소속된 차량이 존재하여 삭제가 불가능합니다.`,
+          content: `삭제가 불가능합니다.`,
           type: 'error',
         });
       }
@@ -46,42 +47,34 @@ const BrandListTable = ({ data }: TTableProps) => {
       <TableWrapper>
         <thead>
           <TableHeader>
-            <th>브랜드명</th>
-            <th>국산/수입</th>
-            <th>브랜드 수수료</th>
-            <th>삭제</th>
+            <th>차량명</th>
+            {/* <th>국산/수입</th>
+            <th>차량 수수료</th>
+            <th>삭제</th> */}
           </TableHeader>
         </thead>
         <tbody>
           {data.map((it, idx) => (
-            <TableItem
-              key={idx}
-              onClick={() => navigate(`${it.id}`)}
-            >
-              <td className="name">{it.name}</td>
-              <td>{it.isDomestic ? '국산' : '수입'}</td>
-              <td>{it.brandFee ? `${it.brandFee}%` : '-'}</td>
-              <td onClick={(e) => e.stopPropagation()}>
-                <Button
-                  variant="black"
-                  onClick={() =>
-                    showConfirm({
-                      isOpen: true,
-                      title: '브랜드 삭제',
-                      content: `${it.name} 브랜드를 삭제하시겠습니까?`,
-                      cancelText: '취소',
-                      confirmText: '삭제',
-                      confirmVariant: 'primaryDanger',
-                      onClose: hideConfirm,
-                      onCancel: hideConfirm,
-                      onConfirm: () => handleDeleteBrand(it.id),
-                    })
-                  }
-                >
-                  삭제
-                </Button>
-              </td>
-            </TableItem>
+            <React.Fragment key={idx}>
+              <TableItem style={{ cursor: 'default' }}>
+                <td className="name">{it.name}</td>
+              </TableItem>
+              {it.cars &&
+                it.cars.length > 0 &&
+                it.cars.map((car, carIdx) => (
+                  <TableItem
+                    key={carIdx}
+                    onClick={() => navigate(`${car.id}`)}
+                  >
+                    <td
+                      className="name"
+                      style={{ paddingLeft: `40px` }}
+                    >
+                      {car.name}
+                    </td>
+                  </TableItem>
+                ))}
+            </React.Fragment>
           ))}
         </tbody>
       </TableWrapper>
@@ -89,7 +82,7 @@ const BrandListTable = ({ data }: TTableProps) => {
   );
 };
 
-export default BrandListTable;
+export default CarListTable;
 
 export const TableWrapper = styled.table`
   position: relative;

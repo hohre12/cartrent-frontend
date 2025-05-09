@@ -82,7 +82,7 @@ const CounselDetail = () => {
             </div>
             <div>
               <p>차종</p>
-              <div>{detail.contract?.carName ?? '-'}</div>
+              <div>{detail.contract?.car?.name ?? '-'}</div>
             </div>
             <div>
               <p>상담일시</p>

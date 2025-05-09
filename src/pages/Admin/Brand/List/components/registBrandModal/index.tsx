@@ -77,7 +77,7 @@ const RegistBrandModal = (props: TModal) => {
         <RegistTeamModalContentWrapper>
           <div className="InputWrapper">
             <span>
-              브랜드명 <p className="required">*</p>
+              브랜드 명 <p className="required">*</p>
             </span>
             <Input
               value={name}
@@ -86,13 +86,16 @@ const RegistBrandModal = (props: TModal) => {
           </div>
           <div className="InputWrapper">
             <span>
-              수수료율 <p className="required">*</p>
+              브랜드 수수료율 <p className="required">*</p>
             </span>
             <Input
               value={numberFormat(brandFee)}
-              onTextChange={(text) =>
-                setBrandFee(Number(text.replace(/,/g, '')))
-              }
+              onTextChange={(text) => {
+                const value = Number(text.replace(/,/g, ''));
+                if (value > 100) {
+                  setBrandFee(100);
+                } else setBrandFee(value);
+              }}
               max={100}
               type="number"
               isNumber

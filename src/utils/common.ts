@@ -1,4 +1,4 @@
-import { Team } from "@/types/graphql";
+import { Team } from '@/types/graphql';
 
 // list 보기옵션 컬럼 노출 여부
 export const isColumnsViewHide = (
@@ -21,7 +21,10 @@ export const numberFormat = (
   num: number | undefined | null,
 ): string | number => {
   if (!num) return 0;
-  return num.toLocaleString('ko-KR');
+  return num.toLocaleString('ko-KR', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 8, // 충분히 크게 설정
+  });
 };
 
 // 입력값 포맷팅 함수
@@ -103,12 +106,15 @@ export const customerStatusColor = (value?: string): string => {
   }
 };
 
-export const flattenTeams = (teams: Team[], parentId: number | null = null): Team[] => {
-    return teams.flatMap((team) => {
-      const { subTeams, ...rest } = team;
-      const flattenedTeam = { ...rest, parentId };
-  
-      // 현재 팀 + 하위 팀 재귀 처리
-      return [flattenedTeam, ...flattenTeams(subTeams || [], team.id)];
-    });
-  };
+export const flattenTeams = (
+  teams: Team[],
+  parentId: number | null = null,
+): Team[] => {
+  return teams.flatMap((team) => {
+    const { subTeams, ...rest } = team;
+    const flattenedTeam = { ...rest, parentId };
+
+    // 현재 팀 + 하위 팀 재귀 처리
+    return [flattenedTeam, ...flattenTeams(subTeams || [], team.id)];
+  });
+};

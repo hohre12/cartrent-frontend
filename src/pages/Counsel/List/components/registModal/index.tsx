@@ -24,7 +24,7 @@ import styled from 'styled-components';
 
 const RegistModal = (props: TModal & { propsCustomer: Customer }) => {
   const { propsCustomer, ...modalProps } = props;
-  const [customer, setCustomer] = useState<Customer>();
+  const [customer, setCustomer] = useState<Customer>(propsCustomer);
   const [user, setUser] = useState<User>();
   const my = useRecoilValue(userState);
   const [contract, setContract] = useState<Contract>();

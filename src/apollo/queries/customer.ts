@@ -27,7 +27,14 @@ export const GET_CUSTOMERS_QUERY = gql`
       agreedMileage
       advancePayment
       contractList {
-        carName
+        car {
+          id
+          name
+          brand {
+            id
+            name
+          }
+        }
         division {
           name
         }
@@ -97,7 +104,14 @@ export const GET_CUSTOMER_QUERY = gql`
         division {
           name
         }
-        carName
+        car {
+          id
+          name
+          brand {
+            id
+            name
+          }
+        }
         carOption
         contractPeriod
         agreedMileage

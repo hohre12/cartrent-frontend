@@ -1,13 +1,9 @@
-import Checkbox, { TCheckBoxValue } from '@/components/checkbox/Checkbox';
 import {
-  CONTRACT_LIST_WATCH_OPTIONS,
-  CONTRACT_LIST_WATCH_REQUIRED_OPTIONS,
-} from '@/constants/contract';
+  AGENCY_CONTRACT_LIST_WATCH_OPTIONS,
+  AGENCY_CONTRACT_LIST_WATCH_REQUIRED_OPTIONS,
+} from '@/constants/agency';
+import { selectedAgencyContractHideWatchOptionsState } from '@/state/agency';
 import { userState } from '@/state/auth';
-import {
-  selectedContractHideWatchOptionsState,
-  selectedContractState,
-} from '@/state/contract';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
 import { Contract, PermissionType } from '@/types/graphql';
@@ -17,96 +13,50 @@ import {
   numberFormat,
 } from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
-import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 type TTableProps = {
   data: Contract[];
 };
 
-const ContractListTable = ({ data }: TTableProps) => {
+const AgencyContractListTable = ({ data }: TTableProps) => {
   const navigate = useNavigate();
-  const [selectedContract, setSelectedContract] = useRecoilState(
-    selectedContractState,
-  );
-  const selectedContractHideWatchOptions = useRecoilValue(
-    selectedContractHideWatchOptionsState,
+  const selectedAgencyContractHideWatchOptions = useRecoilValue(
+    selectedAgencyContractHideWatchOptionsState,
   );
   const my = useRecoilValue(userState);
   const isHideColumn = (columeKey: string) => {
     return my?.role.name === PermissionType.Admin
       ? false
-      : !CONTRACT_LIST_WATCH_REQUIRED_OPTIONS.includes(columeKey);
+      : !AGENCY_CONTRACT_LIST_WATCH_REQUIRED_OPTIONS.includes(columeKey);
   };
-
-  const isAllChecked = useMemo(() => {
-    return (
-      data.every((it) => selectedContract.includes(it)) && data.length !== 0
-    );
-  }, [selectedContract, data]);
-
-  const handleAllChecked = useCallback(() => {
-    if (selectedContract.length > 0) {
-      setSelectedContract([]);
-    } else {
-      setSelectedContract(data);
-    }
-  }, [selectedContract, data, setSelectedContract]);
-
-  const handleChecked = useCallback(
-    (val: TCheckBoxValue, contract: Contract) => {
-      if (val) {
-        setSelectedContract([...selectedContract, contract]);
-      } else {
-        const newList = selectedContract.filter((it) => it.id !== contract.id);
-        setSelectedContract(newList);
-      }
-    },
-    [selectedContract, setSelectedContract],
-  );
   return (
     <ContractListTableWrapper>
       <thead>
         <TableHeader>
-          {my?.role.name === PermissionType.Admin && (
-            <th style={{ width: '60px' }}>
-              <Checkbox
-                value={isAllChecked}
-                onCheckedChange={handleAllChecked}
-              />
-            </th>
+          {Object.entries(AGENCY_CONTRACT_LIST_WATCH_OPTIONS).map(
+            ([key, value]) => {
+              return (
+                !isColumnsViewHide(
+                  selectedAgencyContractHideWatchOptions,
+                  key,
+                  isHideColumn(key),
+                ) && <th key={key}>{value}</th>
+              );
+            },
           )}
-          {Object.entries(CONTRACT_LIST_WATCH_OPTIONS).map(([key, value]) => {
-            return (
-              !isColumnsViewHide(
-                selectedContractHideWatchOptions,
-                key,
-                isHideColumn(key),
-              ) && <th key={key}>{value}</th>
-            );
-          })}
         </TableHeader>
       </thead>
       <tbody>
         {data.map((it, idx) => (
           <TableItem
             key={idx}
-            onClick={() => navigate(`${it.id}`)}
+            onClick={() => navigate(`/contract/${it.id}`)}
           >
-            {my?.role.name === PermissionType.Admin && (
-              <td>
-                <div onClick={(e) => e.stopPropagation()}>
-                  <Checkbox
-                    value={selectedContract.some((cl) => cl.id === it.id)}
-                    onCheckedChange={(val) => handleChecked(val, it)}
-                  />
-                </div>
-              </td>
-            )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'customerStatus',
               isHideColumn('customerStatus'),
             ) && (
@@ -120,86 +70,112 @@ const ContractListTable = ({ data }: TTableProps) => {
               </td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'userName',
               isHideColumn('userName'),
             ) && <td>{it.user.name ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'cityName',
               isHideColumn('cityName'),
             ) && <td>{it.city?.name ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'contractAt',
               isHideColumn('contractAt'),
             ) && <td>{formatDate(it.contractAt) ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'shippingDate',
               isHideColumn('shippingDate'),
             ) && <td>{formatDate(it.shippingDate) ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'customerName',
               isHideColumn('customerName'),
             ) && <td>{it.customer?.name ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'customerPhone',
               isHideColumn('customerPhone'),
             ) && <td>{it.customer?.phone ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
+              'hasRegistrationCertificate',
+              isHideColumn('hasRegistrationCertificate'),
+            ) && (
+              <td>{it.hasRegistrationCertificate ? '등록됨' : '등록안됨'}</td>
+            )}
+            {!isColumnsViewHide(
+              selectedAgencyContractHideWatchOptions,
+              'hasContractConfirmationLetter',
+              isHideColumn('hasContractConfirmationLetter'),
+            ) && (
+              <td>
+                {it.hasContractConfirmationLetter ? '등록됨' : '등록안됨'}
+              </td>
+            )}
+            {!isColumnsViewHide(
+              selectedAgencyContractHideWatchOptions,
+              'note',
+              isHideColumn('note'),
+            ) && <td>{it.note ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedAgencyContractHideWatchOptions,
+              'agencyPaymentDate',
+              isHideColumn('agencyPaymentDate'),
+            ) && <td>{formatDate(it.agencyPaymentDate) ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedAgencyContractHideWatchOptions,
               'carName',
               isHideColumn('carName'),
             ) && <td className="textHidden">{it.car?.name ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'carOption',
               isHideColumn('carOption'),
             ) && <td className="textHidden">{it.carOption ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'innerColor',
               isHideColumn('innerColor'),
             ) && <td>{it.innerColor ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'outerColor',
               isHideColumn('outerColor'),
             ) && <td>{it.outerColor ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'carPrice',
               isHideColumn('carPrice'),
             ) && (
               <td>{it.carPrice ? `${numberFormat(it.carPrice)}원` : '-'}</td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'financialCompany',
               isHideColumn('financialCompany'),
             ) && <td>{it.financialCompany?.name ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'feeRate',
               isHideColumn('feeRate'),
             ) && <td>{it.feeRate ? `${it.feeRate}%` : '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'fee',
               isHideColumn('fee'),
             ) && <td>{it.fee ? `${numberFormat(it.fee)}원` : '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'promotion',
               isHideColumn('promotion'),
             ) && (
               <td>{it.promotion ? `${numberFormat(it.promotion)}원` : '-'}</td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'monthlyPayment',
               isHideColumn('monthlyPayment'),
             ) && (
@@ -210,29 +186,29 @@ const ContractListTable = ({ data }: TTableProps) => {
               </td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'shippingMethod',
               isHideColumn('shippingMethod'),
             ) && <td>{it.shippingMethod?.name ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'isOrdering',
               isHideColumn('isOrdering'),
             ) && <td>{it.isOrdering ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'branch',
               isHideColumn('branch'),
             ) && <td>{it.branch ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'branchFee',
               isHideColumn('branchFee'),
             ) && (
               <td>{it.branchFee ? `${numberFormat(it.branchFee)}원` : '-'}</td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'advancePayment',
               isHideColumn('advancePayment'),
             ) && (
@@ -243,14 +219,14 @@ const ContractListTable = ({ data }: TTableProps) => {
               </td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'contractPeriod',
               isHideColumn('contractPeriod'),
             ) && (
               <td>{it.contractPeriod ? `${it.contractPeriod}개월` : '-'}</td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'agreedMileage',
               isHideColumn('agreedMileage'),
             ) && (
@@ -261,58 +237,58 @@ const ContractListTable = ({ data }: TTableProps) => {
               </td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'insuranceAge',
               isHideColumn('insuranceAge'),
             ) && <td>{it.insuranceAge ? `${it.insuranceAge} 세` : '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'object',
               isHideColumn('object'),
             ) && <td>{it.object ? `${it.object}억원` : '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'service1',
               isHideColumn('service1'),
             ) && (
               <td>{it.service1 ? `${numberFormat(it.service1)}원` : '-'}</td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'serviceBody1',
               isHideColumn('serviceBody1'),
             ) && <td>{it.serviceBody1 ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'service2',
               isHideColumn('service2'),
             ) && (
               <td>{it.service2 ? `${numberFormat(it.service2)}원` : '-'}</td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'serviceBody2',
               isHideColumn('serviceBody2'),
             ) && <td>{it.serviceBody2 ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'service3',
               isHideColumn('service3'),
             ) && (
               <td>{it.service3 ? `${numberFormat(it.service3)}원` : '-'}</td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'serviceBody3',
               isHideColumn('serviceBody3'),
             ) && <td>{it.serviceBody3 ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'incomeEarner',
               isHideColumn('incomeEarner'),
             ) && <td>{it.incomeEarner ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'cashAssistance',
               isHideColumn('cashAssistance'),
             ) && (
@@ -323,12 +299,12 @@ const ContractListTable = ({ data }: TTableProps) => {
               </td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'supportDetail',
               isHideColumn('supportDetail'),
             ) && <td>{it.supportDetails ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'businessExpenses',
               isHideColumn('businessExpenses'),
             ) && (
@@ -339,12 +315,12 @@ const ContractListTable = ({ data }: TTableProps) => {
               </td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'businessExpensesDetail',
               isHideColumn('businessExpensesDetail'),
             ) && <td>{it.businessExpensesDetail ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'totalExpenditure',
               isHideColumn('totalExpenditure'),
             ) && (
@@ -355,26 +331,26 @@ const ContractListTable = ({ data }: TTableProps) => {
               </td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'totalFee',
               isHideColumn('totalFee'),
             ) && (
               <td>{it.totalFee ? `${numberFormat(it.totalFee)}원` : '-'}</td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'netIncome',
               isHideColumn('netIncome'),
             ) && (
               <td>{it.netIncome ? `${numberFormat(it.netIncome)}원` : '-'}</td>
             )}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'company_name_nominee',
               isHideColumn('company_name_nominee'),
             ) && <td>{it.company_name_nominee ?? '-'}</td>}
             {!isColumnsViewHide(
-              selectedContractHideWatchOptions,
+              selectedAgencyContractHideWatchOptions,
               'divisionName',
               isHideColumn('divisionName'),
             ) && <td>{it.division?.name ?? '-'}</td>}
@@ -385,7 +361,7 @@ const ContractListTable = ({ data }: TTableProps) => {
   );
 };
 
-export default ContractListTable;
+export default AgencyContractListTable;
 
 export const ContractListTableWrapper = styled.table`
   position: relative;

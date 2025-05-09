@@ -27,7 +27,14 @@ export const GET_PAYSTUBS_QUERY = gql`
           id
           name
         }
-        carName
+        car {
+          id
+          name
+          brand {
+            id
+            name
+          }
+        }
         carPrice
         fee
         promotion
@@ -79,7 +86,14 @@ export const GET_PAYSTUB_QUERY = gql`
           id
           name
         }
-        carName
+        car {
+          id
+          name
+          brand {
+            id
+            name
+          }
+        }
         carPrice
         fee
         promotion

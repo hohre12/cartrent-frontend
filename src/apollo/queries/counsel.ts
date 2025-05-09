@@ -31,7 +31,14 @@ export const GET_COUNSELS_QUERY = gql`
       }
       contract {
         id
-        carName
+        car {
+          id
+          name
+          brand {
+            id
+            name
+          }
+        }
         division {
           id
           name
@@ -75,7 +82,14 @@ export const GET_COUNSEL_QUERY = gql`
       }
       contract {
         id
-        carName
+        car {
+          id
+          name
+          brand {
+            id
+            name
+          }
+        }
         division {
           id
           name

@@ -119,6 +119,8 @@ export type City = {
 export type Contract = {
   /** 선수금 */
   advancePayment?: Maybe<Scalars['Int']['output']>;
+  /** 대리점 결제일 */
+  agencyPaymentDate?: Maybe<Scalars['String']['output']>;
   /** 약정 거리 */
   agreedMileage?: Maybe<Scalars['Int']['output']>;
   /** 지점 */
@@ -129,8 +131,8 @@ export type Contract = {
   businessExpenses?: Maybe<Scalars['Int']['output']>;
   /** 경비 내용 */
   businessExpensesDetail?: Maybe<Scalars['String']['output']>;
-  /** 차종 */
-  carName?: Maybe<Scalars['String']['output']>;
+  car?: Maybe<Car>;
+  carId?: Maybe<Scalars['Int']['output']>;
   /** 차 옵션 */
   carOption?: Maybe<Scalars['String']['output']>;
   /** 차량 가격 */
@@ -159,6 +161,10 @@ export type Contract = {
   feeRate?: Maybe<Scalars['Int']['output']>;
   financialCompany?: Maybe<FinancialCompany>;
   financialCompanyId?: Maybe<Scalars['Int']['output']>;
+  /** 계약사실확인서 여부 */
+  hasContractConfirmationLetter?: Maybe<Scalars['Boolean']['output']>;
+  /** 등록증 여부 */
+  hasRegistrationCertificate?: Maybe<Scalars['Boolean']['output']>;
   id: Scalars['Int']['output'];
   /** 소득자 */
   incomeEarner?: Maybe<Scalars['String']['output']>;
@@ -174,6 +180,8 @@ export type Contract = {
   monthlyPayment?: Maybe<Scalars['Int']['output']>;
   /** 수익합계 */
   netIncome?: Maybe<Scalars['Int']['output']>;
+  /** 비고 */
+  note?: Maybe<Scalars['String']['output']>;
   /** 대물 */
   object?: Maybe<Scalars['Int']['output']>;
   /** 외부 색상 */
@@ -310,6 +318,8 @@ export type CreateCityDto = {
 export type CreateContractDto = {
   /** 선수금 */
   advancePayment?: InputMaybe<Scalars['Int']['input']>;
+  /** 대리점 결제일 */
+  agencyPaymentDate?: InputMaybe<Scalars['String']['input']>;
   /** 약정 거리 */
   agreedMileage?: InputMaybe<Scalars['Int']['input']>;
   /** 지점 */
@@ -320,8 +330,8 @@ export type CreateContractDto = {
   businessExpenses?: InputMaybe<Scalars['Int']['input']>;
   /** 발비 내용 */
   businessExpensesDetail?: InputMaybe<Scalars['String']['input']>;
-  /** 차종 */
-  carName: Scalars['String']['input'];
+  /** 차종 Id */
+  carId: Scalars['Int']['input'];
   /** 차 옵션 */
   carOption?: InputMaybe<Scalars['String']['input']>;
   /** 차량 가격 */
@@ -346,6 +356,10 @@ export type CreateContractDto = {
   feeRate?: InputMaybe<Scalars['Int']['input']>;
   /** 금융사 id */
   financialCompanyId?: InputMaybe<Scalars['Int']['input']>;
+  /** 계약사실확인서 여부 */
+  hasContractConfirmationLetter?: InputMaybe<Scalars['Boolean']['input']>;
+  /** 등록증 여부 */
+  hasRegistrationCertificate?: InputMaybe<Scalars['Boolean']['input']>;
   /** 소득자 */
   incomeEarner?: InputMaybe<Scalars['String']['input']>;
   /** 내부 색상 */
@@ -358,6 +372,8 @@ export type CreateContractDto = {
   monthlyPayment?: InputMaybe<Scalars['Int']['input']>;
   /** 순수익 */
   netIncome?: InputMaybe<Scalars['Int']['input']>;
+  /** 비고 */
+  note?: InputMaybe<Scalars['String']['input']>;
   /** 대물 */
   object?: InputMaybe<Scalars['Int']['input']>;
   /** 외부 색상 */
@@ -622,6 +638,19 @@ export type GetAdjustmentsDto = {
   /** 담당자 Ids */
   userIds?: InputMaybe<Array<Scalars['Int']['input']>>;
   year: Scalars['String']['input'];
+};
+
+export type GetAgencyContractsDto = {
+  /** 지점 */
+  branch?: InputMaybe<Scalars['String']['input']>;
+  /** 결제일 종료일 */
+  endAgencyPaymentDate?: InputMaybe<Scalars['String']['input']>;
+  /** 출고일 종료일 */
+  endShippingDate?: InputMaybe<Scalars['String']['input']>;
+  /** 결제일 시작일 */
+  startAgencyPaymentDate?: InputMaybe<Scalars['String']['input']>;
+  /** 출고일 시작일 */
+  startShippingDate?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type GetBrandsDto = {
@@ -1225,6 +1254,8 @@ export type Query = {
   checkSettleContract: Scalars['Boolean']['output'];
   /** 정산 리스트 조회 */
   getAdjustments: Array<Adjustment>;
+  /** 대리점 계약 리스트 조회 */
+  getAgencyContracts: Array<Contract>;
   /** 브랜드 조회 */
   getBrand: Brand;
   /** 브랜드 리스트 조회 */
@@ -1312,6 +1343,11 @@ export type QueryCheckSettleContractArgs = {
 
 export type QueryGetAdjustmentsArgs = {
   getAdjustmentsDto: GetAdjustmentsDto;
+};
+
+
+export type QueryGetAgencyContractsArgs = {
+  getAgencyContractsDto: GetAgencyContractsDto;
 };
 
 
@@ -1550,6 +1586,8 @@ export type UpdateCityDto = {
 export type UpdateContractDto = {
   /** 선수금 */
   advancePayment?: InputMaybe<Scalars['Int']['input']>;
+  /** 대리점 결제일 */
+  agencyPaymentDate?: InputMaybe<Scalars['String']['input']>;
   /** 약정 거리 */
   agreedMileage?: InputMaybe<Scalars['Int']['input']>;
   /** 지점 */
@@ -1561,7 +1599,7 @@ export type UpdateContractDto = {
   /** 발비 내용 */
   businessExpensesDetail?: InputMaybe<Scalars['String']['input']>;
   /** 차종 */
-  carName?: InputMaybe<Scalars['String']['input']>;
+  carId?: InputMaybe<Scalars['Int']['input']>;
   /** 차 옵션 */
   carOption?: InputMaybe<Scalars['String']['input']>;
   /** 차량 가격 */
@@ -1587,6 +1625,10 @@ export type UpdateContractDto = {
   feeRate?: InputMaybe<Scalars['Int']['input']>;
   /** 금융사 id */
   financialCompanyId?: InputMaybe<Scalars['Int']['input']>;
+  /** 계약사실확인서 여부 */
+  hasContractConfirmationLetter?: InputMaybe<Scalars['Boolean']['input']>;
+  /** 등록증 여부 */
+  hasRegistrationCertificate?: InputMaybe<Scalars['Boolean']['input']>;
   /** 소득자 */
   incomeEarner?: InputMaybe<Scalars['String']['input']>;
   /** 내부 색상 */
@@ -1601,6 +1643,8 @@ export type UpdateContractDto = {
   monthlyPayment?: InputMaybe<Scalars['Int']['input']>;
   /** 순수익 */
   netIncome?: InputMaybe<Scalars['Int']['input']>;
+  /** 비고 */
+  note?: InputMaybe<Scalars['String']['input']>;
   /** 대물 */
   object?: InputMaybe<Scalars['Int']['input']>;
   /** 외부 색상 */
@@ -1882,6 +1926,48 @@ export type DeleteCityMutationVariables = Exact<{
 
 export type DeleteCityMutation = { deleteCity: string };
 
+export type CreateBrandMutationVariables = Exact<{
+  createBrandDto: CreateBrandDto;
+}>;
+
+
+export type CreateBrandMutation = { createBrand: { id: number } };
+
+export type UpdateBrandMutationVariables = Exact<{
+  updateBrandDto: UpdateBrandDto;
+}>;
+
+
+export type UpdateBrandMutation = { updateBrand: { id: number, name: string } };
+
+export type DeleteBrandMutationVariables = Exact<{
+  id: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteBrandMutation = { deleteBrand: boolean };
+
+export type CreateCarMutationVariables = Exact<{
+  createCarDto: CreateCarDto;
+}>;
+
+
+export type CreateCarMutation = { createCar: { id: number } };
+
+export type UpdateCarMutationVariables = Exact<{
+  updateCarDto: UpdateCarDto;
+}>;
+
+
+export type UpdateCarMutation = { updateCar: { id: number, name: string } };
+
+export type DeleteCarMutationVariables = Exact<{
+  id: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteCarMutation = { deleteCar: boolean };
+
 export type CreateContractMutationVariables = Exact<{
   createContractDto: CreateContractDto;
 }>;
@@ -2105,6 +2191,34 @@ export type MakeExcelQueryVariables = Exact<{
 
 export type MakeExcelQuery = { makeExcel: boolean };
 
+export type GetBrandsQueryVariables = Exact<{
+  getBrandsDto: GetBrandsDto;
+}>;
+
+
+export type GetBrandsQuery = { getBrands: Array<{ id: number, name: string, isDomestic: boolean, brandFee: number, created_at?: string | null, updated_at?: string | null, cars?: Array<{ id: number, name: string }> | null }> };
+
+export type GetBrandQueryVariables = Exact<{
+  getBrandId: Scalars['Float']['input'];
+}>;
+
+
+export type GetBrandQuery = { getBrand: { id: number, name: string, isDomestic: boolean, brandFee: number, created_at?: string | null, updated_at?: string | null, cars?: Array<{ id: number, name: string }> | null } };
+
+export type GetCarsQueryVariables = Exact<{
+  getCarsDto: GetCarsDto;
+}>;
+
+
+export type GetCarsQuery = { getCars: Array<{ id: number, name: string, carFee: number, created_at?: string | null, updated_at?: string | null, brand: { id: number, name: string, isDomestic: boolean, brandFee: number } }> };
+
+export type GetCarQueryVariables = Exact<{
+  getCarId: Scalars['Float']['input'];
+}>;
+
+
+export type GetCarQuery = { getCar: { id: number, name: string, carFee: number, created_at?: string | null, updated_at?: string | null, brand: { id: number, name: string, isDomestic: boolean, brandFee: number } } };
+
 export type GetCitiesQueryVariables = Exact<{
   getCitiesDto: GetCitiesDto;
 }>;
@@ -2124,14 +2238,14 @@ export type GetContractsQueryVariables = Exact<{
 }>;
 
 
-export type GetContractsQuery = { getContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string, customerStatus?: { id: number, status: string } | null }, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> };
+export type GetContractsQuery = { getContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string, customerStatus?: { id: number, status: string } | null }, car?: { id: number, name: string, brand: { id: number, name: string } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> };
 
 export type GetContractQueryVariables = Exact<{
   contractId: Scalars['Float']['input'];
 }>;
 
 
-export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string }, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null } };
+export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string }, car?: { id: number, name: string, brand: { id: number, name: string } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null } };
 
 export type GetFinancialCompaniesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2153,28 +2267,28 @@ export type GetCounselsQueryVariables = Exact<{
 }>;
 
 
-export type GetCounselsQuery = { getCounsels: Array<{ id: number, status?: Status | null, counselAt: string, context: string, customer: { id: number, name: string, phone: string, customerGroup?: { id: number, name: string } | null, customerGrade?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null }, contract?: { id: number, carName?: string | null, division?: { id: number, name: string } | null } | null, user: { id: number, name: string } }> };
+export type GetCounselsQuery = { getCounsels: Array<{ id: number, status?: Status | null, counselAt: string, context: string, customer: { id: number, name: string, phone: string, customerGroup?: { id: number, name: string } | null, customerGrade?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null }, contract?: { id: number, car?: { id: number, name: string, brand: { id: number, name: string } } | null, division?: { id: number, name: string } | null } | null, user: { id: number, name: string } }> };
 
 export type GetCounselQueryVariables = Exact<{
   counselId: Scalars['Float']['input'];
 }>;
 
 
-export type GetCounselQuery = { getCounsel: { id: number, status?: Status | null, counselAt: string, context: string, customer: { id: number, name: string, phone: string, customerGroup?: { id: number, name: string } | null, customerGrade?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null }, contract?: { id: number, carName?: string | null, division?: { id: number, name: string } | null } | null, user: { id: number, name: string } } };
+export type GetCounselQuery = { getCounsel: { id: number, status?: Status | null, counselAt: string, context: string, customer: { id: number, name: string, phone: string, customerGroup?: { id: number, name: string } | null, customerGrade?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null }, contract?: { id: number, car?: { id: number, name: string, brand: { id: number, name: string } } | null, division?: { id: number, name: string } | null } | null, user: { id: number, name: string } } };
 
 export type GetCustomersQueryVariables = Exact<{
   getCustomersDto: GetCustomersDto;
 }>;
 
 
-export type GetCustomersQuery = { getCustomers: Array<{ id: number, created_at?: string | null, name: string, phone: string, memo?: string | null, note?: string | null, type?: string | null, company_name_nominee?: string | null, origin?: string | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, advancePayment?: number | null, customerDivision?: { id: number, name: string } | null, contractList: Array<{ carName?: string | null, division?: { name: string } | null }>, counselList: Array<{ counselAt: string }>, customerGrade?: { name: string } | null, userList: { name: string }, customerStatus?: { status: string } | null }> };
+export type GetCustomersQuery = { getCustomers: Array<{ id: number, created_at?: string | null, name: string, phone: string, memo?: string | null, note?: string | null, type?: string | null, company_name_nominee?: string | null, origin?: string | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, advancePayment?: number | null, customerDivision?: { id: number, name: string } | null, contractList: Array<{ car?: { id: number, name: string, brand: { id: number, name: string } } | null, division?: { name: string } | null }>, counselList: Array<{ counselAt: string }>, customerGrade?: { name: string } | null, userList: { name: string }, customerStatus?: { status: string } | null }> };
 
 export type GetCustomerQueryVariables = Exact<{
   customerId: Scalars['Float']['input'];
 }>;
 
 
-export type GetCustomerQuery = { getCustomer: { id: number, name: string, phone: string, sub_phone?: string | null, type?: string | null, created_at?: string | null, memo?: string | null, note?: string | null, company_name_nominee?: string | null, origin?: string | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, advancePayment?: number | null, customerDivision?: { id: number, name: string } | null, userList: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null, contractList: Array<{ id: number, company_name_nominee?: string | null, advancePayment?: number | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, shippingMethod?: { id: number, name: string } | null, division?: { name: string } | null }>, customerGrade?: { id: number, name: string } | null, counselList: Array<{ id: number, counselAt: string, context: string, customer: { name: string }, user: { name: string } }> } };
+export type GetCustomerQuery = { getCustomer: { id: number, name: string, phone: string, sub_phone?: string | null, type?: string | null, created_at?: string | null, memo?: string | null, note?: string | null, company_name_nominee?: string | null, origin?: string | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, advancePayment?: number | null, customerDivision?: { id: number, name: string } | null, userList: { id: number, name: string }, customerGroup?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null, contractList: Array<{ id: number, company_name_nominee?: string | null, advancePayment?: number | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, shippingMethod?: { id: number, name: string } | null, division?: { name: string } | null, car?: { id: number, name: string, brand: { id: number, name: string } } | null }>, customerGrade?: { id: number, name: string } | null, counselList: Array<{ id: number, counselAt: string, context: string, customer: { name: string }, user: { name: string } }> } };
 
 export type GetCustomerGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2210,7 +2324,7 @@ export type GetDeliveriesQueryVariables = Exact<{
 }>;
 
 
-export type GetDeliveriesQuery = { getDeliveries: Array<{ id: number, contractAt?: string | null, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, customer: { id: number, name: string }, user: { id: number, name: string }, financialCompany?: { id: number, name: string } | null, division?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null }> };
+export type GetDeliveriesQuery = { getDeliveries: Array<{ id: number, contractAt?: string | null, shippingDate?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, customer: { id: number, name: string }, user: { id: number, name: string }, financialCompany?: { id: number, name: string } | null, division?: { id: number, name: string } | null, car?: { id: number, name: string, brand: { id: number, name: string } } | null, shippingMethod?: { id: number, name: string } | null }> };
 
 export type GetNoticesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2247,14 +2361,14 @@ export type GetPayStubsQueryVariables = Exact<{
 }>;
 
 
-export type GetPayStubsQuery = { getPayStubs: Array<{ id: number, year: string, month: string, day?: string | null, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, incomeTax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string } }> | null }> };
+export type GetPayStubsQuery = { getPayStubs: Array<{ id: number, year: string, month: string, day?: string | null, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, incomeTax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string }, car?: { id: number, name: string, brand: { id: number, name: string } } | null }> | null }> };
 
 export type GetPayStubQueryVariables = Exact<{
   payStubId: Scalars['Float']['input'];
 }>;
 
 
-export type GetPayStubQuery = { getPayStub: { id: number, year: string, month: string, day?: string | null, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, incomeTax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carName?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string } }> | null } };
+export type GetPayStubQuery = { getPayStub: { id: number, year: string, month: string, day?: string | null, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, incomeTax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string }, car?: { id: number, name: string, brand: { id: number, name: string } } | null }> | null } };
 
 export type CheckSettleContractQueryVariables = Exact<{
   checkSettleContractDto: CheckSettleContractDto;
@@ -2743,6 +2857,202 @@ export function useDeleteCityMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteCityMutationHookResult = ReturnType<typeof useDeleteCityMutation>;
 export type DeleteCityMutationResult = Apollo.MutationResult<DeleteCityMutation>;
 export type DeleteCityMutationOptions = Apollo.BaseMutationOptions<DeleteCityMutation, DeleteCityMutationVariables>;
+export const CreateBrandDocument = gql`
+    mutation CreateBrand($createBrandDto: CreateBrandDto!) {
+  createBrand(createBrandDto: $createBrandDto) {
+    id
+  }
+}
+    `;
+export type CreateBrandMutationFn = Apollo.MutationFunction<CreateBrandMutation, CreateBrandMutationVariables>;
+
+/**
+ * __useCreateBrandMutation__
+ *
+ * To run a mutation, you first call `useCreateBrandMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBrandMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createBrandMutation, { data, loading, error }] = useCreateBrandMutation({
+ *   variables: {
+ *      createBrandDto: // value for 'createBrandDto'
+ *   },
+ * });
+ */
+export function useCreateBrandMutation(baseOptions?: Apollo.MutationHookOptions<CreateBrandMutation, CreateBrandMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateBrandMutation, CreateBrandMutationVariables>(CreateBrandDocument, options);
+      }
+export type CreateBrandMutationHookResult = ReturnType<typeof useCreateBrandMutation>;
+export type CreateBrandMutationResult = Apollo.MutationResult<CreateBrandMutation>;
+export type CreateBrandMutationOptions = Apollo.BaseMutationOptions<CreateBrandMutation, CreateBrandMutationVariables>;
+export const UpdateBrandDocument = gql`
+    mutation UpdateBrand($updateBrandDto: UpdateBrandDto!) {
+  updateBrand(updateBrandDto: $updateBrandDto) {
+    id
+    name
+  }
+}
+    `;
+export type UpdateBrandMutationFn = Apollo.MutationFunction<UpdateBrandMutation, UpdateBrandMutationVariables>;
+
+/**
+ * __useUpdateBrandMutation__
+ *
+ * To run a mutation, you first call `useUpdateBrandMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateBrandMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateBrandMutation, { data, loading, error }] = useUpdateBrandMutation({
+ *   variables: {
+ *      updateBrandDto: // value for 'updateBrandDto'
+ *   },
+ * });
+ */
+export function useUpdateBrandMutation(baseOptions?: Apollo.MutationHookOptions<UpdateBrandMutation, UpdateBrandMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateBrandMutation, UpdateBrandMutationVariables>(UpdateBrandDocument, options);
+      }
+export type UpdateBrandMutationHookResult = ReturnType<typeof useUpdateBrandMutation>;
+export type UpdateBrandMutationResult = Apollo.MutationResult<UpdateBrandMutation>;
+export type UpdateBrandMutationOptions = Apollo.BaseMutationOptions<UpdateBrandMutation, UpdateBrandMutationVariables>;
+export const DeleteBrandDocument = gql`
+    mutation DeleteBrand($id: Float!) {
+  deleteBrand(id: $id)
+}
+    `;
+export type DeleteBrandMutationFn = Apollo.MutationFunction<DeleteBrandMutation, DeleteBrandMutationVariables>;
+
+/**
+ * __useDeleteBrandMutation__
+ *
+ * To run a mutation, you first call `useDeleteBrandMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteBrandMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteBrandMutation, { data, loading, error }] = useDeleteBrandMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteBrandMutation(baseOptions?: Apollo.MutationHookOptions<DeleteBrandMutation, DeleteBrandMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteBrandMutation, DeleteBrandMutationVariables>(DeleteBrandDocument, options);
+      }
+export type DeleteBrandMutationHookResult = ReturnType<typeof useDeleteBrandMutation>;
+export type DeleteBrandMutationResult = Apollo.MutationResult<DeleteBrandMutation>;
+export type DeleteBrandMutationOptions = Apollo.BaseMutationOptions<DeleteBrandMutation, DeleteBrandMutationVariables>;
+export const CreateCarDocument = gql`
+    mutation CreateCar($createCarDto: CreateCarDto!) {
+  createCar(createCarDto: $createCarDto) {
+    id
+  }
+}
+    `;
+export type CreateCarMutationFn = Apollo.MutationFunction<CreateCarMutation, CreateCarMutationVariables>;
+
+/**
+ * __useCreateCarMutation__
+ *
+ * To run a mutation, you first call `useCreateCarMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCarMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCarMutation, { data, loading, error }] = useCreateCarMutation({
+ *   variables: {
+ *      createCarDto: // value for 'createCarDto'
+ *   },
+ * });
+ */
+export function useCreateCarMutation(baseOptions?: Apollo.MutationHookOptions<CreateCarMutation, CreateCarMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCarMutation, CreateCarMutationVariables>(CreateCarDocument, options);
+      }
+export type CreateCarMutationHookResult = ReturnType<typeof useCreateCarMutation>;
+export type CreateCarMutationResult = Apollo.MutationResult<CreateCarMutation>;
+export type CreateCarMutationOptions = Apollo.BaseMutationOptions<CreateCarMutation, CreateCarMutationVariables>;
+export const UpdateCarDocument = gql`
+    mutation UpdateCar($updateCarDto: UpdateCarDto!) {
+  updateCar(updateCarDto: $updateCarDto) {
+    id
+    name
+  }
+}
+    `;
+export type UpdateCarMutationFn = Apollo.MutationFunction<UpdateCarMutation, UpdateCarMutationVariables>;
+
+/**
+ * __useUpdateCarMutation__
+ *
+ * To run a mutation, you first call `useUpdateCarMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCarMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCarMutation, { data, loading, error }] = useUpdateCarMutation({
+ *   variables: {
+ *      updateCarDto: // value for 'updateCarDto'
+ *   },
+ * });
+ */
+export function useUpdateCarMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCarMutation, UpdateCarMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCarMutation, UpdateCarMutationVariables>(UpdateCarDocument, options);
+      }
+export type UpdateCarMutationHookResult = ReturnType<typeof useUpdateCarMutation>;
+export type UpdateCarMutationResult = Apollo.MutationResult<UpdateCarMutation>;
+export type UpdateCarMutationOptions = Apollo.BaseMutationOptions<UpdateCarMutation, UpdateCarMutationVariables>;
+export const DeleteCarDocument = gql`
+    mutation DeleteCar($id: Float!) {
+  deleteCar(id: $id)
+}
+    `;
+export type DeleteCarMutationFn = Apollo.MutationFunction<DeleteCarMutation, DeleteCarMutationVariables>;
+
+/**
+ * __useDeleteCarMutation__
+ *
+ * To run a mutation, you first call `useDeleteCarMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCarMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCarMutation, { data, loading, error }] = useDeleteCarMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCarMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCarMutation, DeleteCarMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCarMutation, DeleteCarMutationVariables>(DeleteCarDocument, options);
+      }
+export type DeleteCarMutationHookResult = ReturnType<typeof useDeleteCarMutation>;
+export type DeleteCarMutationResult = Apollo.MutationResult<DeleteCarMutation>;
+export type DeleteCarMutationOptions = Apollo.BaseMutationOptions<DeleteCarMutation, DeleteCarMutationVariables>;
 export const CreateContractDocument = gql`
     mutation CreateContract($createContractDto: CreateContractDto!) {
   createContract(createContractDto: $createContractDto) {
@@ -3810,6 +4120,204 @@ export type MakeExcelQueryHookResult = ReturnType<typeof useMakeExcelQuery>;
 export type MakeExcelLazyQueryHookResult = ReturnType<typeof useMakeExcelLazyQuery>;
 export type MakeExcelSuspenseQueryHookResult = ReturnType<typeof useMakeExcelSuspenseQuery>;
 export type MakeExcelQueryResult = Apollo.QueryResult<MakeExcelQuery, MakeExcelQueryVariables>;
+export const GetBrandsDocument = gql`
+    query GetBrands($getBrandsDto: GetBrandsDto!) {
+  getBrands(getBrandsDto: $getBrandsDto) {
+    id
+    name
+    isDomestic
+    cars {
+      id
+      name
+    }
+    brandFee
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetBrandsQuery__
+ *
+ * To run a query within a React component, call `useGetBrandsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBrandsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBrandsQuery({
+ *   variables: {
+ *      getBrandsDto: // value for 'getBrandsDto'
+ *   },
+ * });
+ */
+export function useGetBrandsQuery(baseOptions: Apollo.QueryHookOptions<GetBrandsQuery, GetBrandsQueryVariables> & ({ variables: GetBrandsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBrandsQuery, GetBrandsQueryVariables>(GetBrandsDocument, options);
+      }
+export function useGetBrandsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBrandsQuery, GetBrandsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBrandsQuery, GetBrandsQueryVariables>(GetBrandsDocument, options);
+        }
+export function useGetBrandsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetBrandsQuery, GetBrandsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetBrandsQuery, GetBrandsQueryVariables>(GetBrandsDocument, options);
+        }
+export type GetBrandsQueryHookResult = ReturnType<typeof useGetBrandsQuery>;
+export type GetBrandsLazyQueryHookResult = ReturnType<typeof useGetBrandsLazyQuery>;
+export type GetBrandsSuspenseQueryHookResult = ReturnType<typeof useGetBrandsSuspenseQuery>;
+export type GetBrandsQueryResult = Apollo.QueryResult<GetBrandsQuery, GetBrandsQueryVariables>;
+export const GetBrandDocument = gql`
+    query GetBrand($getBrandId: Float!) {
+  getBrand(id: $getBrandId) {
+    id
+    name
+    isDomestic
+    cars {
+      id
+      name
+    }
+    brandFee
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetBrandQuery__
+ *
+ * To run a query within a React component, call `useGetBrandQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBrandQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBrandQuery({
+ *   variables: {
+ *      getBrandId: // value for 'getBrandId'
+ *   },
+ * });
+ */
+export function useGetBrandQuery(baseOptions: Apollo.QueryHookOptions<GetBrandQuery, GetBrandQueryVariables> & ({ variables: GetBrandQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBrandQuery, GetBrandQueryVariables>(GetBrandDocument, options);
+      }
+export function useGetBrandLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBrandQuery, GetBrandQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBrandQuery, GetBrandQueryVariables>(GetBrandDocument, options);
+        }
+export function useGetBrandSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetBrandQuery, GetBrandQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetBrandQuery, GetBrandQueryVariables>(GetBrandDocument, options);
+        }
+export type GetBrandQueryHookResult = ReturnType<typeof useGetBrandQuery>;
+export type GetBrandLazyQueryHookResult = ReturnType<typeof useGetBrandLazyQuery>;
+export type GetBrandSuspenseQueryHookResult = ReturnType<typeof useGetBrandSuspenseQuery>;
+export type GetBrandQueryResult = Apollo.QueryResult<GetBrandQuery, GetBrandQueryVariables>;
+export const GetCarsDocument = gql`
+    query GetCars($getCarsDto: GetCarsDto!) {
+  getCars(getCarsDto: $getCarsDto) {
+    id
+    name
+    brand {
+      id
+      name
+      isDomestic
+      brandFee
+    }
+    carFee
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetCarsQuery__
+ *
+ * To run a query within a React component, call `useGetCarsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCarsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCarsQuery({
+ *   variables: {
+ *      getCarsDto: // value for 'getCarsDto'
+ *   },
+ * });
+ */
+export function useGetCarsQuery(baseOptions: Apollo.QueryHookOptions<GetCarsQuery, GetCarsQueryVariables> & ({ variables: GetCarsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCarsQuery, GetCarsQueryVariables>(GetCarsDocument, options);
+      }
+export function useGetCarsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCarsQuery, GetCarsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCarsQuery, GetCarsQueryVariables>(GetCarsDocument, options);
+        }
+export function useGetCarsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCarsQuery, GetCarsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCarsQuery, GetCarsQueryVariables>(GetCarsDocument, options);
+        }
+export type GetCarsQueryHookResult = ReturnType<typeof useGetCarsQuery>;
+export type GetCarsLazyQueryHookResult = ReturnType<typeof useGetCarsLazyQuery>;
+export type GetCarsSuspenseQueryHookResult = ReturnType<typeof useGetCarsSuspenseQuery>;
+export type GetCarsQueryResult = Apollo.QueryResult<GetCarsQuery, GetCarsQueryVariables>;
+export const GetCarDocument = gql`
+    query GetCar($getCarId: Float!) {
+  getCar(id: $getCarId) {
+    id
+    name
+    brand {
+      id
+      name
+      isDomestic
+      brandFee
+    }
+    carFee
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetCarQuery__
+ *
+ * To run a query within a React component, call `useGetCarQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCarQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCarQuery({
+ *   variables: {
+ *      getCarId: // value for 'getCarId'
+ *   },
+ * });
+ */
+export function useGetCarQuery(baseOptions: Apollo.QueryHookOptions<GetCarQuery, GetCarQueryVariables> & ({ variables: GetCarQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCarQuery, GetCarQueryVariables>(GetCarDocument, options);
+      }
+export function useGetCarLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCarQuery, GetCarQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCarQuery, GetCarQueryVariables>(GetCarDocument, options);
+        }
+export function useGetCarSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCarQuery, GetCarQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCarQuery, GetCarQueryVariables>(GetCarDocument, options);
+        }
+export type GetCarQueryHookResult = ReturnType<typeof useGetCarQuery>;
+export type GetCarLazyQueryHookResult = ReturnType<typeof useGetCarLazyQuery>;
+export type GetCarSuspenseQueryHookResult = ReturnType<typeof useGetCarSuspenseQuery>;
+export type GetCarQueryResult = Apollo.QueryResult<GetCarQuery, GetCarQueryVariables>;
 export const GetCitiesDocument = gql`
     query GetCities($getCitiesDto: GetCitiesDto!) {
   getCities(getCitiesDto: $getCitiesDto) {
@@ -3916,7 +4424,14 @@ export const GetContractsDocument = gql`
         status
       }
     }
-    carName
+    car {
+      id
+      name
+      brand {
+        id
+        name
+      }
+    }
     carOption
     innerColor
     outerColor
@@ -4018,7 +4533,14 @@ export const GetContractDocument = gql`
       name
       phone
     }
-    carName
+    car {
+      id
+      name
+      brand {
+        id
+        name
+      }
+    }
     carOption
     innerColor
     outerColor
@@ -4246,7 +4768,14 @@ export const GetCounselsDocument = gql`
     }
     contract {
       id
-      carName
+      car {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
       division {
         id
         name
@@ -4318,7 +4847,14 @@ export const GetCounselDocument = gql`
     }
     contract {
       id
-      carName
+      car {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
       division {
         id
         name
@@ -4386,7 +4922,14 @@ export const GetCustomersDocument = gql`
     agreedMileage
     advancePayment
     contractList {
-      carName
+      car {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
       division {
         name
       }
@@ -4484,7 +5027,14 @@ export const GetCustomerDocument = gql`
       division {
         name
       }
-      carName
+      car {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
       carOption
       contractPeriod
       agreedMileage
@@ -4776,7 +5326,14 @@ export const GetDeliveriesDocument = gql`
       id
       name
     }
-    carName
+    car {
+      id
+      name
+      brand {
+        id
+        name
+      }
+    }
     carPrice
     fee
     promotion
@@ -5077,7 +5634,14 @@ export const GetPayStubsDocument = gql`
         id
         name
       }
-      carName
+      car {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
       carPrice
       fee
       promotion
@@ -5161,7 +5725,14 @@ export const GetPayStubDocument = gql`
         id
         name
       }
-      carName
+      car {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
       carPrice
       fee
       promotion

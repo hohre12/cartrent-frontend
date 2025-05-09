@@ -88,7 +88,7 @@ const DeliveryListTable = ({ data }: TTableProps) => {
               selectedDeliveryHideWatchOptions,
               'carName',
               isHideColumn('carName'),
-            ) && <td className="textHidden">{it.carName ?? '-'}</td>}
+            ) && <td className="textHidden">{it.car?.name ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedDeliveryHideWatchOptions,
               'carPrice',

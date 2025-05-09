@@ -159,7 +159,7 @@ const PayStubDetail = () => {
                 <tr key={idx}>
                   <Td>{it.shippingDate}</Td>
                   <Td>{it.customer?.name ?? '-'}</Td>
-                  <Td>{it.carName ?? '-'}</Td>
+                  <Td>{it.car?.name ?? '-'}</Td>
                   <Td>{numberFormat(it.carPrice)}</Td>
                   <Td>{numberFormat(it.totalFee)}</Td>
                   <Td>
