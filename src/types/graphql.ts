@@ -641,12 +641,11 @@ export type GetAdjustmentsDto = {
 };
 
 export type GetAgencyContractsDto = {
-  /** 지점 */
-  branch?: InputMaybe<Scalars['String']['input']>;
   /** 결제일 종료일 */
   endAgencyPaymentDate?: InputMaybe<Scalars['String']['input']>;
   /** 출고일 종료일 */
   endShippingDate?: InputMaybe<Scalars['String']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
   /** 결제일 시작일 */
   startAgencyPaymentDate?: InputMaybe<Scalars['String']['input']>;
   /** 출고일 시작일 */
@@ -2191,6 +2190,13 @@ export type MakeExcelQueryVariables = Exact<{
 
 export type MakeExcelQuery = { makeExcel: boolean };
 
+export type GetAgencyContractsQueryVariables = Exact<{
+  getAgencyContractsDto: GetAgencyContractsDto;
+}>;
+
+
+export type GetAgencyContractsQuery = { getAgencyContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, hasContractConfirmationLetter?: boolean | null, hasRegistrationCertificate?: boolean | null, note?: string | null, agencyPaymentDate?: string | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string, customerStatus?: { id: number, status: string } | null }, car?: { id: number, name: string, brand: { id: number, name: string } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> };
+
 export type GetBrandsQueryVariables = Exact<{
   getBrandsDto: GetBrandsDto;
 }>;
@@ -2238,14 +2244,14 @@ export type GetContractsQueryVariables = Exact<{
 }>;
 
 
-export type GetContractsQuery = { getContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string, customerStatus?: { id: number, status: string } | null }, car?: { id: number, name: string, brand: { id: number, name: string } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> };
+export type GetContractsQuery = { getContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, hasContractConfirmationLetter?: boolean | null, hasRegistrationCertificate?: boolean | null, note?: string | null, agencyPaymentDate?: string | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string, customerStatus?: { id: number, status: string } | null }, car?: { id: number, name: string, brand: { id: number, name: string } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> };
 
 export type GetContractQueryVariables = Exact<{
   contractId: Scalars['Float']['input'];
 }>;
 
 
-export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string }, car?: { id: number, name: string, brand: { id: number, name: string } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null } };
+export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, hasContractConfirmationLetter?: boolean | null, hasRegistrationCertificate?: boolean | null, note?: string | null, agencyPaymentDate?: string | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string }, car?: { id: number, name: string, brand: { id: number, name: string } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null } };
 
 export type GetFinancialCompaniesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4120,6 +4126,123 @@ export type MakeExcelQueryHookResult = ReturnType<typeof useMakeExcelQuery>;
 export type MakeExcelLazyQueryHookResult = ReturnType<typeof useMakeExcelLazyQuery>;
 export type MakeExcelSuspenseQueryHookResult = ReturnType<typeof useMakeExcelSuspenseQuery>;
 export type MakeExcelQueryResult = Apollo.QueryResult<MakeExcelQuery, MakeExcelQueryVariables>;
+export const GetAgencyContractsDocument = gql`
+    query GetAgencyContracts($getAgencyContractsDto: GetAgencyContractsDto!) {
+  getAgencyContracts(getAgencyContractsDto: $getAgencyContractsDto) {
+    id
+    status
+    user {
+      id
+      name
+    }
+    city {
+      id
+      name
+    }
+    contractAt
+    shippingDate
+    customer {
+      id
+      name
+      phone
+      customerStatus {
+        id
+        status
+      }
+    }
+    car {
+      id
+      name
+      brand {
+        id
+        name
+      }
+    }
+    carOption
+    innerColor
+    outerColor
+    carPrice
+    financialCompany {
+      id
+      name
+    }
+    feeRate
+    fee
+    promotion
+    monthlyPayment
+    shippingMethod {
+      id
+      name
+    }
+    isOrdering
+    isVATSupport
+    branch
+    branchFee
+    collateralRate
+    contractPeriod
+    agreedMileage
+    insuranceAge
+    object
+    service1
+    serviceBody1
+    service2
+    serviceBody2
+    service3
+    serviceBody3
+    incomeEarner
+    cashAssistance
+    supportDetails
+    businessExpenses
+    businessExpensesDetail
+    totalExpenditure
+    totalFee
+    netIncome
+    company_name_nominee
+    division {
+      id
+      name
+    }
+    advancePayment
+    hasContractConfirmationLetter
+    hasRegistrationCertificate
+    note
+    agencyPaymentDate
+  }
+}
+    `;
+
+/**
+ * __useGetAgencyContractsQuery__
+ *
+ * To run a query within a React component, call `useGetAgencyContractsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAgencyContractsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAgencyContractsQuery({
+ *   variables: {
+ *      getAgencyContractsDto: // value for 'getAgencyContractsDto'
+ *   },
+ * });
+ */
+export function useGetAgencyContractsQuery(baseOptions: Apollo.QueryHookOptions<GetAgencyContractsQuery, GetAgencyContractsQueryVariables> & ({ variables: GetAgencyContractsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAgencyContractsQuery, GetAgencyContractsQueryVariables>(GetAgencyContractsDocument, options);
+      }
+export function useGetAgencyContractsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAgencyContractsQuery, GetAgencyContractsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAgencyContractsQuery, GetAgencyContractsQueryVariables>(GetAgencyContractsDocument, options);
+        }
+export function useGetAgencyContractsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAgencyContractsQuery, GetAgencyContractsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAgencyContractsQuery, GetAgencyContractsQueryVariables>(GetAgencyContractsDocument, options);
+        }
+export type GetAgencyContractsQueryHookResult = ReturnType<typeof useGetAgencyContractsQuery>;
+export type GetAgencyContractsLazyQueryHookResult = ReturnType<typeof useGetAgencyContractsLazyQuery>;
+export type GetAgencyContractsSuspenseQueryHookResult = ReturnType<typeof useGetAgencyContractsSuspenseQuery>;
+export type GetAgencyContractsQueryResult = Apollo.QueryResult<GetAgencyContractsQuery, GetAgencyContractsQueryVariables>;
 export const GetBrandsDocument = gql`
     query GetBrands($getBrandsDto: GetBrandsDto!) {
   getBrands(getBrandsDto: $getBrandsDto) {
@@ -4477,6 +4600,10 @@ export const GetContractsDocument = gql`
       name
     }
     advancePayment
+    hasContractConfirmationLetter
+    hasRegistrationCertificate
+    note
+    agencyPaymentDate
   }
 }
     `;
@@ -4586,6 +4713,10 @@ export const GetContractDocument = gql`
       name
     }
     advancePayment
+    hasContractConfirmationLetter
+    hasRegistrationCertificate
+    note
+    agencyPaymentDate
   }
 }
     `;
