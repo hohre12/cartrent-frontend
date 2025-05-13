@@ -119,7 +119,7 @@ const AgencyContractListTable = ({ data }: TTableProps) => {
               selectedAgencyContractHideWatchOptions,
               'note',
               isHideColumn('note'),
-            ) && <td>{it.note ?? '-'}</td>}
+            ) && <td className="textHidden">{it.note ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedAgencyContractHideWatchOptions,
               'agencyPaymentDate',

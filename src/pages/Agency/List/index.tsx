@@ -29,7 +29,7 @@ const AgencyList = () => {
   const resetFilters = useResetRecoilState(agencyContractFiltersState);
 
   const { data, loading, error } = useGetAgencyContracts({
-    // search: searchText ? searchText : null,
+    search: searchText ? searchText : null,
     startShippingDate: filters?.startShippingDate
       ? filters.startShippingDate
       : null,
