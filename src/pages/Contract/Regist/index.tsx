@@ -1,4 +1,5 @@
 import Button from '@/components/button/Button';
+import Checkbox from '@/components/checkbox/Checkbox';
 import Input from '@/components/input/Input';
 import Select from '@/components/select/Select';
 import { useToast } from '@/hooks/useToast';
@@ -525,7 +526,7 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>지점명</span>
+              <span>대리점명</span>
               <InputWrapper>
                 <Input
                   value={createContract?.branch ?? ''}
@@ -534,7 +535,7 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>지점 수수료</span>
+              <span>대리점 수수료</span>
               <InputWrapper>
                 <Input
                   value={numberFormat(createContract.branchFee)}
@@ -548,6 +549,49 @@ const ContractRegist = () => {
                 />
               </InputWrapper>
             </InputLine>
+            {shippingMethod?.name === '대리점' && (
+              <>
+                <InputLine>
+                  <span>등록증</span>
+                  <InputWrapper>
+                    <Checkbox
+                      value={createContract.hasRegistrationCertificate ?? false}
+                      onCheckedChange={() =>
+                        handleValueChange(
+                          !createContract.hasRegistrationCertificate,
+                          'hasRegistrationCertificate',
+                        )
+                      }
+                    />
+                  </InputWrapper>
+                </InputLine>
+                <InputLine>
+                  <span>계약사실확인서</span>
+                  <InputWrapper>
+                    <Checkbox
+                      value={
+                        createContract.hasContractConfirmationLetter ?? false
+                      }
+                      onCheckedChange={() =>
+                        handleValueChange(
+                          !createContract.hasContractConfirmationLetter,
+                          'hasContractConfirmationLetter',
+                        )
+                      }
+                    />
+                  </InputWrapper>
+                </InputLine>
+                <InputLine>
+                  <span>비고</span>
+                  <InputWrapper>
+                    <Input
+                      value={createContract?.note ?? ''}
+                      onTextChange={(text) => handleValueChange(text, 'note')}
+                    />
+                  </InputWrapper>
+                </InputLine>
+              </>
+            )}
             <InputLine>
               <span>선수금</span>
               <InputWrapper>
@@ -645,6 +689,20 @@ const ContractRegist = () => {
           <InfoBoxWrapper>
             <h5>계약내용 추가 입력 (관리자 전용)</h5>
             <InfoBox>
+              {shippingMethod?.name === '대리점' && (
+                <InputLine>
+                  <span>대리점 결제일</span>
+                  <InputWrapper>
+                    <Input
+                      type="date"
+                      style={{ cursor: 'pointer' }}
+                      onTextChange={(text) =>
+                        handleValueChange(text, 'agencyPaymentDate')
+                      }
+                    />
+                  </InputWrapper>
+                </InputLine>
+              )}
               <InputLine>
                 <span>출고일</span>
                 <InputWrapper>

@@ -644,7 +644,7 @@ const ContractDetail = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>지점명</span>
+              <span>대리점명</span>
               <InputWrapper>
                 <Input
                   value={updateContract?.branch ?? ''}
@@ -654,7 +654,7 @@ const ContractDetail = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
-              <span>지점 수수료</span>
+              <span>대리점 수수료</span>
               <InputWrapper>
                 <Input
                   value={
@@ -673,6 +673,56 @@ const ContractDetail = () => {
                 />
               </InputWrapper>
             </InputLine>
+            {shippingMethod?.name === '대리점' && (
+              <>
+                <InputLine>
+                  <span>등록증</span>
+                  <InputWrapper>
+                    <Checkbox
+                      value={updateContract.hasRegistrationCertificate ?? false}
+                      onCheckedChange={() => {
+                        if (isEdit) {
+                          handleValueChange(
+                            !updateContract.hasRegistrationCertificate,
+                            'hasRegistrationCertificate',
+                          );
+                        }
+                      }}
+                      disabled={!isEdit}
+                    />
+                  </InputWrapper>
+                </InputLine>
+                <InputLine>
+                  <span>계약사실확인서</span>
+                  <InputWrapper>
+                    <Checkbox
+                      value={
+                        updateContract.hasContractConfirmationLetter ?? false
+                      }
+                      onCheckedChange={() => {
+                        if (isEdit) {
+                          handleValueChange(
+                            !updateContract.hasContractConfirmationLetter,
+                            'hasContractConfirmationLetter',
+                          );
+                        }
+                      }}
+                      disabled={!isEdit}
+                    />
+                  </InputWrapper>
+                </InputLine>
+                <InputLine>
+                  <span>비고</span>
+                  <InputWrapper>
+                    <Input
+                      value={updateContract?.note ?? ''}
+                      onTextChange={(text) => handleValueChange(text, 'note')}
+                      disabled={!isEdit}
+                    />
+                  </InputWrapper>
+                </InputLine>
+              </>
+            )}
             <InputLine>
               <span>선수금</span>
               <InputWrapper>
@@ -794,6 +844,22 @@ const ContractDetail = () => {
           <InfoBoxWrapper>
             <h5>{`계약내용 추가 입력 ${isEdit ? '수정' : '상세'}(관리자 전용)`}</h5>
             <InfoBox>
+              {shippingMethod?.name === '대리점' && (
+                <InputLine>
+                  <span>대리점 결제일</span>
+                  <InputWrapper>
+                    <Input
+                      type="date"
+                      value={updateContract?.agencyPaymentDate ?? ''}
+                      style={{ cursor: 'pointer' }}
+                      onTextChange={(text) =>
+                        handleValueChange(text, 'agencyPaymentDate')
+                      }
+                      disabled={!isEdit}
+                    />
+                  </InputWrapper>
+                </InputLine>
+              )}
               <InputLine>
                 <span>출고일</span>
                 <InputWrapper>
