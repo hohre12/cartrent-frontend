@@ -100,9 +100,7 @@ const RegistCarModal = (props: TModal) => {
             />
           </div>
           <div className="InputWrapper">
-            <span>
-              차량 수수료율 <p className="required">*</p>
-            </span>
+            <span>차량 수수료율</span>
             <Input
               value={numberFormat(carFee)}
               onTextChange={(text) => {

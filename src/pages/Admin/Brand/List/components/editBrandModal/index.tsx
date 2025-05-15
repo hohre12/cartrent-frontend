@@ -94,9 +94,7 @@ const EditBrandModal = (props: TModal & { id: number }) => {
             />
           </div>
           <div className="InputWrapper">
-            <span>
-              브랜드 수수료율 <p className="required">*</p>
-            </span>
+            <span>브랜드 수수료율</span>
             <Input
               value={numberFormat(brandFee)}
               onTextChange={(text) => {
