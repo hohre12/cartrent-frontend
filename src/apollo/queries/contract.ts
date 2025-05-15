@@ -117,9 +117,11 @@ export const GET_CONTRACT_QUERY = gql`
       car {
         id
         name
+        carFee
         brand {
           id
           name
+          brandFee
         }
       }
       carOption
