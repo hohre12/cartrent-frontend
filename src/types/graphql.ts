@@ -74,7 +74,7 @@ export type AuthPayload = {
 /** 차량 브랜드 */
 export type Brand = {
   /** 브랜드 수수료 */
-  brandFee: Scalars['Float']['output'];
+  brandFee?: Maybe<Scalars['Float']['output']>;
   cars?: Maybe<Array<Car>>;
   created_at?: Maybe<Scalars['DateTime']['output']>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
@@ -92,7 +92,7 @@ export type Car = {
   brand: Brand;
   brandId: Scalars['Int']['output'];
   /** 차량 수수료 */
-  carFee: Scalars['Float']['output'];
+  carFee?: Maybe<Scalars['Float']['output']>;
   created_at?: Maybe<Scalars['DateTime']['output']>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
   /** 차량 아이디 */
@@ -295,7 +295,7 @@ export type CreateAdditionalIncentiveDto = {
 
 export type CreateBrandDto = {
   /** 수수료 */
-  brandFee: Scalars['Float']['input'];
+  brandFee?: InputMaybe<Scalars['Float']['input']>;
   /** 국산 여부 */
   isDomestic: Scalars['Boolean']['input'];
   /** 브랜드 이름 */
@@ -306,7 +306,7 @@ export type CreateCarDto = {
   /** 브랜드 아이디 */
   brandId: Scalars['Int']['input'];
   /** 차량 수수료 */
-  carFee: Scalars['Float']['input'];
+  carFee?: InputMaybe<Scalars['Float']['input']>;
   /** 차량 이름 */
   name: Scalars['String']['input'];
 };
@@ -2202,28 +2202,28 @@ export type GetBrandsQueryVariables = Exact<{
 }>;
 
 
-export type GetBrandsQuery = { getBrands: Array<{ id: number, name: string, isDomestic: boolean, brandFee: number, created_at?: string | null, updated_at?: string | null, cars?: Array<{ id: number, name: string }> | null }> };
+export type GetBrandsQuery = { getBrands: Array<{ id: number, name: string, isDomestic: boolean, brandFee?: number | null, created_at?: string | null, updated_at?: string | null, cars?: Array<{ id: number, name: string }> | null }> };
 
 export type GetBrandQueryVariables = Exact<{
   getBrandId: Scalars['Float']['input'];
 }>;
 
 
-export type GetBrandQuery = { getBrand: { id: number, name: string, isDomestic: boolean, brandFee: number, created_at?: string | null, updated_at?: string | null, cars?: Array<{ id: number, name: string }> | null } };
+export type GetBrandQuery = { getBrand: { id: number, name: string, isDomestic: boolean, brandFee?: number | null, created_at?: string | null, updated_at?: string | null, cars?: Array<{ id: number, name: string }> | null } };
 
 export type GetCarsQueryVariables = Exact<{
   getCarsDto: GetCarsDto;
 }>;
 
 
-export type GetCarsQuery = { getCars: Array<{ id: number, name: string, carFee: number, created_at?: string | null, updated_at?: string | null, brand: { id: number, name: string, isDomestic: boolean, brandFee: number } }> };
+export type GetCarsQuery = { getCars: Array<{ id: number, name: string, carFee?: number | null, created_at?: string | null, updated_at?: string | null, brand: { id: number, name: string, isDomestic: boolean, brandFee?: number | null } }> };
 
 export type GetCarQueryVariables = Exact<{
   getCarId: Scalars['Float']['input'];
 }>;
 
 
-export type GetCarQuery = { getCar: { id: number, name: string, carFee: number, created_at?: string | null, updated_at?: string | null, brand: { id: number, name: string, isDomestic: boolean, brandFee: number } } };
+export type GetCarQuery = { getCar: { id: number, name: string, carFee?: number | null, created_at?: string | null, updated_at?: string | null, brand: { id: number, name: string, isDomestic: boolean, brandFee?: number | null } } };
 
 export type GetCitiesQueryVariables = Exact<{
   getCitiesDto: GetCitiesDto;
@@ -2251,7 +2251,7 @@ export type GetContractQueryVariables = Exact<{
 }>;
 
 
-export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, hasContractConfirmationLetter?: boolean | null, hasRegistrationCertificate?: boolean | null, note?: string | null, agencyPaymentDate?: string | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string }, car?: { id: number, name: string, brand: { id: number, name: string } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null } };
+export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, hasContractConfirmationLetter?: boolean | null, hasRegistrationCertificate?: boolean | null, note?: string | null, agencyPaymentDate?: string | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string }, car?: { id: number, name: string, carFee?: number | null, brand: { id: number, name: string, brandFee?: number | null } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null } };
 
 export type GetFinancialCompaniesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4663,9 +4663,11 @@ export const GetContractDocument = gql`
     car {
       id
       name
+      carFee
       brand {
         id
         name
+        brandFee
       }
     }
     carOption

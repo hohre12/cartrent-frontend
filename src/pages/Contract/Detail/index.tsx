@@ -241,12 +241,18 @@ const ContractDetail = () => {
   }, [detail, handleInit]);
 
   useEffect(() => {
-    if (car && updateContract.carPrice && brand) {
+    if (
+      car &&
+      updateContract.carPrice &&
+      brand &&
+      shippingMethod?.name === '대리점'
+    ) {
       const carPrice = updateContract.carPrice;
       setUpdateContract((prevState) => ({
         ...prevState,
         branchFee: Math.round(
-          carPrice * ((brand.brandFee * 0.667 * 0.7 * car.carFee) / 100),
+          carPrice *
+            (((brand.brandFee ?? 0) * 0.667 * 0.7 * (car.carFee ?? 0)) / 100),
         ),
       }));
     } else {
@@ -255,7 +261,7 @@ const ContractDetail = () => {
         branchFee: 0,
       }));
     }
-  }, [car, brand, updateContract.carPrice]);
+  }, [car, brand, updateContract.carPrice, shippingMethod]);
 
   const handleEnter = useCallback(
     (e: globalThis.KeyboardEvent) => {
@@ -649,7 +655,7 @@ const ContractDetail = () => {
                 <Input
                   value={updateContract?.branch ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'branch')}
-                  disabled={!isEdit}
+                  disabled={!isEdit || shippingMethod?.name === '특판'}
                 />
               </InputWrapper>
             </InputLine>
@@ -669,7 +675,7 @@ const ContractDetail = () => {
                     )
                   }
                   postfixNode={'원'}
-                  disabled={!isEdit}
+                  disabled={!isEdit || shippingMethod?.name === '특판'}
                 />
               </InputWrapper>
             </InputLine>
