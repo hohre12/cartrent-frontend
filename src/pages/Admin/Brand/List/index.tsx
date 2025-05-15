@@ -27,10 +27,19 @@ const AdminBrandList = () => {
             </FunctionWrapper>
           </ControlWrapper>
         </Header>
+        <TempTableHeader>
+          <h2>국산</h2>
+          <h2>수입</h2>
+        </TempTableHeader>
         <ListContent>
           {data && data.getBrands?.length > 0 ? (
             <>
-              <BrandListTable data={data.getBrands}></BrandListTable>
+              <BrandListTable
+                data={data.getBrands.filter((brand) => brand.isDomestic)}
+              ></BrandListTable>
+              <BrandListTable
+                data={data.getBrands.filter((brand) => !brand.isDomestic)}
+              ></BrandListTable>
             </>
           ) : (
             <div className="noList">
@@ -93,12 +102,20 @@ const FunctionWrapper = styled.div`
   align-items: center;
   gap: 5px;
 `;
-
+const TempTableHeader = styled.div`
+  height: 60px;
+  display: flex;
+  & > h2 {
+    width: 50%;
+    ${titleXxl24Bold}
+  }
+`;
 export const ListContent = styled.div`
   width: 100%;
   flex-grow: 1;
   overflow-y: auto;
   position: relative;
+  display: flex;
   .noList {
     display: flex;
     flex-direction: column;
