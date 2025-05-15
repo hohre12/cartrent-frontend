@@ -26,7 +26,6 @@ const RegistCarModal = (props: TModal) => {
     setSubmit(true);
     if (!brand) return;
     if (!name) return;
-    if (!carFee) return;
     try {
       const response = await createCar({
         brandId: brand.id,

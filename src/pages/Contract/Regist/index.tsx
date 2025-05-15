@@ -171,12 +171,18 @@ const ContractRegist = () => {
   ]);
 
   useEffect(() => {
-    if (car && createContract.carPrice && brand) {
+    if (
+      car &&
+      createContract.carPrice &&
+      brand &&
+      shippingMethod?.name === '대리점'
+    ) {
       const carPrice = createContract.carPrice;
       setCreateContract((prevState) => ({
         ...prevState,
         branchFee: Math.round(
-          carPrice * ((brand.brandFee * 0.667 * 0.7 * car.carFee) / 100),
+          carPrice *
+            (((brand.brandFee ?? 0) * 0.667 * 0.7 * (car.carFee ?? 0)) / 100),
         ),
       }));
     } else {
@@ -185,7 +191,7 @@ const ContractRegist = () => {
         branchFee: 0,
       }));
     }
-  }, [car, brand, createContract.carPrice]);
+  }, [car, brand, createContract.carPrice, shippingMethod]);
 
   useEffect(() => {
     if (my) {
@@ -529,6 +535,7 @@ const ContractRegist = () => {
               <span>대리점명</span>
               <InputWrapper>
                 <Input
+                  disabled={shippingMethod?.name === '특판'}
                   value={createContract?.branch ?? ''}
                   onTextChange={(text) => handleValueChange(text, 'branch')}
                 />
@@ -538,6 +545,7 @@ const ContractRegist = () => {
               <span>대리점 수수료</span>
               <InputWrapper>
                 <Input
+                  disabled={shippingMethod?.name === '특판'}
                   value={numberFormat(createContract.branchFee)}
                   onTextChange={(text) =>
                     handleValueChange(

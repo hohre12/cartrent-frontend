@@ -24,7 +24,6 @@ const RegistBrandModal = (props: TModal) => {
   const handleBrandRegist = useCallback(async () => {
     setSubmit(true);
     if (!name) return;
-    if (!brandFee) return;
     try {
       const response = await createBrand({
         name,
