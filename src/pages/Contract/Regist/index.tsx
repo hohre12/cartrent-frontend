@@ -181,8 +181,11 @@ const ContractRegist = () => {
       setCreateContract((prevState) => ({
         ...prevState,
         branchFee: Math.round(
-          carPrice *
-            (((brand.brandFee ?? 0) * 0.667 * 0.7 * (car.carFee ?? 0)) / 100),
+          ((carPrice / (brand.brandFee ?? 0)) *
+            0.667 *
+            0.7 *
+            (car.carFee ?? 0)) /
+            100,
         ),
       }));
     } else {
