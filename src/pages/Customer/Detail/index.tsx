@@ -30,6 +30,7 @@ import {
 import RegistModal from '@/pages/Counsel/List/components/registModal';
 import { autoHypenTel, numberFormat } from '@/utils/common';
 import Select from '@/components/select/Select';
+import EditModal from '@/pages/Counsel/List/components/editModal';
 
 type TCustomerDetailProps = {
   users: User[];
@@ -49,9 +50,9 @@ const CustomerDetail = ({
   const navigate = useNavigate();
   const selectedCustomerIdx = useRecoilValue(selectedCustomerIdxState);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  //   const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
   const [isOpenCounselRegistModal, setIsOpenCounselRegistModal] =
     useState<boolean>(false);
+  const [selectedCounselIdx, setSelectedCounselIdx] = useState<number>();
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
   const { data, loading, error } = useGetCustomer(selectedCustomerIdx);
@@ -512,7 +513,7 @@ const CustomerDetail = ({
               {detail.counselList?.map((it, idx) => (
                 <div
                   key={idx}
-                  onClick={() => navigate(`/counsel/${it.id}`)}
+                  onClick={() => setSelectedCounselIdx(it.id)}
                 >
                   <SvgIcon iconName="icon-edit" />
                   <div className="DateTimeWrapper">
@@ -520,9 +521,9 @@ const CustomerDetail = ({
                     <p>{`${formatDate(it.counselAt, 'HH:mm')}`}</p>
                   </div>
                   <div className="HistoryText">
-                    <p>고객명 : {it.customer?.name}</p>
-                    <p>상담사 : {it.user?.name}</p>
-                    <p>상담내용 : {it.context}</p>
+                    {/* <p>고객명 : {it.customer?.name}</p>
+                    <p>상담사 : {it.user?.name}</p> */}
+                    <p>{it.context}</p>
                   </div>
                 </div>
               ))}
@@ -532,13 +533,14 @@ const CustomerDetail = ({
           )}
         </HistoryWrapper>
       </DetailWrapper>
-      {/* {isOpenEditModal && (
+      {!!selectedCounselIdx && (
         <EditModal
-          isOpen={isOpenEditModal}
-          onCancel={() => setIsOpenEditModal(false)}
-          onConfirm={() => setIsOpenEditModal(false)}
+          idx={selectedCounselIdx}
+          isOpen={!!selectedCounselIdx}
+          onCancel={() => setSelectedCounselIdx(undefined)}
+          onConfirm={() => setSelectedCounselIdx(undefined)}
         ></EditModal>
-      )} */}
+      )}
       {isOpenCounselRegistModal && (
         <RegistModal
           propsCustomer={detail}
