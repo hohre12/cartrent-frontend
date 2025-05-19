@@ -856,6 +856,8 @@ export type Mutation = {
   updateMyInfo: AuthPayload;
   /** 공지사항 수정 */
   updateNotice: Notice;
+  /** 비밀번호 수정 */
+  updatePassword: Scalars['Boolean']['output'];
   /** 지원금 수정 */
   updateSupportAmount: SupportAmount;
   /** 팀 수정 */
@@ -1108,6 +1110,11 @@ export type MutationUpdateMyInfoArgs = {
 
 export type MutationUpdateNoticeArgs = {
   updateNoticeDto: UpdateNoticeDto;
+};
+
+
+export type MutationUpdatePasswordArgs = {
+  updatePasswordDto: UpdatePasswordDto;
 };
 
 
@@ -1764,6 +1771,11 @@ export type UpdateNoticeDto = {
   noticeId: Scalars['Int']['input'];
   /** 공지사항 제목 */
   title: Scalars['String']['input'];
+};
+
+export type UpdatePasswordDto = {
+  password: Scalars['String']['input'];
+  userId: Scalars['Int']['input'];
 };
 
 /** 지원금 수정 */

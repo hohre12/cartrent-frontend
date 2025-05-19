@@ -15,6 +15,11 @@ export const UPDATE_USER_MUTATION = gql`
     }
   }
 `;
+export const UPDATE_USER_PASSWORD_MUTATION = gql`
+  mutation UpdatePassword($updatePasswordDto: UpdatePasswordDto!) {
+    updatePassword(updatePasswordDto: $updatePasswordDto)
+  }
+`;
 export const DELETE_USER_MUTATION = gql`
   mutation DeleteUser($deleteUserId: Float!, $targetUserId: Float) {
     deleteUser(deleteUserId: $deleteUserId, targetUserId: $targetUserId)

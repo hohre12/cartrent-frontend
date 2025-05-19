@@ -2,6 +2,7 @@ import {
   CREATE_USER_MUTATION,
   DELETE_USER_MUTATION,
   UPDATE_USER_MUTATION,
+  UPDATE_USER_PASSWORD_MUTATION,
 } from '@/apollo/mutations/user';
 import {
   GET_POSITIONS_QUERY,
@@ -15,6 +16,7 @@ import {
   GetDashBoardByUsersDto,
   MonthlyTopFiveUser,
   Position,
+  UpdatePasswordDto,
   UpdateUserDto,
   User,
 } from '@/types/graphql';
@@ -60,6 +62,23 @@ export const useUpdateUser = () => {
     });
   };
   return { updateUser };
+};
+
+export const useUpdateUserPassword = () => {
+  const [updateUserPasswordMutate] = useMutation(
+    UPDATE_USER_PASSWORD_MUTATION,
+    {
+      refetchQueries: [GET_USERS_QUERY, GET_USER_QUERY],
+    },
+  );
+
+  const updateUserPassword = async (params: UpdatePasswordDto) => {
+    if (!params) return;
+    return updateUserPasswordMutate({
+      variables: { updatePasswordDto: params },
+    });
+  };
+  return { updateUserPassword };
 };
 
 export const useDeleteUser = () => {

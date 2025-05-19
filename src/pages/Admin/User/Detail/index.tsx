@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import EditModal from '../List/components/editModal';
 import { PositionType, User } from '@/types/graphql';
 import TargetUserSelectModal from '../List/components/targetUserSelectModal';
+import EditPasswordModal from '../List/components/passwordEditModal';
 
 const AdminUserDetail = () => {
   const { id } = useParams();
@@ -19,6 +20,8 @@ const AdminUserDetail = () => {
   const userIdx = Number(id);
   const { data, loading, error } = useGetUser(userIdx);
   const [isOpenUserEditModal, setIsOpenUserEditModal] =
+    useState<boolean>(false);
+  const [isOpenUserPasswordEditModal, setIsOpenUserPasswordEditModal] =
     useState<boolean>(false);
   const [isOpenTargetUserSelectModal, setIsOpenTargetUserSelectModal] =
     useState<boolean>(false);
@@ -55,6 +58,13 @@ const AdminUserDetail = () => {
             <h2>{`${detail.name} 담당자님`}</h2>
           </div>
           <div className="right">
+            <Button
+              onClick={() =>
+                setIsOpenUserPasswordEditModal(!isOpenUserPasswordEditModal)
+              }
+            >
+              비밀번호 수정
+            </Button>
             <Button
               onClick={() =>
                 showConfirm({
@@ -167,6 +177,14 @@ const AdminUserDetail = () => {
           onCancel={() => setIsOpenUserEditModal(false)}
           onConfirm={() => setIsOpenUserEditModal(false)}
         ></EditModal>
+      )}
+      {isOpenUserPasswordEditModal && (
+        <EditPasswordModal
+          idx={userIdx}
+          isOpen={isOpenUserPasswordEditModal}
+          onCancel={() => setIsOpenUserPasswordEditModal(false)}
+          onConfirm={() => setIsOpenUserPasswordEditModal(false)}
+        ></EditPasswordModal>
       )}
       {isOpenTargetUserSelectModal && (
         <TargetUserSelectModal
