@@ -74,7 +74,11 @@ const CustomerList = () => {
     [setSearchText],
   );
   useEffect(() => {
-    if (!selectedCustomerIdx && data?.getCustomers)
+    if (
+      !selectedCustomerIdx &&
+      data?.getCustomers &&
+      data.getCustomers.length > 0
+    )
       setSelectedCustomerIdx(data.getCustomers[0].id);
   }, [data, selectedCustomerIdx, setSelectedCustomerIdx]);
 
