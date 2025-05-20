@@ -669,6 +669,7 @@ export const HistoryWrapper = styled.div`
     }
     .HistoryText {
       ${textS14Medium}
+      width: 280px;
       background: #fff;
       border: 1px solid #ddd;
       border-radius: 5px;
