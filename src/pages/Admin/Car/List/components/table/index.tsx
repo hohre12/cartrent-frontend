@@ -5,9 +5,10 @@ import { useDeleteCar } from '@/services/car';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
 import { Brand, Car, Team } from '@/types/graphql';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import EditCarModal from '../editCarModal';
 
 type TTableProps = {
   data: Brand[];
@@ -15,6 +16,7 @@ type TTableProps = {
 
 const CarListTable = ({ data }: TTableProps) => {
   const navigate = useNavigate();
+  const [selectedCarIdx, setSelectedCarIdx] = useState<number>();
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
   const { deleteCar } = useDeleteCar();
@@ -48,9 +50,8 @@ const CarListTable = ({ data }: TTableProps) => {
         <thead>
           <TableHeader>
             <th>차량명</th>
-            {/* <th>국산/수입</th>
             <th>차량 수수료</th>
-            <th>삭제</th> */}
+            <th>삭제</th>
           </TableHeader>
         </thead>
         <tbody>
@@ -58,13 +59,15 @@ const CarListTable = ({ data }: TTableProps) => {
             <React.Fragment key={idx}>
               <TableItem style={{ cursor: 'default' }}>
                 <td className="name">{it.name}</td>
+                <td></td>
+                <td></td>
               </TableItem>
               {it.cars &&
                 it.cars.length > 0 &&
                 it.cars.map((car, carIdx) => (
                   <TableItem
                     key={carIdx}
-                    onClick={() => navigate(`${car.id}`)}
+                    onClick={() => setSelectedCarIdx(car.id)}
                   >
                     <td
                       className="name"
@@ -72,12 +75,41 @@ const CarListTable = ({ data }: TTableProps) => {
                     >
                       {car.name}
                     </td>
+                    <td>{car.carFee ? `${car.carFee}%` : '-'}</td>
+                    <td onClick={(e) => e.stopPropagation()}>
+                      <Button
+                        variant="black"
+                        onClick={() =>
+                          showConfirm({
+                            isOpen: true,
+                            title: '차량 삭제',
+                            content: `${car.name} 차량을 삭제하시겠습니까?`,
+                            cancelText: '취소',
+                            confirmText: '삭제',
+                            confirmVariant: 'primaryDanger',
+                            onClose: hideConfirm,
+                            onCancel: hideConfirm,
+                            onConfirm: () => handleDeleteCar(car.id),
+                          })
+                        }
+                      >
+                        삭제
+                      </Button>
+                    </td>
                   </TableItem>
                 ))}
             </React.Fragment>
           ))}
         </tbody>
       </TableWrapper>
+      {!!selectedCarIdx && (
+        <EditCarModal
+          id={selectedCarIdx}
+          isOpen={!!selectedCarIdx}
+          onCancel={() => setSelectedCarIdx(undefined)}
+          onConfirm={() => setSelectedCarIdx(undefined)}
+        ></EditCarModal>
+      )}
     </>
   );
 };

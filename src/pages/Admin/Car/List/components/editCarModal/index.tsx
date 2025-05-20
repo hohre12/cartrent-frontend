@@ -37,7 +37,7 @@ const EditCarModal = (props: TModal & { id: number }) => {
         addToast({
           id: Date.now(),
           isImage: true,
-          content: `브랜드가 수정되었습니다.`,
+          content: `차종이 수정되었습니다.`,
           type: 'success',
         });
         modalProps.onConfirm?.();
