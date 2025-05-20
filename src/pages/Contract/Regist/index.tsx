@@ -210,7 +210,7 @@ const ContractRegist = () => {
             customerId: customerIdx,
             userId: my.id,
             company_name_nominee: tempCustomer.company_name_nominee,
-            carName: tempCustomer.carName ?? '',
+            // carName: tempCustomer.carName ?? '', // TODO 이거 carName에서 car로 바뀌었는데 어떻게 할지?
             carOption: tempCustomer.carOption,
             contractPeriod: tempCustomer.contractPeriod,
             agreedMileage: tempCustomer.agreedMileage,
