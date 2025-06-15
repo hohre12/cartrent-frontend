@@ -51,6 +51,13 @@ export const SIDE_MENU = [
     auth: [PermissionType.Admin],
   },
   {
+    title: '세무',
+    engTitle: 'tax',
+    icon: 'icon-expense',
+    path: '/tax',
+    auth: [PermissionType.Admin],
+  },
+  {
     title: '관리자',
     engTitle: 'admin',
     icon: 'icon-harmfulNspecial',
