@@ -30,4 +30,27 @@ export const DELETE_ADDITIONAL_INCENTIVE_MUTATION = gql`
     deleteAdditionalIncentive(additionalIncentiveId: $additionalIncentiveId)
   }
 `;
+
+// 상여금
+export const CREATE_BONUS_MUTATION = gql`
+  mutation CreateBonus($createBonusDto: CreateBonusDto!) {
+    createBonus(createBonusDto: $createBonusDto) {
+      id
+    }
+  }
+`;
+
+export const UPDATE_BONUS_MUTATION = gql`
+  mutation UpdateBonus($updateBonusDto: UpdateBonusDto!) {
+    updateBonus(updateBonusDto: $updateBonusDto) {
+      id
+    }
+  }
+`;
+
+export const DELETE_BONUS_MUTATION = gql`
+  mutation DeleteBonus($bonusId: Float!) {
+    deleteBonus(bonusId: $bonusId)
+  }
+`;
 /* Mutation */
