@@ -112,7 +112,7 @@ const CustomerList = () => {
                 style={{ border: '1px solid #ddd' }}
                 onClick={() => setIsSortOpen(!isSortOpen)}
               >
-                {`정렬: 메모(${selectedSort.sortDirection === 'ASC' ? '오름차순' : '내림차순'})`}
+                {`정렬: ${selectedSort.sortKey === 'memo' ? '메모' : selectedSort.sortKey === 'created_at' ? '등록일' : '최근상담일시'}(${selectedSort.sortDirection === 'ASC' ? '오름차순' : '내림차순'})`}
                 <SvgIcon
                   iconName="icon-arrowButton"
                   style={{ fill: '#333' }}

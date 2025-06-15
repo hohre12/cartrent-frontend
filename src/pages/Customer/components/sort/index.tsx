@@ -31,6 +31,42 @@ const Sort = () => {
           </div>
           <span>메모</span>
         </div>
+        <div
+          onClick={() =>
+            setSelectedSort((prev) => ({
+              ...prev,
+              sortKey: 'created_at',
+            }))
+          }
+        >
+          <div className="radio">
+            <input
+              type="radio"
+              checked={selectedSort.sortKey === 'created_at'}
+              readOnly
+            />
+            <span></span>
+          </div>
+          <span>등록일</span>
+        </div>
+        <div
+          onClick={() =>
+            setSelectedSort((prev) => ({
+              ...prev,
+              sortKey: 'counselAt',
+            }))
+          }
+        >
+          <div className="radio">
+            <input
+              type="radio"
+              checked={selectedSort.sortKey === 'counselAt'}
+              readOnly
+            />
+            <span></span>
+          </div>
+          <span>최근상담일시</span>
+        </div>
       </div>
       <div className="footer">
         <Button
