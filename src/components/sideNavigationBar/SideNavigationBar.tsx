@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { titleL18Bold, titleM16Semibold } from '@/styles/typography';
 import { userState } from '@/state/auth';
 import { useRecoilValue } from 'recoil';
-import Logo from '@/assets/pngs/logo.png';
+import Logo from '@/assets/pngs/newLogo.png';
 import { PermissionType } from '@/types/graphql';
 
 const SideNavigationBar = () => {
