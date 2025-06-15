@@ -44,6 +44,7 @@ import AdminBrandDetail from './pages/Admin/Brand/Detail';
 import AdminCarList from './pages/Admin/Car/List';
 import AdminCarDetail from './pages/Admin/Car/Detail';
 import AgencyList from './pages/Agency/List';
+import TaxList from './pages/Tax/List';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -188,6 +189,15 @@ function App() {
           <Route
             index
             element={<DeliveryList></DeliveryList>}
+          />
+        </Route>
+        <Route
+          path="/tax"
+          element={<PrivateLayout />}
+        >
+          <Route
+            index
+            element={<TaxList></TaxList>}
           />
         </Route>
         <Route

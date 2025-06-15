@@ -34,6 +34,10 @@ export const GET_ADJUSTMENTS_QUERY = gql`
         id
         additionalIncentive
       }
+      bonus {
+        id
+        bonus
+      }
     }
   }
 `;

@@ -1,7 +1,10 @@
 import {
   CREATE_ADDITIONAL_INCENTIVE_MUTATION,
+  CREATE_BONUS_MUTATION,
   DELETE_ADDITIONAL_INCENTIVE_MUTATION,
+  DELETE_BONUS_MUTATION,
   UPDATE_ADDITIONAL_INCENTIVE_MUTATION,
+  UPDATE_BONUS_MUTATION,
 } from '@/apollo/mutations/adjustment';
 import {
   GET_ADJUSTMENTS_QUERY,
@@ -10,9 +13,12 @@ import {
 import {
   AdditionalIncentive,
   Adjustment,
+  Bonus,
   CreateAdditionalIncentiveDto,
+  CreateBonusDto,
   GetAdjustmentsDto,
   UpdateAdditionalIncentiveDto,
+  UpdateBonusDto,
 } from '@/types/graphql';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 
@@ -85,4 +91,47 @@ export const useDeleteAdditionalIncentive = () => {
     });
   };
   return { deleteAdditionalIncentive };
+};
+
+// 상여금 CUD
+export const useCreateBonus = () => {
+  const [createBonusMutate] = useMutation(CREATE_BONUS_MUTATION, {
+    refetchQueries: [GET_ADJUSTMENTS_QUERY, 'GetAdjustments'],
+  });
+
+  const createBonus = async (params: CreateBonusDto) => {
+    if (!params) return;
+    return createBonusMutate({
+      variables: { createBonusDto: params },
+    });
+  };
+  return { createBonus };
+};
+
+export const useUpdateBonus = () => {
+  const [updateBonusMutate] = useMutation(UPDATE_BONUS_MUTATION, {
+    refetchQueries: [GET_ADJUSTMENTS_QUERY, 'GetAdjustments'],
+  });
+
+  const updateBonus = async (params: UpdateBonusDto) => {
+    if (!params) return;
+    return updateBonusMutate({
+      variables: { updateBonusDto: params },
+    });
+  };
+  return { updateBonus };
+};
+
+export const useDeleteBonus = () => {
+  const [deleteBonusMutate] = useMutation(DELETE_BONUS_MUTATION, {
+    refetchQueries: [GET_ADJUSTMENTS_QUERY, 'GetAdjustments'],
+  });
+
+  const deleteBonus = async (params: Bonus['id']) => {
+    if (!params) return;
+    return deleteBonusMutate({
+      variables: { bonusId: params },
+    });
+  };
+  return { deleteBonus };
 };

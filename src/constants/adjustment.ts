@@ -13,6 +13,7 @@ export const ADJUSTMENT_LIST_WATCH_OPTIONS = {
   totalNetIncomeDelivery: '출고순익 합계',
   totalIncentiveDelivery: '출고수당 합계',
   additionalIncentive: '추가수당 합계',
+  bonus: '상여금 합계',
   etcIncentive: '기타수당 합계',
 };
 

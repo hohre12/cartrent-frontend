@@ -21,6 +21,8 @@ import { useState } from 'react';
 import RegistAddIncentiveModal from '../registAddIncentiveModal';
 import EditAddIncentiveModal from '../editAddIncentiveModal';
 import { useCheckSettleContract } from '@/services/payStub';
+import RegistBonusModal from '../registBonusModal';
+import EditBonusModal from '../editBonusModal';
 
 type TTableProps = {
   data: Adjustment[];
@@ -32,6 +34,8 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
     selectedAdjustmentHideWatchOptionsState,
   );
   const [selectedAdjustment, setSelectedAdjustment] = useState<Adjustment>();
+  const [isIncentive, setIsIncentive] = useState<boolean>();
+  const [isBonus, setIsBonus] = useState<boolean>();
   // filters
   const filters = useRecoilValue(adjustmentFiltersState);
 
@@ -64,6 +68,7 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
               },
             )}
             <th>추가수당 입력</th>
+            <th>상여금 입력</th>
           </TableHeader>
         </thead>
         <tbody>
@@ -206,6 +211,17 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
               )}
               {!isColumnsViewHide(
                 selectedAdjustmentHideWatchOptions,
+                'bonus',
+                isHideColumn('bonus'),
+              ) && (
+                <td>
+                  {it.bonus?.bonus
+                    ? `${numberFormat(it.bonus.bonus)}원`
+                    : '0원'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
                 'etcIncentive',
                 isHideColumn('etcIncentive'),
               ) && (
@@ -219,7 +235,10 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
                 <Button
                   variant="black"
                   disabled={isCheckSettleContract?.checkSettleContract}
-                  onClick={() => setSelectedAdjustment(it)}
+                  onClick={() => {
+                    setSelectedAdjustment(it);
+                    setIsIncentive(true);
+                  }}
                 >
                   추가수당{' '}
                   {it.additionalIncentive?.additionalIncentive
@@ -227,11 +246,23 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
                     : '입력'}
                 </Button>
               </td>
+              <td>
+                <Button
+                  variant="black"
+                  disabled={isCheckSettleContract?.checkSettleContract}
+                  onClick={() => {
+                    setSelectedAdjustment(it);
+                    setIsBonus(true);
+                  }}
+                >
+                  상여금 {it.bonus?.bonus ? '수정' : '입력'}
+                </Button>
+              </td>
             </TableItem>
           ))}
         </tbody>
       </TableWrapper>
-      {selectedAdjustment && (
+      {selectedAdjustment && isIncentive && (
         <>
           {selectedAdjustment.additionalIncentive?.additionalIncentive ? (
             <EditAddIncentiveModal
@@ -239,10 +270,14 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
               addIncentive={
                 selectedAdjustment.additionalIncentive.additionalIncentive
               }
-              isOpen={!!selectedAdjustment}
-              onCancel={() => setSelectedAdjustment(undefined)}
+              isOpen={!!selectedAdjustment && !!isIncentive}
+              onCancel={() => {
+                setSelectedAdjustment(undefined);
+                setIsIncentive(false);
+              }}
               onConfirm={() => {
                 setSelectedAdjustment(undefined);
+                setIsIncentive(false);
               }}
             />
           ) : (
@@ -250,10 +285,48 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
               userId={selectedAdjustment.user.id}
               year={selectedAdjustment.year}
               month={selectedAdjustment.month}
-              isOpen={!!selectedAdjustment}
-              onCancel={() => setSelectedAdjustment(undefined)}
+              isOpen={!!selectedAdjustment && !!isIncentive}
+              onCancel={() => {
+                setSelectedAdjustment(undefined);
+                setIsIncentive(false);
+              }}
               onConfirm={() => {
                 setSelectedAdjustment(undefined);
+                setIsIncentive(false);
+              }}
+            />
+          )}
+        </>
+      )}
+      {selectedAdjustment && isBonus && (
+        <>
+          {selectedAdjustment.bonus?.bonus ? (
+            <EditBonusModal
+              id={selectedAdjustment.bonus.id}
+              propsBonus={selectedAdjustment.bonus.bonus}
+              isOpen={!!selectedAdjustment && !!isBonus}
+              onCancel={() => {
+                setSelectedAdjustment(undefined);
+                setIsBonus(false);
+              }}
+              onConfirm={() => {
+                setSelectedAdjustment(undefined);
+                setIsBonus(false);
+              }}
+            />
+          ) : (
+            <RegistBonusModal
+              userId={selectedAdjustment.user.id}
+              year={selectedAdjustment.year}
+              month={selectedAdjustment.month}
+              isOpen={!!selectedAdjustment && !!isBonus}
+              onCancel={() => {
+                setSelectedAdjustment(undefined);
+                setIsBonus(false);
+              }}
+              onConfirm={() => {
+                setSelectedAdjustment(undefined);
+                setIsBonus(false);
               }}
             />
           )}

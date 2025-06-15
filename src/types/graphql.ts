@@ -35,6 +35,8 @@ export type AdditionalIncentive = {
 export type Adjustment = {
   additionalIncentive?: Maybe<AdditionalIncentive>;
   additionalIncentiveId?: Maybe<Scalars['Int']['output']>;
+  bonus?: Maybe<Bonus>;
+  bonusId?: Maybe<Scalars['Int']['output']>;
   /** 기타 수당 / 팀장급 이상 팀 전체 매출의 인센티브 */
   etcIncentive: Scalars['Float']['output'];
   /** 달 */
@@ -69,6 +71,21 @@ export type AuthPayload = {
   accessToken: Scalars['String']['output'];
   refreshToken?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
+};
+
+/** 상여금 */
+export type Bonus = {
+  /** 상여금 */
+  bonus: Scalars['Int']['output'];
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  deleted_at?: Maybe<Scalars['DateTime']['output']>;
+  id: Scalars['Int']['output'];
+  /** 상여금 받은 월 */
+  month: Scalars['String']['output'];
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
+  userId: Scalars['Int']['output'];
+  /** 상여금 받은 년도 */
+  year: Scalars['String']['output'];
 };
 
 /** 차량 브랜드 */
@@ -158,7 +175,7 @@ export type Contract = {
   /** 수수료 */
   fee?: Maybe<Scalars['Int']['output']>;
   /** 수수료 비율 */
-  feeRate?: Maybe<Scalars['Int']['output']>;
+  feeRate?: Maybe<Scalars['Float']['output']>;
   financialCompany?: Maybe<FinancialCompany>;
   financialCompanyId?: Maybe<Scalars['Int']['output']>;
   /** 계약사실확인서 여부 */
@@ -183,7 +200,7 @@ export type Contract = {
   /** 비고 */
   note?: Maybe<Scalars['String']['output']>;
   /** 대물 */
-  object?: Maybe<Scalars['Int']['output']>;
+  object?: Maybe<Scalars['Float']['output']>;
   /** 외부 색상 */
   outerColor?: Maybe<Scalars['String']['output']>;
   /** 프로모션 */
@@ -293,6 +310,16 @@ export type CreateAdditionalIncentiveDto = {
   year: Scalars['String']['input'];
 };
 
+export type CreateBonusDto = {
+  /** 상여금 */
+  bonus: Scalars['Int']['input'];
+  /** 월 */
+  month: Scalars['String']['input'];
+  userId: Scalars['Int']['input'];
+  /** 년도 */
+  year: Scalars['String']['input'];
+};
+
 export type CreateBrandDto = {
   /** 수수료 */
   brandFee?: InputMaybe<Scalars['Float']['input']>;
@@ -353,7 +380,7 @@ export type CreateContractDto = {
   /** 수수료 */
   fee?: InputMaybe<Scalars['Int']['input']>;
   /** 수수료 비율 */
-  feeRate?: InputMaybe<Scalars['Int']['input']>;
+  feeRate?: InputMaybe<Scalars['Float']['input']>;
   /** 금융사 id */
   financialCompanyId?: InputMaybe<Scalars['Int']['input']>;
   /** 계약사실확인서 여부 */
@@ -375,7 +402,7 @@ export type CreateContractDto = {
   /** 비고 */
   note?: InputMaybe<Scalars['String']['input']>;
   /** 대물 */
-  object?: InputMaybe<Scalars['Int']['input']>;
+  object?: InputMaybe<Scalars['Float']['input']>;
   /** 외부 색상 */
   outerColor?: InputMaybe<Scalars['String']['input']>;
   /** 프로모션 */
@@ -691,6 +718,11 @@ export type GetCounselsDto = {
   userId?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
+export type GetCustomerTaxesDto = {
+  month: Scalars['String']['input'];
+  year: Scalars['String']['input'];
+};
+
 export type GetCustomersDto = {
   /** 고객 등급 Id */
   customerGradeId?: InputMaybe<Array<Scalars['Int']['input']>>;
@@ -739,6 +771,11 @@ export type GetPayStubDto = {
   year?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type GetUserIncentiveDeliveryTaxesDto = {
+  month: Scalars['String']['input'];
+  year: Scalars['String']['input'];
+};
+
 /** 월별 top5 유저 */
 export type MonthlyTopFiveUser = {
   month: Scalars['String']['output'];
@@ -754,6 +791,8 @@ export type MonthlyTopFiveUser = {
 export type Mutation = {
   /** 추가 수당 생성 */
   createAdditionalIncentive: AdditionalIncentive;
+  /** 상여금 생성 */
+  createBonus: Bonus;
   /** 브랜드 생성 */
   createBrand: Brand;
   /** 차량 생성 */
@@ -786,6 +825,8 @@ export type Mutation = {
   deleteAdditionalIncentive: Scalars['Boolean']['output'];
   /** 전체 알림 삭제 */
   deleteAllNotification: Scalars['Boolean']['output'];
+  /** 상여금 삭제 */
+  deleteBonus: Scalars['Boolean']['output'];
   /** 브랜드 삭제 */
   deleteBrand: Scalars['Boolean']['output'];
   /** 차량 삭제 */
@@ -830,6 +871,8 @@ export type Mutation = {
   testSignUp: User;
   /** 추가 수당 수정 */
   updateAdditionalIncentive: AdditionalIncentive;
+  /** 상여금 수정 */
+  updateBonus: Bonus;
   /** 브랜드 수정 */
   updateBrand: Brand;
   /** 차량 수정 */
@@ -869,6 +912,11 @@ export type Mutation = {
 
 export type MutationCreateAdditionalIncentiveArgs = {
   createAdditionalIncentiveDto: CreateAdditionalIncentiveDto;
+};
+
+
+export type MutationCreateBonusArgs = {
+  createBonusDto: CreateBonusDto;
 };
 
 
@@ -944,6 +992,11 @@ export type MutationCreateUserArgs = {
 
 export type MutationDeleteAdditionalIncentiveArgs = {
   additionalIncentiveId: Scalars['Float']['input'];
+};
+
+
+export type MutationDeleteBonusArgs = {
+  bonusId: Scalars['Float']['input'];
 };
 
 
@@ -1045,6 +1098,11 @@ export type MutationTestSignUpArgs = {
 
 export type MutationUpdateAdditionalIncentiveArgs = {
   updateAdditionalIncentiveDto: UpdateAdditionalIncentiveDto;
+};
+
+
+export type MutationUpdateBonusArgs = {
+  updateBonusDto: UpdateBonusDto;
 };
 
 
@@ -1294,6 +1352,8 @@ export type Query = {
   getCustomerGroups: Array<CustomerGroup>;
   /** 고객 상태 리스트 */
   getCustomerStatuses: Array<CustomerStatus>;
+  /** 고객 현금지원 관련 세금 리스트 조회 */
+  getCustomerTaxes: Array<Contract>;
   /** 고객 리스트 조회 */
   getCustomers: Array<Customer>;
   /** 출고 내역 리스트 조회 */
@@ -1334,6 +1394,8 @@ export type Query = {
   getTopFiveTotalFeeDeliveryUsersByMonth: Array<MonthlyTopFiveUser>;
   /** 담당자 상세 페이지 조회 */
   getUser: User;
+  /** 직원 출고 수당 리스트 조회 */
+  getUserIncentiveDeliveryTaxes: Array<UserIncentiveDeliveryTax>;
   /** 담당자 리스트 */
   getUsers: Array<User>;
   /** 정산 엑셀 이메일 발송 */
@@ -1422,6 +1484,11 @@ export type QueryGetCustomerGroupArgs = {
 };
 
 
+export type QueryGetCustomerTaxesArgs = {
+  getCustomerTaxesDto: GetCustomerTaxesDto;
+};
+
+
 export type QueryGetCustomersArgs = {
   getCustomersDto: GetCustomersDto;
 };
@@ -1480,6 +1547,11 @@ export type QueryGetTopFiveTotalFeeDeliveryUsersByMonthArgs = {
 
 export type QueryGetUserArgs = {
   userId: Scalars['Float']['input'];
+};
+
+
+export type QueryGetUserIncentiveDeliveryTaxesArgs = {
+  getUserIncentiveDeliveryTaxesDto: GetUserIncentiveDeliveryTaxesDto;
 };
 
 
@@ -1562,6 +1634,17 @@ export type UpdateAdditionalIncentiveDto = {
   additionalIncentiveId: Scalars['Int']['input'];
 };
 
+export type UpdateBonusDto = {
+  /** 상여금 */
+  bonus?: InputMaybe<Scalars['Int']['input']>;
+  bonusId: Scalars['Int']['input'];
+  /** 월 */
+  month?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['Int']['input']>;
+  /** 년도 */
+  year?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateBrandDto = {
   /** 수수료 */
   brandFee?: InputMaybe<Scalars['Float']['input']>;
@@ -1628,7 +1711,7 @@ export type UpdateContractDto = {
   /** 수수료 */
   fee?: InputMaybe<Scalars['Int']['input']>;
   /** 수수료 비율 */
-  feeRate?: InputMaybe<Scalars['Int']['input']>;
+  feeRate?: InputMaybe<Scalars['Float']['input']>;
   /** 금융사 id */
   financialCompanyId?: InputMaybe<Scalars['Int']['input']>;
   /** 계약사실확인서 여부 */
@@ -1652,7 +1735,7 @@ export type UpdateContractDto = {
   /** 비고 */
   note?: InputMaybe<Scalars['String']['input']>;
   /** 대물 */
-  object?: InputMaybe<Scalars['Int']['input']>;
+  object?: InputMaybe<Scalars['Float']['input']>;
   /** 외부 색상 */
   outerColor?: InputMaybe<Scalars['String']['input']>;
   /** 프로모션 */
@@ -1757,10 +1840,39 @@ export type UpdateCustomerStatusDto = {
 };
 
 export type UpdateCustomersDto = {
+  /** 선수금 */
+  advancePayment?: InputMaybe<Scalars['Int']['input']>;
+  /** 약정 거리 */
+  agreedMileage?: InputMaybe<Scalars['Int']['input']>;
+  /** 차종 */
+  carName?: InputMaybe<Scalars['String']['input']>;
+  /** 차 옵션 */
+  carOption?: InputMaybe<Scalars['String']['input']>;
+  /** 회사명/명의자 */
+  company_name_nominee?: InputMaybe<Scalars['String']['input']>;
+  /** 약정 기간 */
+  contractPeriod?: InputMaybe<Scalars['Int']['input']>;
   customerGradeId?: InputMaybe<Scalars['Int']['input']>;
   customerGroupId?: InputMaybe<Scalars['Int']['input']>;
   customerIds: Array<Scalars['Int']['input']>;
   customerStatusId?: InputMaybe<Scalars['Int']['input']>;
+  divisionId?: InputMaybe<Scalars['Int']['input']>;
+  /** 보험 연령 */
+  insuranceAge?: InputMaybe<Scalars['Int']['input']>;
+  /** 메모 */
+  memo?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** 비고 */
+  note?: InputMaybe<Scalars['String']['input']>;
+  /** 원산지 */
+  origin?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  /** 고객 삭제 상태 */
+  status?: InputMaybe<Scalars['String']['input']>;
+  /** 추가 연락처 */
+  sub_phone?: InputMaybe<Scalars['String']['input']>;
+  /** 고객 유형 */
+  type?: InputMaybe<Scalars['String']['input']>;
   userId?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -1860,6 +1972,25 @@ export type User = {
   salesPhone?: Maybe<Scalars['String']['output']>;
   team?: Maybe<Team>;
   updated_at?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type UserIncentiveDeliveryTax = {
+  additionalIncentive?: Maybe<AdditionalIncentive>;
+  additionalIncentiveId?: Maybe<Scalars['Int']['output']>;
+  bonus?: Maybe<Bonus>;
+  bonusId?: Maybe<Scalars['Int']['output']>;
+  /** 기타 수당 / 팀장급 이상 팀 전체 매출의 인센티브 */
+  etcIncentive: Scalars['Float']['output'];
+  /** 달 */
+  month: Scalars['String']['output'];
+  /** 총 경비 */
+  totalBusinessExpenses: Scalars['Int']['output'];
+  /** 출고 수당 / 직급별 인센티브 */
+  totalIncentiveDelivery: Scalars['Float']['output'];
+  user: User;
+  userId: Scalars['Int']['output'];
+  /** 년 */
+  year: Scalars['String']['output'];
 };
 
 export type CreateAdditionalIncentiveMutationVariables = Exact<{
@@ -2178,6 +2309,13 @@ export type UpdateUserMutationVariables = Exact<{
 
 export type UpdateUserMutation = { updateUser: { id: number } };
 
+export type UpdatePasswordMutationVariables = Exact<{
+  updatePasswordDto: UpdatePasswordDto;
+}>;
+
+
+export type UpdatePasswordMutation = { updatePassword: boolean };
+
 export type DeleteUserMutationVariables = Exact<{
   deleteUserId: Scalars['Float']['input'];
   targetUserId?: InputMaybe<Scalars['Float']['input']>;
@@ -2214,14 +2352,14 @@ export type GetBrandsQueryVariables = Exact<{
 }>;
 
 
-export type GetBrandsQuery = { getBrands: Array<{ id: number, name: string, isDomestic: boolean, brandFee?: number | null, created_at?: string | null, updated_at?: string | null, cars?: Array<{ id: number, name: string }> | null }> };
+export type GetBrandsQuery = { getBrands: Array<{ id: number, name: string, isDomestic: boolean, brandFee?: number | null, created_at?: string | null, updated_at?: string | null, cars?: Array<{ id: number, name: string, carFee?: number | null }> | null }> };
 
 export type GetBrandQueryVariables = Exact<{
   getBrandId: Scalars['Float']['input'];
 }>;
 
 
-export type GetBrandQuery = { getBrand: { id: number, name: string, isDomestic: boolean, brandFee?: number | null, created_at?: string | null, updated_at?: string | null, cars?: Array<{ id: number, name: string }> | null } };
+export type GetBrandQuery = { getBrand: { id: number, name: string, isDomestic: boolean, brandFee?: number | null, created_at?: string | null, updated_at?: string | null, cars?: Array<{ id: number, name: string, carFee?: number | null }> | null } };
 
 export type GetCarsQueryVariables = Exact<{
   getCarsDto: GetCarsDto;
@@ -4002,6 +4140,37 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const UpdatePasswordDocument = gql`
+    mutation UpdatePassword($updatePasswordDto: UpdatePasswordDto!) {
+  updatePassword(updatePasswordDto: $updatePasswordDto)
+}
+    `;
+export type UpdatePasswordMutationFn = Apollo.MutationFunction<UpdatePasswordMutation, UpdatePasswordMutationVariables>;
+
+/**
+ * __useUpdatePasswordMutation__
+ *
+ * To run a mutation, you first call `useUpdatePasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePasswordMutation, { data, loading, error }] = useUpdatePasswordMutation({
+ *   variables: {
+ *      updatePasswordDto: // value for 'updatePasswordDto'
+ *   },
+ * });
+ */
+export function useUpdatePasswordMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePasswordMutation, UpdatePasswordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePasswordMutation, UpdatePasswordMutationVariables>(UpdatePasswordDocument, options);
+      }
+export type UpdatePasswordMutationHookResult = ReturnType<typeof useUpdatePasswordMutation>;
+export type UpdatePasswordMutationResult = Apollo.MutationResult<UpdatePasswordMutation>;
+export type UpdatePasswordMutationOptions = Apollo.BaseMutationOptions<UpdatePasswordMutation, UpdatePasswordMutationVariables>;
 export const DeleteUserDocument = gql`
     mutation DeleteUser($deleteUserId: Float!, $targetUserId: Float) {
   deleteUser(deleteUserId: $deleteUserId, targetUserId: $targetUserId)
@@ -4264,6 +4433,7 @@ export const GetBrandsDocument = gql`
     cars {
       id
       name
+      carFee
     }
     brandFee
     created_at
@@ -4313,6 +4483,7 @@ export const GetBrandDocument = gql`
     cars {
       id
       name
+      carFee
     }
     brandFee
     created_at
