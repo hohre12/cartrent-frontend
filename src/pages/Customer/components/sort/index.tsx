@@ -53,14 +53,14 @@ const Sort = () => {
           onClick={() =>
             setSelectedSort((prev) => ({
               ...prev,
-              sortKey: 'counselAt',
+              sortKey: 'latestCounselAt',
             }))
           }
         >
           <div className="radio">
             <input
               type="radio"
-              checked={selectedSort.sortKey === 'counselAt'}
+              checked={selectedSort.sortKey === 'latestCounselAt'}
               readOnly
             />
             <span></span>
