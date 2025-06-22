@@ -2014,6 +2014,27 @@ export type DeleteAdditionalIncentiveMutationVariables = Exact<{
 
 export type DeleteAdditionalIncentiveMutation = { deleteAdditionalIncentive: boolean };
 
+export type CreateBonusMutationVariables = Exact<{
+  createBonusDto: CreateBonusDto;
+}>;
+
+
+export type CreateBonusMutation = { createBonus: { id: number } };
+
+export type UpdateBonusMutationVariables = Exact<{
+  updateBonusDto: UpdateBonusDto;
+}>;
+
+
+export type UpdateBonusMutation = { updateBonus: { id: number } };
+
+export type DeleteBonusMutationVariables = Exact<{
+  bonusId: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteBonusMutation = { deleteBonus: boolean };
+
 export type SignInMutationVariables = Exact<{
   signInDto: SignInDto;
 }>;
@@ -2329,7 +2350,7 @@ export type GetAdjustmentsQueryVariables = Exact<{
 }>;
 
 
-export type GetAdjustmentsQuery = { getAdjustments: Array<{ year: string, month: string, totalCountContract: number, totalFeeContract: number, totalExpenditureContract: number, totalNetIncomeContract: number, totalIncentiveContract: number, totalCountDelivery: number, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalIncentiveDelivery: number, etcIncentive: number, user: { id: number, name: string, position: { id: number, name: PositionType } }, additionalIncentive?: { id: number, additionalIncentive: number } | null }> };
+export type GetAdjustmentsQuery = { getAdjustments: Array<{ year: string, month: string, totalCountContract: number, totalFeeContract: number, totalExpenditureContract: number, totalNetIncomeContract: number, totalIncentiveContract: number, totalCountDelivery: number, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalIncentiveDelivery: number, etcIncentive: number, user: { id: number, name: string, position: { id: number, name: PositionType } }, additionalIncentive?: { id: number, additionalIncentive: number } | null, bonus?: { id: number, bonus: number } | null }> };
 
 export type MakeExcelQueryVariables = Exact<{
   year: Scalars['String']['input'];
@@ -2533,6 +2554,13 @@ export type CheckSettleContractQueryVariables = Exact<{
 
 export type CheckSettleContractQuery = { checkSettleContract: boolean };
 
+export type GetUserIncentiveDeliveryTaxesQueryVariables = Exact<{
+  getUserIncentiveDeliveryTaxesDto: GetUserIncentiveDeliveryTaxesDto;
+}>;
+
+
+export type GetUserIncentiveDeliveryTaxesQuery = { getUserIncentiveDeliveryTaxes: Array<{ year: string, month: string, totalIncentiveDelivery: number, etcIncentive: number, totalBusinessExpenses: number, additionalIncentive?: { id: number, additionalIncentive: number } | null, bonus?: { id: number, bonus: number } | null, user: { id: number } }> };
+
 export type TeamFieldsFragment = { id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> };
 
 export type TeamWithSubTeamsFragment = { id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> };
@@ -2717,6 +2745,103 @@ export function useDeleteAdditionalIncentiveMutation(baseOptions?: Apollo.Mutati
 export type DeleteAdditionalIncentiveMutationHookResult = ReturnType<typeof useDeleteAdditionalIncentiveMutation>;
 export type DeleteAdditionalIncentiveMutationResult = Apollo.MutationResult<DeleteAdditionalIncentiveMutation>;
 export type DeleteAdditionalIncentiveMutationOptions = Apollo.BaseMutationOptions<DeleteAdditionalIncentiveMutation, DeleteAdditionalIncentiveMutationVariables>;
+export const CreateBonusDocument = gql`
+    mutation CreateBonus($createBonusDto: CreateBonusDto!) {
+  createBonus(createBonusDto: $createBonusDto) {
+    id
+  }
+}
+    `;
+export type CreateBonusMutationFn = Apollo.MutationFunction<CreateBonusMutation, CreateBonusMutationVariables>;
+
+/**
+ * __useCreateBonusMutation__
+ *
+ * To run a mutation, you first call `useCreateBonusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBonusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createBonusMutation, { data, loading, error }] = useCreateBonusMutation({
+ *   variables: {
+ *      createBonusDto: // value for 'createBonusDto'
+ *   },
+ * });
+ */
+export function useCreateBonusMutation(baseOptions?: Apollo.MutationHookOptions<CreateBonusMutation, CreateBonusMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateBonusMutation, CreateBonusMutationVariables>(CreateBonusDocument, options);
+      }
+export type CreateBonusMutationHookResult = ReturnType<typeof useCreateBonusMutation>;
+export type CreateBonusMutationResult = Apollo.MutationResult<CreateBonusMutation>;
+export type CreateBonusMutationOptions = Apollo.BaseMutationOptions<CreateBonusMutation, CreateBonusMutationVariables>;
+export const UpdateBonusDocument = gql`
+    mutation UpdateBonus($updateBonusDto: UpdateBonusDto!) {
+  updateBonus(updateBonusDto: $updateBonusDto) {
+    id
+  }
+}
+    `;
+export type UpdateBonusMutationFn = Apollo.MutationFunction<UpdateBonusMutation, UpdateBonusMutationVariables>;
+
+/**
+ * __useUpdateBonusMutation__
+ *
+ * To run a mutation, you first call `useUpdateBonusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateBonusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateBonusMutation, { data, loading, error }] = useUpdateBonusMutation({
+ *   variables: {
+ *      updateBonusDto: // value for 'updateBonusDto'
+ *   },
+ * });
+ */
+export function useUpdateBonusMutation(baseOptions?: Apollo.MutationHookOptions<UpdateBonusMutation, UpdateBonusMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateBonusMutation, UpdateBonusMutationVariables>(UpdateBonusDocument, options);
+      }
+export type UpdateBonusMutationHookResult = ReturnType<typeof useUpdateBonusMutation>;
+export type UpdateBonusMutationResult = Apollo.MutationResult<UpdateBonusMutation>;
+export type UpdateBonusMutationOptions = Apollo.BaseMutationOptions<UpdateBonusMutation, UpdateBonusMutationVariables>;
+export const DeleteBonusDocument = gql`
+    mutation DeleteBonus($bonusId: Float!) {
+  deleteBonus(bonusId: $bonusId)
+}
+    `;
+export type DeleteBonusMutationFn = Apollo.MutationFunction<DeleteBonusMutation, DeleteBonusMutationVariables>;
+
+/**
+ * __useDeleteBonusMutation__
+ *
+ * To run a mutation, you first call `useDeleteBonusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteBonusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteBonusMutation, { data, loading, error }] = useDeleteBonusMutation({
+ *   variables: {
+ *      bonusId: // value for 'bonusId'
+ *   },
+ * });
+ */
+export function useDeleteBonusMutation(baseOptions?: Apollo.MutationHookOptions<DeleteBonusMutation, DeleteBonusMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteBonusMutation, DeleteBonusMutationVariables>(DeleteBonusDocument, options);
+      }
+export type DeleteBonusMutationHookResult = ReturnType<typeof useDeleteBonusMutation>;
+export type DeleteBonusMutationResult = Apollo.MutationResult<DeleteBonusMutation>;
+export type DeleteBonusMutationOptions = Apollo.BaseMutationOptions<DeleteBonusMutation, DeleteBonusMutationVariables>;
 export const SignInDocument = gql`
     mutation SignIn($signInDto: SignInDto!) {
   signIn(signInDto: $signInDto) {
@@ -4230,6 +4355,10 @@ export const GetAdjustmentsDocument = gql`
     additionalIncentive {
       id
       additionalIncentive
+    }
+    bonus {
+      id
+      bonus
     }
   }
 }
@@ -6144,6 +6273,63 @@ export type CheckSettleContractQueryHookResult = ReturnType<typeof useCheckSettl
 export type CheckSettleContractLazyQueryHookResult = ReturnType<typeof useCheckSettleContractLazyQuery>;
 export type CheckSettleContractSuspenseQueryHookResult = ReturnType<typeof useCheckSettleContractSuspenseQuery>;
 export type CheckSettleContractQueryResult = Apollo.QueryResult<CheckSettleContractQuery, CheckSettleContractQueryVariables>;
+export const GetUserIncentiveDeliveryTaxesDocument = gql`
+    query GetUserIncentiveDeliveryTaxes($getUserIncentiveDeliveryTaxesDto: GetUserIncentiveDeliveryTaxesDto!) {
+  getUserIncentiveDeliveryTaxes(
+    getUserIncentiveDeliveryTaxesDto: $getUserIncentiveDeliveryTaxesDto
+  ) {
+    year
+    month
+    totalIncentiveDelivery
+    additionalIncentive {
+      id
+      additionalIncentive
+    }
+    etcIncentive
+    bonus {
+      id
+      bonus
+    }
+    totalBusinessExpenses
+    user {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserIncentiveDeliveryTaxesQuery__
+ *
+ * To run a query within a React component, call `useGetUserIncentiveDeliveryTaxesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserIncentiveDeliveryTaxesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserIncentiveDeliveryTaxesQuery({
+ *   variables: {
+ *      getUserIncentiveDeliveryTaxesDto: // value for 'getUserIncentiveDeliveryTaxesDto'
+ *   },
+ * });
+ */
+export function useGetUserIncentiveDeliveryTaxesQuery(baseOptions: Apollo.QueryHookOptions<GetUserIncentiveDeliveryTaxesQuery, GetUserIncentiveDeliveryTaxesQueryVariables> & ({ variables: GetUserIncentiveDeliveryTaxesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserIncentiveDeliveryTaxesQuery, GetUserIncentiveDeliveryTaxesQueryVariables>(GetUserIncentiveDeliveryTaxesDocument, options);
+      }
+export function useGetUserIncentiveDeliveryTaxesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserIncentiveDeliveryTaxesQuery, GetUserIncentiveDeliveryTaxesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserIncentiveDeliveryTaxesQuery, GetUserIncentiveDeliveryTaxesQueryVariables>(GetUserIncentiveDeliveryTaxesDocument, options);
+        }
+export function useGetUserIncentiveDeliveryTaxesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserIncentiveDeliveryTaxesQuery, GetUserIncentiveDeliveryTaxesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserIncentiveDeliveryTaxesQuery, GetUserIncentiveDeliveryTaxesQueryVariables>(GetUserIncentiveDeliveryTaxesDocument, options);
+        }
+export type GetUserIncentiveDeliveryTaxesQueryHookResult = ReturnType<typeof useGetUserIncentiveDeliveryTaxesQuery>;
+export type GetUserIncentiveDeliveryTaxesLazyQueryHookResult = ReturnType<typeof useGetUserIncentiveDeliveryTaxesLazyQuery>;
+export type GetUserIncentiveDeliveryTaxesSuspenseQueryHookResult = ReturnType<typeof useGetUserIncentiveDeliveryTaxesSuspenseQuery>;
+export type GetUserIncentiveDeliveryTaxesQueryResult = Apollo.QueryResult<GetUserIncentiveDeliveryTaxesQuery, GetUserIncentiveDeliveryTaxesQueryVariables>;
 export const GetTeamsDocument = gql`
     query GetTeams {
   getTeams {

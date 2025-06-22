@@ -198,7 +198,7 @@ const AdjustmentList = () => {
                       });
                     }}
                     list={months}
-                    placeholder="정산년도를 선택해주세요"
+                    placeholder="정산월을 선택해주세요"
                   />
                 </FilterContent>
               </FilterWrapper>

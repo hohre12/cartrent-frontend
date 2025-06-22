@@ -1,15 +1,16 @@
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { Brand } from '@/types/graphql';
+import { Brand, Contract } from '@/types/graphql';
+import { numberFormat } from '@/utils/common';
+import { formatDate } from '@/utils/dateUtils';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 type TTableProps = {
-  data: Brand[];
+  data: Contract[];
 };
 
 const SecondTaxListTable = ({ data }: TTableProps) => {
-  const navigate = useNavigate();
   return (
     <>
       <TableWrapper>
@@ -18,19 +19,24 @@ const SecondTaxListTable = ({ data }: TTableProps) => {
             <th>소득자</th>
             <th>세전</th>
             <th>세후</th>
-            <th>출고월</th>
+            <th>출고일</th>
           </TableHeader>
         </thead>
         <tbody>
           {data.map((it, idx) => (
-            <TableItem
-              key={idx}
-              onClick={() => navigate(`${it.id}`)}
-            >
-              <td className="name">{it.name}</td>
-              <td>{it.isDomestic ? '국산' : '수입'}</td>
-              <td>{it.brandFee ? `${it.brandFee}%` : '-'}</td>
-              <td>{it.brandFee ? `${it.brandFee}%` : '-'}</td>
+            <TableItem key={idx}>
+              <td className="name">{it.incomeEarner}</td>
+              <td>
+                {it.cashAssistance
+                  ? `${numberFormat(it.cashAssistance)}원`
+                  : '-'}
+              </td>
+              <td>
+                {it.cashAssistance
+                  ? `${numberFormat(it.cashAssistance * 0.967)}원`
+                  : '-'}
+              </td>
+              <td>{formatDate(it.shippingDate) ?? '-'}</td>
             </TableItem>
           ))}
         </tbody>
@@ -44,6 +50,7 @@ export default SecondTaxListTable;
 export const TableWrapper = styled.table`
   position: relative;
   height: 100%;
+  width: 50%;
   text-align: left;
   display: block;
   overflow: overlay;
