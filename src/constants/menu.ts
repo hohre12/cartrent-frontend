@@ -30,18 +30,18 @@ export const SIDE_MENU = [
     auth: [PermissionType.Admin, PermissionType.User],
   },
   {
+    title: '정산',
+    engTitle: 'adjustment',
+    icon: 'icon-time',
+    path: '/adjustment',
+    auth: [PermissionType.Admin, PermissionType.User],
+  },
+  {
     title: '급여',
     engTitle: 'payStub',
     icon: 'icon-expense',
     path: '/payStub',
     auth: [PermissionType.Admin, PermissionType.User],
-  },
-  {
-    title: '정산',
-    engTitle: 'adjustment',
-    icon: 'icon-time',
-    path: '/adjustment',
-    auth: [PermissionType.Admin],
   },
   {
     title: '출고',

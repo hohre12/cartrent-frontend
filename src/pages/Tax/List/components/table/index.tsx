@@ -1,15 +1,30 @@
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { Brand } from '@/types/graphql';
+import { UserIncentiveDeliveryTax } from '@/types/graphql';
+import { numberFormat } from '@/utils/common';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 type TTableProps = {
-  data: Brand[];
+  data: UserIncentiveDeliveryTax[];
 };
 
 const TaxListTable = ({ data }: TTableProps) => {
-  const navigate = useNavigate();
+  const handleCalcTax = (
+    it: UserIncentiveDeliveryTax,
+    type: 'before' | 'after',
+  ) => {
+    let tax =
+      (it.totalIncentiveDelivery ?? 0) +
+      (it.additionalIncentive?.additionalIncentive ?? 0) +
+      (it.etcIncentive ?? 0) +
+      (it.bonus?.bonus ?? 0) +
+      (it.totalBusinessExpenses ?? 0);
+    if (type === 'after') {
+      tax *= 0.967;
+    }
+    return `${numberFormat(tax)}원`;
+  };
   return (
     <>
       <TableWrapper>
@@ -22,13 +37,10 @@ const TaxListTable = ({ data }: TTableProps) => {
         </thead>
         <tbody>
           {data.map((it, idx) => (
-            <TableItem
-              key={idx}
-              onClick={() => navigate(`${it.id}`)}
-            >
-              <td className="name">{it.name}</td>
-              <td>{it.isDomestic ? '국산' : '수입'}</td>
-              <td>{it.brandFee ? `${it.brandFee}%` : '-'}</td>
+            <TableItem key={idx}>
+              <td className="name">{handleCalcTax(it, 'before')}</td>
+              <td>{it.bonus ? `${numberFormat(it.bonus.bonus)}원` : '-'}</td>
+              <td>{handleCalcTax(it, 'after')}</td>
             </TableItem>
           ))}
         </tbody>
@@ -42,6 +54,7 @@ export default TaxListTable;
 export const TableWrapper = styled.table`
   position: relative;
   height: 100%;
+  width: 50%;
   text-align: left;
   display: block;
   overflow: overlay;

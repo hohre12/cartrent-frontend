@@ -3,35 +3,119 @@ import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import styled from 'styled-components';
 import TaxListTable from './components/table';
 import SecondTaxListTable from './components/secondTable';
+import {
+  useGetCustomerTaxes,
+  useGetUserIncentiveDeliveryTaxes,
+} from '@/services/tax';
+import { taxFiltersState } from '@/state/tax';
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import { FilterContent, FilterWrapper } from '@/styles/common';
+import Select from '@/components/select/Select';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { useNavigationType } from 'react-router-dom';
 
 const TaxList = () => {
-  const { data, loading, error } = useGetBrands({});
+  const navigationType = useNavigationType();
+  const currentYear = moment().format('YYYY');
+  const currentMonth = moment().format('M');
+  const [months, setMonths] = useState<string[]>([]);
+
+  // filters
+  const [filters, setFilters] = useRecoilState(taxFiltersState);
+  const resetFilters = useResetRecoilState(taxFiltersState);
+
+  const { data: userIncentiveDeliveryTaxes } = useGetUserIncentiveDeliveryTaxes(
+    { year: filters.year, month: filters.month },
+  );
+  const { data: customerTaxes } = useGetCustomerTaxes({
+    year: filters.year,
+    month: filters.month,
+  });
+  useEffect(() => {
+    if (navigationType !== 'POP') {
+      resetFilters();
+    }
+  }, [navigationType, resetFilters]);
+  useEffect(() => {
+    const allMonths = Array.from({ length: 12 }, (_, i) => `${i + 1}월`);
+    if (filters.year === currentYear) {
+      setMonths(allMonths.slice(0, Number(currentMonth)).reverse());
+    } else {
+      setMonths(allMonths.reverse());
+    }
+  }, [filters, setMonths, currentYear, currentMonth]);
   return (
     <>
       <ListWrapper>
         <Header>
           <h2>세금계산</h2>
+          <ControlWrapper>
+            <FilterWrapper>
+              <FilterContent>
+                <Select
+                  size="medium"
+                  value={`${filters.year}년`}
+                  onChange={(value) => {
+                    setFilters({
+                      ...filters,
+                      year: value.value.replace('년', ''),
+                    });
+                  }}
+                  list={[
+                    `${currentYear}년`,
+                    `${Number(currentYear) - 1}년`,
+                    `${Number(currentYear) - 2}년`,
+                  ]}
+                  placeholder="세무확인 년도를 선택해주세요"
+                />
+              </FilterContent>
+              <FilterContent>
+                <Select
+                  size="medium"
+                  value={`${filters.month}월`}
+                  onChange={(value) => {
+                    setFilters({
+                      ...filters,
+                      month: value.value.replace('월', ''),
+                    });
+                  }}
+                  list={months}
+                  placeholder="세무확인 달을 선택해주세요"
+                />
+              </FilterContent>
+            </FilterWrapper>
+          </ControlWrapper>
         </Header>
         <TempTableHeader>
           <h2>인건비 내역서</h2>
           <h2>추가 인건비 내역서</h2>
         </TempTableHeader>
         <ListContent>
-          {data && data.getBrands?.length > 0 ? (
-            <>
+          <>
+            {userIncentiveDeliveryTaxes &&
+            userIncentiveDeliveryTaxes.getUserIncentiveDeliveryTaxes?.length >
+              0 ? (
               <TaxListTable
-                data={data.getBrands.filter((brand) => brand.isDomestic)}
+                data={userIncentiveDeliveryTaxes.getUserIncentiveDeliveryTaxes}
               ></TaxListTable>
+            ) : (
+              <div className="noList">
+                <h2>인건비내역서 목록 없음</h2>
+                <p>생성된 인건비내역서 목록이 없습니다.</p>
+              </div>
+            )}
+            {customerTaxes && customerTaxes.getCustomerTaxes?.length > 0 ? (
               <SecondTaxListTable
-                data={data.getBrands.filter((brand) => !brand.isDomestic)}
+                data={customerTaxes.getCustomerTaxes}
               ></SecondTaxListTable>
-            </>
-          ) : (
-            <div className="noList">
-              <h2>세금 목록 없음</h2>
-              <p>생성된 세금목록이 없습니다.</p>
-            </div>
-          )}
+            ) : (
+              <div className="noList">
+                <h2>추가 인건비내역서 목록 없음</h2>
+                <p>생성된 추가 인건비내역서 목록이 없습니다.</p>
+              </div>
+            )}
+          </>
         </ListContent>
       </ListWrapper>
     </>
@@ -103,7 +187,7 @@ export const ListContent = styled.div`
     justify-content: center;
     align-items: center;
     height: 100%;
-    width: 100%;
+    width: 50%;
     h2 {
       ${titleXxl24Bold}
     }
