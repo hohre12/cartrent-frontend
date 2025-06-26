@@ -16,6 +16,7 @@ const SecondTaxListTable = ({ data }: TTableProps) => {
       <TableWrapper>
         <thead>
           <TableHeader>
+            {/* <th>직원명</th> */}
             <th>소득자</th>
             <th>세전</th>
             <th>세후</th>
@@ -25,7 +26,8 @@ const SecondTaxListTable = ({ data }: TTableProps) => {
         <tbody>
           {data.map((it, idx) => (
             <TableItem key={idx}>
-              <td className="name">{it.incomeEarner}</td>
+              {/* <td className="name">{it.user.name}</td> */}
+              <td className="name">{it.incomeEarner ?? '-'}</td>
               <td>
                 {it.cashAssistance
                   ? `${numberFormat(it.cashAssistance)}원`
