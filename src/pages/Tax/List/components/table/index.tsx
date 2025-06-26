@@ -30,6 +30,7 @@ const TaxListTable = ({ data }: TTableProps) => {
       <TableWrapper>
         <thead>
           <TableHeader>
+            <th>이름</th>
             <th>세전</th>
             <th>상여금</th>
             <th>세후</th>
@@ -38,6 +39,7 @@ const TaxListTable = ({ data }: TTableProps) => {
         <tbody>
           {data.map((it, idx) => (
             <TableItem key={idx}>
+              <td className="name">{it.user.name}</td>
               <td className="name">{handleCalcTax(it, 'before')}</td>
               <td>{it.bonus ? `${numberFormat(it.bonus.bonus)}원` : '-'}</td>
               <td>{handleCalcTax(it, 'after')}</td>

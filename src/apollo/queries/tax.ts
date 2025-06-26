@@ -22,6 +22,7 @@ export const GET_USER_INCENTIVE_DELIVERY_TEXES_QUERY = gql`
       totalBusinessExpenses
       user {
         id
+        name
       }
     }
   }
@@ -33,6 +34,10 @@ export const GET_CUSTOMER_TAXES_QUERY = gql`
       cashAssistance
       id
       incomeEarner
+      user {
+        id
+        name
+      }
     }
   }
 `;
