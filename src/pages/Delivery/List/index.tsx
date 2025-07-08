@@ -18,6 +18,7 @@ import { deliveryFiltersState } from '@/state/delivery';
 import { useGetDeliveries } from '@/services/delivery';
 import FilterFinancialCompany from './components/filter/financialCompany';
 import FilterDivision from './components/filter/division';
+import Pagination from '@/components/pagination/Pagination';
 
 const DeliveryList = () => {
   const navigate = useNavigate();
@@ -27,6 +28,10 @@ const DeliveryList = () => {
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
   const my = useRecoilValue(userState);
+
+  // pagination
+  const [length, setLength] = useState<number>(10);
+  const [offset, setOffset] = useState<number>(0);
 
   // filters
   const [filters, setFilters] = useRecoilState(deliveryFiltersState);
@@ -50,6 +55,8 @@ const DeliveryList = () => {
     endDeliveryAtYearMonth: filters?.endDeliveryAtYearMonth
       ? filters.endDeliveryAtYearMonth
       : null,
+    limit: length,
+    // offset,
   });
 
   // filter - user
@@ -274,6 +281,17 @@ const DeliveryList = () => {
             </div>
           )}
         </ListContent>
+        {data && data.getDeliveries?.length > 0 && (
+          <Pagination
+            // totalCount={data.count}
+            totalCount={100}
+            length={length}
+            getPage={(offset, length) => {
+              setOffset(offset);
+              setLength(length);
+            }}
+          ></Pagination>
+        )}
       </ListWrapper>
       {isOpenWatchOptionModal && (
         <WatchOptionModal

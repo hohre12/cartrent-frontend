@@ -31,6 +31,10 @@ const ContractList = () => {
     useState<boolean>(false);
   const my = useRecoilValue(userState);
 
+  // pagination
+  const [length, setLength] = useState<number>(10);
+  const [offset, setOffset] = useState<number>(0);
+
   // filters
   const [filters, setFilters] = useRecoilState(contractFiltersState);
   const resetFilters = useResetRecoilState(contractFiltersState);
@@ -49,6 +53,8 @@ const ContractList = () => {
     endContractAtYearMonth: filters?.endContractAtYearMonth
       ? filters.endContractAtYearMonth
       : null,
+    limit: length,
+    // offset,
   });
 
   // filter - shippingMethod
@@ -242,12 +248,17 @@ const ContractList = () => {
             </div>
           )}
         </ListContent>
-        {/* {dummyContractList.length > 0 && (
+        {data && data.getContracts?.length > 0 && (
           <Pagination
-            totalCount={dummyContractList.length}
-            length={dummyContractList.length}
+            // totalCount={data.count}
+            totalCount={100}
+            length={length}
+            getPage={(offset, length) => {
+              setOffset(offset);
+              setLength(length);
+            }}
           ></Pagination>
-        )} */}
+        )}
       </ListWrapper>
       {isOpenWatchOptionModal && (
         <WatchOptionModal

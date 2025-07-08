@@ -672,6 +672,10 @@ export type GetAgencyContractsDto = {
   endAgencyPaymentDate?: InputMaybe<Scalars['String']['input']>;
   /** 출고일 종료일 */
   endShippingDate?: InputMaybe<Scalars['String']['input']>;
+  /** 데이터 가져올 시작 위치 */
+  lastCreatedAt?: InputMaybe<Scalars['String']['input']>;
+  /** 데이터 가져올 개수 */
+  limit: Scalars['Int']['input'];
   search?: InputMaybe<Scalars['String']['input']>;
   /** 결제일 시작일 */
   startAgencyPaymentDate?: InputMaybe<Scalars['String']['input']>;
@@ -695,6 +699,10 @@ export type GetContractsDto = {
   customerId?: InputMaybe<Array<Scalars['Int']['input']>>;
   /** 계약일자 년월 */
   endContractAtYearMonth?: InputMaybe<Scalars['String']['input']>;
+  /** 데이터 가져올 시작 위치 */
+  lastCreatedAt?: InputMaybe<Scalars['String']['input']>;
+  /** 데이터 가져올 개수 */
+  limit: Scalars['Int']['input'];
   search?: InputMaybe<Scalars['String']['input']>;
   searchType?: InputMaybe<ContractSearchType>;
   /** 출고방식 ids */
@@ -707,6 +715,10 @@ export type GetContractsDto = {
 export type GetCounselsDto = {
   customerGroupId?: InputMaybe<Array<Scalars['Int']['input']>>;
   customerStatusId?: InputMaybe<Array<Scalars['Int']['input']>>;
+  /** 데이터 가져올 시작 위치 */
+  lastCreatedAt?: InputMaybe<Scalars['String']['input']>;
+  /** 데이터 가져올 개수 */
+  limit: Scalars['Int']['input'];
   /** 검색 내용 */
   search?: InputMaybe<Scalars['String']['input']>;
   /** 검색 타입 */
@@ -730,6 +742,10 @@ export type GetCustomersDto = {
   customerGroupId?: InputMaybe<Array<Scalars['Int']['input']>>;
   /** 고객 상태 Id */
   customerStatusId?: InputMaybe<Array<Scalars['Int']['input']>>;
+  /** 데이터 가져올 시작 위치 */
+  lastCreatedAt?: InputMaybe<Scalars['String']['input']>;
+  /** 데이터 가져올 개수 */
+  limit: Scalars['Int']['input'];
   search?: InputMaybe<Scalars['String']['input']>;
   /** 검색 타입 */
   searchType?: InputMaybe<CustomerSearchType>;
@@ -753,6 +769,10 @@ export type GetDeliveriesDto = {
   endDeliveryAtYearMonth?: InputMaybe<Scalars['String']['input']>;
   /** 금융사 Ids */
   financialCompanyIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+  /** 데이터 가져올 시작 위치 */
+  lastCreatedAt?: InputMaybe<Scalars['String']['input']>;
+  /** 데이터 가져올 개수 */
+  limit: Scalars['Int']['input'];
   search?: InputMaybe<Scalars['String']['input']>;
   /** 출고일 시작일 */
   startDeliveryAtYearMonth?: InputMaybe<Scalars['String']['input']>;
@@ -1244,7 +1264,7 @@ export enum NotificationType {
 export type PayStub = {
   /** 실수령액 - 수당합계 - 소득세 */
   actualSalary: Scalars['Int']['output'];
-  contracts?: Maybe<Array<Contract>>;
+  contracts: Array<Contract>;
   created_at?: Maybe<Scalars['DateTime']['output']>;
   day?: Maybe<Scalars['String']['output']>;
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
@@ -2538,14 +2558,14 @@ export type GetPayStubsQueryVariables = Exact<{
 }>;
 
 
-export type GetPayStubsQuery = { getPayStubs: Array<{ id: number, year: string, month: string, day?: string | null, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, incomeTax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string }, car?: { id: number, name: string, brand: { id: number, name: string } } | null }> | null }> };
+export type GetPayStubsQuery = { getPayStubs: Array<{ id: number, year: string, month: string, day?: string | null, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, incomeTax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts: Array<{ id: number, shippingDate?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string }, car?: { id: number, name: string, brand: { id: number, name: string } } | null }> }> };
 
 export type GetPayStubQueryVariables = Exact<{
   payStubId: Scalars['Float']['input'];
 }>;
 
 
-export type GetPayStubQuery = { getPayStub: { id: number, year: string, month: string, day?: string | null, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, incomeTax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts?: Array<{ id: number, shippingDate?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string }, car?: { id: number, name: string, brand: { id: number, name: string } } | null }> | null } };
+export type GetPayStubQuery = { getPayStub: { id: number, year: string, month: string, day?: string | null, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalAllowance?: number | null, etcIncentive?: number | null, incomeTax: number, actualSalary: number, user: { id: number, name: string, team?: { id: number, name: string } | null, position: { id: number, name: PositionType } }, contracts: Array<{ id: number, shippingDate?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, cashAssistance?: number | null, businessExpenses?: number | null, service1?: number | null, service2?: number | null, service3?: number | null, serviceBody1?: string | null, serviceBody2?: string | null, serviceBody3?: string | null, netIncome?: number | null, totalFee?: number | null, customer: { id: number, name: string }, car?: { id: number, name: string, brand: { id: number, name: string } } | null }> } };
 
 export type CheckSettleContractQueryVariables = Exact<{
   checkSettleContractDto: CheckSettleContractDto;
@@ -2559,7 +2579,14 @@ export type GetUserIncentiveDeliveryTaxesQueryVariables = Exact<{
 }>;
 
 
-export type GetUserIncentiveDeliveryTaxesQuery = { getUserIncentiveDeliveryTaxes: Array<{ year: string, month: string, totalIncentiveDelivery: number, etcIncentive: number, totalBusinessExpenses: number, additionalIncentive?: { id: number, additionalIncentive: number } | null, bonus?: { id: number, bonus: number } | null, user: { id: number } }> };
+export type GetUserIncentiveDeliveryTaxesQuery = { getUserIncentiveDeliveryTaxes: Array<{ year: string, month: string, totalIncentiveDelivery: number, etcIncentive: number, totalBusinessExpenses: number, additionalIncentive?: { id: number, additionalIncentive: number } | null, bonus?: { id: number, bonus: number } | null, user: { id: number, name: string } }> };
+
+export type GetCustomerTaxesQueryVariables = Exact<{
+  getCustomerTaxesDto: GetCustomerTaxesDto;
+}>;
+
+
+export type GetCustomerTaxesQuery = { getCustomerTaxes: Array<{ cashAssistance?: number | null, id: number, incomeEarner?: string | null, user: { id: number, name: string } }> };
 
 export type TeamFieldsFragment = { id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> };
 
@@ -6293,6 +6320,7 @@ export const GetUserIncentiveDeliveryTaxesDocument = gql`
     totalBusinessExpenses
     user {
       id
+      name
     }
   }
 }
@@ -6330,6 +6358,52 @@ export type GetUserIncentiveDeliveryTaxesQueryHookResult = ReturnType<typeof use
 export type GetUserIncentiveDeliveryTaxesLazyQueryHookResult = ReturnType<typeof useGetUserIncentiveDeliveryTaxesLazyQuery>;
 export type GetUserIncentiveDeliveryTaxesSuspenseQueryHookResult = ReturnType<typeof useGetUserIncentiveDeliveryTaxesSuspenseQuery>;
 export type GetUserIncentiveDeliveryTaxesQueryResult = Apollo.QueryResult<GetUserIncentiveDeliveryTaxesQuery, GetUserIncentiveDeliveryTaxesQueryVariables>;
+export const GetCustomerTaxesDocument = gql`
+    query GetCustomerTaxes($getCustomerTaxesDto: GetCustomerTaxesDto!) {
+  getCustomerTaxes(getCustomerTaxesDto: $getCustomerTaxesDto) {
+    cashAssistance
+    id
+    incomeEarner
+    user {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCustomerTaxesQuery__
+ *
+ * To run a query within a React component, call `useGetCustomerTaxesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCustomerTaxesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCustomerTaxesQuery({
+ *   variables: {
+ *      getCustomerTaxesDto: // value for 'getCustomerTaxesDto'
+ *   },
+ * });
+ */
+export function useGetCustomerTaxesQuery(baseOptions: Apollo.QueryHookOptions<GetCustomerTaxesQuery, GetCustomerTaxesQueryVariables> & ({ variables: GetCustomerTaxesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCustomerTaxesQuery, GetCustomerTaxesQueryVariables>(GetCustomerTaxesDocument, options);
+      }
+export function useGetCustomerTaxesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCustomerTaxesQuery, GetCustomerTaxesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCustomerTaxesQuery, GetCustomerTaxesQueryVariables>(GetCustomerTaxesDocument, options);
+        }
+export function useGetCustomerTaxesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCustomerTaxesQuery, GetCustomerTaxesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCustomerTaxesQuery, GetCustomerTaxesQueryVariables>(GetCustomerTaxesDocument, options);
+        }
+export type GetCustomerTaxesQueryHookResult = ReturnType<typeof useGetCustomerTaxesQuery>;
+export type GetCustomerTaxesLazyQueryHookResult = ReturnType<typeof useGetCustomerTaxesLazyQuery>;
+export type GetCustomerTaxesSuspenseQueryHookResult = ReturnType<typeof useGetCustomerTaxesSuspenseQuery>;
+export type GetCustomerTaxesQueryResult = Apollo.QueryResult<GetCustomerTaxesQuery, GetCustomerTaxesQueryVariables>;
 export const GetTeamsDocument = gql`
     query GetTeams {
   getTeams {

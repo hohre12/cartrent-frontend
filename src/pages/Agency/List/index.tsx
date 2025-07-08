@@ -14,6 +14,7 @@ import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
 import { useGetAgencyContracts } from '@/services/agency';
 import AgencyContractListTable from './components/table';
+import Pagination from '@/components/pagination/Pagination';
 
 const AgencyList = () => {
   const navigate = useNavigate();
@@ -23,6 +24,10 @@ const AgencyList = () => {
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
   const my = useRecoilValue(userState);
+
+  // pagination
+  const [length, setLength] = useState<number>(10);
+  const [offset, setOffset] = useState<number>(0);
 
   // filters
   const [filters, setFilters] = useRecoilState(agencyContractFiltersState);
@@ -40,6 +45,8 @@ const AgencyList = () => {
     endAgencyPaymentDate: filters?.endAgencyPaymentDate
       ? filters.endAgencyPaymentDate
       : null,
+    limit: length,
+    // offset,
   });
 
   const handleSearchTextDelete = useCallback(() => {
@@ -185,6 +192,17 @@ const AgencyList = () => {
             </div>
           )}
         </ListContent>
+        {data && data.getAgencyContracts?.length > 0 && (
+          <Pagination
+            // totalCount={data.count}
+            totalCount={100}
+            length={length}
+            getPage={(offset, length) => {
+              setOffset(offset);
+              setLength(length);
+            }}
+          ></Pagination>
+        )}
       </ListWrapper>
       {isOpenWatchOptionModal && (
         <WatchOptionModal

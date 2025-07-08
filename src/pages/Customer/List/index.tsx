@@ -23,6 +23,7 @@ import FloatingMenu from '../components/floatingMenu';
 import useClickOutside from '@/hooks/useClickOutside';
 import Sort from '../components/sort';
 import { FilterContent } from '@/styles/common';
+import Pagination from '@/components/pagination/Pagination';
 
 const CustomerList = () => {
   const navigationType = useNavigationType();
@@ -45,6 +46,10 @@ const CustomerList = () => {
   const user = useRecoilValue(userState);
   const { showConfirm, hideConfirm } = useConfirm();
 
+  // pagination
+  const [length, setLength] = useState<number>(10);
+  const [offset, setOffset] = useState<number>(0);
+
   // sort
   const [isSortOpen, setIsSortOpen] = useState<boolean>(false);
   const selectedSort = useRecoilValue(selectedCustomerSortState);
@@ -61,6 +66,8 @@ const CustomerList = () => {
       filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
     sortKey: selectedSort.sortKey,
     sortDirection: selectedSort.sortDirection,
+    limit: length,
+    // offset
   });
 
   const handleSearchTextDelete = useCallback(() => {
@@ -166,6 +173,17 @@ const CustomerList = () => {
             </>
           )}
         </TableWrapper>
+        {data && data.getCustomers?.length > 0 && (
+          <Pagination
+            // totalCount={data.count}
+            totalCount={100}
+            length={length}
+            getPage={(offset, length) => {
+              setOffset(offset);
+              setLength(length);
+            }}
+          ></Pagination>
+        )}
       </ListWrapper>
       {isOpenWatchOptionModal && (
         <WatchOptionModal

@@ -33,10 +33,13 @@ const Pagination = ({
     [handleGetPage, length],
   );
 
-  const handleSetLength = useCallback((val: number) => {
-    setIsOpenLength(false);
-    handleGetPage(0, val);
-  }, []);
+  const handleSetLength = useCallback(
+    (val: number) => {
+      setIsOpenLength(false);
+      handleGetPage(0, val);
+    },
+    [handleGetPage],
+  );
 
   useEffect(() => {
     const startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
