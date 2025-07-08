@@ -49,6 +49,7 @@ const ContractList = () => {
     endContractAtYearMonth: filters?.endContractAtYearMonth
       ? filters.endContractAtYearMonth
       : null,
+    limit: 10,
   });
 
   // filter - shippingMethod
@@ -242,12 +243,17 @@ const ContractList = () => {
             </div>
           )}
         </ListContent>
-        {/* {dummyContractList.length > 0 && (
+        {data && data.getContracts?.length > 0 && (
           <Pagination
-            totalCount={dummyContractList.length}
-            length={dummyContractList.length}
+            // totalCount={data.count}
+            totalCount={100}
+            length={data.getContracts?.length}
+            getPage={(offset, length) => {
+              console.log(offset);
+              console.log(length);
+            }}
           ></Pagination>
-        )} */}
+        )}
       </ListWrapper>
       {isOpenWatchOptionModal && (
         <WatchOptionModal
