@@ -39,6 +39,10 @@ const CounselList = () => {
   //   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
   const user = useRecoilValue(userState);
 
+  // pagination
+  const [length, setLength] = useState<number>(10);
+  const [offset, setOffset] = useState<number>(0);
+
   // filters
   const [filters, setFilters] = useRecoilState(counselFiltersState);
   const resetFilters = useResetRecoilState(counselFiltersState);
@@ -61,6 +65,8 @@ const CounselList = () => {
       filters?.users?.length > 0 ? filters.users.map((it) => it.value) : null,
     sortKey: selectedSort.sortKey,
     sortDirection: selectedSort.sortDirection,
+    limit: length,
+    // offset,
   });
 
   // filter - group
@@ -264,6 +270,17 @@ const CounselList = () => {
             </div>
           )}
         </ListContent>
+        {data && data.getCounsels?.length > 0 && (
+          <Pagination
+            // totalCount={data.count}
+            totalCount={100}
+            length={length}
+            getPage={(offset, length) => {
+              setOffset(offset);
+              setLength(length);
+            }}
+          ></Pagination>
+        )}
       </ListWrapper>
       {isOpenWatchOptionModal && (
         <WatchOptionModal
