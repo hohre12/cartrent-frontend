@@ -8,46 +8,49 @@ import { gql } from '@apollo/client';
 export const GET_COUNSELS_QUERY = gql`
   query GetCounsels($getCounselsDto: GetCounselsDto!) {
     getCounsels(getCounselsDto: $getCounselsDto) {
-      id
-      status
-      counselAt
-      context
-      customer {
+      data {
         id
-        name
-        phone
-        customerGroup {
+        status
+        counselAt
+        context
+        customer {
           id
           name
+          phone
+          customerGroup {
+            id
+            name
+          }
+          customerGrade {
+            id
+            name
+          }
+          customerStatus {
+            id
+            status
+          }
         }
-        customerGrade {
+        contract {
           id
-          name
-        }
-        customerStatus {
-          id
-          status
-        }
-      }
-      contract {
-        id
-        car {
-          id
-          name
-          brand {
+          car {
+            id
+            name
+            brand {
+              id
+              name
+            }
+          }
+          division {
             id
             name
           }
         }
-        division {
+        user {
           id
           name
         }
       }
-      user {
-        id
-        name
-      }
+      totalCount
     }
   }
 `;

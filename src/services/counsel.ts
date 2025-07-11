@@ -18,7 +18,7 @@ import { useMutation, useQuery } from '@apollo/client';
 
 export const useGetCounsels = (params: GetCounselsDto) => {
   return useQuery<
-    { getCounsels: Counsel[] },
+    { getCounsels: Counsel[]; totalCount: number },
     { getCounselsDto: GetCounselsDto }
   >(GET_COUNSELS_QUERY, {
     variables: { getCounselsDto: params },

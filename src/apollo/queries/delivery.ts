@@ -9,40 +9,43 @@ import { gql } from '@apollo/client';
 export const GET_DELIVERIES_QUERY = gql`
   query GetDeliveries($getDeliveriesDto: GetDeliveriesDto!) {
     getDeliveries(getDeliveriesDto: $getDeliveriesDto) {
-      id
-      contractAt
-      shippingDate
-      customer {
+      data {
         id
-        name
-      }
-      user {
-        id
-        name
-      }
-      financialCompany {
-        id
-        name
-      }
-      division {
-        id
-        name
-      }
-      car {
-        id
-        name
-        brand {
+        contractAt
+        shippingDate
+        customer {
+          id
+          name
+        }
+        user {
+          id
+          name
+        }
+        financialCompany {
+          id
+          name
+        }
+        division {
+          id
+          name
+        }
+        car {
+          id
+          name
+          brand {
+            id
+            name
+          }
+        }
+        carPrice
+        fee
+        promotion
+        shippingMethod {
           id
           name
         }
       }
-      carPrice
-      fee
-      promotion
-      shippingMethod {
-        id
-        name
-      }
+      totalCount
     }
   }
 `;

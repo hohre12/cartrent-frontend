@@ -47,7 +47,7 @@ const CustomerList = () => {
   const { showConfirm, hideConfirm } = useConfirm();
 
   // pagination
-  const [length, setLength] = useState<number>(10);
+  const [length, setLength] = useState<number>(50);
   const [offset, setOffset] = useState<number>(0);
 
   // sort
@@ -67,7 +67,7 @@ const CustomerList = () => {
     sortKey: selectedSort.sortKey,
     sortDirection: selectedSort.sortDirection,
     limit: length,
-    // offset
+    offset,
   });
 
   const handleSearchTextDelete = useCallback(() => {
@@ -175,8 +175,7 @@ const CustomerList = () => {
         </TableWrapper>
         {data && data.getCustomers?.length > 0 && (
           <Pagination
-            // totalCount={data.count}
-            totalCount={100}
+            totalCount={data.totalCount}
             length={length}
             getPage={(offset, length) => {
               setOffset(offset);
