@@ -84,7 +84,8 @@ export type TListResponse<T> = {
 export type TPagination = {
   totalCount: number;
   length: number;
-  propsCurrentPage?: number;
+  currentPage: number;
+  // propsCurrentPage?: number;
   getPage?: (offset: number, length: number) => void;
 };
 

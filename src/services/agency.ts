@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 
 export const useGetAgencyContracts = (params: GetAgencyContractsDto) => {
   return useQuery<
-    { getAgencyContracts: Contract[]; totalCount: number },
+    { getAgencyContracts: { data: Contract[]; totalCount: number } },
     { getAgencyContractsDto: GetAgencyContractsDto }
   >(GET_AGENCY_CONTRACTS_QUERY, {
     variables: { getAgencyContractsDto: params },

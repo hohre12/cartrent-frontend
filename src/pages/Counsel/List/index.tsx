@@ -253,9 +253,9 @@ const CounselList = () => {
           </ControlWrapper>
         </Header>
         <ListContent>
-          {data && data.getCounsels?.length > 0 ? (
+          {data && data.getCounsels?.data.length > 0 ? (
             <>
-              <CounselListTable data={data.getCounsels}></CounselListTable>
+              <CounselListTable data={data.getCounsels.data}></CounselListTable>
               {selectedCounsel.length > 0 && <FloatingMenu></FloatingMenu>}
             </>
           ) : searchText ? (
@@ -270,11 +270,11 @@ const CounselList = () => {
             </div>
           )}
         </ListContent>
-        {data && data.getCounsels?.length > 0 && (
+        {data && data.getCounsels?.data.length > 0 && (
           <Pagination
-            // totalCount={data.count}
-            totalCount={100}
+            totalCount={data.getCounsels.totalCount}
             length={length}
+            currentPage={offset + 1}
             getPage={(offset, length) => {
               setOffset(offset);
               setLength(length);
