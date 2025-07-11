@@ -265,9 +265,11 @@ const DeliveryList = () => {
           </ControlWrapper>
         </Header>
         <ListContent>
-          {data && data.getDeliveries?.length > 0 ? (
+          {data && data.getDeliveries?.data.length > 0 ? (
             <>
-              <ContractListTable data={data.getDeliveries}></ContractListTable>
+              <ContractListTable
+                data={data.getDeliveries.data}
+              ></ContractListTable>
             </>
           ) : searchText ? (
             <div className="noList">
@@ -281,11 +283,11 @@ const DeliveryList = () => {
             </div>
           )}
         </ListContent>
-        {data && data.getDeliveries?.length > 0 && (
+        {data && data.getDeliveries?.data.length > 0 && (
           <Pagination
-            // totalCount={data.count}
-            totalCount={100}
+            totalCount={data.getDeliveries.totalCount}
             length={length}
+            currentPage={offset + 1}
             getPage={(offset, length) => {
               setOffset(offset);
               setLength(length);

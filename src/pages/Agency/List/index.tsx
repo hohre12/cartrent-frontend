@@ -174,10 +174,10 @@ const AgencyList = () => {
           </ControlWrapper>
         </Header>
         <ListContent>
-          {data && data.getAgencyContracts?.length > 0 ? (
+          {data && data.getAgencyContracts?.data.length > 0 ? (
             <>
               <AgencyContractListTable
-                data={data.getAgencyContracts}
+                data={data.getAgencyContracts.data}
               ></AgencyContractListTable>
             </>
           ) : searchText ? (
@@ -192,11 +192,11 @@ const AgencyList = () => {
             </div>
           )}
         </ListContent>
-        {data && data.getAgencyContracts?.length > 0 && (
+        {data && data.getAgencyContracts?.data.length > 0 && (
           <Pagination
-            // totalCount={data.count}
-            totalCount={100}
+            totalCount={data.getAgencyContracts.totalCount}
             length={length}
+            currentPage={offset + 1}
             getPage={(offset, length) => {
               setOffset(offset);
               setLength(length);

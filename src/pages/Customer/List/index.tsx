@@ -84,9 +84,9 @@ const CustomerList = () => {
     if (
       !selectedCustomerIdx &&
       data?.getCustomers &&
-      data.getCustomers.length > 0
+      data.getCustomers.data.length > 0
     )
-      setSelectedCustomerIdx(data.getCustomers[0].id);
+      setSelectedCustomerIdx(data.getCustomers.data[0].id);
   }, [data, selectedCustomerIdx, setSelectedCustomerIdx]);
 
   useEffect(() => {
@@ -168,15 +168,18 @@ const CustomerList = () => {
           </div>
           {data && (
             <>
-              <CustomerListTable data={data.getCustomers}></CustomerListTable>
+              <CustomerListTable
+                data={data.getCustomers.data}
+              ></CustomerListTable>
               {selectedCustomer.length > 0 && <FloatingMenu></FloatingMenu>}
             </>
           )}
         </TableWrapper>
-        {data && data.getCustomers?.length > 0 && (
+        {data && data.getCustomers?.data.length > 0 && (
           <Pagination
-            totalCount={data.totalCount}
+            totalCount={data.getCustomers.totalCount}
             length={length}
+            currentPage={offset + 1}
             getPage={(offset, length) => {
               setOffset(offset);
               setLength(length);

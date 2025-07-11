@@ -23,7 +23,7 @@ import { useMutation, useQuery } from '@apollo/client';
 
 export const useGetContracts = (params: GetContractsDto) => {
   return useQuery<
-    { getContracts: Contract[]; totalCount: number },
+    { getContracts: { data: Contract[]; totalCount: number } },
     { getContractsDto: GetContractsDto }
   >(GET_CONTRACTS_QUERY, {
     variables: { getContractsDto: params },

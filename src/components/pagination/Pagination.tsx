@@ -9,10 +9,11 @@ import useClickOutside from '@/hooks/useClickOutside';
 const Pagination = ({
   totalCount,
   length,
-  propsCurrentPage,
+  currentPage,
+  // propsCurrentPage,
   getPage,
 }: TPagination) => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  // const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageList, setPageList] = useState<number[]>([]);
   const [isOpenLength, setIsOpenLength] = useState<boolean>(false);
   const totalPage = Math.ceil(totalCount / length);
@@ -27,7 +28,7 @@ const Pagination = ({
 
   const handleSetCurrentPage = useCallback(
     (current: number) => {
-      setCurrentPage(current);
+      // setCurrentPage(current);
       handleGetPage(current - 1, length);
     },
     [handleGetPage, length],
@@ -60,11 +61,11 @@ const Pagination = ({
     setPageList([...list]);
   }, [totalPage, length, currentPage, setPageList]);
 
-  useEffect(() => {
-    if (propsCurrentPage && propsCurrentPage !== currentPage) {
-      handleSetCurrentPage(propsCurrentPage);
-    }
-  }, [propsCurrentPage, totalCount, length, handleSetCurrentPage, currentPage]);
+  // useEffect(() => {
+  //   if (propsCurrentPage && propsCurrentPage !== currentPage) {
+  //     handleSetCurrentPage(propsCurrentPage);
+  //   }
+  // }, [propsCurrentPage, totalCount, length, handleSetCurrentPage, currentPage]);
 
   if (totalCount <= 0) return null;
 
