@@ -26,7 +26,7 @@ const AgencyList = () => {
   const my = useRecoilValue(userState);
 
   // pagination
-  const [length, setLength] = useState<number>(10);
+  const [length, setLength] = useState<number>(50);
   const [offset, setOffset] = useState<number>(0);
 
   // filters
@@ -46,7 +46,7 @@ const AgencyList = () => {
       ? filters.endAgencyPaymentDate
       : null,
     limit: length,
-    // offset,
+    offset,
   });
 
   const handleSearchTextDelete = useCallback(() => {

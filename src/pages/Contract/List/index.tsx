@@ -32,7 +32,7 @@ const ContractList = () => {
   const my = useRecoilValue(userState);
 
   // pagination
-  const [length, setLength] = useState<number>(10);
+  const [length, setLength] = useState<number>(50);
   const [offset, setOffset] = useState<number>(0);
 
   // filters
@@ -54,7 +54,7 @@ const ContractList = () => {
       ? filters.endContractAtYearMonth
       : null,
     limit: length,
-    // offset,
+    offset,
   });
 
   // filter - shippingMethod

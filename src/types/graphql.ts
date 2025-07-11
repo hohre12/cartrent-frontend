@@ -237,6 +237,11 @@ export type Contract = {
   user_id?: Maybe<Scalars['Int']['output']>;
 };
 
+export type ContractResult = {
+  data: Array<Contract>;
+  totalCount: Scalars['Int']['output'];
+};
+
 /** 계약 검색 타입 Enum Type */
 export enum ContractSearchType {
   /** 차종 */
@@ -272,6 +277,11 @@ export type Counsel = {
   updated_at?: Maybe<Scalars['DateTime']['output']>;
   user: User;
   user_id?: Maybe<Scalars['Int']['output']>;
+};
+
+export type CounselResult = {
+  data: Array<Counsel>;
+  totalCount: Scalars['Int']['output'];
 };
 
 /** 상담 검색 타입 Enum Type */
@@ -608,6 +618,11 @@ export type CustomerGroup = {
   updated_at?: Maybe<Scalars['DateTime']['output']>;
 };
 
+export type CustomerResult = {
+  data: Array<Customer>;
+  totalCount: Scalars['Int']['output'];
+};
+
 /** 검색 타입 Enum Type */
 export enum CustomerSearchType {
   /** 차종 */
@@ -672,10 +687,10 @@ export type GetAgencyContractsDto = {
   endAgencyPaymentDate?: InputMaybe<Scalars['String']['input']>;
   /** 출고일 종료일 */
   endShippingDate?: InputMaybe<Scalars['String']['input']>;
-  /** 데이터 가져올 시작 위치 */
-  lastCreatedAt?: InputMaybe<Scalars['String']['input']>;
   /** 데이터 가져올 개수 */
   limit: Scalars['Int']['input'];
+  /** 페이지 넘버 */
+  offset?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
   /** 결제일 시작일 */
   startAgencyPaymentDate?: InputMaybe<Scalars['String']['input']>;
@@ -699,10 +714,10 @@ export type GetContractsDto = {
   customerId?: InputMaybe<Array<Scalars['Int']['input']>>;
   /** 계약일자 년월 */
   endContractAtYearMonth?: InputMaybe<Scalars['String']['input']>;
-  /** 데이터 가져올 시작 위치 */
-  lastCreatedAt?: InputMaybe<Scalars['String']['input']>;
   /** 데이터 가져올 개수 */
   limit: Scalars['Int']['input'];
+  /** 페이지 넘버 */
+  offset?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
   searchType?: InputMaybe<ContractSearchType>;
   /** 출고방식 ids */
@@ -715,10 +730,10 @@ export type GetContractsDto = {
 export type GetCounselsDto = {
   customerGroupId?: InputMaybe<Array<Scalars['Int']['input']>>;
   customerStatusId?: InputMaybe<Array<Scalars['Int']['input']>>;
-  /** 데이터 가져올 시작 위치 */
-  lastCreatedAt?: InputMaybe<Scalars['String']['input']>;
   /** 데이터 가져올 개수 */
   limit: Scalars['Int']['input'];
+  /** 페이지 넘버 */
+  offset?: InputMaybe<Scalars['Int']['input']>;
   /** 검색 내용 */
   search?: InputMaybe<Scalars['String']['input']>;
   /** 검색 타입 */
@@ -742,10 +757,10 @@ export type GetCustomersDto = {
   customerGroupId?: InputMaybe<Array<Scalars['Int']['input']>>;
   /** 고객 상태 Id */
   customerStatusId?: InputMaybe<Array<Scalars['Int']['input']>>;
-  /** 데이터 가져올 시작 위치 */
-  lastCreatedAt?: InputMaybe<Scalars['String']['input']>;
   /** 데이터 가져올 개수 */
   limit: Scalars['Int']['input'];
+  /** 페이지 넘버 */
+  offset?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
   /** 검색 타입 */
   searchType?: InputMaybe<CustomerSearchType>;
@@ -769,10 +784,10 @@ export type GetDeliveriesDto = {
   endDeliveryAtYearMonth?: InputMaybe<Scalars['String']['input']>;
   /** 금융사 Ids */
   financialCompanyIds?: InputMaybe<Array<Scalars['Int']['input']>>;
-  /** 데이터 가져올 시작 위치 */
-  lastCreatedAt?: InputMaybe<Scalars['String']['input']>;
   /** 데이터 가져올 개수 */
   limit: Scalars['Int']['input'];
+  /** 페이지 넘버 */
+  offset?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
   /** 출고일 시작일 */
   startDeliveryAtYearMonth?: InputMaybe<Scalars['String']['input']>;
@@ -1339,7 +1354,7 @@ export type Query = {
   /** 정산 리스트 조회 */
   getAdjustments: Array<Adjustment>;
   /** 대리점 계약 리스트 조회 */
-  getAgencyContracts: Array<Contract>;
+  getAgencyContracts: ContractResult;
   /** 브랜드 조회 */
   getBrand: Brand;
   /** 브랜드 리스트 조회 */
@@ -1355,11 +1370,11 @@ export type Query = {
   /** 계약 조회 */
   getContract: Contract;
   /** 계약 리스트 조회 */
-  getContracts: Array<Contract>;
+  getContracts: ContractResult;
   /** 상담 정보 조회 */
   getCounsel: Counsel;
   /** 상담 리스트 조회 */
-  getCounsels: Array<Counsel>;
+  getCounsels: CounselResult;
   /** 고객 정보 조회 */
   getCustomer: Customer;
   /** 고객 등급 상세페이지 */
@@ -1375,9 +1390,9 @@ export type Query = {
   /** 고객 현금지원 관련 세금 리스트 조회 */
   getCustomerTaxes: Array<Contract>;
   /** 고객 리스트 조회 */
-  getCustomers: Array<Customer>;
+  getCustomers: CustomerResult;
   /** 출고 내역 리스트 조회 */
-  getDeliveries: Array<Contract>;
+  getDeliveries: ContractResult;
   /** 구분 리스트 */
   getDivisions: Array<Division>;
   /** 금융사 리스트 */
@@ -2386,7 +2401,7 @@ export type GetAgencyContractsQueryVariables = Exact<{
 }>;
 
 
-export type GetAgencyContractsQuery = { getAgencyContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, hasContractConfirmationLetter?: boolean | null, hasRegistrationCertificate?: boolean | null, note?: string | null, agencyPaymentDate?: string | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string, customerStatus?: { id: number, status: string } | null }, car?: { id: number, name: string, brand: { id: number, name: string } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> };
+export type GetAgencyContractsQuery = { getAgencyContracts: { totalCount: number, data: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, hasContractConfirmationLetter?: boolean | null, hasRegistrationCertificate?: boolean | null, note?: string | null, agencyPaymentDate?: string | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string, customerStatus?: { id: number, status: string } | null }, car?: { id: number, name: string, brand: { id: number, name: string } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> } };
 
 export type GetBrandsQueryVariables = Exact<{
   getBrandsDto: GetBrandsDto;
@@ -2435,7 +2450,7 @@ export type GetContractsQueryVariables = Exact<{
 }>;
 
 
-export type GetContractsQuery = { getContracts: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, hasContractConfirmationLetter?: boolean | null, hasRegistrationCertificate?: boolean | null, note?: string | null, agencyPaymentDate?: string | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string, customerStatus?: { id: number, status: string } | null }, car?: { id: number, name: string, brand: { id: number, name: string } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> };
+export type GetContractsQuery = { getContracts: { totalCount: number, data: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, hasContractConfirmationLetter?: boolean | null, hasRegistrationCertificate?: boolean | null, note?: string | null, agencyPaymentDate?: string | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string, customerStatus?: { id: number, status: string } | null }, car?: { id: number, name: string, brand: { id: number, name: string } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> } };
 
 export type GetContractQueryVariables = Exact<{
   contractId: Scalars['Float']['input'];
@@ -2464,7 +2479,7 @@ export type GetCounselsQueryVariables = Exact<{
 }>;
 
 
-export type GetCounselsQuery = { getCounsels: Array<{ id: number, status?: Status | null, counselAt: string, context: string, customer: { id: number, name: string, phone: string, customerGroup?: { id: number, name: string } | null, customerGrade?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null }, contract?: { id: number, car?: { id: number, name: string, brand: { id: number, name: string } } | null, division?: { id: number, name: string } | null } | null, user: { id: number, name: string } }> };
+export type GetCounselsQuery = { getCounsels: { totalCount: number, data: Array<{ id: number, status?: Status | null, counselAt: string, context: string, customer: { id: number, name: string, phone: string, customerGroup?: { id: number, name: string } | null, customerGrade?: { id: number, name: string } | null, customerStatus?: { id: number, status: string } | null }, contract?: { id: number, car?: { id: number, name: string, brand: { id: number, name: string } } | null, division?: { id: number, name: string } | null } | null, user: { id: number, name: string } }> } };
 
 export type GetCounselQueryVariables = Exact<{
   counselId: Scalars['Float']['input'];
@@ -2478,7 +2493,7 @@ export type GetCustomersQueryVariables = Exact<{
 }>;
 
 
-export type GetCustomersQuery = { getCustomers: Array<{ id: number, created_at?: string | null, name: string, phone: string, memo?: string | null, note?: string | null, type?: string | null, company_name_nominee?: string | null, origin?: string | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, advancePayment?: number | null, customerDivision?: { id: number, name: string } | null, contractList: Array<{ car?: { id: number, name: string, brand: { id: number, name: string } } | null, division?: { name: string } | null }>, counselList: Array<{ counselAt: string }>, customerGrade?: { name: string } | null, userList: { name: string }, customerStatus?: { status: string } | null }> };
+export type GetCustomersQuery = { getCustomers: { totalCount: number, data: Array<{ id: number, created_at?: string | null, name: string, phone: string, memo?: string | null, note?: string | null, type?: string | null, company_name_nominee?: string | null, origin?: string | null, carName?: string | null, carOption?: string | null, contractPeriod?: number | null, agreedMileage?: number | null, advancePayment?: number | null, customerDivision?: { id: number, name: string } | null, contractList: Array<{ car?: { id: number, name: string, brand: { id: number, name: string } } | null, division?: { name: string } | null }>, counselList: Array<{ counselAt: string }>, customerGrade?: { name: string } | null, userList: { name: string }, customerStatus?: { status: string } | null }> } };
 
 export type GetCustomerQueryVariables = Exact<{
   customerId: Scalars['Float']['input'];
@@ -2521,7 +2536,7 @@ export type GetDeliveriesQueryVariables = Exact<{
 }>;
 
 
-export type GetDeliveriesQuery = { getDeliveries: Array<{ id: number, contractAt?: string | null, shippingDate?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, customer: { id: number, name: string }, user: { id: number, name: string }, financialCompany?: { id: number, name: string } | null, division?: { id: number, name: string } | null, car?: { id: number, name: string, brand: { id: number, name: string } } | null, shippingMethod?: { id: number, name: string } | null }> };
+export type GetDeliveriesQuery = { getDeliveries: { totalCount: number, data: Array<{ id: number, contractAt?: string | null, shippingDate?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, customer: { id: number, name: string }, user: { id: number, name: string }, financialCompany?: { id: number, name: string } | null, division?: { id: number, name: string } | null, car?: { id: number, name: string, brand: { id: number, name: string } } | null, shippingMethod?: { id: number, name: string } | null }> } };
 
 export type GetNoticesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4466,84 +4481,87 @@ export type MakeExcelQueryResult = Apollo.QueryResult<MakeExcelQuery, MakeExcelQ
 export const GetAgencyContractsDocument = gql`
     query GetAgencyContracts($getAgencyContractsDto: GetAgencyContractsDto!) {
   getAgencyContracts(getAgencyContractsDto: $getAgencyContractsDto) {
-    id
-    status
-    user {
+    data {
       id
-      name
-    }
-    city {
-      id
-      name
-    }
-    contractAt
-    shippingDate
-    customer {
-      id
-      name
-      phone
-      customerStatus {
-        id
-        status
-      }
-    }
-    car {
-      id
-      name
-      brand {
+      status
+      user {
         id
         name
       }
+      city {
+        id
+        name
+      }
+      contractAt
+      shippingDate
+      customer {
+        id
+        name
+        phone
+        customerStatus {
+          id
+          status
+        }
+      }
+      car {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
+      carOption
+      innerColor
+      outerColor
+      carPrice
+      financialCompany {
+        id
+        name
+      }
+      feeRate
+      fee
+      promotion
+      monthlyPayment
+      shippingMethod {
+        id
+        name
+      }
+      isOrdering
+      isVATSupport
+      branch
+      branchFee
+      collateralRate
+      contractPeriod
+      agreedMileage
+      insuranceAge
+      object
+      service1
+      serviceBody1
+      service2
+      serviceBody2
+      service3
+      serviceBody3
+      incomeEarner
+      cashAssistance
+      supportDetails
+      businessExpenses
+      businessExpensesDetail
+      totalExpenditure
+      totalFee
+      netIncome
+      company_name_nominee
+      division {
+        id
+        name
+      }
+      advancePayment
+      hasContractConfirmationLetter
+      hasRegistrationCertificate
+      note
+      agencyPaymentDate
     }
-    carOption
-    innerColor
-    outerColor
-    carPrice
-    financialCompany {
-      id
-      name
-    }
-    feeRate
-    fee
-    promotion
-    monthlyPayment
-    shippingMethod {
-      id
-      name
-    }
-    isOrdering
-    isVATSupport
-    branch
-    branchFee
-    collateralRate
-    contractPeriod
-    agreedMileage
-    insuranceAge
-    object
-    service1
-    serviceBody1
-    service2
-    serviceBody2
-    service3
-    serviceBody3
-    incomeEarner
-    cashAssistance
-    supportDetails
-    businessExpenses
-    businessExpensesDetail
-    totalExpenditure
-    totalFee
-    netIncome
-    company_name_nominee
-    division {
-      id
-      name
-    }
-    advancePayment
-    hasContractConfirmationLetter
-    hasRegistrationCertificate
-    note
-    agencyPaymentDate
+    totalCount
   }
 }
     `;
@@ -4865,84 +4883,87 @@ export type GetCityQueryResult = Apollo.QueryResult<GetCityQuery, GetCityQueryVa
 export const GetContractsDocument = gql`
     query GetContracts($getContractsDto: GetContractsDto!) {
   getContracts(getContractsDto: $getContractsDto) {
-    id
-    status
-    user {
+    data {
       id
-      name
-    }
-    city {
-      id
-      name
-    }
-    contractAt
-    shippingDate
-    customer {
-      id
-      name
-      phone
-      customerStatus {
-        id
-        status
-      }
-    }
-    car {
-      id
-      name
-      brand {
+      status
+      user {
         id
         name
       }
+      city {
+        id
+        name
+      }
+      contractAt
+      shippingDate
+      customer {
+        id
+        name
+        phone
+        customerStatus {
+          id
+          status
+        }
+      }
+      car {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
+      carOption
+      innerColor
+      outerColor
+      carPrice
+      financialCompany {
+        id
+        name
+      }
+      feeRate
+      fee
+      promotion
+      monthlyPayment
+      shippingMethod {
+        id
+        name
+      }
+      isOrdering
+      isVATSupport
+      branch
+      branchFee
+      collateralRate
+      contractPeriod
+      agreedMileage
+      insuranceAge
+      object
+      service1
+      serviceBody1
+      service2
+      serviceBody2
+      service3
+      serviceBody3
+      incomeEarner
+      cashAssistance
+      supportDetails
+      businessExpenses
+      businessExpensesDetail
+      totalExpenditure
+      totalFee
+      netIncome
+      company_name_nominee
+      division {
+        id
+        name
+      }
+      advancePayment
+      hasContractConfirmationLetter
+      hasRegistrationCertificate
+      note
+      agencyPaymentDate
     }
-    carOption
-    innerColor
-    outerColor
-    carPrice
-    financialCompany {
-      id
-      name
-    }
-    feeRate
-    fee
-    promotion
-    monthlyPayment
-    shippingMethod {
-      id
-      name
-    }
-    isOrdering
-    isVATSupport
-    branch
-    branchFee
-    collateralRate
-    contractPeriod
-    agreedMileage
-    insuranceAge
-    object
-    service1
-    serviceBody1
-    service2
-    serviceBody2
-    service3
-    serviceBody3
-    incomeEarner
-    cashAssistance
-    supportDetails
-    businessExpenses
-    businessExpensesDetail
-    totalExpenditure
-    totalFee
-    netIncome
-    company_name_nominee
-    division {
-      id
-      name
-    }
-    advancePayment
-    hasContractConfirmationLetter
-    hasRegistrationCertificate
-    note
-    agencyPaymentDate
+    totalCount
   }
 }
     `;
@@ -5217,46 +5238,49 @@ export type GetShippingMethodsQueryResult = Apollo.QueryResult<GetShippingMethod
 export const GetCounselsDocument = gql`
     query GetCounsels($getCounselsDto: GetCounselsDto!) {
   getCounsels(getCounselsDto: $getCounselsDto) {
-    id
-    status
-    counselAt
-    context
-    customer {
+    data {
       id
-      name
-      phone
-      customerGroup {
+      status
+      counselAt
+      context
+      customer {
         id
         name
+        phone
+        customerGroup {
+          id
+          name
+        }
+        customerGrade {
+          id
+          name
+        }
+        customerStatus {
+          id
+          status
+        }
       }
-      customerGrade {
+      contract {
         id
-        name
-      }
-      customerStatus {
-        id
-        status
-      }
-    }
-    contract {
-      id
-      car {
-        id
-        name
-        brand {
+        car {
+          id
+          name
+          brand {
+            id
+            name
+          }
+        }
+        division {
           id
           name
         }
       }
-      division {
+      user {
         id
         name
       }
     }
-    user {
-      id
-      name
-    }
+    totalCount
   }
 }
     `;
@@ -5375,49 +5399,52 @@ export type GetCounselQueryResult = Apollo.QueryResult<GetCounselQuery, GetCouns
 export const GetCustomersDocument = gql`
     query GetCustomers($getCustomersDto: GetCustomersDto!) {
   getCustomers(getCustomersDto: $getCustomersDto) {
-    id
-    created_at
-    name
-    phone
-    memo
-    note
-    type
-    company_name_nominee
-    customerDivision {
+    data {
       id
+      created_at
       name
-    }
-    origin
-    carName
-    carOption
-    contractPeriod
-    agreedMileage
-    advancePayment
-    contractList {
-      car {
+      phone
+      memo
+      note
+      type
+      company_name_nominee
+      customerDivision {
         id
         name
-        brand {
+      }
+      origin
+      carName
+      carOption
+      contractPeriod
+      agreedMileage
+      advancePayment
+      contractList {
+        car {
           id
+          name
+          brand {
+            id
+            name
+          }
+        }
+        division {
           name
         }
       }
-      division {
+      counselList {
+        counselAt
+      }
+      customerGrade {
         name
       }
+      userList {
+        name
+      }
+      customerStatus {
+        status
+      }
     }
-    counselList {
-      counselAt
-    }
-    customerGrade {
-      name
-    }
-    userList {
-      name
-    }
-    customerStatus {
-      status
-    }
+    totalCount
   }
 }
     `;
@@ -5779,40 +5806,43 @@ export type GetCustomerStatusesQueryResult = Apollo.QueryResult<GetCustomerStatu
 export const GetDeliveriesDocument = gql`
     query GetDeliveries($getDeliveriesDto: GetDeliveriesDto!) {
   getDeliveries(getDeliveriesDto: $getDeliveriesDto) {
-    id
-    contractAt
-    shippingDate
-    customer {
+    data {
       id
-      name
-    }
-    user {
-      id
-      name
-    }
-    financialCompany {
-      id
-      name
-    }
-    division {
-      id
-      name
-    }
-    car {
-      id
-      name
-      brand {
+      contractAt
+      shippingDate
+      customer {
+        id
+        name
+      }
+      user {
+        id
+        name
+      }
+      financialCompany {
+        id
+        name
+      }
+      division {
+        id
+        name
+      }
+      car {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
+      carPrice
+      fee
+      promotion
+      shippingMethod {
         id
         name
       }
     }
-    carPrice
-    fee
-    promotion
-    shippingMethod {
-      id
-      name
-    }
+    totalCount
   }
 }
     `;

@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 
 export const useGetDeliveries = (params: GetDeliveriesDto) => {
   return useQuery<
-    { getDeliveries: Contract[] },
+    { getDeliveries: Contract[]; totalCount: number },
     { getDeliveriesDto: GetDeliveriesDto }
   >(GET_DELIVERIES_QUERY, {
     variables: { getDeliveriesDto: params },
