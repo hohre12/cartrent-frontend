@@ -101,6 +101,9 @@ const ContractList = () => {
     }
   }, [navigationType, resetFilters]);
 
+  if (loading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">{String(error)}</div>;
+
   return (
     <>
       <ListWrapper>

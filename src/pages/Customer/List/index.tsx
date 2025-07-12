@@ -95,7 +95,8 @@ const CustomerList = () => {
     resetSort();
   }, [resetCustomer, resetFilters, resetSort]);
 
-  if (error) return <></>;
+  if (loading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">{String(error)}</div>;
 
   return (
     <>
