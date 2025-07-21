@@ -2,7 +2,6 @@ import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
 import { UserIncentiveDeliveryTax } from '@/types/graphql';
 import { numberFormat } from '@/utils/common';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 type TTableProps = {
@@ -23,7 +22,7 @@ const TaxListTable = ({ data }: TTableProps) => {
     if (type === 'after') {
       tax *= 0.967;
     }
-    return `${numberFormat(tax)}원`;
+    return `${numberFormat(Math.floor(tax))}원`;
   };
   return (
     <>
