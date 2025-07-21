@@ -55,7 +55,13 @@ const ContractDetail = () => {
   const [car, setCar] = useState<Car>();
 
   const { data: users } = useGetUsers();
-  const { data: customers } = useGetCustomers({});
+  const { data: customers } = useGetCustomers(
+    {
+      offset: 0,
+      limit: 100,
+    },
+    true,
+  );
   const { data: cites } = useGetCites({});
   const { data: financialCompanies } = useGetFinancialCompanies();
   const { data: divisions } = useGetDivisions();
@@ -407,11 +413,11 @@ const ContractDetail = () => {
                     ...customer,
                   }}
                   onChange={(value) => setCustomer(value)}
-                  list={customers?.getCustomers ?? []}
+                  list={customers?.getCustomers.data ?? []}
                   trackBy="id"
                   valueBy="name"
                   placeholder="고객을 선택해주세요"
-                  disabled={!isEdit}
+                  disabled
                   isError={submit && !customer}
                 />
               </InputWrapper>

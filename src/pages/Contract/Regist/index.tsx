@@ -12,7 +12,7 @@ import {
   useGetFinancialCompanies,
   useGetShippingMethods,
 } from '@/services/contract';
-import { useGetCustomers } from '@/services/customer';
+import { useGetCustomer, useGetCustomers } from '@/services/customer';
 import { useGetUsers } from '@/services/user';
 import { userState } from '@/state/auth';
 import { textM16Medium, titleXl20Bold } from '@/styles/typography';
@@ -45,9 +45,19 @@ const ContractRegist = () => {
   const currentDate = moment().format('YYYY-MM-DD');
   const [brand, setBrand] = useState<Brand>();
   const [car, setCar] = useState<Car>();
+  const [tempSearchUser, setTempSearchUser] = useState<string>();
+  const [searchUser, setSearchUser] = useState<string>();
 
   const { data: users } = useGetUsers();
-  const { data: customers } = useGetCustomers({});
+  const { data: customers } = useGetCustomers(
+    {
+      offset: 0,
+      limit: 999,
+      search: searchUser,
+    },
+    !!customerIdx || !searchUser,
+  );
+  const { data: customerDetail } = useGetCustomer(customerIdx);
   const { data: cites } = useGetCites({});
   const { data: financialCompanies } = useGetFinancialCompanies();
   const { data: divisions } = useGetDivisions();
@@ -199,10 +209,8 @@ const ContractRegist = () => {
   useEffect(() => {
     if (my) {
       setUser(my);
-      if (customerIdx && customers && customers?.getCustomers?.length > 0) {
-        const tempCustomer = customers.getCustomers.find(
-          (it) => it.id === customerIdx,
-        );
+      if (customerIdx && customerDetail) {
+        const tempCustomer = customerDetail?.getCustomer;
         if (tempCustomer) {
           setCustomer(tempCustomer);
           setCreateContract((prevState) => ({
@@ -220,7 +228,7 @@ const ContractRegist = () => {
         }
       }
     }
-  }, [my, setUser, customerIdx, setCustomer, customers]);
+  }, [my, setUser, customerIdx, setCustomer, customerDetail]);
 
   const handleEnter = useCallback(
     (e: globalThis.KeyboardEvent) => {
@@ -290,6 +298,7 @@ const ContractRegist = () => {
                 />
               </InputWrapper>
             </InputLine>
+
             <InputLine>
               <span>계약일</span>
               <InputWrapper>
@@ -301,6 +310,32 @@ const ContractRegist = () => {
                 />
               </InputWrapper>
             </InputLine>
+            {!customerIdx && (
+              <InputLine>
+                <span>
+                  고객명 검색
+                  <p className="required">*</p>
+                </span>
+                <InputWrapper>
+                  <Input
+                    value={tempSearchUser}
+                    onTextChange={(text) => setTempSearchUser(text)}
+                    errorMessage="최소 2글자이상 검색해야 고객명 선택가능"
+                    isError={!searchUser}
+                  />
+                  <Button
+                    variant="primaryInfo"
+                    onClick={() => {
+                      if (tempSearchUser && tempSearchUser?.length >= 2) {
+                        setSearchUser(tempSearchUser);
+                      }
+                    }}
+                  >
+                    검색
+                  </Button>
+                </InputWrapper>
+              </InputLine>
+            )}
             <InputLine>
               <span>
                 고객명 <p className="required">*</p>
@@ -312,11 +347,11 @@ const ContractRegist = () => {
                     ...customer,
                   }}
                   onChange={(value) => setCustomer(value)}
-                  list={customers?.getCustomers ?? []}
+                  list={customers?.getCustomers?.data ?? []}
                   trackBy="id"
                   valueBy="name"
                   placeholder="고객을 선택해주세요"
-                  disabled={!!customerIdx}
+                  disabled={!!customerIdx || (!customerIdx && !searchUser)}
                   isError={submit && !customer}
                 />
               </InputWrapper>
