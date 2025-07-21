@@ -1,9 +1,8 @@
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-import { Brand, Contract } from '@/types/graphql';
+import { Contract } from '@/types/graphql';
 import { numberFormat } from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 type TTableProps = {
@@ -30,12 +29,12 @@ const SecondTaxListTable = ({ data }: TTableProps) => {
               <td className="name">{it.incomeEarner ?? '-'}</td>
               <td>
                 {it.cashAssistance
-                  ? `${numberFormat(it.cashAssistance)}원`
+                  ? `${numberFormat(Math.floor(it.cashAssistance))}원`
                   : '-'}
               </td>
               <td>
                 {it.cashAssistance
-                  ? `${numberFormat(it.cashAssistance * 0.967)}원`
+                  ? `${numberFormat(Math.floor(it.cashAssistance * 0.967))}원`
                   : '-'}
               </td>
               <td>{formatDate(it.shippingDate) ?? '-'}</td>
