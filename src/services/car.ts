@@ -13,6 +13,7 @@ export const useGetCars = (params: GetCarsDto) => {
     {
       variables: { getCarsDto: params },
       fetchPolicy: 'network-only',
+      skip: !params.brandId,
     },
   );
 };

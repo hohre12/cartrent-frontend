@@ -37,14 +37,25 @@ const RegistModal = (props: TModal & { propsCustomer: Customer }) => {
   const [submit, setSubmit] = useState<boolean>(false);
 
   const { addToast } = useToast();
-  const { data: customers } = useGetCustomers({});
+  const { data: customers } = useGetCustomers(
+    {
+      offset: 0,
+      limit: 100,
+    },
+    true,
+  );
   const { data: users } = useGetUsers();
 
-  const { data: contracts } = useGetContracts({
-    customerId: customer?.id ? [customer?.id] : [],
-  });
+  const { data: contracts } = useGetContracts(
+    {
+      customerId: customer?.id ? [customer?.id] : [],
+      offset: 0,
+      limit: 100,
+    },
+    !customer?.id,
+  );
   const isContracts =
-    contracts && contracts?.getContracts?.length > 0 ? true : false;
+    contracts && contracts?.getContracts?.data.length > 0 ? true : false;
 
   const { createCounsel } = useCreateCounsel();
 
@@ -105,11 +116,21 @@ const RegistModal = (props: TModal & { propsCustomer: Customer }) => {
   }, [customer]);
 
   useEffect(() => {
-    window.addEventListener('keydown', handleEnter);
+    const onKeyDown = (e: KeyboardEvent) => {
+      const activeElement = document.activeElement;
+      if (e.key === 'Enter') {
+        // TextArea에 포커스가 있는 경우 handleEnter 실행 안 함
+        if (activeElement && activeElement.tagName === 'TEXTAREA') {
+          return;
+        }
+        handleEnter(e);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
 
     // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
     return () => {
-      window.removeEventListener('keydown', handleEnter);
+      window.removeEventListener('keydown', onKeyDown);
     };
   }, [handleEnter]);
 
@@ -143,11 +164,12 @@ const RegistModal = (props: TModal & { propsCustomer: Customer }) => {
                   ...customer,
                 }}
                 onChange={(value) => setCustomer(value)}
-                list={customers?.getCustomers ?? []}
+                list={customers?.getCustomers.data ?? []}
                 trackBy="id"
                 valueBy="name"
                 placeholder="고객을 선택해주세요"
                 isError={submit && !customer}
+                disabled
               />
             </div>
             <div>
@@ -183,7 +205,7 @@ const RegistModal = (props: TModal & { propsCustomer: Customer }) => {
                 size="medium"
                 value={{ ...contract }}
                 onChange={(value) => setContract(value)}
-                list={contracts?.getContracts ?? []}
+                list={contracts?.getContracts.data ?? []}
                 trackBy="id"
                 valueBy="carName"
                 placeholder={

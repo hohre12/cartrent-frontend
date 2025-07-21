@@ -35,7 +35,7 @@ import {
 } from '@/types/graphql';
 import { useMutation, useQuery } from '@apollo/client';
 
-export const useGetCustomers = (params: GetCustomersDto) => {
+export const useGetCustomers = (params: GetCustomersDto, isSkip?: boolean) => {
   return useQuery<
     {
       getCustomers: {
@@ -47,6 +47,7 @@ export const useGetCustomers = (params: GetCustomersDto) => {
   >(GET_CUSTOMERS_QUERY, {
     variables: { getCustomersDto: params },
     fetchPolicy: 'network-only',
+    skip: isSkip,
   });
 };
 
