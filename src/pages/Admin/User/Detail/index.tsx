@@ -58,13 +58,15 @@ const AdminUserDetail = () => {
             <h2>{`${detail.name} 담당자님`}</h2>
           </div>
           <div className="right">
-            <Button
-              onClick={() =>
-                setIsOpenUserPasswordEditModal(!isOpenUserPasswordEditModal)
-              }
-            >
-              비밀번호 수정
-            </Button>
+            {detail.email !== 'admin@admin.com' && (
+              <Button
+                onClick={() =>
+                  setIsOpenUserPasswordEditModal(!isOpenUserPasswordEditModal)
+                }
+              >
+                비밀번호 수정
+              </Button>
+            )}
             <Button
               onClick={() =>
                 showConfirm({
