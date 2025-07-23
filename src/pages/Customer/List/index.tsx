@@ -95,6 +95,10 @@ const CustomerList = () => {
     resetSort();
   }, [resetCustomer, resetFilters, resetSort]);
 
+  useEffect(() => {
+    setOffset(0);
+  }, [filters]);
+
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">{String(error)}</div>;
 

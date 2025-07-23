@@ -96,6 +96,7 @@ const CounselList = () => {
     (selectedFilters: TFilterList<number>[]) => {
       setFilters({ ...filters, groups: selectedFilters });
       setIsFilterGroupOpen(false);
+      setOffset(0);
     },
     [filters, setFilters, setIsFilterGroupOpen],
   );
@@ -104,6 +105,7 @@ const CounselList = () => {
     (selectedFilters: TFilterList<number>[]) => {
       setFilters({ ...filters, statuses: selectedFilters });
       setIsFilterStatusOpen(false);
+      setOffset(0);
     },
     [filters, setFilters, setIsFilterStatusOpen],
   );
@@ -112,6 +114,7 @@ const CounselList = () => {
     (selectedFilters: TFilterList<number>[]) => {
       setFilters({ ...filters, users: selectedFilters });
       setIsFilterUserOpen(false);
+      setOffset(0);
     },
     [filters, setFilters, setIsFilterUserOpen],
   );

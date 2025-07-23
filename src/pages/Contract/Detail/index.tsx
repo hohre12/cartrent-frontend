@@ -40,6 +40,7 @@ import { useRecoilValue } from 'recoil';
 import { useCheckSettleContract } from '@/services/payStub';
 import { useGetBrands } from '@/services/brand';
 import { useGetCars } from '@/services/car';
+import palette from '@/styles/variables';
 
 const ContractDetail = () => {
   const { id } = useParams();
@@ -301,6 +302,9 @@ const ContractDetail = () => {
       <DetailHeaderWrapper>
         <div className="left">
           <h2>{`${detail.customer?.name} 고객님의 ${detail.car?.name} 차량 계약`}</h2>
+          {isCheckSettleContract?.checkSettleContract && (
+            <p>- 정산이 완료된 계약건입니다.</p>
+          )}
         </div>
         <div className="right">
           {isEdit ? (
@@ -1166,6 +1170,12 @@ const DetailHeaderWrapper = styled.div`
   padding: 16px 30px;
   border-bottom: 1px solid #eeeeee;
   .left {
+    display: flex;
+    gap: 20px;
+    p {
+      color: ${palette['$red-500']};
+      font-size: 16px;
+    }
     h2 {
       font-size: 24px;
       font-weight: 700;

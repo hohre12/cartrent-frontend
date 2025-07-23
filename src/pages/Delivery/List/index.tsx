@@ -92,6 +92,7 @@ const DeliveryList = () => {
     (selectedFilters: TFilterList<number>[]) => {
       setFilters({ ...filters, users: selectedFilters });
       setIsFilterUserOpen(false);
+      setOffset(0);
     },
     [filters, setFilters, setIsFilterUserOpen],
   );
@@ -100,6 +101,7 @@ const DeliveryList = () => {
     (selectedFilters: TFilterList<number>[]) => {
       setFilters({ ...filters, financialCompanies: selectedFilters });
       setIsFilterFinancialCompanyOpen(false);
+      setOffset(0);
     },
     [filters, setFilters, setIsFilterFinancialCompanyOpen],
   );
@@ -108,6 +110,7 @@ const DeliveryList = () => {
     (selectedFilters: TFilterList<number>[]) => {
       setFilters({ ...filters, divisions: selectedFilters });
       setIsFilterDivisionOpen(false);
+      setOffset(0);
     },
     [filters, setFilters, setIsFilterDivisionOpen],
   );
@@ -117,6 +120,10 @@ const DeliveryList = () => {
       resetFilters();
     }
   }, [navigationType, resetFilters]);
+
+  // useEffect(() => {
+  //   setOffset(0);
+  // }, [filters]);
 
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">{String(error)}</div>;
@@ -227,12 +234,13 @@ const DeliveryList = () => {
                     inputId="startDate"
                     style={{ cursor: 'pointer' }}
                     value={filters?.startDeliveryAtYearMonth ?? ''}
-                    onTextChange={(text) =>
+                    onTextChange={(text) => {
                       setFilters((prevState) => ({
                         ...prevState,
                         startDeliveryAtYearMonth: text,
-                      }))
-                    }
+                      }));
+                      setOffset(0);
+                    }}
                   />
                 </DateWrapper>
                 ~
@@ -245,12 +253,13 @@ const DeliveryList = () => {
                     inputId="endDate"
                     style={{ cursor: 'pointer' }}
                     value={filters?.endDeliveryAtYearMonth ?? ''}
-                    onTextChange={(text) =>
+                    onTextChange={(text) => {
                       setFilters((prevState) => ({
                         ...prevState,
                         endDeliveryAtYearMonth: text,
-                      }))
-                    }
+                      }));
+                      setOffset(0);
+                    }}
                   />
                 </DateWrapper>
               </FilterWrapper>
