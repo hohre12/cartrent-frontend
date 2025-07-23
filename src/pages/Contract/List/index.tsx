@@ -83,6 +83,7 @@ const ContractList = () => {
     (selectedFilters: TFilterList<number>[]) => {
       setFilters({ ...filters, users: selectedFilters });
       setIsFilterUserOpen(false);
+      setOffset(0);
     },
     [filters, setFilters, setIsFilterUserOpen],
   );
@@ -91,6 +92,7 @@ const ContractList = () => {
     (selectedFilters: TFilterList<number>[]) => {
       setFilters({ ...filters, shippingMethods: selectedFilters });
       setIsFilterShippingMethodOpen(false);
+      setOffset(0);
     },
     [filters, setFilters, setIsFilterShippingMethodOpen],
   );
@@ -185,12 +187,13 @@ const ContractList = () => {
                     inputId="startDate"
                     style={{ cursor: 'pointer' }}
                     value={filters?.startContractAtYearMonth ?? ''}
-                    onTextChange={(text) =>
+                    onTextChange={(text) => {
                       setFilters((prevState) => ({
                         ...prevState,
                         startContractAtYearMonth: text,
-                      }))
-                    }
+                      }));
+                      setOffset(0);
+                    }}
                   />
                 </DateWrapper>
                 ~
@@ -203,12 +206,13 @@ const ContractList = () => {
                     inputId="endDate"
                     style={{ cursor: 'pointer' }}
                     value={filters?.endContractAtYearMonth ?? ''}
-                    onTextChange={(text) =>
+                    onTextChange={(text) => {
                       setFilters((prevState) => ({
                         ...prevState,
                         endContractAtYearMonth: text,
-                      }))
-                    }
+                      }));
+                      setOffset(0);
+                    }}
                   />
                 </DateWrapper>
               </FilterWrapper>

@@ -96,12 +96,13 @@ const AgencyList = () => {
                     inputId="startDate"
                     style={{ cursor: 'pointer' }}
                     value={filters?.startShippingDate ?? ''}
-                    onTextChange={(text) =>
+                    onTextChange={(text) => {
                       setFilters((prevState) => ({
                         ...prevState,
                         startShippingDate: text,
-                      }))
-                    }
+                      }));
+                      setOffset(0);
+                    }}
                   />
                 </DateWrapper>
                 ~
@@ -114,12 +115,13 @@ const AgencyList = () => {
                     inputId="endDate"
                     style={{ cursor: 'pointer' }}
                     value={filters?.endShippingDate ?? ''}
-                    onTextChange={(text) =>
+                    onTextChange={(text) => {
                       setFilters((prevState) => ({
                         ...prevState,
                         endShippingDate: text,
-                      }))
-                    }
+                      }));
+                      setOffset(0);
+                    }}
                   />
                 </DateWrapper>
                 <div className="verticalLine"></div>
@@ -132,12 +134,13 @@ const AgencyList = () => {
                     inputId="startDate"
                     style={{ cursor: 'pointer' }}
                     value={filters?.startAgencyPaymentDate ?? ''}
-                    onTextChange={(text) =>
+                    onTextChange={(text) => {
                       setFilters((prevState) => ({
                         ...prevState,
                         startAgencyPaymentDate: text,
-                      }))
-                    }
+                      }));
+                      setOffset(0);
+                    }}
                   />
                 </DateWrapper>
                 ~
@@ -150,12 +153,13 @@ const AgencyList = () => {
                     inputId="endDate"
                     style={{ cursor: 'pointer' }}
                     value={filters?.endAgencyPaymentDate ?? ''}
-                    onTextChange={(text) =>
+                    onTextChange={(text) => {
                       setFilters((prevState) => ({
                         ...prevState,
                         endAgencyPaymentDate: text,
-                      }))
-                    }
+                      }));
+                      setOffset(0);
+                    }}
                   />
                 </DateWrapper>
               </FilterWrapper>
