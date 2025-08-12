@@ -50,7 +50,7 @@ module.exports = {
     'import/prefer-default-export': 'off', // 단일 export가 아니어도 되도록 함
     'import/order': 'off',
     'no-use-before-define': 'off',
-    'no-unused-vars': 'off',
+    // 'no-unused-vars': 'off',
     'no-console': process.env.APP_ENV === 'production' ? 'error' : 'off', // 프로덕션 환경에서 콘솔 사용 금지
     // 'no-debug': process.env.APP_ENV === 'production' ? 'error' : 'off', // 프로덕션 환경에서 디버그 관련 문제 발생 시 에러
     'prettier/prettier': ['error', prettierConfig],

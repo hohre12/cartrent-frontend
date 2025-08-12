@@ -46,7 +46,7 @@ const AdminTeamDetail = () => {
       <DetailWrapper>
         <DetailHeaderWrapper>
           <div className="left">
-            <h2>{`${detail.name}팀`}</h2>
+            <h2>{`${detail.name}`}</h2>
           </div>
           <div className="right">
             <Button
