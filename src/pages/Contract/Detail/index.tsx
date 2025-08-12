@@ -1169,6 +1169,10 @@ const DetailHeaderWrapper = styled.div`
   justify-content: space-between;
   padding: 16px 30px;
   border-bottom: 1px solid #eeeeee;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
   .left {
     display: flex;
     gap: 20px;

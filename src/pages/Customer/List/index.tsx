@@ -82,12 +82,12 @@ const CustomerList = () => {
   );
   useEffect(() => {
     if (
-      !selectedCustomerIdx &&
+      // !selectedCustomerIdx &&
       data?.getCustomers &&
       data.getCustomers.data.length > 0
     )
       setSelectedCustomerIdx(data.getCustomers.data[0].id);
-  }, [data, selectedCustomerIdx, setSelectedCustomerIdx]);
+  }, [data, setSelectedCustomerIdx]);
 
   useEffect(() => {
     resetFilters();
