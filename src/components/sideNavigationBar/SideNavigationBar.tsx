@@ -22,6 +22,8 @@ const SideNavigationBar = () => {
         <SideBarMenu>
           {SIDE_MENU.map(
             (it, idx) =>
+              my?.position?.name &&
+              (!it.hide || !it.hide.includes(my?.position?.name)) &&
               it.auth.includes(my?.role?.name || PermissionType.User) && (
                 <li
                   key={idx}

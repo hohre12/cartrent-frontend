@@ -1,4 +1,4 @@
-import { PermissionType } from '@/types/graphql';
+import { PermissionType, PositionType } from '@/types/graphql';
 
 export const SIDE_MENU = [
   {
@@ -28,6 +28,7 @@ export const SIDE_MENU = [
     icon: 'icon-draft',
     path: '/agency',
     auth: [PermissionType.Admin, PermissionType.User],
+    hide: [PositionType.GeneralManager, PositionType.TeamLeader],
   },
   {
     title: '정산',
@@ -49,6 +50,7 @@ export const SIDE_MENU = [
     icon: 'icon-shipOutDirect',
     path: '/delivery',
     auth: [PermissionType.Admin],
+    hide: [PositionType.GeneralManager, PositionType.TeamLeader],
   },
   {
     title: '세무',
@@ -56,6 +58,7 @@ export const SIDE_MENU = [
     icon: 'icon-expense',
     path: '/tax',
     auth: [PermissionType.Admin],
+    hide: [PositionType.GeneralManager, PositionType.TeamLeader],
   },
   {
     title: '관리자',
@@ -63,5 +66,6 @@ export const SIDE_MENU = [
     icon: 'icon-harmfulNspecial',
     path: '/admin',
     auth: [PermissionType.Admin],
+    hide: [PositionType.GeneralManager, PositionType.TeamLeader],
   },
 ];
