@@ -424,6 +424,21 @@ const ContractRegist = () => {
               </InputWrapper>
             </InputLine>
             <InputLine>
+              <span>대리점 할인</span>
+              <InputWrapper>
+                <Input
+                  value={numberFormat(createContract.agencyDiscount)}
+                  onTextChange={(text) =>
+                    handleValueChange(
+                      Number(text.replace(/,/g, '')),
+                      'agencyDiscount',
+                    )
+                  }
+                  postfixNode={'원'}
+                />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
               <span>차 옵션</span>
               <InputWrapper>
                 <Input
@@ -862,6 +877,22 @@ const ContractRegist = () => {
                       handleValueChange(
                         Number(text.replace(/,/g, '')),
                         'cashAssistance',
+                      )
+                    }
+                    isNumber
+                    postfixNode={'원'}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>현금 지원2</span>
+                <InputWrapper>
+                  <Input
+                    value={numberFormat(createContract.cashAssistance2)}
+                    onTextChange={(text) =>
+                      handleValueChange(
+                        Number(text.replace(/,/g, '')),
+                        'cashAssistance2',
                       )
                     }
                     isNumber

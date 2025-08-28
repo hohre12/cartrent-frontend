@@ -136,6 +136,8 @@ export type City = {
 export type Contract = {
   /** 선수금 */
   advancePayment?: Maybe<Scalars['Int']['output']>;
+  /** 대리점 할인 */
+  agencyDiscount?: Maybe<Scalars['Float']['output']>;
   /** 대리점 결제일 */
   agencyPaymentDate?: Maybe<Scalars['String']['output']>;
   /** 약정 거리 */
@@ -156,6 +158,8 @@ export type Contract = {
   carPrice?: Maybe<Scalars['Int']['output']>;
   /** 현금 지원 */
   cashAssistance?: Maybe<Scalars['Int']['output']>;
+  /** 현금 지원2 */
+  cashAssistance2?: Maybe<Scalars['Int']['output']>;
   city?: Maybe<City>;
   city_id?: Maybe<Scalars['Int']['output']>;
   /** 담보율 */
@@ -226,6 +230,8 @@ export type Contract = {
   supportAmounts?: Maybe<Array<SupportAmount>>;
   /** 지원 내용 */
   supportDetails?: Maybe<Scalars['String']['output']>;
+  /** 지원 내용2 */
+  supportDetails2?: Maybe<Scalars['String']['output']>;
   /** 지출합계 */
   totalExpenditure?: Maybe<Scalars['Int']['output']>;
   /** 매출 합계 */
@@ -355,6 +361,8 @@ export type CreateCityDto = {
 export type CreateContractDto = {
   /** 선수금 */
   advancePayment?: InputMaybe<Scalars['Int']['input']>;
+  /** 대리점 할인 */
+  agencyDiscount?: InputMaybe<Scalars['Float']['input']>;
   /** 대리점 결제일 */
   agencyPaymentDate?: InputMaybe<Scalars['String']['input']>;
   /** 약정 거리 */
@@ -375,6 +383,8 @@ export type CreateContractDto = {
   carPrice?: InputMaybe<Scalars['Int']['input']>;
   /** 현금 지원 */
   cashAssistance?: InputMaybe<Scalars['Int']['input']>;
+  /** 현금 지원2 */
+  cashAssistance2?: InputMaybe<Scalars['Int']['input']>;
   cityId?: InputMaybe<Scalars['Int']['input']>;
   /** 담보율 */
   collateralRate?: InputMaybe<Scalars['Int']['input']>;
@@ -435,6 +445,8 @@ export type CreateContractDto = {
   shippingMethodId?: InputMaybe<Scalars['Int']['input']>;
   /** 지원 내용 */
   supportDetails?: InputMaybe<Scalars['String']['input']>;
+  /** 지원 내용2 */
+  supportDetails2?: InputMaybe<Scalars['String']['input']>;
   /** 총지출 */
   totalExpenditure?: InputMaybe<Scalars['Int']['input']>;
   /** 총 수수료 */
@@ -1710,6 +1722,8 @@ export type UpdateCityDto = {
 export type UpdateContractDto = {
   /** 선수금 */
   advancePayment?: InputMaybe<Scalars['Int']['input']>;
+  /** 대리점 할인 */
+  agencyDiscount?: InputMaybe<Scalars['Float']['input']>;
   /** 대리점 결제일 */
   agencyPaymentDate?: InputMaybe<Scalars['String']['input']>;
   /** 약정 거리 */
@@ -1730,6 +1744,8 @@ export type UpdateContractDto = {
   carPrice?: InputMaybe<Scalars['Int']['input']>;
   /** 현금 지원 */
   cashAssistance?: InputMaybe<Scalars['Int']['input']>;
+  /** 현금 지원2 */
+  cashAssistance2?: InputMaybe<Scalars['Int']['input']>;
   cityId?: InputMaybe<Scalars['Int']['input']>;
   /** 담보율 */
   collateralRate?: InputMaybe<Scalars['Int']['input']>;
@@ -1795,6 +1811,8 @@ export type UpdateContractDto = {
   status?: Status;
   /** 지원 내용 */
   supportDetails?: InputMaybe<Scalars['String']['input']>;
+  /** 지원 내용2 */
+  supportDetails2?: InputMaybe<Scalars['String']['input']>;
   /** 총지출 */
   totalExpenditure?: InputMaybe<Scalars['Int']['input']>;
   /** 총 수수료 */

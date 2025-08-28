@@ -34,7 +34,7 @@ import { numberFormat } from '@/utils/common';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import _, { update } from 'lodash';
+import _ from 'lodash';
 import { userState } from '@/state/auth';
 import { useRecoilValue } from 'recoil';
 import { useCheckSettleContract } from '@/services/payStub';
@@ -494,6 +494,26 @@ const ContractDetail = () => {
                     )
                   }
                   isNumber
+                  postfixNode={'원'}
+                  disabled={!isEdit}
+                />
+              </InputWrapper>
+            </InputLine>
+            <InputLine>
+              <span>대리점 할인</span>
+              <InputWrapper>
+                <Input
+                  value={
+                    updateContract?.agencyDiscount
+                      ? numberFormat(updateContract.agencyDiscount)
+                      : 0
+                  }
+                  onTextChange={(text) =>
+                    handleValueChange(
+                      Number(text.replace(/,/g, '')),
+                      'agencyDiscount',
+                    )
+                  }
                   postfixNode={'원'}
                   disabled={!isEdit}
                 />
@@ -1032,6 +1052,27 @@ const ContractDetail = () => {
                       handleValueChange(
                         Number(text.replace(/,/g, '')),
                         'cashAssistance',
+                      )
+                    }
+                    isNumber
+                    postfixNode={'원'}
+                    disabled={!isEdit}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
+                <span>현금 지원2</span>
+                <InputWrapper>
+                  <Input
+                    value={
+                      updateContract?.cashAssistance2
+                        ? numberFormat(updateContract.cashAssistance2)
+                        : 0
+                    }
+                    onTextChange={(text) =>
+                      handleValueChange(
+                        Number(text.replace(/,/g, '')),
+                        'cashAssistance2',
                       )
                     }
                     isNumber
