@@ -923,6 +923,17 @@ const ContractRegist = () => {
                 </InputWrapper>
               </InputLine>
               <InputLine>
+                <span>지원 내용2</span>
+                <InputWrapper>
+                  <Input
+                    value={createContract?.supportDetails2 ?? ''}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'supportDetails2')
+                    }
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
                 <span>경비</span>
                 <InputWrapper>
                   <Input

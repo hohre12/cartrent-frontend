@@ -178,6 +178,17 @@ const ContractListTable = ({ data }: TTableProps) => {
             )}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
+              'agencyDiscount',
+              isHideColumn('agencyDiscount'),
+            ) && (
+              <td>
+                {it.agencyDiscount
+                  ? `${numberFormat(it.agencyDiscount)}원`
+                  : '-'}
+              </td>
+            )}
+            {!isColumnsViewHide(
+              selectedContractHideWatchOptions,
               'financialCompany',
               isHideColumn('financialCompany'),
             ) && <td>{it.financialCompany?.name ?? '-'}</td>}
@@ -327,6 +338,22 @@ const ContractListTable = ({ data }: TTableProps) => {
               'supportDetail',
               isHideColumn('supportDetail'),
             ) && <td>{it.supportDetails ?? '-'}</td>}
+            {!isColumnsViewHide(
+              selectedContractHideWatchOptions,
+              'cashAssistance2',
+              isHideColumn('cashAssistance2'),
+            ) && (
+              <td>
+                {it.cashAssistance2
+                  ? `${numberFormat(it.cashAssistance2)}원`
+                  : '-'}
+              </td>
+            )}
+            {!isColumnsViewHide(
+              selectedContractHideWatchOptions,
+              'supportDetail2',
+              isHideColumn('supportDetail2'),
+            ) && <td>{it.supportDetails2 ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedContractHideWatchOptions,
               'businessExpenses',

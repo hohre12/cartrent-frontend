@@ -1106,6 +1106,18 @@ const ContractDetail = () => {
                 </InputWrapper>
               </InputLine>
               <InputLine>
+                <span>지원 내용2</span>
+                <InputWrapper>
+                  <Input
+                    value={updateContract?.supportDetails2 ?? ''}
+                    onTextChange={(text) =>
+                      handleValueChange(text, 'supportDetails2')
+                    }
+                    disabled={!isEdit}
+                  />
+                </InputWrapper>
+              </InputLine>
+              <InputLine>
                 <span>경비</span>
                 <InputWrapper>
                   <Input

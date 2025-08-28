@@ -87,6 +87,9 @@ export const GET_CONTRACTS_QUERY = gql`
         hasRegistrationCertificate
         note
         agencyPaymentDate
+        agencyDiscount
+        cashAssistance2
+        supportDetails2
       }
       totalCount
     }
@@ -176,6 +179,9 @@ export const GET_CONTRACT_QUERY = gql`
       hasRegistrationCertificate
       note
       agencyPaymentDate
+      agencyDiscount
+      cashAssistance2
+      supportDetails2
     }
   }
 `;
