@@ -85,13 +85,13 @@ const CustomerDetail = ({
   const { updateCustomer } = useUpdateCustomer();
 
   const handleUpdateCustomer = useCallback(async () => {
-    if (!name) return;
-    if (!phone) return;
-    if (!user) return;
+    // if (!name) return;
+    // if (!phone) return;
+    // if (!user) return;
     try {
       const response = await updateCustomer({
         customerId: selectedCustomerIdx,
-        userId: user.id,
+        userId: user?.id,
         customerGroupId: customerGroup?.id,
         name,
         phone,
