@@ -121,3 +121,23 @@ export const GET_TOP_FIVE_TOTAL_FEE_DELIVERY_USERS_BY_MONTH = gql`
     }
   }
 `;
+
+// 월별 계약순익 집계 (전체 직원)
+export const GET_MONTHLY_TOTAL_NET_INCOME_USERS_BY_MONTH = gql`
+  query GetMonthlyTotalNetIncomeUsersByMonth(
+    $getMonthlyTotalNetIncomeUsersByMonthDto: GetDashBoardByUsersDto!
+  ) {
+    getMonthlyTotalNetIncomeUsersByMonth(
+      getMonthlyTotalNetIncomeUsersByMonthDto: $getMonthlyTotalNetIncomeUsersByMonthDto
+    ) {
+      user {
+        id
+        name
+      }
+      year
+      month
+      totalCountContract
+      totalNetIncomeContract
+    }
+  }
+`;

@@ -7,6 +7,7 @@ type TBarchartProps = {
   unitKey?: string;
   unit?: string;
   marginLeft?: number;
+  countKey?: string; // 건수를 표시할 데이터 키 (예: 'totalCountContract')
 };
 
 const Barchart = ({
@@ -16,6 +17,7 @@ const Barchart = ({
   unitKey,
   unit,
   marginLeft = 50,
+  countKey,
 }: TBarchartProps) => {
   const handle = {
     barClick: (data: any) => {
@@ -40,16 +42,22 @@ const Barchart = ({
               : undefined,
           format: (value) => `${value.toLocaleString()}${unit ?? ''}`, // 왼쪽 축 포맷팅
         }}
-        tooltip={({ id, value }) => (
+        tooltip={({ id, value, data }) => (
           <div
             style={{
-              padding: '5px',
+              padding: '8px 12px',
               background: '#fff',
               border: '1px solid #ccc',
+              borderRadius: '4px',
             }}
           >
             <strong>{unitKey ?? ''}</strong>:{' '}
-            {`${value.toLocaleString()}${unit}`}
+            {`${value.toLocaleString()}${unit ?? ''}`}
+            {countKey && data[countKey] !== undefined && (
+              <div style={{ marginTop: '4px', fontSize: '12px' }}>
+                계약건수: {data[countKey]}건
+              </div>
+            )}
           </div>
         )}
         valueScale={{ type: 'linear' }}

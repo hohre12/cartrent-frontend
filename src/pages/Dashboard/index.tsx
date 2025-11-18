@@ -2,10 +2,7 @@ import styled from 'styled-components';
 import Barchart from '@/components/barchart/Barchart';
 import { userState } from '@/state/auth';
 import { useRecoilValue } from 'recoil';
-import {
-  useGetTopFiveDeliveryUsersByMonth,
-  useGetTopFiveTotalFeeDeliveryUsersByMonth,
-} from '@/services/user';
+import { useGetMonthlyTotalNetIncomeUsersByMonth } from '@/services/user';
 import moment from 'moment';
 import { useGetLatestNotice } from '@/services/notice';
 import { useNavigate } from 'react-router-dom';
@@ -13,35 +10,17 @@ import { PermissionType } from '@/types/graphql';
 
 const thisYear = moment().format('YYYY');
 const thisMonth = moment().format('M');
-const lastYear = moment().subtract(1, 'months').format('YYYY');
-const lastMonth = moment().subtract(1, 'months').format('M');
 
 const Dashboard = () => {
-  //   const [activeGraphTab, setActiveGraphTab] = useState<
-  //     'customer' | 'counsel' | 'adjustment'
-  //   >('customer');
   const navigate = useNavigate();
   const my = useRecoilValue(userState);
-  const { data: thisMonthTopFiveDeliveryUsers } =
-    useGetTopFiveDeliveryUsersByMonth({
+
+  const { data: monthlyNetIncomeUsers } =
+    useGetMonthlyTotalNetIncomeUsersByMonth({
       year: thisYear,
       month: thisMonth,
     });
-  const { data: lastMonthTopFiveDeliveryUsers } =
-    useGetTopFiveDeliveryUsersByMonth({
-      year: lastYear,
-      month: lastMonth,
-    });
-  const { data: thisMonthTopFiveTotalFeeDeliveryUsers } =
-    useGetTopFiveTotalFeeDeliveryUsersByMonth({
-      year: thisYear,
-      month: thisMonth,
-    });
-  const { data: lastMonthTopFiveTotalFeeDeliveryUsers } =
-    useGetTopFiveTotalFeeDeliveryUsersByMonth({
-      year: lastYear,
-      month: lastMonth,
-    });
+
   const { data: latestNotice } = useGetLatestNotice();
 
   return (
@@ -64,216 +43,28 @@ const Dashboard = () => {
         </NoticeContent>
       </NoticeWrapper>
       <DashboardContent>
-        {/* {my?.role?.name === PermissionType.Admin && ( */}
-        <>
-          <Box>
-            <div className="header">
-              <h3>영업사원별 이번달 매출현황 TOP 5</h3>
-            </div>
-            <div className="content">
-              <Barchart
-                data={
-                  thisMonthTopFiveTotalFeeDeliveryUsers?.getTopFiveTotalFeeDeliveryUsersByMonth ??
-                  []
-                }
-                keys={['totalFeeDelivery']}
-                indexBy={'user.name'}
-                unitKey="이번달 매출"
-                unit="원"
-                marginLeft={100}
-              ></Barchart>
-            </div>
-          </Box>
-          <Box className="green">
-            <div className="header">
-              <h3>영업사원별 지난달 매출현황 TOP 5</h3>
-            </div>
-            <div className="content">
-              <Barchart
-                data={
-                  lastMonthTopFiveTotalFeeDeliveryUsers?.getTopFiveTotalFeeDeliveryUsersByMonth ??
-                  []
-                }
-                keys={['totalFeeDelivery']}
-                indexBy={'user.name'}
-                unitKey={`${lastYear}년 ${lastMonth}월 매출`}
-                unit="원"
-                marginLeft={100}
-              ></Barchart>
-            </div>
-          </Box>
-          <Box>
-            <div className="header">
-              <h3>영업사원별 이번달 출고건수 TOP 5</h3>
-            </div>
-            <div className="content">
-              {/* <span
-                  style={{
-                    marginRight: 'auto',
-                    marginTop: '50px',
-                    fontSize: '14px',
-                  }}
-                >
-                  단위(건)
-                </span> */}
-              <Barchart
-                data={
-                  thisMonthTopFiveDeliveryUsers?.getTopFiveDeliveryUsersByMonth ??
-                  []
-                }
-                keys={['totalCountDelivery']}
-                indexBy={'user.name'}
-                unitKey="이번달 출고건수"
-                unit="건"
-              ></Barchart>
-            </div>
-          </Box>
-          <Box className="green">
-            <div className="header">
-              <h3>영업사원별 지난달 출고건수 TOP 5</h3>
-            </div>
-            <div className="content">
-              {/* <span
-                  style={{
-                    marginRight: 'auto',
-                    marginTop: '50px',
-                    fontSize: '14px',
-                  }}
-                >
-                  단위(건)
-                </span> */}
-              <Barchart
-                data={
-                  lastMonthTopFiveDeliveryUsers?.getTopFiveDeliveryUsersByMonth ??
-                  []
-                }
-                keys={['totalCountDelivery']}
-                indexBy={'user.name'}
-                unitKey={`${lastYear}년 ${lastMonth}월 출고건수`}
-                unit="건"
-              ></Barchart>
-            </div>
-          </Box>
-        </>
-        {/* )} */}
-        {/* <Box>
+        <FullWidthBox>
           <div className="header">
-            <h3>이번달 매출 1위</h3>
+            <h3>
+              이번달 전체 직원 계약순익 현황 ({thisYear}년 {thisMonth}월)
+            </h3>
           </div>
           <div className="content">
-            <h2>
-              {thisMonthRevenueUser?.getFirstRevenueUserByMonth
-                ? `${thisMonthRevenueUser?.getFirstRevenueUserByMonth.name}님`
-                : '데이터 없음'}
-            </h2>
+            <Barchart
+              data={
+                monthlyNetIncomeUsers?.getMonthlyTotalNetIncomeUsersByMonth ??
+                []
+              }
+              keys={['totalNetIncomeContract']}
+              indexBy={'user.name'}
+              unitKey="계약순익"
+              unit="원"
+              marginLeft={100}
+              countKey="totalCountContract"
+            />
           </div>
-        </Box>
-        <Box className="green">
-          <div className="header">
-            <h3>지난달 매출 1위</h3>
-          </div>
-          <div className="content">
-            <h2>
-              {lastMonthRevenueUser?.getFirstRevenueUserByMonth
-                ? `${lastMonthRevenueUser?.getFirstRevenueUserByMonth.name}님`
-                : '데이터 없음'}
-            </h2>
-          </div>
-        </Box>
-        <Box>
-          <div className="header">
-            <h3>이번달 계약1위</h3>
-          </div>
-          <div className="content">
-            <h2>
-              {thisMonthContractUser?.getFirstContractUserByMonth
-                ? `${thisMonthContractUser?.getFirstContractUserByMonth.name}님`
-                : '데이터 없음'}
-            </h2>
-          </div>
-        </Box>
-        <Box className="green">
-          <div className="header">
-            <h3>지난달 계약 1위</h3>
-          </div>
-          <div className="content">
-            <h2>
-              {lastMonthContractUser?.getFirstContractUserByMonth
-                ? `${lastMonthContractUser?.getFirstContractUserByMonth.name}님`
-                : '데이터 없음'}
-            </h2>
-          </div>
-        </Box> */}
+        </FullWidthBox>
       </DashboardContent>
-      {/* <InfoWrapper>
-        <LeftWrapper>
-          <DashboardBoxWrapper>
-            <DashboardBox className="red">
-              <div className="numberWrapper">
-                <h2>10,000</h2>
-                <p>10월 신규고객</p>
-              </div>
-              <div className="textWrapper">
-                <p>지난달: 100명</p>
-                <span>100</span>
-              </div>
-            </DashboardBox>
-            <DashboardBox className="purple">
-              <div className="numberWrapper">
-                <h2>10,000</h2>
-                <p>원하시는거로 변경가능</p>
-              </div>
-              <div className="textWrapper">
-                <p>지난달: 100명</p>
-                <span>100</span>
-              </div>
-            </DashboardBox>
-            <DashboardBox className="blue">
-              <div className="numberWrapper">
-                <h2>10,000</h2>
-                <p>원하시는거로 변경가능</p>
-              </div>
-              <div className="textWrapper">
-                <p>지난달: 100원</p>
-                <span>100</span>
-              </div>
-            </DashboardBox>
-          </DashboardBoxWrapper>
-          <SmallGraphWrapper>
-            <SmallGraphBox>
-              <h6>그래프</h6>
-            </SmallGraphBox>
-            <SmallGraphBox>
-              <h6>그래프</h6>
-            </SmallGraphBox>
-          </SmallGraphWrapper>
-        </LeftWrapper>
-        <StatusBox>
-          <h6>오늘 현황</h6>
-        </StatusBox>
-      </InfoWrapper>
-      <GraphBox>
-        <ul className="title">
-          <li
-            className={activeGraphTab === 'customer' ? 'active' : ''}
-            onClick={() => setActiveGraphTab('customer')}
-          >
-            고객
-          </li>
-          <li
-            className={activeGraphTab === 'counsel' ? 'active' : ''}
-            onClick={() => setActiveGraphTab('counsel')}
-          >
-            상담
-          </li>
-          <li
-            className={activeGraphTab === 'adjustment' ? 'active' : ''}
-            onClick={() => setActiveGraphTab('adjustment')}
-          >
-            정산
-          </li>
-        </ul>
-      </GraphBox> */}
     </DashboardWrapper>
   );
 };
@@ -317,47 +108,38 @@ const NoticeContent = styled.div`
 `;
 const DashboardContent = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 50px 100px;
+  flex-direction: column;
+  padding: 30px 50px;
 `;
-const Box = styled.div`
-  width: 45%;
+
+const FullWidthBox = styled.div`
+  width: 100%;
   border-radius: 10px;
   background-color: #fff;
-  padding: 20px;
+  padding: 30px;
   border: 1px solid #ddd;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 50px;
+  gap: 20px;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
-  &.green {
-    background-color: #e7faf2;
-  }
+
   .header {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     h3 {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
+      color: #333;
     }
   }
+
   .content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    & > h2 {
-      font-size: 24px;
-      font-weight: 700;
-    }
-    & > img {
-      width: 300px;
-      height: 300px;
-    }
+    min-height: 600px;
   }
 `;
 // const InfoWrapper = styled.div`
