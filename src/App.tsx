@@ -43,6 +43,7 @@ import AdminBrandList from './pages/Admin/Brand/List';
 import AdminBrandDetail from './pages/Admin/Brand/Detail';
 import AdminCarList from './pages/Admin/Car/List';
 import AdminCarDetail from './pages/Admin/Car/Detail';
+import AdminPositionIncentiveList from './pages/Admin/PositionIncentive/List';
 import AgencyList from './pages/Agency/List';
 import TaxList from './pages/Tax/List';
 
@@ -223,6 +224,10 @@ function App() {
             <Route
               path="team/:id"
               element={<AdminTeamDetail />}
+            />
+            <Route
+              path="position-incentive"
+              element={<AdminPositionIncentiveList />}
             />
             <Route
               path="city"
