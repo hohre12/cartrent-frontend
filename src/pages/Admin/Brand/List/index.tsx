@@ -5,11 +5,15 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import BrandListTable from './components/table';
 import RegistBrandModal from './components/registBrandModal';
+import Loading from '@/components/loading/Loading';
 
 const AdminBrandList = () => {
   const { data, loading, error } = useGetBrands({});
   const [isOpenRegistBrandModal, setIsOpenRegistBrandModal] =
     useState<boolean>(false);
+
+  if (loading) return <Loading />;
+
   return (
     <>
       <ListWrapper>

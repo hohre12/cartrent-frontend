@@ -5,11 +5,15 @@ import styled from 'styled-components';
 import TeamListTable from './components/table';
 import { useState } from 'react';
 import RegistTeamModal from './components/registTeamModal';
+import Loading from '@/components/loading/Loading';
 
 const AdminTeamList = () => {
   const { data, loading, error } = useGetTeams();
   const [isOpenRegistTeamModal, setIsOpenRegistTeamModal] =
     useState<boolean>(false);
+
+  if (loading) return <Loading />;
+
   return (
     <>
       <ListWrapper>

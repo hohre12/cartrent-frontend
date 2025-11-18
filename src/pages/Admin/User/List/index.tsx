@@ -7,6 +7,7 @@ import { useState } from 'react';
 import RegistModal from './components/registModal';
 import WatchOptionModal from './components/watchOptionModal';
 import { SvgIcon } from '@/components/common/SvgIcon';
+import Loading from '@/components/loading/Loading';
 
 const AdminUserList = () => {
   const { data, loading, error } = useGetUsers();
@@ -14,6 +15,9 @@ const AdminUserList = () => {
     useState<boolean>(false);
   const [isOpenRegistUserModal, setIsOpenRegistUserModal] =
     useState<boolean>(false);
+
+  if (loading) return <Loading />;
+
   return (
     <>
       <ListWrapper>

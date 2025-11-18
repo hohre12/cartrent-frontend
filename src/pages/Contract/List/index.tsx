@@ -20,6 +20,7 @@ import FilterShippingMethod from './components/filter/shippingMethod';
 import Input from '@/components/input/Input';
 import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
+import Loading from '@/components/loading/Loading';
 
 const ContractList = () => {
   const navigate = useNavigate();
@@ -103,7 +104,7 @@ const ContractList = () => {
     }
   }, [navigationType, resetFilters]);
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading) return <Loading />;
   if (error) return <div className="error">{String(error)}</div>;
 
   return (

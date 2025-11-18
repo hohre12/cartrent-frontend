@@ -27,6 +27,7 @@ import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
 import { useNavigationType } from 'react-router-dom';
 import Sort from './components/sort';
+import Loading from '@/components/loading/Loading';
 
 const CounselList = () => {
   const navigationType = useNavigationType();
@@ -127,7 +128,7 @@ const CounselList = () => {
     }
   }, [navigationType, resetCounsel, resetFilters, resetSort]);
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading) return <Loading />;
   if (error) return <div className="error">{String(error)}</div>;
 
   return (

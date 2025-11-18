@@ -24,6 +24,7 @@ import useClickOutside from '@/hooks/useClickOutside';
 import Sort from '../components/sort';
 import { FilterContent } from '@/styles/common';
 import Pagination from '@/components/pagination/Pagination';
+import Loading from '@/components/loading/Loading';
 
 const CustomerList = () => {
   const navigationType = useNavigationType();
@@ -99,7 +100,7 @@ const CustomerList = () => {
     setOffset(0);
   }, [filters]);
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading) return <Loading />;
   if (error) return <div className="error">{String(error)}</div>;
 
   return (

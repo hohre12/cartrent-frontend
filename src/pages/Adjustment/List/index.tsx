@@ -22,6 +22,7 @@ import { useCheckSettleContract, useCreatePayStub } from '@/services/payStub';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
 import InputEmailModal from './components/inputEmailModal';
+import Loading from '@/components/loading/Loading';
 
 const AdjustmentList = () => {
   const navigationType = useNavigationType();
@@ -124,6 +125,8 @@ const AdjustmentList = () => {
       setMonths(allMonths.reverse());
     }
   }, [filters, setMonths, currentYear, currentMonth]);
+
+  if (loading) return <Loading />;
 
   return (
     <>

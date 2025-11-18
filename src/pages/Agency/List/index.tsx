@@ -15,6 +15,7 @@ import { PermissionType } from '@/types/graphql';
 import { useGetAgencyContracts } from '@/services/agency';
 import AgencyContractListTable from './components/table';
 import Pagination from '@/components/pagination/Pagination';
+import Loading from '@/components/loading/Loading';
 
 const AgencyList = () => {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ const AgencyList = () => {
     }
   }, [navigationType, resetFilters]);
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading) return <Loading />;
   if (error) return <div className="error">{String(error)}</div>;
 
   return (

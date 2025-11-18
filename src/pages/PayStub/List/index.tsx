@@ -19,6 +19,7 @@ import { useGetPayStubs } from '@/services/payStub';
 import FilterPosition from './components/filter/position';
 import Select from '@/components/select/Select';
 import moment from 'moment';
+import Loading from '@/components/loading/Loading';
 
 const PayStubList = () => {
   const navigationType = useNavigationType();
@@ -101,6 +102,8 @@ const PayStubList = () => {
       setMonths(allMonths.reverse());
     }
   }, [filters, setMonths, currentYear, currentMonth]);
+
+  if (loading) return <Loading />;
 
   return (
     <>

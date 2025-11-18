@@ -7,6 +7,7 @@ import { useState } from 'react';
 import PositionIncentiveListTable from './components/table';
 import RegistPositionIncentiveModal from './components/registModal';
 import EditPositionIncentiveModal from './components/editModal';
+import Loading from '@/components/loading/Loading';
 
 const AdminPositionIncentiveList = () => {
   const { data, loading, error } = useGetPositionIncentives({
@@ -16,6 +17,8 @@ const AdminPositionIncentiveList = () => {
   const { data: positionsData } = useGetPositions();
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
   const [editModalId, setEditModalId] = useState<number | null>(null);
+
+  if (loading) return <Loading />;
 
   return (
     <>

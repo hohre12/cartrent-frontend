@@ -7,6 +7,7 @@ import moment from 'moment';
 import { useGetLatestNotice } from '@/services/notice';
 import { useNavigate } from 'react-router-dom';
 import { PermissionType } from '@/types/graphql';
+import Loading from '@/components/loading/Loading';
 
 const thisYear = moment().format('YYYY');
 const thisMonth = moment().format('M');
@@ -15,13 +16,15 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const my = useRecoilValue(userState);
 
-  const { data: monthlyNetIncomeUsers } =
+  const { data: monthlyNetIncomeUsers, loading: loading1 } =
     useGetMonthlyTotalNetIncomeUsersByMonth({
       year: thisYear,
       month: thisMonth,
     });
 
-  const { data: latestNotice } = useGetLatestNotice();
+  const { data: latestNotice, loading: loading2 } = useGetLatestNotice();
+
+  if (loading1 || loading2) return <Loading message="대시보드 데이터를 불러오는 중..." />;
 
   return (
     <DashboardWrapper>

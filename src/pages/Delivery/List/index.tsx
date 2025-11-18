@@ -19,6 +19,7 @@ import { useGetDeliveries } from '@/services/delivery';
 import FilterFinancialCompany from './components/filter/financialCompany';
 import FilterDivision from './components/filter/division';
 import Pagination from '@/components/pagination/Pagination';
+import Loading from '@/components/loading/Loading';
 
 const DeliveryList = () => {
   const navigate = useNavigate();
@@ -125,7 +126,7 @@ const DeliveryList = () => {
   //   setOffset(0);
   // }, [filters]);
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading) return <Loading />;
   if (error) return <div className="error">{String(error)}</div>;
 
   return (
