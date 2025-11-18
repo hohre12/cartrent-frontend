@@ -5,7 +5,7 @@ export const TOKEN_KEY =
 export const REFRESH_TOKEN_KEY =
   import.meta.env.VITE_PUBLIC_REFRESH_TOKEN ?? 'refresh.token';
 
-export const PAGE_LENGTH_LIST = [10, 50, 100, 150, 200, 250, 300];
+export const PAGE_LENGTH_LIST = [10, 50, 100, 150, 200, 250, 300, 500, 1000];
 
 export enum CustomerStatusEnum {
   ACTIVE = '활성화',
