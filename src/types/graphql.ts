@@ -823,13 +823,13 @@ export type GetUserIncentiveDeliveryTaxesDto = {
   year: Scalars['String']['input'];
 };
 
-/** 월별 top5 유저 */
-export type MonthlyTopFiveUser = {
+/** 월별 계약순익 집계 */
+export type MonthlyTotalNetIncomeUser = {
   month: Scalars['String']['output'];
-  /** 출고건수 */
-  totalCountDelivery?: Maybe<Scalars['Int']['output']>;
-  /** 매출 합계 */
-  totalFeeDelivery?: Maybe<Scalars['Int']['output']>;
+  /** 계약건수 */
+  totalCountContract?: Maybe<Scalars['Int']['output']>;
+  /** 계약순익 합계 */
+  totalNetIncomeContract?: Maybe<Scalars['Int']['output']>;
   user: User;
   userId?: Maybe<Scalars['Int']['output']>;
   year: Scalars['String']['output'];
@@ -862,6 +862,8 @@ export type Mutation = {
   createNotice: Notice;
   /** 급여 명세서 생성 */
   createPayStub: Scalars['Boolean']['output'];
+  /** 직급 인센티브 생성 */
+  createPositionIncentive: PositionIncentive;
   /** 지원금 생성 */
   createSupportAmount: SupportAmount;
   /** 팀 생성 */
@@ -896,6 +898,8 @@ export type Mutation = {
   deleteNotice: Scalars['Boolean']['output'];
   /** 알림 삭제 */
   deleteNotification: Scalars['Boolean']['output'];
+  /** 직급 인센티브 삭제 */
+  deletePositionIncentive: Scalars['Boolean']['output'];
   /** 지원금 삭제 */
   deleteSupportAmount: Scalars['Boolean']['output'];
   /** 팀 삭제 */
@@ -948,6 +952,8 @@ export type Mutation = {
   updateNotice: Notice;
   /** 비밀번호 수정 */
   updatePassword: Scalars['Boolean']['output'];
+  /** 직급 인센티브 수정 */
+  updatePositionIncentive: PositionIncentive;
   /** 지원금 수정 */
   updateSupportAmount: SupportAmount;
   /** 팀 수정 */
@@ -1019,6 +1025,14 @@ export type MutationCreateNoticeArgs = {
 
 export type MutationCreatePayStubArgs = {
   createPayStubDto: CreatePayStubDto;
+};
+
+
+export type MutationCreatePositionIncentiveArgs = {
+  maxThreshold: Scalars['Int']['input'];
+  minThreshold: Scalars['Int']['input'];
+  positionId: Scalars['Int']['input'];
+  positionIncentiveRate: Scalars['Float']['input'];
 };
 
 
@@ -1099,6 +1113,11 @@ export type MutationDeleteNoticeArgs = {
 
 export type MutationDeleteNotificationArgs = {
   notificationId: Scalars['Float']['input'];
+};
+
+
+export type MutationDeletePositionIncentiveArgs = {
+  positionIncentiveId: Scalars['Float']['input'];
 };
 
 
@@ -1223,6 +1242,15 @@ export type MutationUpdatePasswordArgs = {
 };
 
 
+export type MutationUpdatePositionIncentiveArgs = {
+  maxThreshold: Scalars['Int']['input'];
+  minThreshold: Scalars['Int']['input'];
+  positionId: Scalars['Int']['input'];
+  positionIncentiveId: Scalars['Int']['input'];
+  positionIncentiveRate: Scalars['Float']['input'];
+};
+
+
 export type MutationUpdateSupportAmountArgs = {
   updateSupportAmountDto: UpdateSupportAmountDto;
 };
@@ -1333,7 +1361,19 @@ export type Position = {
   deleted_at?: Maybe<Scalars['DateTime']['output']>;
   id: Scalars['Int']['output'];
   name: PositionType;
+  positionIncentive?: Maybe<PositionIncentive>;
   updated_at?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type PositionIncentive = {
+  id: Scalars['Int']['output'];
+  /** 상한값(미만), null 이면 상한 없음 */
+  maxThreshold?: Maybe<Scalars['Int']['output']>;
+  /** 하한값(이상) */
+  minThreshold: Scalars['Int']['output'];
+  position?: Maybe<Position>;
+  /** 직급 인센티브 율 */
+  positionIncentiveRate: Scalars['Float']['output'];
 };
 
 /** 직책 EnumType */
@@ -1411,6 +1451,8 @@ export type Query = {
   getFinancialCompanies: Array<FinancialCompany>;
   /** 노출 최신 공지사항 */
   getLatestNotice: Notice;
+  /** 월별 계약순익 집계 */
+  getMonthlyTotalNetIncomeUsersByMonth: Array<MonthlyTotalNetIncomeUser>;
   /** 내 정보 조회 */
   getMyInfo: User;
   /** 공지사항 상세 */
@@ -1423,6 +1465,10 @@ export type Query = {
   getPayStub: PayStub;
   /** 급여명세서 리스트 */
   getPayStubs: Array<PayStub>;
+  /** 직급 인센티브 상세 */
+  getPositionIncentive: PositionIncentive;
+  /** 직급 인센티브 리스트 */
+  getPositionIncentives: Array<PositionIncentive>;
   /** 직책 리스트 */
   getPositions: Array<Position>;
   /** 출고방식 리스트 */
@@ -1435,10 +1481,6 @@ export type Query = {
   getTeam: Team;
   /** 팀 리스트 조회 */
   getTeams: Array<Team>;
-  /** 월별 출고건수 top5 유저 */
-  getTopFiveDeliveryUsersByMonth: Array<MonthlyTopFiveUser>;
-  /** 월별 매출 top5 유저 */
-  getTopFiveTotalFeeDeliveryUsersByMonth: Array<MonthlyTopFiveUser>;
   /** 담당자 상세 페이지 조회 */
   getUser: User;
   /** 직원 출고 수당 리스트 조회 */
@@ -1546,6 +1588,11 @@ export type QueryGetDeliveriesArgs = {
 };
 
 
+export type QueryGetMonthlyTotalNetIncomeUsersByMonthArgs = {
+  getMonthlyTotalNetIncomeUsersByMonthDto: GetDashBoardByUsersDto;
+};
+
+
 export type QueryGetNoticeArgs = {
   noticeId: Scalars['Float']['input'];
 };
@@ -1567,6 +1614,17 @@ export type QueryGetPayStubsArgs = {
 };
 
 
+export type QueryGetPositionIncentiveArgs = {
+  positionIncentiveId: Scalars['Float']['input'];
+};
+
+
+export type QueryGetPositionIncentivesArgs = {
+  limit: Scalars['Int']['input'];
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type QueryGetSupportAmountArgs = {
   supportAmountId: Scalars['Float']['input'];
 };
@@ -1579,16 +1637,6 @@ export type QueryGetSupportAmountsArgs = {
 
 export type QueryGetTeamArgs = {
   teamId: Scalars['Float']['input'];
-};
-
-
-export type QueryGetTopFiveDeliveryUsersByMonthArgs = {
-  getTopFiveDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
-};
-
-
-export type QueryGetTopFiveTotalFeeDeliveryUsersByMonthArgs = {
-  getTopFiveTotalFeeDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
 };
 
 
@@ -2468,14 +2516,14 @@ export type GetContractsQueryVariables = Exact<{
 }>;
 
 
-export type GetContractsQuery = { getContracts: { totalCount: number, data: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, hasContractConfirmationLetter?: boolean | null, hasRegistrationCertificate?: boolean | null, note?: string | null, agencyPaymentDate?: string | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string, customerStatus?: { id: number, status: string } | null }, car?: { id: number, name: string, brand: { id: number, name: string } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> } };
+export type GetContractsQuery = { getContracts: { totalCount: number, data: Array<{ id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, hasContractConfirmationLetter?: boolean | null, hasRegistrationCertificate?: boolean | null, note?: string | null, agencyPaymentDate?: string | null, agencyDiscount?: number | null, cashAssistance2?: number | null, supportDetails2?: string | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string, customerStatus?: { id: number, status: string } | null }, car?: { id: number, name: string, brand: { id: number, name: string } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null }> } };
 
 export type GetContractQueryVariables = Exact<{
   contractId: Scalars['Float']['input'];
 }>;
 
 
-export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, hasContractConfirmationLetter?: boolean | null, hasRegistrationCertificate?: boolean | null, note?: string | null, agencyPaymentDate?: string | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string }, car?: { id: number, name: string, carFee?: number | null, brand: { id: number, name: string, brandFee?: number | null } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null } };
+export type GetContractQuery = { getContract: { id: number, status: Status, contractAt?: string | null, shippingDate?: string | null, carOption?: string | null, innerColor?: string | null, outerColor?: string | null, carPrice?: number | null, feeRate?: number | null, fee?: number | null, promotion?: number | null, monthlyPayment?: number | null, isOrdering?: string | null, isVATSupport?: boolean | null, branch?: string | null, branchFee?: number | null, collateralRate?: number | null, contractPeriod?: number | null, agreedMileage?: number | null, insuranceAge?: number | null, object?: number | null, service1?: number | null, serviceBody1?: string | null, service2?: number | null, serviceBody2?: string | null, service3?: number | null, serviceBody3?: string | null, incomeEarner?: string | null, cashAssistance?: number | null, supportDetails?: string | null, businessExpenses?: number | null, businessExpensesDetail?: string | null, totalExpenditure?: number | null, totalFee?: number | null, netIncome?: number | null, company_name_nominee?: string | null, advancePayment?: number | null, hasContractConfirmationLetter?: boolean | null, hasRegistrationCertificate?: boolean | null, note?: string | null, agencyPaymentDate?: string | null, agencyDiscount?: number | null, cashAssistance2?: number | null, supportDetails2?: string | null, user: { id: number, name: string }, city?: { id: number, name: string } | null, customer: { id: number, name: string, phone: string }, car?: { id: number, name: string, carFee?: number | null, brand: { id: number, name: string, brandFee?: number | null } } | null, financialCompany?: { id: number, name: string } | null, shippingMethod?: { id: number, name: string } | null, division?: { id: number, name: string } | null } };
 
 export type GetFinancialCompaniesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2653,20 +2701,6 @@ export type GetPositionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetPositionsQuery = { getPositions: Array<{ id: number, name: PositionType, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null }> };
-
-export type GetTopFiveDeliveryUsersByMonthQueryVariables = Exact<{
-  getTopFiveDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
-}>;
-
-
-export type GetTopFiveDeliveryUsersByMonthQuery = { getTopFiveDeliveryUsersByMonth: Array<{ year: string, month: string, totalCountDelivery?: number | null, totalFeeDelivery?: number | null, user: { id: number, name: string } }> };
-
-export type GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables = Exact<{
-  getTopFiveTotalFeeDeliveryUsersByMonthDto: GetDashBoardByUsersDto;
-}>;
-
-
-export type GetTopFiveTotalFeeDeliveryUsersByMonthQuery = { getTopFiveTotalFeeDeliveryUsersByMonth: Array<{ year: string, month: string, totalFeeDelivery?: number | null, totalCountDelivery?: number | null, user: { id: number, name: string } }> };
 
 export const TeamFieldsFragmentDoc = gql`
     fragment TeamFields on Team {
@@ -4980,6 +5014,9 @@ export const GetContractsDocument = gql`
       hasRegistrationCertificate
       note
       agencyPaymentDate
+      agencyDiscount
+      cashAssistance2
+      supportDetails2
     }
     totalCount
   }
@@ -5097,6 +5134,9 @@ export const GetContractDocument = gql`
     hasRegistrationCertificate
     note
     agencyPaymentDate
+    agencyDiscount
+    cashAssistance2
+    supportDetails2
   }
 }
     `;
@@ -6715,101 +6755,3 @@ export type GetPositionsQueryHookResult = ReturnType<typeof useGetPositionsQuery
 export type GetPositionsLazyQueryHookResult = ReturnType<typeof useGetPositionsLazyQuery>;
 export type GetPositionsSuspenseQueryHookResult = ReturnType<typeof useGetPositionsSuspenseQuery>;
 export type GetPositionsQueryResult = Apollo.QueryResult<GetPositionsQuery, GetPositionsQueryVariables>;
-export const GetTopFiveDeliveryUsersByMonthDocument = gql`
-    query GetTopFiveDeliveryUsersByMonth($getTopFiveDeliveryUsersByMonthDto: GetDashBoardByUsersDto!) {
-  getTopFiveDeliveryUsersByMonth(
-    getTopFiveDeliveryUsersByMonthDto: $getTopFiveDeliveryUsersByMonthDto
-  ) {
-    user {
-      id
-      name
-    }
-    year
-    month
-    totalCountDelivery
-    totalFeeDelivery
-  }
-}
-    `;
-
-/**
- * __useGetTopFiveDeliveryUsersByMonthQuery__
- *
- * To run a query within a React component, call `useGetTopFiveDeliveryUsersByMonthQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTopFiveDeliveryUsersByMonthQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTopFiveDeliveryUsersByMonthQuery({
- *   variables: {
- *      getTopFiveDeliveryUsersByMonthDto: // value for 'getTopFiveDeliveryUsersByMonthDto'
- *   },
- * });
- */
-export function useGetTopFiveDeliveryUsersByMonthQuery(baseOptions: Apollo.QueryHookOptions<GetTopFiveDeliveryUsersByMonthQuery, GetTopFiveDeliveryUsersByMonthQueryVariables> & ({ variables: GetTopFiveDeliveryUsersByMonthQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTopFiveDeliveryUsersByMonthQuery, GetTopFiveDeliveryUsersByMonthQueryVariables>(GetTopFiveDeliveryUsersByMonthDocument, options);
-      }
-export function useGetTopFiveDeliveryUsersByMonthLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTopFiveDeliveryUsersByMonthQuery, GetTopFiveDeliveryUsersByMonthQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTopFiveDeliveryUsersByMonthQuery, GetTopFiveDeliveryUsersByMonthQueryVariables>(GetTopFiveDeliveryUsersByMonthDocument, options);
-        }
-export function useGetTopFiveDeliveryUsersByMonthSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTopFiveDeliveryUsersByMonthQuery, GetTopFiveDeliveryUsersByMonthQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetTopFiveDeliveryUsersByMonthQuery, GetTopFiveDeliveryUsersByMonthQueryVariables>(GetTopFiveDeliveryUsersByMonthDocument, options);
-        }
-export type GetTopFiveDeliveryUsersByMonthQueryHookResult = ReturnType<typeof useGetTopFiveDeliveryUsersByMonthQuery>;
-export type GetTopFiveDeliveryUsersByMonthLazyQueryHookResult = ReturnType<typeof useGetTopFiveDeliveryUsersByMonthLazyQuery>;
-export type GetTopFiveDeliveryUsersByMonthSuspenseQueryHookResult = ReturnType<typeof useGetTopFiveDeliveryUsersByMonthSuspenseQuery>;
-export type GetTopFiveDeliveryUsersByMonthQueryResult = Apollo.QueryResult<GetTopFiveDeliveryUsersByMonthQuery, GetTopFiveDeliveryUsersByMonthQueryVariables>;
-export const GetTopFiveTotalFeeDeliveryUsersByMonthDocument = gql`
-    query GetTopFiveTotalFeeDeliveryUsersByMonth($getTopFiveTotalFeeDeliveryUsersByMonthDto: GetDashBoardByUsersDto!) {
-  getTopFiveTotalFeeDeliveryUsersByMonth(
-    getTopFiveTotalFeeDeliveryUsersByMonthDto: $getTopFiveTotalFeeDeliveryUsersByMonthDto
-  ) {
-    user {
-      id
-      name
-    }
-    year
-    month
-    totalFeeDelivery
-    totalCountDelivery
-  }
-}
-    `;
-
-/**
- * __useGetTopFiveTotalFeeDeliveryUsersByMonthQuery__
- *
- * To run a query within a React component, call `useGetTopFiveTotalFeeDeliveryUsersByMonthQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTopFiveTotalFeeDeliveryUsersByMonthQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTopFiveTotalFeeDeliveryUsersByMonthQuery({
- *   variables: {
- *      getTopFiveTotalFeeDeliveryUsersByMonthDto: // value for 'getTopFiveTotalFeeDeliveryUsersByMonthDto'
- *   },
- * });
- */
-export function useGetTopFiveTotalFeeDeliveryUsersByMonthQuery(baseOptions: Apollo.QueryHookOptions<GetTopFiveTotalFeeDeliveryUsersByMonthQuery, GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables> & ({ variables: GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTopFiveTotalFeeDeliveryUsersByMonthQuery, GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables>(GetTopFiveTotalFeeDeliveryUsersByMonthDocument, options);
-      }
-export function useGetTopFiveTotalFeeDeliveryUsersByMonthLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTopFiveTotalFeeDeliveryUsersByMonthQuery, GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTopFiveTotalFeeDeliveryUsersByMonthQuery, GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables>(GetTopFiveTotalFeeDeliveryUsersByMonthDocument, options);
-        }
-export function useGetTopFiveTotalFeeDeliveryUsersByMonthSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTopFiveTotalFeeDeliveryUsersByMonthQuery, GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetTopFiveTotalFeeDeliveryUsersByMonthQuery, GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables>(GetTopFiveTotalFeeDeliveryUsersByMonthDocument, options);
-        }
-export type GetTopFiveTotalFeeDeliveryUsersByMonthQueryHookResult = ReturnType<typeof useGetTopFiveTotalFeeDeliveryUsersByMonthQuery>;
-export type GetTopFiveTotalFeeDeliveryUsersByMonthLazyQueryHookResult = ReturnType<typeof useGetTopFiveTotalFeeDeliveryUsersByMonthLazyQuery>;
-export type GetTopFiveTotalFeeDeliveryUsersByMonthSuspenseQueryHookResult = ReturnType<typeof useGetTopFiveTotalFeeDeliveryUsersByMonthSuspenseQuery>;
-export type GetTopFiveTotalFeeDeliveryUsersByMonthQueryResult = Apollo.QueryResult<GetTopFiveTotalFeeDeliveryUsersByMonthQuery, GetTopFiveTotalFeeDeliveryUsersByMonthQueryVariables>;

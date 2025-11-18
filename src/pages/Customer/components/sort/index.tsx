@@ -67,6 +67,60 @@ const Sort = () => {
           </div>
           <span>최근상담일시</span>
         </div>
+        <div
+          onClick={() =>
+            setSelectedSort((prev) => ({
+              ...prev,
+              sortKey: 'customerStatus',
+            }))
+          }
+        >
+          <div className="radio">
+            <input
+              type="radio"
+              checked={selectedSort.sortKey === 'customerStatus'}
+              readOnly
+            />
+            <span></span>
+          </div>
+          <span>상태</span>
+        </div>
+        <div
+          onClick={() =>
+            setSelectedSort((prev) => ({
+              ...prev,
+              sortKey: 'note',
+            }))
+          }
+        >
+          <div className="radio">
+            <input
+              type="radio"
+              checked={selectedSort.sortKey === 'note'}
+              readOnly
+            />
+            <span></span>
+          </div>
+          <span>비고</span>
+        </div>
+        <div
+          onClick={() =>
+            setSelectedSort((prev) => ({
+              ...prev,
+              sortKey: 'carName',
+            }))
+          }
+        >
+          <div className="radio">
+            <input
+              type="radio"
+              checked={selectedSort.sortKey === 'carName'}
+              readOnly
+            />
+            <span></span>
+          </div>
+          <span>차종</span>
+        </div>
       </div>
       <div className="footer">
         <Button

@@ -18,7 +18,13 @@ export const selectedCustomerHideWatchOptionsState = atom<string[]>({
 });
 
 export const selectedCustomerSortState = atom<{
-  sortKey: 'memo' | 'created_at' | 'latestCounselAt';
+  sortKey:
+    | 'memo'
+    | 'created_at'
+    | 'latestCounselAt'
+    | 'customerStatus'
+    | 'note'
+    | 'carName';
   sortDirection: CustomerSortDirectionType;
 }>({
   key: 'selectedCustomerSortState',
