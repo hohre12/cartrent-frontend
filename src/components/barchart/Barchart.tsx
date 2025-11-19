@@ -30,17 +30,23 @@ const Barchart = ({
   };
   const maxValue = Math.max(...data.map((d) => d[keys[0]]));
 
+  // horizontal layout에서는 배열의 첫 번째 항목이 아래에 표시되므로
+  // 높은 금액이 위에 오도록 배열을 뒤집음
+  const reversedData = [...data].reverse();
+
   return (
     // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
     <div style={{ width: '100%', height: '500px', margin: '0 auto' }}>
       <ResponsiveBar
+        layout="horizontal"
         valueFormat={(value) => `${value.toLocaleString()}${unit ?? ''}`}
+        axisBottom={{
+          format: (value) => `${value.toLocaleString()}${unit ?? ''}`, // 하단 축 포맷팅 (값)
+        }}
         axisLeft={{
-          tickValues:
-            maxValue <= 10
-              ? Array.from({ length: maxValue }, (_, i) => i + 1)
-              : undefined,
-          format: (value) => `${value.toLocaleString()}${unit ?? ''}`, // 왼쪽 축 포맷팅
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
         }}
         tooltip={({ id, value, data }) => (
           <div
@@ -64,7 +70,7 @@ const Barchart = ({
         /**
          * chart에 사용될 데이터
          */
-        data={data}
+        data={reversedData}
         /**
          * chart에 보여질 데이터 key (측정되는 값)
          */
@@ -84,7 +90,7 @@ const Barchart = ({
         /**
          * chart 색상
          */
-        colors={{ scheme: 'paired' }} // nivo에서 제공해주는 색상 조합 사용할 때
+        colors={['#2abeba']} // 로고 색상과 동일한 cyan/turquoise
         /**
          * color 적용 방식
          */

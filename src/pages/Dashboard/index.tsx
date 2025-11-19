@@ -24,7 +24,8 @@ const Dashboard = () => {
 
   const { data: latestNotice, loading: loading2 } = useGetLatestNotice();
 
-  if (loading1 || loading2) return <Loading message="대시보드 데이터를 불러오는 중..." />;
+  if (loading1 || loading2)
+    return <Loading message="대시보드 데이터를 불러오는 중..." />;
 
   return (
     <DashboardWrapper>
