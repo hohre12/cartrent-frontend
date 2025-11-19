@@ -122,9 +122,10 @@ const DeliveryList = () => {
     }
   }, [navigationType, resetFilters]);
 
-  // useEffect(() => {
-  //   setOffset(0);
-  // }, [filters]);
+  // searchText 변경 시 offset 초기화
+  useEffect(() => {
+    setOffset(0);
+  }, [searchText]);
 
   if (loading) return <Loading />;
   if (error) return <div className="error">{String(error)}</div>;

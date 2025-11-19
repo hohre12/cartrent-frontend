@@ -128,6 +128,22 @@ const AdjustmentList = () => {
 
   if (loading) return <Loading />;
 
+  if (error) {
+    return (
+      <ListWrapper>
+        <ListContent>
+          <div className="noList">
+            <h2>데이터 조회 오류</h2>
+            <p>정산 데이터를 불러오는 중 문제가 발생했습니다.</p>
+            <p style={{ fontSize: '12px', color: '#999', marginTop: '10px' }}>
+              백엔드 관리자에게 문의하세요.
+            </p>
+          </div>
+        </ListContent>
+      </ListWrapper>
+    );
+  }
+
   return (
     <>
       <ListWrapper>
