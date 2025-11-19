@@ -27,7 +27,9 @@ const AdminSideTab = () => {
             <p>팀관리</p>
           </SideTabItem>
           <SideTabItem
-            $isActive={location.pathname.includes('/admin/position-incentive').toString()}
+            $isActive={location.pathname
+              .includes('/admin/position-incentive')
+              .toString()}
             onClick={() => navigate('position-incentive')}
           >
             <p>직급 인센티브</p>
