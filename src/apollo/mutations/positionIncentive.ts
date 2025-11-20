@@ -4,7 +4,7 @@ export const CREATE_POSITION_INCENTIVE_MUTATION = gql`
   mutation CreatePositionIncentive(
     $positionId: Int!
     $minThreshold: Int!
-    $maxThreshold: Int!
+    $maxThreshold: Int
     $positionIncentiveRate: Float!
   ) {
     createPositionIncentive(

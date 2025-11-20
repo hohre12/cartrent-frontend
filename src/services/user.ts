@@ -6,8 +6,6 @@ import {
 } from '@/apollo/mutations/user';
 import {
   GET_POSITIONS_QUERY,
-  GET_TOP_FIVE_DELIVERY_USERS_BY_MONTH,
-  GET_TOP_FIVE_TOTAL_FEE_DELIVERY_USERS_BY_MONTH,
   GET_MONTHLY_TOTAL_NET_INCOME_USERS_BY_MONTH,
   GET_USER_QUERY,
   GET_USERS_QUERY,
@@ -15,7 +13,6 @@ import {
 import {
   CreateUserDto,
   GetDashBoardByUsersDto,
-  MonthlyTopFiveUser,
   MonthlyTotalNetIncomeUser,
   Position,
   UpdatePasswordDto,
@@ -105,30 +102,6 @@ export const useDeleteUser = () => {
 
 export const useGetPositions = () => {
   return useQuery<{ getPositions: Position[] }>(GET_POSITIONS_QUERY);
-};
-
-export const useGetTopFiveDeliveryUsersByMonth = (
-  params: GetDashBoardByUsersDto,
-) => {
-  return useQuery<
-    { getTopFiveDeliveryUsersByMonth: MonthlyTopFiveUser[] },
-    { getTopFiveDeliveryUsersByMonthDto: GetDashBoardByUsersDto }
-  >(GET_TOP_FIVE_DELIVERY_USERS_BY_MONTH, {
-    variables: { getTopFiveDeliveryUsersByMonthDto: params },
-    fetchPolicy: 'network-only',
-  });
-};
-
-export const useGetTopFiveTotalFeeDeliveryUsersByMonth = (
-  params: GetDashBoardByUsersDto,
-) => {
-  return useQuery<
-    { getTopFiveTotalFeeDeliveryUsersByMonth: MonthlyTopFiveUser[] },
-    { getTopFiveTotalFeeDeliveryUsersByMonthDto: GetDashBoardByUsersDto }
-  >(GET_TOP_FIVE_TOTAL_FEE_DELIVERY_USERS_BY_MONTH, {
-    variables: { getTopFiveTotalFeeDeliveryUsersByMonthDto: params },
-    fetchPolicy: 'network-only',
-  });
 };
 
 export const useGetMonthlyTotalNetIncomeUsersByMonth = (

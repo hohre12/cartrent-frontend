@@ -82,46 +82,6 @@ export const GET_POSITIONS_QUERY = gql`
   }
 `;
 
-// 월별 출고건수 top5 유저
-export const GET_TOP_FIVE_DELIVERY_USERS_BY_MONTH = gql`
-  query GetTopFiveDeliveryUsersByMonth(
-    $getTopFiveDeliveryUsersByMonthDto: GetDashBoardByUsersDto!
-  ) {
-    getTopFiveDeliveryUsersByMonth(
-      getTopFiveDeliveryUsersByMonthDto: $getTopFiveDeliveryUsersByMonthDto
-    ) {
-      user {
-        id
-        name
-      }
-      year
-      month
-      totalCountDelivery
-      totalFeeDelivery
-    }
-  }
-`;
-
-// 월별 매출 top5 유저
-export const GET_TOP_FIVE_TOTAL_FEE_DELIVERY_USERS_BY_MONTH = gql`
-  query GetTopFiveTotalFeeDeliveryUsersByMonth(
-    $getTopFiveTotalFeeDeliveryUsersByMonthDto: GetDashBoardByUsersDto!
-  ) {
-    getTopFiveTotalFeeDeliveryUsersByMonth(
-      getTopFiveTotalFeeDeliveryUsersByMonthDto: $getTopFiveTotalFeeDeliveryUsersByMonthDto
-    ) {
-      user {
-        id
-        name
-      }
-      year
-      month
-      totalFeeDelivery
-      totalCountDelivery
-    }
-  }
-`;
-
 // 월별 계약순익 집계 (전체 직원)
 export const GET_MONTHLY_TOTAL_NET_INCOME_USERS_BY_MONTH = gql`
   query GetMonthlyTotalNetIncomeUsersByMonth(
