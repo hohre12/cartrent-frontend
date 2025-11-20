@@ -26,7 +26,7 @@ export const UPDATE_POSITION_INCENTIVE_MUTATION = gql`
     $positionIncentiveId: Int!
     $positionId: Int!
     $minThreshold: Int!
-    $maxThreshold: Int!
+    $maxThreshold: Int
     $positionIncentiveRate: Float!
   ) {
     updatePositionIncentive(
