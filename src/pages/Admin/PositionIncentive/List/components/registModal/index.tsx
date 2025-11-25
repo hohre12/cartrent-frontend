@@ -57,7 +57,7 @@ const RegistPositionIncentiveModal = (
         addToast({
           id: Date.now(),
           isImage: true,
-          content: `직급 인센티브가 등록되었습니다.`,
+          content: `직급별 수당이 등록되었습니다.`,
           type: 'success',
         });
         modalProps.onConfirm?.();
@@ -103,7 +103,7 @@ const RegistPositionIncentiveModal = (
     <>
       <SModal
         {...modalProps}
-        title="직급 인센티브 생성"
+        title="직급별 수당 생성"
         size={'small'}
         footerOption={{
           cancelText: '취소',
@@ -164,7 +164,7 @@ const RegistPositionIncentiveModal = (
           </div>
           <div className="InputWrapper">
             <span>
-              인센티브율 <p className="required">*</p>
+              수당율 <p className="required">*</p>
             </span>
             <Input
               value={numberFormat(positionIncentiveRate)}

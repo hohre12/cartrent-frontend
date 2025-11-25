@@ -2,34 +2,48 @@ import Button from '@/components/button/Button';
 import { UserPositionHangleEnum } from '@/constants/user';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
-import { useDeletePositionIncentive } from '@/services/positionIncentive';
+// TODO: 백엔드 스키마 완성 후 실제 서비스로 교체
+// import { useDeleteDepartmentAllowance } from '@/services/departmentAllowance';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
+// TODO: 백엔드 스키마 완성 후 DepartmentAllowance 타입으로 교체
 import { PositionIncentive } from '@/types/graphql';
 import styled from 'styled-components';
 
 type TTableProps = {
+  // TODO: 백엔드 스키마 완성 후 DepartmentAllowance[] 타입으로 교체
   data: PositionIncentive[];
   onEdit: (id: number) => void;
 };
 
-const PositionIncentiveListTable = ({ data, onEdit }: TTableProps) => {
+const DepartmentAllowanceListTable = ({ data, onEdit }: TTableProps) => {
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
-  const { deletePositionIncentive } = useDeletePositionIncentive();
+  // TODO: 백엔드 스키마 완성 후 주석 해제
+  // const { deleteDepartmentAllowance } = useDeleteDepartmentAllowance();
 
-  const handleDelete = async (id: PositionIncentive['id'], positionName: string) => {
+  const handleDelete = async (id: number, positionName: string) => {
     try {
-      const response = await deletePositionIncentive(id);
-      if (response && response.data.deletePositionIncentive) {
-        hideConfirm();
-        addToast({
-          id: Date.now(),
-          isImage: true,
-          content: `직급별 수당이 삭제되었습니다.`,
-          type: 'success',
-        });
-      }
+      // TODO: 백엔드 스키마 완성 후 주석 해제
+      // const response = await deleteDepartmentAllowance(id);
+      // if (response && response.data.deleteDepartmentAllowance) {
+      //   hideConfirm();
+      //   addToast({
+      //     id: Date.now(),
+      //     isImage: true,
+      //     content: `본부별 수당이 삭제되었습니다.`,
+      //     type: 'success',
+      //   });
+      // }
+
+      // 임시 처리
+      hideConfirm();
+      addToast({
+        id: Date.now(),
+        isImage: true,
+        content: `본부별 수당 삭제 기능은 백엔드 스키마 완성 후 사용 가능합니다.`,
+        type: 'warning',
+      });
     } catch (e) {
       hideConfirm();
       addToast({
@@ -70,6 +84,7 @@ const PositionIncentiveListTable = ({ data, onEdit }: TTableProps) => {
               </td>
               <td>{formatAmount(it.minThreshold)}</td>
               <td>{formatAmount(it.maxThreshold)}</td>
+              {/* TODO: 백엔드 스키마 완성 후 departmentAllowanceRate로 교체 */}
               <td>{it.positionIncentiveRate}%</td>
               <td onClick={(e) => e.stopPropagation()}>
                 <Button
@@ -85,7 +100,7 @@ const PositionIncentiveListTable = ({ data, onEdit }: TTableProps) => {
                   onClick={() =>
                     showConfirm({
                       isOpen: true,
-                      title: '직급별 수당 삭제',
+                      title: '본부별 수당 삭제',
                       content: `${it.position?.name ? UserPositionHangleEnum[it.position.name] : '해당'} 직급의 수당을 삭제하시겠습니까?`,
                       cancelText: '취소',
                       confirmText: '삭제',
@@ -113,7 +128,7 @@ const PositionIncentiveListTable = ({ data, onEdit }: TTableProps) => {
   );
 };
 
-export default PositionIncentiveListTable;
+export default DepartmentAllowanceListTable;
 
 export const TableWrapper = styled.table`
   position: relative;

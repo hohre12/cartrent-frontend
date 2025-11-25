@@ -4,10 +4,11 @@ import { Modal } from '@/components/modal/Modal';
 import Select from '@/components/select/Select';
 import { UserPositionHangleEnum } from '@/constants/user';
 import { useToast } from '@/hooks/useToast';
-import {
-  useGetPositionIncentive,
-  useUpdatePositionIncentive,
-} from '@/services/positionIncentive';
+// TODO: 백엔드 스키마 완성 후 실제 서비스로 교체
+// import {
+//   useGetDepartmentAllowance,
+//   useUpdateDepartmentAllowance,
+// } from '@/services/departmentAllowance';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
 import { Position, PositionType } from '@/types/graphql';
@@ -15,30 +16,35 @@ import { numberFormat } from '@/utils/common';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
-const EditPositionIncentiveModal = (
+const EditDepartmentAllowanceModal = (
   props: TModal & { id: number; positions: Position[] },
 ) => {
   const { id, positions, ...modalProps } = props;
-  const { data } = useGetPositionIncentive(id);
+  // TODO: 백엔드 스키마 완성 후 주석 해제
+  // const { data } = useGetDepartmentAllowance(id);
+  const data = null; // 임시
+
   const [selectedPosition, setSelectedPosition] = useState<Position | null>(
     null,
   );
   const [minThreshold, setMinThreshold] = useState<number>(0);
   const [maxThreshold, setMaxThreshold] = useState<number>(0);
   const [noMaxThreshold, setNoMaxThreshold] = useState<boolean>(false);
+  // TODO: 백엔드 스키마 완성 후 departmentAllowanceRate로 교체
   const [positionIncentiveRate, setPositionIncentiveRate] = useState<number>(0);
   const [submit, setSubmit] = useState<boolean>(false);
   const { addToast } = useToast();
 
-  const { updatePositionIncentive } = useUpdatePositionIncentive();
+  // TODO: 백엔드 스키마 완성 후 주석 해제
+  // const { updateDepartmentAllowance } = useUpdateDepartmentAllowance();
 
-  // 대표(CEO)와 실장(DEPARTMENT_MANAGER) 제외, 한글명 추가
+  // 팀장과 본부장만 선택 가능
   const filteredPositions = useMemo(() => {
     return positions
       .filter(
         (p) =>
-          p.name !== PositionType.Ceo &&
-          p.name !== PositionType.DepartmentManager,
+          p.name === PositionType.TeamLeader ||
+          p.name === PositionType.GeneralManager,
       )
       .map((p) => ({
         ...p,
@@ -51,22 +57,32 @@ const EditPositionIncentiveModal = (
     if (!selectedPosition) return;
 
     try {
-      const response = await updatePositionIncentive({
-        positionIncentiveId: id,
-        positionId: selectedPosition.id,
-        minThreshold,
-        maxThreshold: noMaxThreshold ? (null as any) : maxThreshold,
-        positionIncentiveRate,
+      // TODO: 백엔드 스키마 완성 후 주석 해제
+      // const response = await updateDepartmentAllowance({
+      //   departmentAllowanceId: id,
+      //   positionId: selectedPosition.id,
+      //   minThreshold,
+      //   maxThreshold: noMaxThreshold ? (null as any) : maxThreshold,
+      //   departmentAllowanceRate: positionIncentiveRate,
+      // });
+      // if (response && response.data.updateDepartmentAllowance.id) {
+      //   addToast({
+      //     id: Date.now(),
+      //     isImage: true,
+      //     content: `본부별 수당이 수정되었습니다.`,
+      //     type: 'success',
+      //   });
+      //   modalProps.onConfirm?.();
+      // }
+
+      // 임시 처리
+      addToast({
+        id: Date.now(),
+        isImage: true,
+        content: `본부별 수당 수정 기능은 백엔드 스키마 완성 후 사용 가능합니다.`,
+        type: 'warning',
       });
-      if (response && response.data.updatePositionIncentive.id) {
-        addToast({
-          id: Date.now(),
-          isImage: true,
-          content: `직급별 수당이 수정되었습니다.`,
-          type: 'success',
-        });
-        modalProps.onConfirm?.();
-      }
+      modalProps.onConfirm?.();
     } catch (e) {
       console.warn(e);
       addToast({
@@ -78,7 +94,7 @@ const EditPositionIncentiveModal = (
     }
   }, [
     addToast,
-    updatePositionIncentive,
+    // updateDepartmentAllowance,
     modalProps,
     id,
     selectedPosition,
@@ -106,26 +122,27 @@ const EditPositionIncentiveModal = (
   }, [handleEnter]);
 
   useEffect(() => {
-    const detail = data?.getPositionIncentive;
-    if (detail && detail.position) {
-      setSelectedPosition({
-        ...detail.position,
-        koreanName: UserPositionHangleEnum[detail.position.name],
-      });
-      setMinThreshold(detail.minThreshold);
-      setMaxThreshold(detail.maxThreshold ?? 0);
-      setNoMaxThreshold(
-        detail.maxThreshold === null || detail.maxThreshold === undefined,
-      );
-      setPositionIncentiveRate(detail.positionIncentiveRate);
-    }
+    // TODO: 백엔드 스키마 완성 후 주석 해제
+    // const detail = data?.getDepartmentAllowance;
+    // if (detail && detail.position) {
+    //   setSelectedPosition({
+    //     ...detail.position,
+    //     koreanName: UserPositionHangleEnum[detail.position.name],
+    //   });
+    //   setMinThreshold(detail.minThreshold);
+    //   setMaxThreshold(detail.maxThreshold ?? 0);
+    //   setNoMaxThreshold(
+    //     detail.maxThreshold === null || detail.maxThreshold === undefined,
+    //   );
+    //   setPositionIncentiveRate(detail.departmentAllowanceRate);
+    // }
   }, [data]);
 
   return (
     <>
       <SModal
         {...modalProps}
-        title="직급별 수당 수정"
+        title="본부별 수당 수정"
         size={'small'}
         footerOption={{
           cancelText: '취소',
@@ -208,7 +225,7 @@ const EditPositionIncentiveModal = (
   );
 };
 
-export default EditPositionIncentiveModal;
+export default EditDepartmentAllowanceModal;
 
 const SModal = styled(Modal)`
   .modalWrapper {

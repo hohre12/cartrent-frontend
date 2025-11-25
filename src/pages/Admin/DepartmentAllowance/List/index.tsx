@@ -1,19 +1,26 @@
 import Button from '@/components/button/Button';
-import { useGetPositionIncentives } from '@/services/positionIncentive';
+// TODO: 백엔드 스키마 완성 후 실제 서비스로 교체
+// import { useGetDepartmentAllowances } from '@/services/departmentAllowance';
 import { useGetPositions } from '@/services/user';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import styled from 'styled-components';
 import { useState } from 'react';
-import PositionIncentiveListTable from './components/table';
-import RegistPositionIncentiveModal from './components/registModal';
-import EditPositionIncentiveModal from './components/editModal';
+import DepartmentAllowanceListTable from './components/table';
+import RegistDepartmentAllowanceModal from './components/registModal';
+import EditDepartmentAllowanceModal from './components/editModal';
 import Loading from '@/components/loading/Loading';
 
-const AdminPositionIncentiveList = () => {
-  const { data, loading, error } = useGetPositionIncentives({
-    limit: 100,
-    offset: 0,
-  });
+const AdminDepartmentAllowanceList = () => {
+  // TODO: 백엔드 스키마 완성 후 주석 해제
+  // const { data, loading, error } = useGetDepartmentAllowances({
+  //   limit: 100,
+  //   offset: 0,
+  // });
+
+  // 임시 데이터 (백엔드 스키마 완성 전까지)
+  const data = null;
+  const loading = false;
+
   const { data: positionsData } = useGetPositions();
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
   const [editModalId, setEditModalId] = useState<number | null>(null);
@@ -24,7 +31,7 @@ const AdminPositionIncentiveList = () => {
     <>
       <ListWrapper>
         <Header>
-          <h2>직급별 수당 관리</h2>
+          <h2>본부별 수당 관리</h2>
           <ControlWrapper>
             <FunctionWrapper>
               <Button onClick={() => setIsOpenRegistModal(!isOpenRegistModal)}>
@@ -34,23 +41,24 @@ const AdminPositionIncentiveList = () => {
           </ControlWrapper>
         </Header>
         <ListContent>
-          {data && data.getPositionIncentives?.length > 0 ? (
+          {/* TODO: 백엔드 스키마 완성 후 data.getDepartmentAllowances로 교체 */}
+          {data && (data as any).getDepartmentAllowances?.length > 0 ? (
             <>
-              <PositionIncentiveListTable
-                data={data.getPositionIncentives}
+              <DepartmentAllowanceListTable
+                data={(data as any).getDepartmentAllowances}
                 onEdit={(id) => setEditModalId(id)}
               />
             </>
           ) : (
             <div className="noList">
               <h2>수당 없음</h2>
-              <p>생성된 직급별 수당이 없습니다.</p>
+              <p>생성된 본부별 수당이 없습니다.</p>
             </div>
           )}
         </ListContent>
       </ListWrapper>
       {isOpenRegistModal && (
-        <RegistPositionIncentiveModal
+        <RegistDepartmentAllowanceModal
           isOpen={isOpenRegistModal}
           onCancel={() => setIsOpenRegistModal(false)}
           onConfirm={() => setIsOpenRegistModal(false)}
@@ -58,7 +66,7 @@ const AdminPositionIncentiveList = () => {
         />
       )}
       {editModalId && (
-        <EditPositionIncentiveModal
+        <EditDepartmentAllowanceModal
           id={editModalId}
           isOpen={!!editModalId}
           onCancel={() => setEditModalId(null)}
@@ -70,7 +78,7 @@ const AdminPositionIncentiveList = () => {
   );
 };
 
-export default AdminPositionIncentiveList;
+export default AdminDepartmentAllowanceList;
 
 const ListWrapper = styled.div`
   background: #fff;

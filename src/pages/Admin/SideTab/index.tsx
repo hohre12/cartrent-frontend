@@ -32,7 +32,15 @@ const AdminSideTab = () => {
               .toString()}
             onClick={() => navigate('position-incentive')}
           >
-            <p>직급 인센티브</p>
+            <p>직급별 수당</p>
+          </SideTabItem>
+          <SideTabItem
+            $isActive={location.pathname
+              .includes('/admin/department-allowance')
+              .toString()}
+            onClick={() => navigate('department-allowance')}
+          >
+            <p>본부별 수당</p>
           </SideTabItem>
           <SideTabItem
             $isActive={location.pathname.includes('/admin/city').toString()}
