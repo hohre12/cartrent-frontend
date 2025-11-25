@@ -54,14 +54,11 @@ export default TaxListTable;
 
 export const TableWrapper = styled.table`
   position: relative;
-  height: 100%;
-  width: 50%;
+  width: 100%;
   text-align: left;
-  display: block;
-  overflow: overlay;
   white-space: nowrap;
   border-spacing: 0;
-  border-collapse: separate;
+  border-collapse: collapse;
 `;
 
 export const TableHeader = styled.tr`

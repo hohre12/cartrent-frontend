@@ -19,7 +19,10 @@ export default AdminPage;
 
 const AdminWrapper = styled.div`
   display: flex;
+  height: calc(100vh - 60px);
 `;
 const AdminContentWrapper = styled.div`
   width: calc(100% - 100px);
+  height: 100%;
+  overflow: hidden;
 `;

@@ -87,35 +87,43 @@ const TaxList = () => {
             </FilterWrapper>
           </ControlWrapper>
         </Header>
-        <TempTableHeader>
-          <h2>인건비 내역서</h2>
-          <h2>추가 인건비 내역서</h2>
-        </TempTableHeader>
         <ListContent>
-          <>
-            {userIncentiveDeliveryTaxes &&
-            userIncentiveDeliveryTaxes.getUserIncentiveDeliveryTaxes?.length >
-              0 ? (
-              <TaxListTable
-                data={userIncentiveDeliveryTaxes.getUserIncentiveDeliveryTaxes}
-              ></TaxListTable>
-            ) : (
-              <div className="noList">
-                <h2>인건비내역서 목록 없음</h2>
-                <p>생성된 인건비내역서 목록이 없습니다.</p>
-              </div>
-            )}
-            {customerTaxes && customerTaxes.getCustomerTaxes?.length > 0 ? (
-              <SecondTaxListTable
-                data={customerTaxes.getCustomerTaxes}
-              ></SecondTaxListTable>
-            ) : (
-              <div className="noList">
-                <h2>추가 인건비내역서 목록 없음</h2>
-                <p>생성된 추가 인건비내역서 목록이 없습니다.</p>
-              </div>
-            )}
-          </>
+          <TableSection>
+            <SectionHeader>
+              <h3>인건비 내역서</h3>
+            </SectionHeader>
+            <SectionContent>
+              {userIncentiveDeliveryTaxes &&
+              userIncentiveDeliveryTaxes.getUserIncentiveDeliveryTaxes?.length >
+                0 ? (
+                <TaxListTable
+                  data={userIncentiveDeliveryTaxes.getUserIncentiveDeliveryTaxes}
+                ></TaxListTable>
+              ) : (
+                <div className="noList">
+                  <h2>인건비내역서 목록 없음</h2>
+                  <p>생성된 인건비내역서 목록이 없습니다.</p>
+                </div>
+              )}
+            </SectionContent>
+          </TableSection>
+          <TableSection>
+            <SectionHeader>
+              <h3>추가 인건비 내역서</h3>
+            </SectionHeader>
+            <SectionContent>
+              {customerTaxes && customerTaxes.getCustomerTaxes?.length > 0 ? (
+                <SecondTaxListTable
+                  data={customerTaxes.getCustomerTaxes}
+                ></SecondTaxListTable>
+              ) : (
+                <div className="noList">
+                  <h2>추가 인건비내역서 목록 없음</h2>
+                  <p>생성된 추가 인건비내역서 목록이 없습니다.</p>
+                </div>
+              )}
+            </SectionContent>
+          </TableSection>
         </ListContent>
       </ListWrapper>
     </>
@@ -164,21 +172,15 @@ const FunctionWrapper = styled.div`
   align-items: center;
   gap: 5px;
 `;
-const TempTableHeader = styled.div`
-  height: 60px;
-  display: flex;
-  & > h2 {
-    width: 50%;
-    ${titleXxl24Bold}
-  }
-`;
+
 export const ListContent = styled.div`
   width: 100%;
   flex-grow: 1;
-  overflow-y: auto;
+  overflow: hidden;
   position: relative;
   display: flex;
   gap: 20px;
+  padding: 20px;
   .noList {
     display: flex;
     flex-direction: column;
@@ -187,7 +189,7 @@ export const ListContent = styled.div`
     justify-content: center;
     align-items: center;
     height: 100%;
-    width: 50%;
+    width: 100%;
     h2 {
       ${titleXxl24Bold}
     }
@@ -195,4 +197,34 @@ export const ListContent = styled.div`
       ${textS14Regular}
     }
   }
+`;
+
+const TableSection = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  min-height: 0;
+`;
+
+const SectionHeader = styled.div`
+  padding: 16px 20px;
+  background: #f8f9fa;
+  border-bottom: 2px solid #e0e0e0;
+  flex-shrink: 0;
+  h3 {
+    ${titleXxl24Bold}
+    margin: 0;
+    color: #333;
+  }
+`;
+
+const SectionContent = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
 `;
