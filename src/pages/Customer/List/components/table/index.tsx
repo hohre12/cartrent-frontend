@@ -13,7 +13,7 @@ import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import { Customer, PermissionType } from '@/types/graphql';
 import { customerStatusColor, isColumnsViewHide } from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
@@ -32,6 +32,11 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
     selectedCustomerIdxState,
   );
 
+  // Shift 선택 기능을 위한 상태
+  const lastClickedIndexRef = useRef<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isShiftPressed, setIsShiftPressed] = useState<boolean>(false);
+
   const my = useRecoilValue(userState);
   const isHideColumn = (columeKey: string) => {
     return my?.role.name === PermissionType.Admin
@@ -44,25 +49,82 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
     );
   }, [data, selectedCustomer]);
 
+  // Shift 키 눌림 상태 감지
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Shift') {
+        setIsShiftPressed(true);
+      }
+    };
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'Shift') {
+        setIsShiftPressed(false);
+        setHoveredIndex(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
+
   const handleAllChecked = useCallback(() => {
     if (selectedCustomer.length > 0) {
       setSelectedCustomer([]);
     } else {
       setSelectedCustomer(data);
     }
+    lastClickedIndexRef.current = null;
   }, [data, selectedCustomer.length, setSelectedCustomer]);
 
   const handleChecked = useCallback(
-    (val: TCheckBoxValue, customer: Customer) => {
-      if (val) {
-        setSelectedCustomer([...selectedCustomer, customer]);
+    (val: TCheckBoxValue, customer: Customer, index: number, event?: React.MouseEvent<HTMLDivElement>) => {
+      // Shift 키가 눌린 상태이고 이전 클릭이 있는 경우 범위 선택
+      if (event?.shiftKey && lastClickedIndexRef.current !== null) {
+        const startIndex = Math.min(lastClickedIndexRef.current, index);
+        const endIndex = Math.max(lastClickedIndexRef.current, index);
+
+        // 범위 내의 모든 항목 선택
+        const rangeItems = data.slice(startIndex, endIndex + 1);
+
+        // 기존 선택 항목과 범위 내 항목을 합침 (중복 제거)
+        const newSelectedItems = [...selectedCustomer];
+        rangeItems.forEach(item => {
+          if (!newSelectedItems.some(selected => selected.id === item.id)) {
+            newSelectedItems.push(item);
+          }
+        });
+
+        setSelectedCustomer(newSelectedItems);
       } else {
-        const newList = selectedCustomer.filter((it) => it.id !== customer.id);
-        setSelectedCustomer(newList);
+        // 일반 클릭
+        if (val) {
+          setSelectedCustomer([...selectedCustomer, customer]);
+        } else {
+          const newList = selectedCustomer.filter((it) => it.id !== customer.id);
+          setSelectedCustomer(newList);
+        }
       }
+
+      // 마지막 클릭 인덱스 업데이트
+      lastClickedIndexRef.current = index;
     },
-    [selectedCustomer, setSelectedCustomer],
+    [data, selectedCustomer, setSelectedCustomer],
   );
+
+  // 범위 하이라이트 체크 함수
+  const isInShiftRange = useCallback((index: number) => {
+    if (!isShiftPressed || hoveredIndex === null || lastClickedIndexRef.current === null) {
+      return false;
+    }
+    const start = Math.min(lastClickedIndexRef.current, hoveredIndex);
+    const end = Math.max(lastClickedIndexRef.current, hoveredIndex);
+    return index >= start && index <= end;
+  }, [isShiftPressed, hoveredIndex]);
 
   return (
     <CustomerListTableWrapper>
@@ -90,13 +152,17 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
           <tr
             key={idx}
             onClick={() => setSelectedCustomerIdx(it.id)}
-            className={selectedCustomerIdx === it.id ? 'selected' : ''}
+            onMouseEnter={() => isShiftPressed && setHoveredIndex(idx)}
+            className={`
+              ${selectedCustomerIdx === it.id ? 'selected' : ''}
+              ${isInShiftRange(idx) ? 'shiftRange' : ''}
+            `}
           >
             <td>
               <div onClick={(e) => e.stopPropagation()}>
                 <Checkbox
                   value={selectedCustomer.some((cl) => cl.id === it.id)}
-                  onCheckedChange={(val) => handleChecked(val, it)}
+                  onCheckedChange={(val, event) => handleChecked(val, it, idx, event)}
                 />
               </div>
             </td>
@@ -214,6 +280,10 @@ export const CustomerListTableWrapper = styled.table`
       }
       &:hover {
         background: #f5f5f5;
+      }
+      &.shiftRange {
+        background: #e3f2fd;
+        transition: background-color 0.1s ease;
       }
       td {
         height: 40px;

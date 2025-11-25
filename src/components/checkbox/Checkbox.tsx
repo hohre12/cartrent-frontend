@@ -18,7 +18,7 @@ type TVaraint = 'black' | 'brandcolor';
 interface ICheckboxProps extends HTMLAttributes<HTMLDivElement> {
   value?: TCheckBoxValue | undefined;
   disabled?: boolean | undefined;
-  onCheckedChange?: (v: TCheckBoxValue) => void;
+  onCheckedChange?: (v: TCheckBoxValue, event?: React.MouseEvent<HTMLDivElement>) => void;
   varaint?: TVaraint;
 }
 
@@ -56,7 +56,7 @@ const Checkbox = ({
     setIcon(getIcon());
   }, [checked, disabled, hover, setIcon, varaint]);
 
-  const onChecked = () => {
+  const onChecked = (event: React.MouseEvent<HTMLDivElement>) => {
     let val = checked;
     if (checked == 'unchecked') {
       val = 'checked';
@@ -67,14 +67,14 @@ const Checkbox = ({
     } else if (checked == true) {
       val = false;
     }
-    if (onCheckedChange) onCheckedChange(val);
+    if (onCheckedChange) onCheckedChange(val, event);
     setChecked(val);
   };
 
   return (
     <CheckboxWrapper
       {...props}
-      onClick={() => onChecked()}
+      onClick={(event) => onChecked(event)}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
