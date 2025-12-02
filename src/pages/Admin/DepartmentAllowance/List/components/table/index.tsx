@@ -2,48 +2,34 @@ import Button from '@/components/button/Button';
 import { UserPositionHangleEnum } from '@/constants/user';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
-// TODO: 백엔드 스키마 완성 후 실제 서비스로 교체
-// import { useDeleteDepartmentAllowance } from '@/services/departmentAllowance';
+import { useDeleteTeamIncentive } from '@/services/teamIncentive';
 import { textS14Regular, titleS14Semibold } from '@/styles/typography';
 import palette from '@/styles/variables';
-// TODO: 백엔드 스키마 완성 후 DepartmentAllowance 타입으로 교체
-import { PositionIncentive } from '@/types/graphql';
+import { TeamIncentive } from '@/types/graphql';
 import styled from 'styled-components';
 
 type TTableProps = {
-  // TODO: 백엔드 스키마 완성 후 DepartmentAllowance[] 타입으로 교체
-  data: PositionIncentive[];
+  data: TeamIncentive[];
   onEdit: (id: number) => void;
 };
 
 const DepartmentAllowanceListTable = ({ data, onEdit }: TTableProps) => {
   const { showConfirm, hideConfirm } = useConfirm();
   const { addToast } = useToast();
-  // TODO: 백엔드 스키마 완성 후 주석 해제
-  // const { deleteDepartmentAllowance } = useDeleteDepartmentAllowance();
+  const { deleteTeamIncentive } = useDeleteTeamIncentive();
 
   const handleDelete = async (id: number, positionName: string) => {
     try {
-      // TODO: 백엔드 스키마 완성 후 주석 해제
-      // const response = await deleteDepartmentAllowance(id);
-      // if (response && response.data.deleteDepartmentAllowance) {
-      //   hideConfirm();
-      //   addToast({
-      //     id: Date.now(),
-      //     isImage: true,
-      //     content: `본부별 수당이 삭제되었습니다.`,
-      //     type: 'success',
-      //   });
-      // }
-
-      // 임시 처리
-      hideConfirm();
-      addToast({
-        id: Date.now(),
-        isImage: true,
-        content: `본부별 수당 삭제 기능은 백엔드 스키마 완성 후 사용 가능합니다.`,
-        type: 'warning',
-      });
+      const response = await deleteTeamIncentive(id);
+      if (response && response.data.deleteTeamIncentive) {
+        hideConfirm();
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `본부별 수당이 삭제되었습니다.`,
+          type: 'success',
+        });
+      }
     } catch (e) {
       hideConfirm();
       addToast({
@@ -84,8 +70,7 @@ const DepartmentAllowanceListTable = ({ data, onEdit }: TTableProps) => {
               </td>
               <td>{formatAmount(it.minThreshold)}</td>
               <td>{formatAmount(it.maxThreshold)}</td>
-              {/* TODO: 백엔드 스키마 완성 후 departmentAllowanceRate로 교체 */}
-              <td>{it.positionIncentiveRate}%</td>
+              <td>{it.teamIncentiveRate}%</td>
               <td onClick={(e) => e.stopPropagation()}>
                 <Button
                   variant="primary"

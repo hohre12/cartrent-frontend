@@ -1,6 +1,5 @@
 import Button from '@/components/button/Button';
-// TODO: 백엔드 스키마 완성 후 실제 서비스로 교체
-// import { useGetDepartmentAllowances } from '@/services/departmentAllowance';
+import { useGetTeamIncentives } from '@/services/teamIncentive';
 import { useGetPositions } from '@/services/user';
 import { textS14Regular, titleXxl24Bold } from '@/styles/typography';
 import styled from 'styled-components';
@@ -11,15 +10,10 @@ import EditDepartmentAllowanceModal from './components/editModal';
 import Loading from '@/components/loading/Loading';
 
 const AdminDepartmentAllowanceList = () => {
-  // TODO: 백엔드 스키마 완성 후 주석 해제
-  // const { data, loading, error } = useGetDepartmentAllowances({
-  //   limit: 100,
-  //   offset: 0,
-  // });
-
-  // 임시 데이터 (백엔드 스키마 완성 전까지)
-  const data = null;
-  const loading = false;
+  const { data, loading, error } = useGetTeamIncentives({
+    limit: 100,
+    offset: 0,
+  });
 
   const { data: positionsData } = useGetPositions();
   const [isOpenRegistModal, setIsOpenRegistModal] = useState<boolean>(false);
@@ -41,11 +35,10 @@ const AdminDepartmentAllowanceList = () => {
           </ControlWrapper>
         </Header>
         <ListContent>
-          {/* TODO: 백엔드 스키마 완성 후 data.getDepartmentAllowances로 교체 */}
-          {data && (data as any).getDepartmentAllowances?.length > 0 ? (
+          {data && data.getTeamIncentives?.length > 0 ? (
             <>
               <DepartmentAllowanceListTable
-                data={(data as any).getDepartmentAllowances}
+                data={data.getTeamIncentives}
                 onEdit={(id) => setEditModalId(id)}
               />
             </>

@@ -4,8 +4,7 @@ import { Modal } from '@/components/modal/Modal';
 import Select from '@/components/select/Select';
 import { UserPositionHangleEnum } from '@/constants/user';
 import { useToast } from '@/hooks/useToast';
-// TODO: 백엔드 스키마 완성 후 실제 서비스로 교체
-// import { useCreateDepartmentAllowance } from '@/services/departmentAllowance';
+import { useCreateTeamIncentive } from '@/services/teamIncentive';
 import { textXs12Medium } from '@/styles/typography';
 import { TModal } from '@/types/common';
 import { Position, PositionType } from '@/types/graphql';
@@ -23,13 +22,11 @@ const RegistDepartmentAllowanceModal = (
   const [minThreshold, setMinThreshold] = useState<number>(0);
   const [maxThreshold, setMaxThreshold] = useState<number>(0);
   const [noMaxThreshold, setNoMaxThreshold] = useState<boolean>(false);
-  // TODO: 백엔드 스키마 완성 후 departmentAllowanceRate로 교체
-  const [positionIncentiveRate, setPositionIncentiveRate] = useState<number>(0);
+  const [teamIncentiveRate, setTeamIncentiveRate] = useState<number>(0);
   const [submit, setSubmit] = useState<boolean>(false);
   const { addToast } = useToast();
 
-  // TODO: 백엔드 스키마 완성 후 주석 해제
-  // const { createDepartmentAllowance } = useCreateDepartmentAllowance();
+  const { createTeamIncentive } = useCreateTeamIncentive();
 
   // 팀장과 본부장만 선택 가능
   const filteredPositions = useMemo(() => {
@@ -50,31 +47,21 @@ const RegistDepartmentAllowanceModal = (
     if (!selectedPosition) return;
 
     try {
-      // TODO: 백엔드 스키마 완성 후 주석 해제
-      // const response = await createDepartmentAllowance({
-      //   positionId: selectedPosition.id,
-      //   minThreshold,
-      //   maxThreshold: noMaxThreshold ? (null as any) : maxThreshold,
-      //   departmentAllowanceRate: positionIncentiveRate,
-      // });
-      // if (response && response.data.createDepartmentAllowance.id) {
-      //   addToast({
-      //     id: Date.now(),
-      //     isImage: true,
-      //     content: `본부별 수당이 등록되었습니다.`,
-      //     type: 'success',
-      //   });
-      //   modalProps.onConfirm?.();
-      // }
-
-      // 임시 처리
-      addToast({
-        id: Date.now(),
-        isImage: true,
-        content: `본부별 수당 등록 기능은 백엔드 스키마 완성 후 사용 가능합니다.`,
-        type: 'warning',
+      const response = await createTeamIncentive({
+        positionId: selectedPosition.id,
+        minThreshold,
+        maxThreshold: noMaxThreshold ? (null as any) : maxThreshold,
+        teamIncentiveRate,
       });
-      modalProps.onConfirm?.();
+      if (response && response.data.createTeamIncentive.id) {
+        addToast({
+          id: Date.now(),
+          isImage: true,
+          content: `본부별 수당이 등록되었습니다.`,
+          type: 'success',
+        });
+        modalProps.onConfirm?.();
+      }
     } catch (e) {
       console.warn(e);
       addToast({
@@ -86,13 +73,13 @@ const RegistDepartmentAllowanceModal = (
     }
   }, [
     addToast,
-    // createDepartmentAllowance,
+    createTeamIncentive,
     modalProps,
     selectedPosition,
     minThreshold,
     maxThreshold,
     noMaxThreshold,
-    positionIncentiveRate,
+    teamIncentiveRate,
   ]);
 
   const handleEnter = useCallback(
@@ -180,12 +167,12 @@ const RegistDepartmentAllowanceModal = (
               수당율 <p className="required">*</p>
             </span>
             <Input
-              value={numberFormat(positionIncentiveRate)}
+              value={numberFormat(teamIncentiveRate)}
               onTextChange={(text) => {
                 const value = Number(text.replace(/,/g, ''));
                 if (value > 100) {
-                  setPositionIncentiveRate(100);
-                } else setPositionIncentiveRate(value);
+                  setTeamIncentiveRate(100);
+                } else setTeamIncentiveRate(value);
               }}
               max={100}
               type="text"
