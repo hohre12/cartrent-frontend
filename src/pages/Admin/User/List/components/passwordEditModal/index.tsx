@@ -115,9 +115,3 @@ const RegistCustomerWrapper = styled.div`
   flex-direction: column;
   gap: 20px;
 `;
-
-const SelectWrapper = styled.div`
-  .selectBox {
-    height: 40px;
-  }
-`;

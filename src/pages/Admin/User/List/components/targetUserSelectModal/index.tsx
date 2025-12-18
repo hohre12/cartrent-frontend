@@ -7,8 +7,8 @@ import { User } from '@/types/graphql';
 import { useState } from 'react';
 import styled from 'styled-components';
 
-const TargetUserSelectModal = (props: TModal) => {
-  const { ...modalProps } = props;
+const TargetUserSelectModal = (props: TModal & { idx: number }) => {
+  const { idx, ...modalProps } = props;
 
   const [submit, setSubmit] = useState<boolean>(false);
   const [targetUser, setTargetUser] = useState<User>();
@@ -40,7 +40,11 @@ const TargetUserSelectModal = (props: TModal) => {
               size="medium"
               value={{ ...targetUser }}
               onChange={(value) => setTargetUser(value)}
-              list={users?.getUsers ?? []}
+              list={
+                users?.getUsers
+                  ? users?.getUsers.filter((it) => it.id !== idx)
+                  : []
+              }
               trackBy="id"
               valueBy="name"
               placeholder={'고객데이터 인계받을 담당자를 선택해주세요.'}

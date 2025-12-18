@@ -190,6 +190,7 @@ const AdminUserDetail = () => {
       )}
       {isOpenTargetUserSelectModal && (
         <TargetUserSelectModal
+          idx={userIdx}
           isOpen={isOpenTargetUserSelectModal}
           onCancel={() => setIsOpenTargetUserSelectModal(false)}
           onConfirm={(targetUser: User) => {
