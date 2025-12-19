@@ -17,6 +17,7 @@ import {
   CustomerGrade,
   CustomerGroup,
   PermissionType,
+  PositionType,
   User,
 } from '@/types/graphql';
 
@@ -157,42 +158,46 @@ const CustomerFilter = ({ users, groups, grades }: TCustomerFilterProps) => {
             </div>
           )}
         </Filter>
-        {user?.role.name === PermissionType.Admin && (
-          <Filter>
-            <div
-              className="Menu"
-              onClick={() => handleOpenFilters('user')}
-            >
-              <div>
-                <SvgIcon
-                  iconName="icon-arrow_up_s"
-                  style={{
-                    width: '20px',
-                    transform: isOpenFilters.some((it) => it === 'user')
-                      ? 'rotate(90deg)'
-                      : '',
-                  }}
-                />
-                <p>담당자</p>
+        {user?.role.name === PermissionType.Admin ||
+          user?.position.name === PositionType.GeneralManager ||
+          (user?.position.name === PositionType.TeamLeader && (
+            <Filter>
+              <div
+                className="Menu"
+                onClick={() => handleOpenFilters('user')}
+              >
+                <div>
+                  <SvgIcon
+                    iconName="icon-arrow_up_s"
+                    style={{
+                      width: '20px',
+                      transform: isOpenFilters.some((it) => it === 'user')
+                        ? 'rotate(90deg)'
+                        : '',
+                    }}
+                  />
+                  <p>담당자</p>
+                </div>
               </div>
-            </div>
-            {isOpenFilters.some((it) => it === 'user') && (
-              <div className="SubMenu">
-                {users?.map((it) => (
-                  <div key={it.id}>
-                    <Checkbox
-                      value={filters.users
-                        .map((filter) => filter.value)
-                        .includes(it.id)}
-                      onCheckedChange={(val) => handleChecked(val, it, 'users')}
-                    ></Checkbox>
-                    <p>{it.name}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </Filter>
-        )}
+              {isOpenFilters.some((it) => it === 'user') && (
+                <div className="SubMenu">
+                  {users?.map((it) => (
+                    <div key={it.id}>
+                      <Checkbox
+                        value={filters.users
+                          .map((filter) => filter.value)
+                          .includes(it.id)}
+                        onCheckedChange={(val) =>
+                          handleChecked(val, it, 'users')
+                        }
+                      ></Checkbox>
+                      <p>{it.name}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Filter>
+          ))}
       </FilterWrapper>
       {isOpenRegistGroupModal && (
         <RegistGroupModal
