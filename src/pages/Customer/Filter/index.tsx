@@ -159,8 +159,8 @@ const CustomerFilter = ({ users, groups, grades }: TCustomerFilterProps) => {
           )}
         </Filter>
         {user?.role.name === PermissionType.Admin ||
-          user?.position.name === PositionType.GeneralManager ||
-          (user?.position.name === PositionType.TeamLeader && (
+          ((user?.position.name === PositionType.GeneralManager ||
+            user?.position.name === PositionType.TeamLeader) && (
             <Filter>
               <div
                 className="Menu"
