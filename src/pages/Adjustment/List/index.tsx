@@ -63,6 +63,16 @@ const AdjustmentList = () => {
   const [isFilterUserOpen, setIsFilterUserOpen] = useState<boolean>(false);
   const filterUserRef = useClickOutside(() => setIsFilterUserOpen(false));
 
+  const yearOptions = [
+    `${currentYear}년`,
+    `${Number(currentYear) - 1}년`,
+    `${Number(currentYear) - 2}년`,
+  ];
+
+  if (Number(currentMonth) === 12) {
+    yearOptions.unshift(`${Number(currentYear) + 1}년`);
+  }
+
   const handleSearchTextDelete = useCallback(() => {
     setSearchText('');
   }, [setSearchText]);
@@ -119,8 +129,13 @@ const AdjustmentList = () => {
 
   useEffect(() => {
     const allMonths = Array.from({ length: 12 }, (_, i) => `${i + 1}월`);
-    if (filters.year === currentYear) {
-      setMonths(allMonths.slice(0, Number(currentMonth)).reverse());
+    const selectedYear = Number(filters.year);
+    const nowYear = Number(currentYear);
+    const nowMonth = Number(currentMonth);
+    if (selectedYear === nowYear) {
+      setMonths(allMonths.slice(0, nowMonth).reverse());
+    } else if (selectedYear === nowYear + 1 && nowMonth === 12) {
+      setMonths(['1월']);
     } else {
       setMonths(allMonths.reverse());
     }
@@ -193,16 +208,30 @@ const AdjustmentList = () => {
                     size="medium"
                     value={`${filters.year}년`}
                     onChange={(value) => {
-                      setFilters({
-                        ...filters,
-                        year: value.value.replace('년', ''),
-                      });
+                      const selectYear = value.value.replace('년', '');
+                      if (
+                        Number(selectYear) === Number(currentYear) + 1 &&
+                        Number(currentMonth) === 12
+                      ) {
+                        setFilters({
+                          ...filters,
+                          year: selectYear,
+                          month: '1',
+                        });
+                      } else if (Number(selectYear) === Number(currentYear)) {
+                        setFilters({
+                          ...filters,
+                          year: selectYear,
+                          month: currentMonth,
+                        });
+                      } else {
+                        setFilters({
+                          ...filters,
+                          year: selectYear,
+                        });
+                      }
                     }}
-                    list={[
-                      `${currentYear}년`,
-                      `${Number(currentYear) - 1}년`,
-                      `${Number(currentYear) - 2}년`,
-                    ]}
+                    list={yearOptions}
                     placeholder="정산년도를 선택해주세요"
                   />
                 </FilterContent>
