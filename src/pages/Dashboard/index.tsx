@@ -19,7 +19,7 @@ const Dashboard = () => {
   const { data: monthlyNetIncomeUsers, loading: loading1 } =
     useGetMonthlyTotalNetIncomeUsersByMonth({
       year: thisYear,
-      month: '07',
+      month: thisMonth,
     });
 
   const { data: latestNotice, loading: loading2 } = useGetLatestNotice();
@@ -50,7 +50,7 @@ const Dashboard = () => {
         <FullWidthBox>
           <div className="header">
             <h3>
-              이번달 전체 직원 계약순익 현황 ({thisYear}년 {'07'}월)
+              이번달 전체 직원 계약순익 현황 ({thisYear}년 {thisMonth}월)
             </h3>
           </div>
           <div className="content">
