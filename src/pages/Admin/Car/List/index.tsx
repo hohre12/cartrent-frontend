@@ -5,11 +5,14 @@ import { useState } from 'react';
 import CarListTable from './components/table';
 import RegistCarModal from './components/registCarModal';
 import { useGetBrands } from '@/services/brand';
+import Loading from '@/components/loading/Loading';
 
 const AdminCarList = () => {
   const { data, loading, error } = useGetBrands({});
   const [isOpenRegistCarModal, setIsOpenRegistCarModal] =
     useState<boolean>(false);
+
+  if (loading) return <Loading />;
   return (
     <>
       <ListWrapper>

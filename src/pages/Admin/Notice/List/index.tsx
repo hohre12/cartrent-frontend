@@ -6,11 +6,15 @@ import UserListTable from './components/table';
 import { useState } from 'react';
 import RegistModal from './components/registModal';
 import { useGetNotices } from '@/services/notice';
+import Loading from '@/components/loading/Loading';
 
 const AdminNoticeList = () => {
   const { data, loading, error } = useGetNotices();
   const [isOpenRegistNoticeModal, setIsOpenRegistNoticeModal] =
     useState<boolean>(false);
+
+  if (loading) return <Loading />;
+
   return (
     <>
       <ListWrapper>

@@ -14,6 +14,7 @@ import Select from '@/components/select/Select';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useNavigationType } from 'react-router-dom';
+import Loading from '@/components/loading/Loading';
 
 const TaxList = () => {
   const navigationType = useNavigationType();
@@ -25,13 +26,16 @@ const TaxList = () => {
   const [filters, setFilters] = useRecoilState(taxFiltersState);
   const resetFilters = useResetRecoilState(taxFiltersState);
 
-  const { data: userIncentiveDeliveryTaxes } = useGetUserIncentiveDeliveryTaxes(
-    { year: filters.year, month: filters.month },
-  );
-  const { data: customerTaxes } = useGetCustomerTaxes({
-    year: filters.year,
-    month: filters.month,
-  });
+  const { data: userIncentiveDeliveryTaxes, loading: deliveryTaxesLoading } =
+    useGetUserIncentiveDeliveryTaxes({
+      year: filters.year,
+      month: filters.month,
+    });
+  const { data: customerTaxes, loading: customerTaxesLoading } =
+    useGetCustomerTaxes({
+      year: filters.year,
+      month: filters.month,
+    });
   useEffect(() => {
     if (navigationType !== 'POP') {
       resetFilters();
@@ -45,6 +49,9 @@ const TaxList = () => {
       setMonths(allMonths.reverse());
     }
   }, [filters, setMonths, currentYear, currentMonth]);
+
+  if (deliveryTaxesLoading || customerTaxesLoading) return <Loading />;
+
   return (
     <>
       <ListWrapper>
@@ -97,7 +104,9 @@ const TaxList = () => {
               userIncentiveDeliveryTaxes.getUserIncentiveDeliveryTaxes?.length >
                 0 ? (
                 <TaxListTable
-                  data={userIncentiveDeliveryTaxes.getUserIncentiveDeliveryTaxes}
+                  data={
+                    userIncentiveDeliveryTaxes.getUserIncentiveDeliveryTaxes
+                  }
                 ></TaxListTable>
               ) : (
                 <div className="noList">
