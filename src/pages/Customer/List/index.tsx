@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import CustomerListTable from './components/table';
 import { SvgIcon } from '@/components/common/SvgIcon';
 import { textS14Regular } from '@/styles/typography';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import SearchBox from '@/components/searchBox/SearchBox';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import {
@@ -57,6 +57,9 @@ const CustomerList = () => {
   const sortRef = useClickOutside(() => setIsSortOpen(false));
   const resetSort = useResetRecoilState(selectedCustomerSortState);
 
+  // 첫번째 고객 선택을 강제해야 하는지 여부
+  const shouldResetSelectionRef = useRef<boolean>(false);
+
   const { data, loading, error } = useGetCustomers({
     search: searchText ? searchText : null,
     customerGroupId:
@@ -82,13 +85,28 @@ const CustomerList = () => {
     [setSearchText],
   );
   useEffect(() => {
-    if (
-      // !selectedCustomerIdx &&
-      data?.getCustomers &&
-      data.getCustomers.data.length > 0
-    )
-      setSelectedCustomerIdx(data.getCustomers.data[0].id);
-  }, [data, setSelectedCustomerIdx]);
+    if (data?.getCustomers && data.getCustomers.data.length > 0) {
+      // 강제로 첫번째 고객을 선택해야 하는 경우
+      if (shouldResetSelectionRef.current) {
+        setSelectedCustomerIdx(data.getCustomers.data[0].id);
+        shouldResetSelectionRef.current = false;
+        return;
+      }
+
+      // 현재 선택된 고객이 새 데이터에 있는지 확인
+      const currentCustomerExists = selectedCustomerIdx
+        ? data.getCustomers.data.some(
+            (customer) => customer.id === selectedCustomerIdx,
+          )
+        : false;
+
+      // 현재 선택된 고객이 없거나, 새 데이터에 없으면 첫번째 고객 선택
+      // (상담등록/고객수정의 경우 선택된 고객이 데이터에 있으므로 유지됨)
+      if (!currentCustomerExists) {
+        setSelectedCustomerIdx(data.getCustomers.data[0].id);
+      }
+    }
+  }, [data, setSelectedCustomerIdx, selectedCustomerIdx]);
 
   useEffect(() => {
     resetFilters();
@@ -98,6 +116,8 @@ const CustomerList = () => {
 
   useEffect(() => {
     setOffset(0);
+    // 필터 변경 시 첫번째 고객 선택
+    shouldResetSelectionRef.current = true;
   }, [filters]);
 
   // searchText 변경 시 offset 초기화
@@ -105,9 +125,10 @@ const CustomerList = () => {
     setOffset(0);
   }, [searchText]);
 
-  // sort 변경 시 offset 초기화
+  // sort 변경 시 offset 초기화 및 첫번째 고객 선택
   useEffect(() => {
     setOffset(0);
+    shouldResetSelectionRef.current = true;
   }, [selectedSort]);
 
   if (loading) return <Loading />;
@@ -199,6 +220,8 @@ const CustomerList = () => {
             getPage={(offset, length) => {
               setOffset(offset);
               setLength(length);
+              // 페이지 length 변경 시 첫번째 고객 선택
+              shouldResetSelectionRef.current = true;
             }}
           ></Pagination>
         )}
@@ -218,6 +241,8 @@ const CustomerList = () => {
           onCancel={() => setIsOpenRegistModal(false)}
           onConfirm={() => {
             setIsOpenRegistModal(false);
+            // 고객 등록 후 첫번째 고객 선택
+            shouldResetSelectionRef.current = true;
             showConfirm({
               isOpen: true,
               title: '고객 추가 등록',
