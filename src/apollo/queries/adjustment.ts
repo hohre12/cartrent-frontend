@@ -43,7 +43,8 @@ export const GET_ADJUSTMENTS_QUERY = gql`
 `;
 
 /**
- * 정산 엑셀 다운로드
+ * 엑셀 다운로드 (정산목록, 출고목록 공통 사용)
+ * 2025-12-23: 출고목록에서도 사용
  */
 export const MAKE_EXCEL_QUERY = gql`
   query MakeExcel($year: String!, $month: String!, $email: String!) {

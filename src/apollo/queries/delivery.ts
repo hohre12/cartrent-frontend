@@ -49,3 +49,4 @@ export const GET_DELIVERIES_QUERY = gql`
     }
   }
 `;
+

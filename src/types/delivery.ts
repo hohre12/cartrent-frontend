@@ -7,5 +7,7 @@ export type TDeliveryFiltersStateType = {
   divisions: TFilterList<number>[];
   startDeliveryAtYearMonth: string;
   endDeliveryAtYearMonth: string;
+  year: string;
+  month: string;
 };
 /* front handle type */

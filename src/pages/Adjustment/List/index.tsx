@@ -11,7 +11,7 @@ import { TFilterList } from '@/types/common';
 import { Circle, FilterContent, FilterWrapper } from '@/styles/common';
 import AdjustmentListTable from './components/table';
 import { adjustmentFiltersState } from '@/state/adjustment';
-import { useGetAdjustments, useMakeExcel } from '@/services/adjustment';
+import { useGetAdjustments /* , useMakeExcel */ } from '@/services/adjustment'; // 2025-12-23: 출고목록으로 기능 이동됨에 따라 주석처리
 import FilterUser from './components/filter/user';
 import { userState } from '@/state/auth';
 import { PermissionType } from '@/types/graphql';
@@ -21,7 +21,7 @@ import moment from 'moment';
 import { useCheckSettleContract, useCreatePayStub } from '@/services/payStub';
 import { useConfirm } from '@/hooks/useConfirm';
 import { useToast } from '@/hooks/useToast';
-import InputEmailModal from './components/inputEmailModal';
+// import InputEmailModal from './components/inputEmailModal'; // 2025-12-23: 출고목록으로 기능 이동됨에 따라 주석처리
 import Loading from '@/components/loading/Loading';
 
 const AdjustmentList = () => {
@@ -30,8 +30,8 @@ const AdjustmentList = () => {
   const [searchText, setSearchText] = useState<string>('');
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
-  const [isOpenInputEmailModal, setIsOpenInputEmailModal] =
-    useState<boolean>(false);
+  // const [isOpenInputEmailModal, setIsOpenInputEmailModal] =
+  //   useState<boolean>(false); // 2025-12-23: 출고목록으로 기능 이동됨에 따라 주석처리
   const user = useRecoilValue(userState);
   const currentYear = moment().format('YYYY');
   const currentMonth = moment().format('M');
@@ -254,13 +254,14 @@ const AdjustmentList = () => {
             <FunctionWrapper>
               {user?.role.name === PermissionType.Admin && (
                 <>
-                  <Button
+                  {/* 2025-12-23: 출고목록으로 기능 이동됨에 따라 주석처리 */}
+                  {/* <Button
                     onClick={() =>
                       setIsOpenInputEmailModal(!isOpenInputEmailModal)
                     }
                   >
                     <p>정산표 엑셀 다운로드</p>
-                  </Button>
+                  </Button> */}
                   <Button
                     onClick={() =>
                       showConfirm({
@@ -321,7 +322,8 @@ const AdjustmentList = () => {
           }}
         />
       )}
-      {isOpenInputEmailModal && (
+      {/* 2025-12-23: 출고목록으로 기능 이동됨에 따라 주석처리 */}
+      {/* {isOpenInputEmailModal && (
         <InputEmailModal
           isOpen={isOpenInputEmailModal}
           onCancel={() => setIsOpenInputEmailModal(false)}
@@ -329,7 +331,7 @@ const AdjustmentList = () => {
             setIsOpenInputEmailModal(false);
           }}
         />
-      )}
+      )} */}
     </>
   );
 };

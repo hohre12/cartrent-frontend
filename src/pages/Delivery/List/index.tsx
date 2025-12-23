@@ -20,6 +20,10 @@ import FilterFinancialCompany from './components/filter/financialCompany';
 import FilterDivision from './components/filter/division';
 import Pagination from '@/components/pagination/Pagination';
 import Loading from '@/components/loading/Loading';
+import Select from '@/components/select/Select';
+import moment from 'moment';
+import InputEmailModal from './components/inputEmailModal';
+import { PermissionType } from '@/types/graphql';
 
 const DeliveryList = () => {
   const navigate = useNavigate();
@@ -28,7 +32,12 @@ const DeliveryList = () => {
   const [searchText, setSearchText] = useState<string>('');
   const [isOpenWatchOptionModal, setIsOpenWatchOptionModal] =
     useState<boolean>(false);
+  const [isOpenInputEmailModal, setIsOpenInputEmailModal] =
+    useState<boolean>(false);
   const my = useRecoilValue(userState);
+  const currentYear = moment().format('YYYY');
+  const currentMonth = moment().format('M');
+  const [months, setMonths] = useState<string[]>([]);
 
   // pagination
   const [length, setLength] = useState<number>(50);
@@ -56,9 +65,21 @@ const DeliveryList = () => {
     endDeliveryAtYearMonth: filters?.endDeliveryAtYearMonth
       ? filters.endDeliveryAtYearMonth
       : null,
+    year: filters.year,
+    month: filters.month,
     limit: length,
     offset,
   });
+
+  const yearOptions = [
+    `${currentYear}년`,
+    `${Number(currentYear) - 1}년`,
+    `${Number(currentYear) - 2}년`,
+  ];
+
+  if (Number(currentMonth) === 12) {
+    yearOptions.unshift(`${Number(currentYear) + 1}년`);
+  }
 
   // filter - user
   const [isFilterUserOpen, setIsFilterUserOpen] = useState<boolean>(false);
@@ -126,6 +147,20 @@ const DeliveryList = () => {
   useEffect(() => {
     setOffset(0);
   }, [searchText]);
+
+  useEffect(() => {
+    const allMonths = Array.from({ length: 12 }, (_, i) => `${i + 1}월`);
+    const selectedYear = Number(filters.year);
+    const nowYear = Number(currentYear);
+    const nowMonth = Number(currentMonth);
+    if (selectedYear === nowYear) {
+      setMonths(allMonths.slice(0, nowMonth).reverse());
+    } else if (selectedYear === nowYear + 1 && nowMonth === 12) {
+      setMonths(['1월']);
+    } else {
+      setMonths(allMonths.reverse());
+    }
+  }, [filters, setMonths, currentYear, currentMonth]);
 
   if (loading) return <Loading />;
   if (error) return <div className="error">{String(error)}</div>;
@@ -226,6 +261,52 @@ const DeliveryList = () => {
                     <FilterUser handleApply={handleSetFilterUser}></FilterUser>
                   )}
                 </FilterContent>
+                <FilterContent>
+                  <Select
+                    size="medium"
+                    value={`${filters.year}년`}
+                    onChange={(value) => {
+                      const selectYear = value.value.replace('년', '');
+                      if (
+                        Number(selectYear) === Number(currentYear) + 1 &&
+                        Number(currentMonth) === 12
+                      ) {
+                        setFilters({
+                          ...filters,
+                          year: selectYear,
+                          month: '1',
+                        });
+                      } else if (Number(selectYear) === Number(currentYear)) {
+                        setFilters({
+                          ...filters,
+                          year: selectYear,
+                          month: currentMonth,
+                        });
+                      } else {
+                        setFilters({
+                          ...filters,
+                          year: selectYear,
+                        });
+                      }
+                    }}
+                    list={yearOptions}
+                    placeholder="출고년도를 선택해주세요"
+                  />
+                </FilterContent>
+                <FilterContent>
+                  <Select
+                    size="medium"
+                    value={`${filters.month}월`}
+                    onChange={(value) => {
+                      setFilters({
+                        ...filters,
+                        month: value.value.replace('월', ''),
+                      });
+                    }}
+                    list={months}
+                    placeholder="출고월을 선택해주세요"
+                  />
+                </FilterContent>
                 <div className="verticalLine"></div>
                 <DateWrapper>
                   {!filters?.startDeliveryAtYearMonth && (
@@ -267,6 +348,15 @@ const DeliveryList = () => {
               </FilterWrapper>
             </SearchBoxWrapper>
             <FunctionWrapper>
+              {my?.role.name === PermissionType.Admin && (
+                <Button
+                  onClick={() =>
+                    setIsOpenInputEmailModal(!isOpenInputEmailModal)
+                  }
+                >
+                  <p>출고목록 엑셀 다운로드</p>
+                </Button>
+              )}
               <Button
                 onClick={() =>
                   setIsOpenWatchOptionModal(!isOpenWatchOptionModal)
@@ -315,6 +405,15 @@ const DeliveryList = () => {
           onCancel={() => setIsOpenWatchOptionModal(false)}
           onConfirm={() => {
             setIsOpenWatchOptionModal(false);
+          }}
+        />
+      )}
+      {isOpenInputEmailModal && (
+        <InputEmailModal
+          isOpen={isOpenInputEmailModal}
+          onCancel={() => setIsOpenInputEmailModal(false)}
+          onConfirm={() => {
+            setIsOpenInputEmailModal(false);
           }}
         />
       )}

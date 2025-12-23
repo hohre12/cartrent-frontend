@@ -1,5 +1,9 @@
 import { TDeliveryFiltersStateType } from '@/types/delivery';
+import moment from 'moment';
 import { atom } from 'recoil';
+
+const currentYear = moment().format('YYYY');
+const currentMonth = moment().format('M');
 
 export const selectedDeliveryHideWatchOptionsState = atom<string[]>({
   key: 'selectedDeliveryHideWatchOptionsState',
@@ -14,5 +18,7 @@ export const deliveryFiltersState = atom<TDeliveryFiltersStateType>({
     divisions: [],
     startDeliveryAtYearMonth: '',
     endDeliveryAtYearMonth: '',
+    year: currentYear,
+    month: currentMonth,
   },
 });

@@ -798,6 +798,7 @@ export type GetDeliveriesDto = {
   financialCompanyIds?: InputMaybe<Array<Scalars['Int']['input']>>;
   /** 데이터 가져올 개수 */
   limit: Scalars['Int']['input'];
+  month?: InputMaybe<Scalars['String']['input']>;
   /** 페이지 넘버 */
   offset?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
@@ -805,6 +806,7 @@ export type GetDeliveriesDto = {
   startDeliveryAtYearMonth?: InputMaybe<Scalars['String']['input']>;
   /** 유저 Ids */
   userIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+  year?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type GetPayStubDto = {
@@ -952,6 +954,8 @@ export type Mutation = {
   updateCustomers: Scalars['Boolean']['output'];
   /** 내 정보 수정 */
   updateMyInfo: AuthPayload;
+  /** 내 비밀번호 수정 */
+  updateMyPassword: Scalars['Boolean']['output'];
   /** 공지사항 수정 */
   updateNotice: Notice;
   /** 비밀번호 수정 */
@@ -1248,6 +1252,12 @@ export type MutationUpdateCustomersArgs = {
 
 export type MutationUpdateMyInfoArgs = {
   updateUserMyInfoDto: UpdateUserMyInfoDto;
+};
+
+
+export type MutationUpdateMyPasswordArgs = {
+  currentPassword: Scalars['String']['input'];
+  newPassword: Scalars['String']['input'];
 };
 
 
@@ -2224,6 +2234,14 @@ export type UpdateMyInfoMutationVariables = Exact<{
 
 export type UpdateMyInfoMutation = { updateMyInfo: { user?: { name: string, id: number } | null } };
 
+export type UpdateMyPasswordMutationVariables = Exact<{
+  currentPassword: Scalars['String']['input'];
+  newPassword: Scalars['String']['input'];
+}>;
+
+
+export type UpdateMyPasswordMutation = { updateMyPassword: boolean };
+
 export type CreateCityMutationVariables = Exact<{
   createCityDto: CreateCityDto;
 }>;
@@ -2499,6 +2517,34 @@ export type DeleteTeamMutationVariables = Exact<{
 
 
 export type DeleteTeamMutation = { deleteTeam: boolean };
+
+export type CreateTeamIncentiveMutationVariables = Exact<{
+  positionId: Scalars['Int']['input'];
+  minThreshold: Scalars['Int']['input'];
+  maxThreshold?: InputMaybe<Scalars['Int']['input']>;
+  teamIncentiveRate: Scalars['Float']['input'];
+}>;
+
+
+export type CreateTeamIncentiveMutation = { createTeamIncentive: { id: number, minThreshold: number, maxThreshold?: number | null, teamIncentiveRate: number } };
+
+export type UpdateTeamIncentiveMutationVariables = Exact<{
+  teamIncentiveId: Scalars['Int']['input'];
+  positionId: Scalars['Int']['input'];
+  minThreshold: Scalars['Int']['input'];
+  maxThreshold?: InputMaybe<Scalars['Int']['input']>;
+  teamIncentiveRate: Scalars['Float']['input'];
+}>;
+
+
+export type UpdateTeamIncentiveMutation = { updateTeamIncentive: { id: number, minThreshold: number, maxThreshold?: number | null, teamIncentiveRate: number } };
+
+export type DeleteTeamIncentiveMutationVariables = Exact<{
+  teamIncentiveId: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteTeamIncentiveMutation = { deleteTeamIncentive: boolean };
 
 export type CreateUserMutationVariables = Exact<{
   createUserDto: CreateUserDto;
@@ -2782,6 +2828,21 @@ export type GetTeamQueryVariables = Exact<{
 
 
 export type GetTeamQuery = { getTeam: { id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, parentTeam?: { id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> } | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, subTeams?: Array<{ id: number, name: string, depth?: number | null, created_at?: string | null, updated_at?: string | null, deleted_at?: string | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> }> | null, leader?: { id: number, name: string } | null, userList: Array<{ id: number, name: string, position: { id: number, name: PositionType } }> } };
+
+export type GetTeamIncentivesQueryVariables = Exact<{
+  limit: Scalars['Int']['input'];
+  offset?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetTeamIncentivesQuery = { getTeamIncentives: Array<{ id: number, minThreshold: number, maxThreshold?: number | null, teamIncentiveRate: number, position?: { id: number, name: PositionType } | null }> };
+
+export type GetTeamIncentiveQueryVariables = Exact<{
+  teamIncentiveId: Scalars['Float']['input'];
+}>;
+
+
+export type GetTeamIncentiveQuery = { getTeamIncentive: { id: number, minThreshold: number, maxThreshold?: number | null, teamIncentiveRate: number, position?: { id: number, name: PositionType } | null } };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3238,6 +3299,38 @@ export function useUpdateMyInfoMutation(baseOptions?: Apollo.MutationHookOptions
 export type UpdateMyInfoMutationHookResult = ReturnType<typeof useUpdateMyInfoMutation>;
 export type UpdateMyInfoMutationResult = Apollo.MutationResult<UpdateMyInfoMutation>;
 export type UpdateMyInfoMutationOptions = Apollo.BaseMutationOptions<UpdateMyInfoMutation, UpdateMyInfoMutationVariables>;
+export const UpdateMyPasswordDocument = gql`
+    mutation UpdateMyPassword($currentPassword: String!, $newPassword: String!) {
+  updateMyPassword(currentPassword: $currentPassword, newPassword: $newPassword)
+}
+    `;
+export type UpdateMyPasswordMutationFn = Apollo.MutationFunction<UpdateMyPasswordMutation, UpdateMyPasswordMutationVariables>;
+
+/**
+ * __useUpdateMyPasswordMutation__
+ *
+ * To run a mutation, you first call `useUpdateMyPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMyPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMyPasswordMutation, { data, loading, error }] = useUpdateMyPasswordMutation({
+ *   variables: {
+ *      currentPassword: // value for 'currentPassword'
+ *      newPassword: // value for 'newPassword'
+ *   },
+ * });
+ */
+export function useUpdateMyPasswordMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMyPasswordMutation, UpdateMyPasswordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateMyPasswordMutation, UpdateMyPasswordMutationVariables>(UpdateMyPasswordDocument, options);
+      }
+export type UpdateMyPasswordMutationHookResult = ReturnType<typeof useUpdateMyPasswordMutation>;
+export type UpdateMyPasswordMutationResult = Apollo.MutationResult<UpdateMyPasswordMutation>;
+export type UpdateMyPasswordMutationOptions = Apollo.BaseMutationOptions<UpdateMyPasswordMutation, UpdateMyPasswordMutationVariables>;
 export const CreateCityDocument = gql`
     mutation CreateCity($createCityDto: CreateCityDto!) {
   createCity(createCityDto: $createCityDto) {
@@ -4519,6 +4612,127 @@ export function useDeleteTeamMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteTeamMutationHookResult = ReturnType<typeof useDeleteTeamMutation>;
 export type DeleteTeamMutationResult = Apollo.MutationResult<DeleteTeamMutation>;
 export type DeleteTeamMutationOptions = Apollo.BaseMutationOptions<DeleteTeamMutation, DeleteTeamMutationVariables>;
+export const CreateTeamIncentiveDocument = gql`
+    mutation CreateTeamIncentive($positionId: Int!, $minThreshold: Int!, $maxThreshold: Int, $teamIncentiveRate: Float!) {
+  createTeamIncentive(
+    positionId: $positionId
+    minThreshold: $minThreshold
+    maxThreshold: $maxThreshold
+    teamIncentiveRate: $teamIncentiveRate
+  ) {
+    id
+    minThreshold
+    maxThreshold
+    teamIncentiveRate
+  }
+}
+    `;
+export type CreateTeamIncentiveMutationFn = Apollo.MutationFunction<CreateTeamIncentiveMutation, CreateTeamIncentiveMutationVariables>;
+
+/**
+ * __useCreateTeamIncentiveMutation__
+ *
+ * To run a mutation, you first call `useCreateTeamIncentiveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTeamIncentiveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTeamIncentiveMutation, { data, loading, error }] = useCreateTeamIncentiveMutation({
+ *   variables: {
+ *      positionId: // value for 'positionId'
+ *      minThreshold: // value for 'minThreshold'
+ *      maxThreshold: // value for 'maxThreshold'
+ *      teamIncentiveRate: // value for 'teamIncentiveRate'
+ *   },
+ * });
+ */
+export function useCreateTeamIncentiveMutation(baseOptions?: Apollo.MutationHookOptions<CreateTeamIncentiveMutation, CreateTeamIncentiveMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTeamIncentiveMutation, CreateTeamIncentiveMutationVariables>(CreateTeamIncentiveDocument, options);
+      }
+export type CreateTeamIncentiveMutationHookResult = ReturnType<typeof useCreateTeamIncentiveMutation>;
+export type CreateTeamIncentiveMutationResult = Apollo.MutationResult<CreateTeamIncentiveMutation>;
+export type CreateTeamIncentiveMutationOptions = Apollo.BaseMutationOptions<CreateTeamIncentiveMutation, CreateTeamIncentiveMutationVariables>;
+export const UpdateTeamIncentiveDocument = gql`
+    mutation UpdateTeamIncentive($teamIncentiveId: Int!, $positionId: Int!, $minThreshold: Int!, $maxThreshold: Int, $teamIncentiveRate: Float!) {
+  updateTeamIncentive(
+    teamIncentiveId: $teamIncentiveId
+    positionId: $positionId
+    minThreshold: $minThreshold
+    maxThreshold: $maxThreshold
+    teamIncentiveRate: $teamIncentiveRate
+  ) {
+    id
+    minThreshold
+    maxThreshold
+    teamIncentiveRate
+  }
+}
+    `;
+export type UpdateTeamIncentiveMutationFn = Apollo.MutationFunction<UpdateTeamIncentiveMutation, UpdateTeamIncentiveMutationVariables>;
+
+/**
+ * __useUpdateTeamIncentiveMutation__
+ *
+ * To run a mutation, you first call `useUpdateTeamIncentiveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTeamIncentiveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTeamIncentiveMutation, { data, loading, error }] = useUpdateTeamIncentiveMutation({
+ *   variables: {
+ *      teamIncentiveId: // value for 'teamIncentiveId'
+ *      positionId: // value for 'positionId'
+ *      minThreshold: // value for 'minThreshold'
+ *      maxThreshold: // value for 'maxThreshold'
+ *      teamIncentiveRate: // value for 'teamIncentiveRate'
+ *   },
+ * });
+ */
+export function useUpdateTeamIncentiveMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTeamIncentiveMutation, UpdateTeamIncentiveMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTeamIncentiveMutation, UpdateTeamIncentiveMutationVariables>(UpdateTeamIncentiveDocument, options);
+      }
+export type UpdateTeamIncentiveMutationHookResult = ReturnType<typeof useUpdateTeamIncentiveMutation>;
+export type UpdateTeamIncentiveMutationResult = Apollo.MutationResult<UpdateTeamIncentiveMutation>;
+export type UpdateTeamIncentiveMutationOptions = Apollo.BaseMutationOptions<UpdateTeamIncentiveMutation, UpdateTeamIncentiveMutationVariables>;
+export const DeleteTeamIncentiveDocument = gql`
+    mutation DeleteTeamIncentive($teamIncentiveId: Float!) {
+  deleteTeamIncentive(teamIncentiveId: $teamIncentiveId)
+}
+    `;
+export type DeleteTeamIncentiveMutationFn = Apollo.MutationFunction<DeleteTeamIncentiveMutation, DeleteTeamIncentiveMutationVariables>;
+
+/**
+ * __useDeleteTeamIncentiveMutation__
+ *
+ * To run a mutation, you first call `useDeleteTeamIncentiveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTeamIncentiveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTeamIncentiveMutation, { data, loading, error }] = useDeleteTeamIncentiveMutation({
+ *   variables: {
+ *      teamIncentiveId: // value for 'teamIncentiveId'
+ *   },
+ * });
+ */
+export function useDeleteTeamIncentiveMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTeamIncentiveMutation, DeleteTeamIncentiveMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTeamIncentiveMutation, DeleteTeamIncentiveMutationVariables>(DeleteTeamIncentiveDocument, options);
+      }
+export type DeleteTeamIncentiveMutationHookResult = ReturnType<typeof useDeleteTeamIncentiveMutation>;
+export type DeleteTeamIncentiveMutationResult = Apollo.MutationResult<DeleteTeamIncentiveMutation>;
+export type DeleteTeamIncentiveMutationOptions = Apollo.BaseMutationOptions<DeleteTeamIncentiveMutation, DeleteTeamIncentiveMutationVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($createUserDto: CreateUserDto!) {
   createUser(createUserDto: $createUserDto) {
@@ -6900,6 +7114,101 @@ export type GetTeamQueryHookResult = ReturnType<typeof useGetTeamQuery>;
 export type GetTeamLazyQueryHookResult = ReturnType<typeof useGetTeamLazyQuery>;
 export type GetTeamSuspenseQueryHookResult = ReturnType<typeof useGetTeamSuspenseQuery>;
 export type GetTeamQueryResult = Apollo.QueryResult<GetTeamQuery, GetTeamQueryVariables>;
+export const GetTeamIncentivesDocument = gql`
+    query GetTeamIncentives($limit: Int!, $offset: Int) {
+  getTeamIncentives(limit: $limit, offset: $offset) {
+    id
+    minThreshold
+    maxThreshold
+    teamIncentiveRate
+    position {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTeamIncentivesQuery__
+ *
+ * To run a query within a React component, call `useGetTeamIncentivesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTeamIncentivesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTeamIncentivesQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetTeamIncentivesQuery(baseOptions: Apollo.QueryHookOptions<GetTeamIncentivesQuery, GetTeamIncentivesQueryVariables> & ({ variables: GetTeamIncentivesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamIncentivesQuery, GetTeamIncentivesQueryVariables>(GetTeamIncentivesDocument, options);
+      }
+export function useGetTeamIncentivesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamIncentivesQuery, GetTeamIncentivesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamIncentivesQuery, GetTeamIncentivesQueryVariables>(GetTeamIncentivesDocument, options);
+        }
+export function useGetTeamIncentivesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTeamIncentivesQuery, GetTeamIncentivesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetTeamIncentivesQuery, GetTeamIncentivesQueryVariables>(GetTeamIncentivesDocument, options);
+        }
+export type GetTeamIncentivesQueryHookResult = ReturnType<typeof useGetTeamIncentivesQuery>;
+export type GetTeamIncentivesLazyQueryHookResult = ReturnType<typeof useGetTeamIncentivesLazyQuery>;
+export type GetTeamIncentivesSuspenseQueryHookResult = ReturnType<typeof useGetTeamIncentivesSuspenseQuery>;
+export type GetTeamIncentivesQueryResult = Apollo.QueryResult<GetTeamIncentivesQuery, GetTeamIncentivesQueryVariables>;
+export const GetTeamIncentiveDocument = gql`
+    query GetTeamIncentive($teamIncentiveId: Float!) {
+  getTeamIncentive(teamIncentiveId: $teamIncentiveId) {
+    id
+    minThreshold
+    maxThreshold
+    teamIncentiveRate
+    position {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTeamIncentiveQuery__
+ *
+ * To run a query within a React component, call `useGetTeamIncentiveQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTeamIncentiveQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTeamIncentiveQuery({
+ *   variables: {
+ *      teamIncentiveId: // value for 'teamIncentiveId'
+ *   },
+ * });
+ */
+export function useGetTeamIncentiveQuery(baseOptions: Apollo.QueryHookOptions<GetTeamIncentiveQuery, GetTeamIncentiveQueryVariables> & ({ variables: GetTeamIncentiveQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTeamIncentiveQuery, GetTeamIncentiveQueryVariables>(GetTeamIncentiveDocument, options);
+      }
+export function useGetTeamIncentiveLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTeamIncentiveQuery, GetTeamIncentiveQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTeamIncentiveQuery, GetTeamIncentiveQueryVariables>(GetTeamIncentiveDocument, options);
+        }
+export function useGetTeamIncentiveSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTeamIncentiveQuery, GetTeamIncentiveQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetTeamIncentiveQuery, GetTeamIncentiveQueryVariables>(GetTeamIncentiveDocument, options);
+        }
+export type GetTeamIncentiveQueryHookResult = ReturnType<typeof useGetTeamIncentiveQuery>;
+export type GetTeamIncentiveLazyQueryHookResult = ReturnType<typeof useGetTeamIncentiveLazyQuery>;
+export type GetTeamIncentiveSuspenseQueryHookResult = ReturnType<typeof useGetTeamIncentiveSuspenseQuery>;
+export type GetTeamIncentiveQueryResult = Apollo.QueryResult<GetTeamIncentiveQuery, GetTeamIncentiveQueryVariables>;
 export const GetUsersDocument = gql`
     query GetUsers {
   getUsers {

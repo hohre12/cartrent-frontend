@@ -8,7 +8,7 @@ import {
 } from '@/apollo/mutations/adjustment';
 import {
   GET_ADJUSTMENTS_QUERY,
-  MAKE_EXCEL_QUERY,
+  MAKE_EXCEL_QUERY, // 2025-12-23: 정산목록, 출고목록 공통 사용
 } from '@/apollo/queries/adjustment';
 import {
   AdditionalIncentive,
@@ -32,6 +32,7 @@ export const useGetAdjustments = (params: GetAdjustmentsDto) => {
   });
 };
 
+// 2025-12-23: 정산목록, 출고목록 공통 사용
 export const useMakeExcel = () => {
   return useLazyQuery(MAKE_EXCEL_QUERY);
 };

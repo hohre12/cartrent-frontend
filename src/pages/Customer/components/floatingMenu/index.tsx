@@ -49,7 +49,7 @@ const FloatingWrapper = styled.div`
   align-items: center;
   position: absolute;
   bottom: 20px;
-  left: 50%;
+  left: 25%;
   transform: translate(-50%);
   padding: 10px;
   border-radius: 10px;
