@@ -230,23 +230,23 @@ const ContractRegist = () => {
     }
   }, [my, setUser, customerIdx, setCustomer, customerDetail]);
 
-  const handleEnter = useCallback(
-    (e: globalThis.KeyboardEvent) => {
-      if (e.key === 'Enter') {
-        handleContractRegist();
-      }
-    },
-    [handleContractRegist],
-  );
+  // const handleEnter = useCallback(
+  //   (e: globalThis.KeyboardEvent) => {
+  //     if (e.key === 'Enter') {
+  //       handleContractRegist();
+  //     }
+  //   },
+  //   [handleContractRegist],
+  // );
 
-  useEffect(() => {
-    window.addEventListener('keydown', handleEnter);
+  // useEffect(() => {
+  //   window.addEventListener('keydown', handleEnter);
 
-    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
-    return () => {
-      window.removeEventListener('keydown', handleEnter);
-    };
-  }, [handleEnter]);
+  //   // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+  //   return () => {
+  //     window.removeEventListener('keydown', handleEnter);
+  //   };
+  // }, [handleEnter]);
 
   return (
     <DetailWrapper>
