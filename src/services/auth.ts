@@ -1,4 +1,8 @@
-import { SIGNIN_MUTATION, SIGNOUT_MUTATION } from '@/apollo/mutations/auth';
+import {
+  SIGNIN_MUTATION,
+  SIGNOUT_MUTATION,
+  UPDATE_MY_PASSWORD_MUTATION,
+} from '@/apollo/mutations/auth';
 import { SignInDto } from '@/types/graphql';
 import { useMutation } from '@apollo/client';
 
@@ -19,4 +23,22 @@ export const useSignOut = () => {
     return signOutMutate();
   };
   return { signOut };
+};
+
+export const useUpdateMyPassword = () => {
+  const [updateMyPasswordMutate] = useMutation(UPDATE_MY_PASSWORD_MUTATION);
+
+  const updateMyPassword = async (params: {
+    currentPassword: string;
+    newPassword: string;
+  }) => {
+    if (!params) return;
+    return updateMyPasswordMutate({
+      variables: {
+        currentPassword: params.currentPassword,
+        newPassword: params.newPassword,
+      },
+    });
+  };
+  return { updateMyPassword };
 };

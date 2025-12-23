@@ -16,6 +16,7 @@ import { PermissionType } from '@/types/graphql';
 
 const GlobalNavigationBar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const resetToken = useResetRecoilState(tokenState);
   const resetUser = useResetRecoilState(userState);
   const my = useRecoilValue(userState);
@@ -82,7 +83,10 @@ const GlobalNavigationBar = () => {
               )}
             </NotificationListContent>
           )}
-          <div className="userInfo">
+          <div
+            className="userInfo"
+            onClick={() => navigate('/auth/change-password')}
+          >
             <SvgIcon iconName="icon-memberDefault" />
             <h3>{my?.name ? `${my.name}님` : '-'}</h3>
           </div>

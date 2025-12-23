@@ -72,6 +72,14 @@ export const UPDATE_MY_INFO_MUTATION = gql`
     }
   }
 `;
+export const UPDATE_MY_PASSWORD_MUTATION = gql`
+  mutation UpdateMyPassword($currentPassword: String!, $newPassword: String!) {
+    updateMyPassword(
+      currentPassword: $currentPassword
+      newPassword: $newPassword
+    )
+  }
+`;
 export const CREATE_CITY_MUTATION = gql`
   mutation CreateCity($createCityDto: CreateCityDto!) {
     createCity(createCityDto: $createCityDto) {

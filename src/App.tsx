@@ -10,6 +10,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { tokenState } from './state/auth';
 import { createGlobalStyle } from 'styled-components';
 import Login from './pages/Auth/Login';
+import ChangePassword from './pages/Auth/ChangePassword';
 import SideNavigationBar from './components/sideNavigationBar/SideNavigationBar';
 import GlobalNavigationBar from './components/globalNavigationBar/GlobalNavigationBar';
 import { textXs12Medium } from './styles/typography';
@@ -101,6 +102,14 @@ function App() {
         <Route
           path="/login"
           element={<Login></Login>}
+        />
+        <Route
+          path="/auth/change-password"
+          element={
+            <PrivateRoute>
+              <ChangePassword></ChangePassword>
+            </PrivateRoute>
+          }
         />
         <Route
           path="/dashboard"
