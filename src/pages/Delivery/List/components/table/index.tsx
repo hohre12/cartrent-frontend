@@ -66,9 +66,9 @@ const DeliveryListTable = ({ data }: TTableProps) => {
             ) && <td>{formatDate(it.shippingDate) ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedDeliveryHideWatchOptions,
-              'customerName',
-              isHideColumn('customerName'),
-            ) && <td>{it.customer.name ?? '-'}</td>}
+              'company_name_nominee',
+              isHideColumn('company_name_nominee'),
+            ) && <td>{it.company_name_nominee ?? '-'}</td>}
             {!isColumnsViewHide(
               selectedDeliveryHideWatchOptions,
               'userName',

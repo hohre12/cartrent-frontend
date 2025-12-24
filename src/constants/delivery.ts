@@ -2,7 +2,7 @@ export const DELIVERY_LIST_WATCH_OPTIONS = {
   companyName: '업체명',
   contractAt: '계약일',
   shippingDate: '출고일',
-  customerName: '고객명',
+  company_name_nominee: '회사명/명의자',
   userName: '담당자',
   financialCompany: '금융사',
   divisionName: '구분',
@@ -14,7 +14,7 @@ export const DELIVERY_LIST_WATCH_OPTIONS = {
 
 export const DELIVERY_LIST_WATCH_REQUIRED_OPTIONS = [
   'shippingDate',
-  'customerName',
+  'company_name_nominee',
   'financialCompany',
   'divisionName',
   'carName',

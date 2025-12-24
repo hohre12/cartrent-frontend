@@ -12,6 +12,7 @@ export const GET_DELIVERIES_QUERY = gql`
       data {
         id
         contractAt
+        company_name_nominee
         shippingDate
         customer {
           id
@@ -49,4 +50,3 @@ export const GET_DELIVERIES_QUERY = gql`
     }
   }
 `;
-
