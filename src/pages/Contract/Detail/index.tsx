@@ -420,6 +420,7 @@ const ContractDetail = () => {
                   list={customers?.getCustomers.data ?? []}
                   trackBy="id"
                   valueBy="name"
+                  displayBy={(item) => `${item.name}-(${item.phone})`}
                   placeholder="고객을 선택해주세요"
                   disabled
                   isError={submit && !customer}

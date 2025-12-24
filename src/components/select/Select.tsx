@@ -14,6 +14,7 @@ interface TSelectProps<T> extends TUIOptions, HTMLAttributes<HTMLDivElement> {
   list: T[];
   trackBy?: string;
   valueBy?: string;
+  displayBy?: (item: any) => string; // 커스텀 표시 함수
   onChange?: (value: any) => void;
   onTextChange?: (value: any) => void;
   placeholder?: string;
@@ -48,6 +49,7 @@ const Select = (props: TSelectProps<any>) => {
     placeholder,
     trackBy = 'key',
     valueBy = 'value',
+    displayBy, // 커스텀 표시 함수
     autoCopmlete = false,
 
     size = 'large',
@@ -82,13 +84,14 @@ const Select = (props: TSelectProps<any>) => {
           valueBy
         ];
       }
-      setSelected({ [trackBy]: value[trackBy], [valueBy]: defaultValue });
+      // displayBy 사용 시 전체 객체를 포함해야 함
+      setSelected({ ...value, [valueBy]: defaultValue });
     } else {
       setSelected({ [trackBy]: value, [valueBy]: value });
     }
     setStoredDisplayList(valueBinderByObject(list));
     setDisplayList(valueBinderByObject(list));
-  }, [value, list]);
+  }, [value, list, displayBy]);
 
   useEffect(() => {
     if (searchText) {
@@ -167,7 +170,9 @@ const Select = (props: TSelectProps<any>) => {
           >
             <div className="displayWrap">
               {!isEmpty(selected[trackBy]) && (
-                <div className="display">{selected[valueBy]}</div>
+                <div className="display">
+                  {displayBy ? displayBy(selected) : selected[valueBy]}
+                </div>
               )}
               {isEmpty(selected[trackBy]) && (
                 <div className="placeholder">{placeholder}</div>
@@ -187,9 +192,11 @@ const Select = (props: TSelectProps<any>) => {
                   onClick={() => handleOnClick(item)}
                 >
                   <div>
-                    {valueBy === 'carName'
-                      ? (item.car?.name ?? '-')
-                      : item[valueBy]}
+                    {displayBy
+                      ? displayBy(item)
+                      : valueBy === 'carName'
+                        ? (item.car?.name ?? '-')
+                        : item[valueBy]}
                   </div>
                 </li>
               ))}
