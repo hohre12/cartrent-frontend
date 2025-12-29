@@ -29,6 +29,8 @@ export const GET_ADJUSTMENTS_QUERY = gql`
       totalExpenditureDelivery
       totalNetIncomeDelivery
       totalIncentiveDelivery
+      totalBusinessExpensesContract
+      totalBusinessExpensesDelivery
       etcIncentive
       additionalIncentive {
         id

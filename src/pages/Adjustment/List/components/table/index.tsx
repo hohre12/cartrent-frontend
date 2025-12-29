@@ -147,6 +147,17 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
               )}
               {!isColumnsViewHide(
                 selectedAdjustmentHideWatchOptions,
+                'totalBusinessExpensesContract',
+                isHideColumn('totalBusinessExpensesContract'),
+              ) && (
+                <td>
+                  {it.totalBusinessExpensesContract
+                    ? `${numberFormat(it.totalBusinessExpensesContract)}원`
+                    : '0원'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
                 'totalCountDelivery',
                 isHideColumn('totalCountDelivery'),
               ) && (
@@ -195,6 +206,17 @@ const AdjustmentListTable = ({ data }: TTableProps) => {
                 <td>
                   {it.totalIncentiveDelivery
                     ? `${numberFormat(it.totalIncentiveDelivery)}원`
+                    : '0원'}
+                </td>
+              )}
+              {!isColumnsViewHide(
+                selectedAdjustmentHideWatchOptions,
+                'totalBusinessExpensesDelivery',
+                isHideColumn('totalBusinessExpensesDelivery'),
+              ) && (
+                <td>
+                  {it.totalBusinessExpensesDelivery
+                    ? `${numberFormat(it.totalBusinessExpensesDelivery)}원`
                     : '0원'}
                 </td>
               )}

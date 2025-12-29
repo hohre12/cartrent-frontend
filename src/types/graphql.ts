@@ -41,6 +41,10 @@ export type Adjustment = {
   etcIncentive: Scalars['Float']['output'];
   /** 달 */
   month: Scalars['String']['output'];
+  /** 계약 총 경비 */
+  totalBusinessExpensesContract: Scalars['Int']['output'];
+  /** 출고 총 경비 */
+  totalBusinessExpensesDelivery: Scalars['Int']['output'];
   /** 계약 총 건수 */
   totalCountContract: Scalars['Int']['output'];
   /** 출고 총 건수 */
@@ -2580,7 +2584,7 @@ export type GetAdjustmentsQueryVariables = Exact<{
 }>;
 
 
-export type GetAdjustmentsQuery = { getAdjustments: Array<{ year: string, month: string, totalCountContract: number, totalFeeContract: number, totalExpenditureContract: number, totalNetIncomeContract: number, totalIncentiveContract: number, totalCountDelivery: number, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalIncentiveDelivery: number, etcIncentive: number, user: { id: number, name: string, position: { id: number, name: PositionType } }, additionalIncentive?: { id: number, additionalIncentive: number } | null, bonus?: { id: number, bonus: number } | null }> };
+export type GetAdjustmentsQuery = { getAdjustments: Array<{ year: string, month: string, totalCountContract: number, totalFeeContract: number, totalExpenditureContract: number, totalNetIncomeContract: number, totalIncentiveContract: number, totalCountDelivery: number, totalFeeDelivery: number, totalExpenditureDelivery: number, totalNetIncomeDelivery: number, totalIncentiveDelivery: number, totalBusinessExpensesContract: number, totalBusinessExpensesDelivery: number, etcIncentive: number, user: { id: number, name: string, position: { id: number, name: PositionType } }, additionalIncentive?: { id: number, additionalIncentive: number } | null, bonus?: { id: number, bonus: number } | null }> };
 
 export type MakeExcelQueryVariables = Exact<{
   year: Scalars['String']['input'];
@@ -2731,7 +2735,7 @@ export type GetDeliveriesQueryVariables = Exact<{
 }>;
 
 
-export type GetDeliveriesQuery = { getDeliveries: { totalCount: number, data: Array<{ id: number, contractAt?: string | null, shippingDate?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, customer: { id: number, name: string }, user: { id: number, name: string }, financialCompany?: { id: number, name: string } | null, division?: { id: number, name: string } | null, car?: { id: number, name: string, brand: { id: number, name: string } } | null, shippingMethod?: { id: number, name: string } | null }> } };
+export type GetDeliveriesQuery = { getDeliveries: { totalCount: number, data: Array<{ id: number, contractAt?: string | null, company_name_nominee?: string | null, shippingDate?: string | null, carPrice?: number | null, fee?: number | null, promotion?: number | null, customer: { id: number, name: string }, user: { id: number, name: string }, financialCompany?: { id: number, name: string } | null, division?: { id: number, name: string } | null, car?: { id: number, name: string, brand: { id: number, name: string } } | null, shippingMethod?: { id: number, name: string } | null }> } };
 
 export type GetNoticesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4885,6 +4889,8 @@ export const GetAdjustmentsDocument = gql`
     totalExpenditureDelivery
     totalNetIncomeDelivery
     totalIncentiveDelivery
+    totalBusinessExpensesContract
+    totalBusinessExpensesDelivery
     etcIncentive
     additionalIncentive {
       id
@@ -6307,6 +6313,7 @@ export const GetDeliveriesDocument = gql`
     data {
       id
       contractAt
+      company_name_nominee
       shippingDate
       customer {
         id
