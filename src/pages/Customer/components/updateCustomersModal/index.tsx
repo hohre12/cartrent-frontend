@@ -26,7 +26,7 @@ import {
 import { autoHypenTel, numberFormat } from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
 import { useCallback, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 const UpdateCustomersModal = (props: TModal) => {
@@ -62,6 +62,7 @@ const UpdateCustomersModal = (props: TModal) => {
   const [memo, setMemo] = useState<UpdateCustomersDto['memo']>();
   const [note, setNote] = useState<UpdateCustomersDto['note']>();
   const [division, setDivision] = useState<Division>();
+  const resetSelectedCustomer = useResetRecoilState(selectedCustomerState);
 
   const [submit, setSubmit] = useState<boolean>(false);
   const { addToast } = useToast();
@@ -99,6 +100,7 @@ const UpdateCustomersModal = (props: TModal) => {
           content: `${selectedCustomer.length}명의 고객정보가 수정되었습니다.`,
           type: 'success',
         });
+        resetSelectedCustomer();
         modalProps.onConfirm?.();
       }
     } catch (e) {
@@ -127,6 +129,7 @@ const UpdateCustomersModal = (props: TModal) => {
     phone,
     subPhone,
     type,
+    resetSelectedCustomer,
   ]);
 
   return (

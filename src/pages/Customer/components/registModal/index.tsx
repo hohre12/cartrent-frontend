@@ -78,7 +78,13 @@ const RegistModal = (props: TModal) => {
       }
 
       modalProps.onConfirm?.();
-    } catch (e) {
+    } catch (e: any) {
+      addToast({
+        id: Date.now(),
+        isImage: true,
+        content: `${e.message}`,
+        type: 'error',
+      });
       console.warn(e);
     }
   }, [

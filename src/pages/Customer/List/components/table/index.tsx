@@ -82,7 +82,12 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
   }, [data, selectedCustomer.length, setSelectedCustomer]);
 
   const handleChecked = useCallback(
-    (val: TCheckBoxValue, customer: Customer, index: number, event?: React.MouseEvent<HTMLDivElement>) => {
+    (
+      val: TCheckBoxValue,
+      customer: Customer,
+      index: number,
+      event?: React.MouseEvent<HTMLDivElement>,
+    ) => {
       // Shift 키가 눌린 상태이고 이전 클릭이 있는 경우 범위 선택
       if (event?.shiftKey && lastClickedIndexRef.current !== null) {
         const startIndex = Math.min(lastClickedIndexRef.current, index);
@@ -93,8 +98,8 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
 
         // 기존 선택 항목과 범위 내 항목을 합침 (중복 제거)
         const newSelectedItems = [...selectedCustomer];
-        rangeItems.forEach(item => {
-          if (!newSelectedItems.some(selected => selected.id === item.id)) {
+        rangeItems.forEach((item) => {
+          if (!newSelectedItems.some((selected) => selected.id === item.id)) {
             newSelectedItems.push(item);
           }
         });
@@ -105,7 +110,9 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
         if (val) {
           setSelectedCustomer([...selectedCustomer, customer]);
         } else {
-          const newList = selectedCustomer.filter((it) => it.id !== customer.id);
+          const newList = selectedCustomer.filter(
+            (it) => it.id !== customer.id,
+          );
           setSelectedCustomer(newList);
         }
       }
@@ -117,14 +124,21 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
   );
 
   // 범위 하이라이트 체크 함수
-  const isInShiftRange = useCallback((index: number) => {
-    if (!isShiftPressed || hoveredIndex === null || lastClickedIndexRef.current === null) {
-      return false;
-    }
-    const start = Math.min(lastClickedIndexRef.current, hoveredIndex);
-    const end = Math.max(lastClickedIndexRef.current, hoveredIndex);
-    return index >= start && index <= end;
-  }, [isShiftPressed, hoveredIndex]);
+  const isInShiftRange = useCallback(
+    (index: number) => {
+      if (
+        !isShiftPressed ||
+        hoveredIndex === null ||
+        lastClickedIndexRef.current === null
+      ) {
+        return false;
+      }
+      const start = Math.min(lastClickedIndexRef.current, hoveredIndex);
+      const end = Math.max(lastClickedIndexRef.current, hoveredIndex);
+      return index >= start && index <= end;
+    },
+    [isShiftPressed, hoveredIndex],
+  );
 
   return (
     <CustomerListTableWrapper>
@@ -162,7 +176,9 @@ const CustomerListTable = ({ data }: TCustomerListTableProps) => {
               <div onClick={(e) => e.stopPropagation()}>
                 <Checkbox
                   value={selectedCustomer.some((cl) => cl.id === it.id)}
-                  onCheckedChange={(val, event) => handleChecked(val, it, idx, event)}
+                  onCheckedChange={(val, event) =>
+                    handleChecked(val, it, idx, event)
+                  }
                 />
               </div>
             </td>
