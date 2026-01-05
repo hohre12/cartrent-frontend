@@ -254,15 +254,12 @@ const ContractDetail = () => {
       brand &&
       shippingMethod?.name === '대리점'
     ) {
-      const carPrice = updateContract.carPrice;
+      const totalPrice =
+        updateContract.carPrice - (updateContract.agencyDiscount ?? 0);
       setUpdateContract((prevState) => ({
         ...prevState,
-        // branchFee: Math.round(
-        //   carPrice *
-        //     (((brand.brandFee ?? 0) * 0.667 * 0.7 * (car.carFee ?? 0)) / 100),
-        // ),
         branchFee: Math.round(
-          ((carPrice / (brand.brandFee ?? 0)) *
+          ((totalPrice / (brand.brandFee ?? 1)) *
             0.667 *
             0.7 *
             (car.carFee ?? 0)) /
@@ -275,7 +272,13 @@ const ContractDetail = () => {
         branchFee: 0,
       }));
     }
-  }, [car, brand, updateContract.carPrice, shippingMethod]);
+  }, [
+    car,
+    brand,
+    updateContract.carPrice,
+    shippingMethod,
+    updateContract.agencyDiscount,
+  ]);
 
   const handleEnter = useCallback(
     (e: globalThis.KeyboardEvent) => {

@@ -187,11 +187,12 @@ const ContractRegist = () => {
       brand &&
       shippingMethod?.name === '대리점'
     ) {
-      const carPrice = createContract.carPrice;
+      const totalPrice =
+        createContract.carPrice - (createContract.agencyDiscount ?? 0);
       setCreateContract((prevState) => ({
         ...prevState,
         branchFee: Math.round(
-          ((carPrice / (brand.brandFee ?? 1)) *
+          ((totalPrice / (brand.brandFee ?? 1)) *
             0.667 *
             0.7 *
             (car.carFee ?? 0)) /
@@ -204,7 +205,13 @@ const ContractRegist = () => {
         branchFee: 0,
       }));
     }
-  }, [car, brand, createContract.carPrice, shippingMethod]);
+  }, [
+    car,
+    brand,
+    createContract.carPrice,
+    shippingMethod,
+    createContract.agencyDiscount,
+  ]);
 
   useEffect(() => {
     if (my) {
