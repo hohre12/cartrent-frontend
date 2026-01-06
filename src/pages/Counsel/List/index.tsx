@@ -24,7 +24,7 @@ import { useGetCounsels } from '@/services/counsel';
 import FilterStatus from './components/filter/status';
 import FilterUser from './components/filter/user';
 import { userState } from '@/state/auth';
-import { PermissionType } from '@/types/graphql';
+import { PermissionType, PositionType } from '@/types/graphql';
 import { useNavigationType } from 'react-router-dom';
 import Sort from './components/sort';
 import Loading from '@/components/loading/Loading';
@@ -208,7 +208,9 @@ const CounselList = () => {
                     ></FilterGroup>
                   )}
                 </FilterContent>
-                {user?.role.name === PermissionType.Admin && (
+                {(user?.role.name === PermissionType.Admin ||
+                  user?.position.name === PositionType.TeamLeader ||
+                  user?.position.name === PositionType.GeneralManager) && (
                   <FilterContent ref={filterUserRef}>
                     <Button
                       variant="white"
