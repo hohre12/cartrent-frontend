@@ -13,7 +13,7 @@ import palette from '@/styles/variables';
 import { Counsel, PermissionType } from '@/types/graphql';
 import { customerStatusColor, isColumnsViewHide } from '@/utils/common';
 import { formatDate } from '@/utils/dateUtils';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -30,6 +30,11 @@ const CounselListTable = ({ data }: TTableProps) => {
     selectedCounselHideWatchOptionsState,
   );
 
+  // Shift 선택 기능을 위한 상태
+  const lastClickedIndexRef = useRef<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isShiftPressed, setIsShiftPressed] = useState<boolean>(false);
+
   const user = useRecoilValue(userState);
   const isHideColumn = (columeKey: string) => {
     return user?.role.name === PermissionType.Admin
@@ -43,25 +48,94 @@ const CounselListTable = ({ data }: TTableProps) => {
     );
   }, [selectedCounsel, data]);
 
+  // Shift 키 눌림 상태 감지
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Shift') {
+        setIsShiftPressed(true);
+      }
+    };
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'Shift') {
+        setIsShiftPressed(false);
+        setHoveredIndex(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
+
   const handleAllChecked = useCallback(() => {
     if (selectedCounsel.length > 0) {
       setSelectedCounsel([]);
     } else {
       setSelectedCounsel(data);
     }
+    lastClickedIndexRef.current = null;
   }, [selectedCounsel.length, setSelectedCounsel, data]);
 
   const handleChecked = useCallback(
-    (val: TCheckBoxValue, counsel: Counsel) => {
-      if (val) {
-        setSelectedCounsel([...selectedCounsel, counsel]);
+    (
+      val: TCheckBoxValue,
+      counsel: Counsel,
+      index: number,
+      event?: React.MouseEvent<HTMLDivElement>,
+    ) => {
+      // Shift 키가 눌린 상태이고 이전 클릭이 있는 경우 범위 선택
+      if (event?.shiftKey && lastClickedIndexRef.current !== null) {
+        const startIndex = Math.min(lastClickedIndexRef.current, index);
+        const endIndex = Math.max(lastClickedIndexRef.current, index);
+
+        // 범위 내의 모든 항목 선택
+        const rangeItems = data.slice(startIndex, endIndex + 1);
+
+        // 기존 선택 항목과 범위 내 항목을 합침 (중복 제거)
+        const newSelectedItems = [...selectedCounsel];
+        rangeItems.forEach((item) => {
+          if (!newSelectedItems.some((selected) => selected.id === item.id)) {
+            newSelectedItems.push(item);
+          }
+        });
+
+        setSelectedCounsel(newSelectedItems);
       } else {
-        const newList = selectedCounsel.filter((it) => it.id !== counsel.id);
-        setSelectedCounsel(newList);
+        if (val) {
+          setSelectedCounsel([...selectedCounsel, counsel]);
+        } else {
+          const newList = selectedCounsel.filter((it) => it.id !== counsel.id);
+          setSelectedCounsel(newList);
+        }
       }
+
+      // 마지막 클릭 인덱스 업데이트
+      lastClickedIndexRef.current = index;
     },
-    [selectedCounsel, setSelectedCounsel],
+    [data, selectedCounsel, setSelectedCounsel],
   );
+
+  // 범위 하이라이트 체크 함수
+  const isInShiftRange = useCallback(
+    (index: number) => {
+      if (
+        !isShiftPressed ||
+        hoveredIndex === null ||
+        lastClickedIndexRef.current === null
+      ) {
+        return false;
+      }
+      const start = Math.min(lastClickedIndexRef.current, hoveredIndex);
+      const end = Math.max(lastClickedIndexRef.current, hoveredIndex);
+      return index >= start && index <= end;
+    },
+    [isShiftPressed, hoveredIndex],
+  );
+
   return (
     <TableWrapper>
       <thead>
@@ -88,12 +162,18 @@ const CounselListTable = ({ data }: TTableProps) => {
           <TableItem
             key={idx}
             onClick={() => navigate(`${it.id}`)}
+            onMouseEnter={() => isShiftPressed && setHoveredIndex(idx)}
+            className={`
+              ${isInShiftRange(idx) ? 'shiftRange' : ''}
+            `}
           >
             <td>
               <div onClick={(e) => e.stopPropagation()}>
                 <Checkbox
                   value={selectedCounsel.some((cl) => cl.id === it.id)}
-                  onCheckedChange={(val) => handleChecked(val, it)}
+                  onCheckedChange={(val, event) =>
+                    handleChecked(val, it, idx, event)
+                  }
                 />
               </div>
             </td>
@@ -191,6 +271,10 @@ export const TableItem = styled.tr`
   cursor: pointer;
   &:hover {
     background: #f5f5f5;
+  }
+  &.shiftRange {
+    background: #e3f2fd;
+    transition: background-color 0.1s ease;
   }
   td {
     ${textS14Regular}
