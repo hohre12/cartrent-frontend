@@ -46,7 +46,8 @@ const Dashboard = () => {
             : '공지사항이 없습니다.'}
         </NoticeContent>
       </NoticeWrapper>
-      <DashboardContent>
+      {/* 2025.01.09 대시보드 비활성화 요청 */}
+      {/* <DashboardContent>
         <FullWidthBox>
           <div className="header">
             <h3>
@@ -68,7 +69,7 @@ const Dashboard = () => {
             />
           </div>
         </FullWidthBox>
-      </DashboardContent>
+      </DashboardContent> */}
     </DashboardWrapper>
   );
 };
