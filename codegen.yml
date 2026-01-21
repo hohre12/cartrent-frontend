@@ -1,5 +1,5 @@
 overwrite: true
-schema: 'https://server.cartrentcar.site/graphql'
+schema: 'https://server.cartrentcar.com/graphql'
 documents: 'src/apollo/**/*.ts'
 generates:
   src/types/graphql.ts:
